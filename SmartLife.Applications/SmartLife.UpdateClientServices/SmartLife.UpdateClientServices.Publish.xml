@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://update.lifeblue.com.cn/wwwroot/UpdateClientFarm/Published.SmartLife.UpdateClientServices/" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="配置文件1" publishMethod="FTP" replaceMatchingFiles="False" userName="ftp_admin" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAOu8hWWoRaUeimM84CluLyAAAAAACAAAAAAAQZgAAAAEAACAAAAAs0zIfEayUjx6vqHbaLM723NW/jz1Z85jhVUbAaLa1RwAAAAAOgAAAAAIAACAAAABSAk5I6jx1O8EfSMjNl6fouXZ5fHS+0EijbrIMEWBB4iAAAAAa9yNkcgF+ysyD55nkKgi3ngg4NYuMlvn8XxIEWtycRkAAAAD6NFXO59/7dZiqI1v2v/d19SzYYX4vRe+uryk1Slex/WFxfRfF7s80ehVFGiS9SFBkUnnmaOEQiTpUCkYApzYK" SelectedForPublish="True">
+    <file relUrl="Web.config" publishTime="04/12/2016 13:09:11" />
+    <file relUrl="bin/IBatisNet.Common.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="bin/IBatisNet.DataMapper.pdb" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/NPOI.dll" publishTime="10/31/2013 16:23:20" />
+    <file relUrl="bin/IBatisNet.DataAccess.2005.dll" publishTime="03/21/2014 20:22:55" />
+    <file relUrl="bin/Ionic.Zip.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="bin/SmartLife.UpdateClientServices.dll" publishTime="04/12/2016 13:09:07" />
+    <file relUrl="bin/web.core.dll" publishTime="04/09/2015 10:34:50" />
+    <file relUrl="bin/Castle.DynamicProxy.dll" publishTime="02/06/2012 10:24:00" />
+    <file relUrl="bin/log4net.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="bin/SmartLife.Share.Models.dll" publishTime="11/04/2015 12:39:23" />
+    <file relUrl="bin/SmartLife.UpdateClientServices.pdb" publishTime="04/12/2016 13:09:06" />
+    <file relUrl="dao.config" publishTime="04/30/2015 10:18:53" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="bin/web.core.share.models.dll" publishTime="10/22/2014 11:10:48" />
+    <file relUrl="bin/SmartLife.Share.Behaviors.dll" publishTime="10/29/2015 10:30:10" />
+    <file relUrl="bin/web.core.share.models.pdb" publishTime="10/08/2015 12:36:55" />
+    <file relUrl="Global.asax" publishTime="04/30/2015 10:18:53" />
+    <file relUrl="bin/win.core.dll" publishTime="10/28/2015 13:03:07" />
+    <file relUrl="bin/win.core.pdb" publishTime="12/09/2015 12:21:00" />
+    <file relUrl="ErrorCode.txt" publishTime="04/30/2015 10:18:53" />
+    <file relUrl="bin/web.core.pdb" publishTime="07/28/2015 08:49:50" />
+    <file relUrl="bin/IBatisNet.DataMapper.dll" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/System.Data.SQLite.dll" publishTime="07/28/2015 08:47:20" />
+  </publishProfile>
+</publishData>

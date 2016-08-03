@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias> 
+    <typeAlias alias="ServiceStation_Light" type="SmartLife.Share.Models.Pub.ServiceStation_Light, SmartLife.Share.Models" />
+  </alias>
+  <parameterMaps>
+    <parameterMap id="SP_Tol_AutoGenerateForSysPKParam" class="StringObjectDictionary">
+      <parameter  property="TableName" column="TableName" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="PKName" column="PKName" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="WhereClause" column="WhereClause" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ret" column="ret" direction="Output" type="string" dbType="char" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_AutoGenerateForSysPK2Param" class="StringObjectDictionary">
+      <parameter  property="TableName" column="TableName" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="PKName" column="PKName" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="WhereClause" column="WhereClause" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Prefix" column="Prefix" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ret" column="ret" direction="Output" type="string" dbType="char" />
+    </parameterMap>
+    <parameterMap id="SP_Cer_SignInParam" class="StringObjectDictionary"> 
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="ObjectType" column="ObjectType" direction="Input" type="string" dbType="char" />
+      <parameter  property="ObjectId" column="ObjectId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Token" column="Token" direction="Output" type="Guid" dbType="uniqueidentifier" /> 
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Cer_SignOutParam" class="StringObjectDictionary">
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="Token" column="Token" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Sys_MakeTreeParam" class="StringObjectDictionary">
+      <parameter  property="TreeType" column="TreeType" direction="Input" type="string" dbType="char" />
+      <parameter  property="TreeCode" column="TreeCode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Sys_GetTreeDataParam" class="StringObjectDictionary"> 
+      <parameter  property="TreeCode" column="TreeCode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="PId" column="PId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OrderByClause" column="OrderByClause" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="TreeParams" column="TreeParams" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pub_SaveEntityDefinationParam" class="StringObjectDictionary">
+      <parameter  property="Mode" column="Mode" direction="Input" type="int" dbType="int" />
+      <parameter  property="SourceTable" column="SourceTable" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SourceId" column="SourceId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SourceCatalog" column="SourceCatalog" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="DefinationValue" column="DefinationValue" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ZipUrl" column="ZipUrl" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="TxtUrl" column="TxtUrl" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="PictureUrl" column="PictureUrl" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pub_GetMultiLanguageStorageInfoParam" class="StringObjectDictionary">
+      <parameter  property="StorageType" column="StorageType" direction="Input" type="byte" dbType="tinyint" />
+      <parameter  property="StorageMode" column="StorageMode" direction="Input" type="byte" dbType="tinyint" />
+      <parameter  property="TablePrefix" column="TablePrefix" direction="Input" type="string" dbType="char" />
+      <parameter  property="SourceTable" column="SourceTable" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SourceColumn" column="SourceColumn" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SourceId" column="SourceId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OrderByClause" column="OrderByClause" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_IPCC_SyncCallerParam" class="StringObjectDictionary">
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pub_AddSeatExtBindingParam" class="StringObjectDictionary">
+      <parameter  property="UserId" column="UserId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ExtId" column="ExtId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pub_RemoveSeatExtBindingParam" class="StringObjectDictionary">
+      <parameter  property="UserId" column="UserId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_UspOutputDataExParam" class="StringObjectDictionary">
+        <parameter  property="TableName" column="TableName" direction="Input" type="string" dbType="nvarchar" />
+        <parameter  property="WhereClause" column="WhereClause" direction="Input" type="string" dbType="varchar" /> 
+    </parameterMap> 
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Tol_AutoGenerateForSysPK" parameterMap="SP_Tol_AutoGenerateForSysPKParam" resultClass="StringObjectDictionary">
+      SP_Tol_AutoGenerateForSysPK
+    </procedure>
+    <procedure id="SP_Tol_AutoGenerateForSysPK2" parameterMap="SP_Tol_AutoGenerateForSysPK2Param" resultClass="StringObjectDictionary">
+      SP_Tol_AutoGenerateForSysPK2
+    </procedure>
+    <procedure id="SP_Cer_SignIn" parameterMap="SP_Cer_SignInParam" resultClass="StringObjectDictionary">
+      SP_Cer_SignIn
+    </procedure>
+    <procedure id="SP_Cer_SignOut" parameterMap="SP_Cer_SignOutParam" resultClass="StringObjectDictionary">
+      SP_Cer_SignOut
+    </procedure>
+    <procedure id="SP_Sys_MakeTree" parameterMap="SP_Sys_MakeTreeParam" resultClass="StringObjectDictionary">
+      SP_Sys_MakeTree
+    </procedure>
+    <procedure id="SP_Sys_GetTreeData" parameterMap="SP_Sys_GetTreeDataParam" resultClass="StringObjectDictionary">
+      SP_Sys_GetTreeData
+    </procedure>
+    <procedure id="SP_Pub_SaveEntityDefination" parameterMap="SP_Pub_SaveEntityDefinationParam" resultClass="StringObjectDictionary">
+      SP_Pub_SaveEntityDefination
+    </procedure>
+    <procedure id="SP_Pub_GetMultiLanguageStorageInfo" parameterMap="SP_Pub_GetMultiLanguageStorageInfoParam" resultClass="StringObjectDictionary">
+      SP_Pub_GetMultiLanguageStorageInfo
+    </procedure> 
+    <select id="TreeData_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select Id,Code,Name,PId,Levels,IsParent from sTV_$TreeCode$
+      <dynamic prepend=" WHERE ">  
+        <isPropertyAvailable prepend=" AND " property="PId" >PId=#PId#</isPropertyAvailable> 
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="GetJoinedString" parameterClass="StringObjectDictionary" resultClass="string" >
+      select stuff((
+      select ','+ $ColumnName$
+      From $TableName$
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+      for xml path('') ),1,1,'')
+    </select>
+    <procedure id="SP_IPCC_SyncCaller" parameterMap="SP_IPCC_SyncCallerParam" resultClass="StringObjectDictionary">
+      SP_IPCC_SyncCaller
+    </procedure>
+    <procedure id="SP_Pub_AddSeatExtBinding" parameterMap="SP_Pub_AddSeatExtBindingParam" resultClass="StringObjectDictionary">
+      SP_Pub_AddSeatExtBinding
+    </procedure>
+    <procedure id="SP_Pub_RemoveSeatExtBinding" parameterMap="SP_Pub_RemoveSeatExtBindingParam" resultClass="StringObjectDictionary">
+      SP_Pub_RemoveSeatExtBinding
+    </procedure>
+    <procedure id="SP_Tol_UspOutputDataEx" parameterMap="SP_Tol_UspOutputDataExParam" resultClass="StringObjectDictionary">
+        SP_Tol_UspOutputDataEx
+    </procedure>
+  </statements>
+</sqlMap>

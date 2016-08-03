@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ServiceTrackLog" type="SmartLife.Share.Models.Oca.ServiceTrackLog, SmartLife.Share.Models" />
+    <typeAlias alias="ServiceTrackLogPK" type="SmartLife.Share.Models.Oca.ServiceTrackLogPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ServiceTrackLog_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_ServiceTrackLog(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogType" >LogType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogContent" >LogContent</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFileType" >LogFileType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFile" >LogFile</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogType" >#LogType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogContent" >#LogContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFileType" >#LogFileType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFile" >#LogFile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >#CallServiceId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ServiceTrackLog_Update" parameterClass="StringObjectDictionary" >
+      update Oca_ServiceTrackLog
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogType" >LogType=#LogType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogContent" >LogContent=#LogContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFileType" >LogFileType=#LogFileType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LogFile" >LogFile=#LogFile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="ServiceTrackLog_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_ServiceTrackLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogType" >LogType=#LogType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogContent" >LogContent=#LogContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogFileType" >LogFileType=#LogFileType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogFile" >LogFile=#LogFile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ServiceTrackLog_Load" parameterClass="ServiceTrackLogPK" resultClass="ServiceTrackLog" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,LogType,LogContent,LogFileType,LogFile,StationId,CallServiceId from Oca_ServiceTrackLog
+      where Id=#Id#
+    </select>
+    <select id="ServiceTrackLog_List" parameterClass="StringObjectDictionary" resultClass="ServiceTrackLog" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,LogType,LogContent,LogFileType,LogFile,StationId,CallServiceId from Oca_ServiceTrackLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogType" >LogType=#LogType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogContent" >LogContent=#LogContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogFileType" >LogFileType=#LogFileType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LogFile" >LogFile=#LogFile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

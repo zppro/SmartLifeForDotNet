@@ -1,0 +1,119 @@
+﻿<div id="toolbar-B180701">
+    <a id="rechargeAccountOfGovernment" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"  >充值</a>
+    <a id="batchRechargeAccountOfGovernment" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"
+        ')" >批量充值</a> 
+</div>
+<table id="dg-B180701" >
+</table>
+<div id="dlg-B180701" class="easyui-dialog" style="width: 720px; height: 250px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B180701"  >
+    <div class="ftitle"></div>
+    <form id="fm-B180701" method="post" novalidate> 
+    <input type="hidden" name="OldManId" id="OldManId" />
+    <div class="fitem">
+        <label>老人姓名:</label>
+        <span id="OldManName" class="field"></span>
+        <label>
+            性　　别:</label>
+        <span id="Gender" class="field" ></span>
+        <label>
+            联系号码:</label>
+        <span id="ContactPhone" class="field"></span>
+    </div>
+    <div class="fitem">
+         <label>
+            地　　址:</label>
+            <span id="Address" class="field"  style="width:300px;" ></span>
+    </div>
+    <div class="fitem">
+        <label>
+            充值项目:</label>
+        <input id="RechargeItem" name="RechargeItem" class="easyui-validatebox" missingmessage="充值项目不能为空" />
+        <label>
+            充值金额:</label>
+        <input name="RechargeAmount" class="easyui-validatebox" required="true" missingMessage="充值金额不能为空">
+    </div>
+    </form>
+</div>
+<div id="btn-B180701">
+     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            uiMode: 'list',
+            entityName: '政府账户',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/Ewallet_OldManService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/e-wallet.css" },
+        { type: "js", url: "../../script/old-care/e-wallet.js" }
+        ], function () {
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'b.OperatedOn',
+                    order: 'desc',
+                    filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                    ]
+                },
+                onDblClickRow: function (idx, row) {
+                    rechargeAccount(models[currentMenuCode].entityName, row);
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '老人姓名', width: 120, align: 'center' },
+                { field: 'ContactPhone', title: '联系号码', width: 100, align: 'center' },
+                { field: 'BalanceOfGovernment', title: '账户余额', width: 100 },
+                { field: 'Address', title: '地址', width: 300 }
+        ]],
+                loader: easyuiLoaderForStringObjectDictionary
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#RechargeItem').combobox({
+                width: 152,
+                panelHeight: 40,
+                required: true,
+                method: 'get',
+                url: ajaxData_InvokeUrl + '/GetDictionaryItem/11010',
+                valueField: 'ItemId',
+                textField: 'ItemName'
+            });
+
+            $('#rechargeAccountOfGovernment').bind('click', function () {
+                rechargeAccount(models[currentMenuCode].entityName);
+            });
+
+        });
+
+
+    }); 
+</script>

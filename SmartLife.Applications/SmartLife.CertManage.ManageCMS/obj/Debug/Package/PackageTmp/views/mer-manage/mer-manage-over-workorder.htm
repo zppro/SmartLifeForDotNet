@@ -1,0 +1,248 @@
+﻿<style type="text/css">
+.bottom_table td{ line-height:33px; text-align:center;  border-width: 1px; border-color: #C0C0C0;  border-bottom-style: solid; border-right-style: solid;}
+.bottom_table td label{text-align:center; vertical-align:middle;}
+.top_td{border:0; text-align:left; font-size:16px;}
+table input{ border:0; margin-left:5px;}
+#fm-over-workorder .rdselect { margin-top:15px;}
+.inputborder{border: 1px solid; border-color: #CCC #EEE #EEE #CCC; height:25px;}
+</style>
+<div id="over-workorder-form" style="  padding: 3px;">
+    <form id="fm-over-workorder" method="post" novalidate>
+    <input type="hidden" name="WorkOrderId" id="WorkOrderId-Over-WorkOrder"/>
+    <input type="hidden" name="StationId" id="StationId-Over-WorkOrder"/>
+    <div class="fitem" style=" border-bottom-style:solid; border-bottom-color:#ddd; border-bottom-width:1px;">
+       <table style=" width:100%;">
+       <tr><td colspan="3" id="serveStationName" style=" text-align:center; border:0; font-size:25px; line-height:40px; "></td></tr>
+       <tr><td class="top_td"><label>工单编号：</label><input name="WorkOrderNo" style=" width:200px;" /></td><td  class="top_td"><label>坐席：</label><input name="OperatedByName" /></td><td  class="top_td"><label>工单状态：</label><input name="DoStatus" /></td></tr>
+       </table>
+    </div>
+    <div class="fitem" style=" overflow:auto; height:310px;">
+        <table class="bottom_table" style=" border-width: 1px; border-color: #C0C0C0; width:97%; border-top-style: solid; border-left-style: solid;">
+        <tr><td>工单内容</td><td colspan="5"><input name="WorkOrderContent" style=" width:600px;"/></td></tr>
+        <tr><td>工单归属</td><td colspan="3"><input name="" /></td><td>服务类别</td><td><input name="ServeTypeName" /></td></tr>
+        <tr><td>服务大类</td><td><input name="ServeItemAName" /></td><td>服务小类</td><td><input name="ServeItemBName" /></td><td>服务方式</td><td><input name="ServeModeName" /></td></tr>
+        <tr><td>要求上门时间</td><td><input name="ServiceTimeRequired" /></td><td>要求备注</td><td colspan="3"><input name="RemarkRequired" /></td></tr>
+        <tr><td>服务费用(元)</td><td><input name="ServeFee" /></td><td>政府承担(元)</td><td><input name="ServeFeeByGov" /></td><td>自费(元)</td><td><input name="ServeFeeBySelf" /></td></tr>
+        <tr><td>其他收费项</td><td colspan="3" ><input class="inputborder bpostdata" name="OtherCharges" style=" width:350px;"/></td><td>其他收费(元)</td><td><input  class="inputborder bpostdata" name="OtherChargesFee" id="OtherChargesFee"/></td></tr>
+        <tr><td>呼入时间</td><td><input name="CheckInTime" /></td><td>督办时间</td><td><input name="SuperviseTime" /></td><td>督办人员</td><td ><input name="SupervisedByName" /></td></tr>
+        <tr><td>老人姓名</td><td><input name="OldManName" /></td><td>老人性别</td><td><input id="Gender-M" type="radio" name="Gender" value="M" class="rdselect"/><label for="Gender-M">男</label><input id="Gender-F" type="radio" name="Gender" value="F" class="rdselect"/><label for="Gender-F">女</label></td><td>老人座机</td><td><input name="Tel" /></td></tr>
+        <tr><td>老人手机</td><td><input name="Mobile" /></td><td>家庭地址</td><td colspan="3"><input name="Address" /></td></tr>
+        <tr><td rowspan="2">服务人员</td><td rowspan="2"><input id="MerchantServeMan" class="easyui-validatebox" /><input type="hidden" name="ServeManId" id="ServeManId-over-workorder"/><input type="hidden" name='ServeManName' id="ServeManName-over-workorder" /></td><td style=" width:100px;">预约上门时间</td><td><input id="ReserveStartTime" /></td><td style=" width:100px;">服务时长</td><td><input id="ServeCountTime"/></td></tr>
+        <tr><td>开始服务</td><td><input class="Wdate" id="ServeManArriveTime"  style="width: 150px" onfocus="var ServeManLeaveTime=$dp.$('ServeManLeaveTime');WdatePicker({onpicked:function(){ServeManLeaveTime.focus();},dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'ServeManLeaveTime\')}'})" /></td><td>服务结束</td><td><input class="Wdate" id="ServeManLeaveTime" style="width: 150px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'ServeManArriveTime\')}'})" /></td></tr>
+        <!--<tr><td>开始服务</td><td><input name="ServeManArriveTime" id="ServeManArriveTime" class="easyui-datetimebox bpostdata"   data-options="required:true"/></td><td>服务结束</td><td><input name="ServeManLeaveTime" id="ServeManLeaveTime" class="easyui-datetimebox bpostdata"   data-options="required:true"/></td></tr>-->
+        <tr><td>服务结果</td><td colspan="5"><input type="radio" class="rdselect bpostdata" name="ServeResult"  id="SR_00001" value="00001"/><label for="SR_00001">正常结束</label><input type="radio" class="rdselect bpostdata" name="ServeResult"  id="SR_00002" value="00002" /><label for="SR_00002">未服务</label><input type="radio"  class="rdselect bpostdata" name="ServeResult"  id="SR_00003" value="00003" /><label for="SR_00003">中途离开</label><input type="radio" class="rdselect bpostdata" name="ServeResult"  id="SR_00004" value="00004" /><label for="SR_00004">其他</label></td></tr>
+        <tr><td>结果备注</td><td colspan="5"><input class="inputborder bpostdata"  name="ServeResultRemark" style=" width:600px;"/></td></tr>
+        <tr><td>评价老人</td><td ><input type="radio" class="rdselect bpostdata" name="FeedbackToOldMan"  id="FM_00001" value="00001" /><label for="FM_00001">满意</label><input type="radio" class="rdselect bpostdata" name="FeedbackToOldMan"  id="FM_00005" value="00005" /><label for="FM_00005">不满意</label></td><td>评价备注</td><td colspan="3"><input name="FeedbackRemarkToOldMan" class="inputborder bpostdata"  style=" width:350px;"/></td></tr>
+        <tr><td>评价商家</td><td ><input name="FeedbackToServiceStation" id="FeedbackToServiceStation-Over-WorkOrder"/></td><td>评价备注</td><td colspan="3"><input name="FeedbackRemarkToServiceStation" /></td></tr>
+        <!--<tr><td>评价商家</td><td ><input type="radio" class="rdselect bpostdata" name="FeedbackToServiceStation"  id="FS_00001" value="00001" /><label for="FS_00001">满意</label><input type="radio" class="rdselect bpostdata" name="FeedbackToServiceStation"  id="FS_00005" value="00005" /><label for="FS_00005">不满意</label></td><td>评价备注</td><td colspan="3"><input name="FeedbackRemarkToServiceStation" class="inputborder bpostdata"  style=" width:350px;"/></td></tr>-->
+        </table>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var url = baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service/';
+
+    function dialogOpen(dialogId, dialogData) {
+        $('#WorkOrderId-Over-WorkOrder').val(dialogData.WorkOrderId);
+        $('#StationId-Over-WorkOrder').val(dialogData.StationId);
+
+        getTo(url + 'GetWorkOrderInfo/' + dialogData.WorkOrderId, null, function (ret) {
+            if (ret.Success) {
+                var result = xml2json.parser(ret.ret, 'StringObjectDictionary');
+                $('#fm-over-workorder').form('load', result);
+                $('#serveStationName').text(result.ServeStationName);
+                $("input[name='DoStatus']").val(doStatus(result.DoStatus));
+                //老人的评价 默认满意
+                var feedbackToServiceStation = $("#FeedbackToServiceStation-Over-WorkOrder").val();
+                if (feedbackToServiceStation == null) {
+                    $("#FeedbackToServiceStation-Over-WorkOrder").val("满意");
+                }
+                var arriveTime = result.ServeManArriveTime;
+                var leaveTime = result.ServeManLeaveTime;
+
+                if (arriveTime && arriveTime != '') { $('#ServeManArriveTime').val(arriveTime.replace(/\//gm, '-')); }
+                if (leaveTime && leaveTime != '') { $('#ServeManLeaveTime').val(leaveTime.replace(/\//gm, '-')); }
+
+                getCountTime(arriveTime, leaveTime);
+                getReserveStartTime(result.ReserveFrom, result.ServiceTimeRequired);
+
+                var rdNameList = [];
+                _.each($('#fm-over-workorder .rdselect'), function (i) {
+                    if (_.indexOf(rdNameList, $(i).attr("name")) <= 0) {
+                        rdNameList.push($(i).attr("name"));
+                    }
+                });
+                _.each(rdNameList, function (o) {
+                    if ($("#fm-over-workorder input[name='" + o + "']:checked").val()) {
+                        $("#fm-over-workorder input[name='" + o + "']").prop("disabled", true);
+                    }
+                    else {
+                        $("#fm-over-workorder input[name='" + o + "'] :first").attr("checked", "checked");
+                    }
+                });
+
+                _.each(_.filter($("#fm-over-workorder .bpostdata"), function (i) {
+                    return $(i).attr("type") != "radio" && $(i).val()
+                }), function (o) {
+                    $(o).prop("disabled", true);
+                });
+
+            }
+        }, { async: false }, { ApplicationId: gApplicationId, StationId: dialogData.StationId });
+
+        //加载服务人员
+        $('#MerchantServeMan').combogrid({
+            delay: 500,
+            width: 150,
+            panelWidth: 190,
+            panelHeight: 200,
+            required: true,
+            mode: 'local',
+            idField: 'UserId',
+            textField: 'UserName',
+            onBeforeLoad: function (param) {
+                var strServeManId = $('#ServeManId-over-workorder').val();
+                if (strServeManId) {
+                    getTo(baseCMSInvokeUrl + '/Pub/UserService/' + strServeManId, null, function (ret) {
+                        if (ret.instance) {
+                            var data = [ret.instance];
+                            $('#MerchantServeMan').combogrid("grid").datagrid("loadData", data);
+                            $('#MerchantServeMan').combogrid("setValue", strServeManId).combogrid("disable", false);
+                        }
+                    });
+                }
+            },
+            onChange: function (newValue, oldValue) {
+                if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#MerchantServeMan').combobox("getText")))) {
+                    var queryParams = {
+                        sort: 'UserName',
+                        order: 'asc',
+                        page: '1',
+                        rows: '20',
+                        instance: {
+                            UserType: window.contants.UserTypeAsMerchant,
+                            UserName: $.trim(newValue)
+                        }
+                    };
+                    postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeManForInput/' + window.contants.GuidAsGroup_MerchantServeMan + ',' + stationId, $.toJSON(queryParams), function (ret) {
+                        $('#MerchantServeMan').combogrid("grid").datagrid("loadData", ret);
+                    });
+                }
+            },
+            filter: function (q, row) {
+                return row["UserName"].indexOf(q) != -1 || row["UserCode"].indexOf(q) != -1;
+            },
+            columns: [[
+                { field: 'UserName', title: '姓名', width: 50, sortable: true },
+                { field: 'Gender', title: '性别', width: 35, sortable: true, formatter: easyuigrid_genderFormatter },
+                { field: 'UserCode', title: '工号', width: 100, sortable: true }
+            ]],
+            //选择一个服务人员之后   把服务人员信息都填入表单
+            onCheck: function (index, record) {
+                $('#ServeManId-over-workorder').val(record.UserId);
+                $('#ServeManName-over-workorder').val(record.UserName);
+            }
+        });
+    }
+
+    function dialogBeforeSubmit() {
+        var tmpRet = $('#OtherChargesFee').val();
+        var result = true;
+        var re = /^\d+(\.\d+)?$/i;   //判断字符串是否为数字
+        if (tmpRet && !re.test(tmpRet)) {
+            alert("货币格式不正确");
+            result = false;
+        }
+        tmpRet = $('#MerchantServeMan').combogrid("getValue");
+        if (!tmpRet) {
+            alert("请输入服务人员！");
+            result = false;
+        }
+        var tmpRet = $('#ServeManArriveTime').val();
+        if (!tmpRet) {
+            alert("请输入服务人员到达时间！");
+            result = false;
+        }
+        var tmpRet = $('#ServeManLeaveTime').val();
+        if (!tmpRet) {
+            alert("请输入服务人员离开时间！");
+            result = false;
+        }
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        $("#fm-over-workorder input").not(".bpostdata").prop("disabled", true);
+        $("#fm-over-workorder input[type='hidden']").prop("disabled", false);
+
+        var formData = $("#fm-over-workorder").serializeObject();
+        formData.ServeManArriveTime = new Date($('#ServeManArriveTime').val().replace(/-/g, '/'));
+        formData.ServeManLeaveTime = new Date($('#ServeManLeaveTime').val().replace(/-/g, '/'));
+        if (!formData.OtherChargesFee) {
+            delete formData.OtherChargesFee;
+        }
+        _.extend(formData, { FastOverFlag: 1, ServeManArriveTime: toJsonDate(formData.ServeManArriveTime), ServeManLeaveTime: toJsonDate(formData.ServeManLeaveTime) });
+         
+        return formData;
+    }
+
+    function getReserveStartTime(reserveFrom, serviceTimeRequired) {
+        var reserveStartTime;
+        if (isnull(reserveFrom, '') != '') {
+            reserveStartTime = reserveFrom.replace(/-/gm, '/');
+        }
+        else if (isnull(serviceTimeRequired, '') != '') {
+            reserveStartTime = serviceTimeRequired;
+        }
+        else {
+            reserveStartTime = '未要求上门时间';
+        }
+        $('#ReserveStartTime').val(reserveStartTime);
+    }
+
+
+    function getCountTime(arrive, leave) {
+        var countTime;
+        if (isnull(arrive, '') != '' && isnull(leave, '') != '') {
+            var ss = DateDiff('s', new Date(arrive), new Date(leave));
+            var h = parseInt(ss / 3600);
+            var m = Math.ceil(ss % 3600 / 60);
+            if (m == 60) {
+                h = h + 1;
+                m = 0;
+            }
+            if (h > 0) {
+                countTime = h + '时' + m + '分';
+            }
+            else {
+                countTime = m + '分';
+            }
+        }
+        else if (isnull(arrive, '') != '' && isnull(leave, '') == '') {
+            countTime = '服务中';
+        }
+        else {
+            countTime = '未开始';
+        }
+        $('#ServeCountTime').val(countTime);
+    }
+
+
+    function doStatus(ds) {
+        var ret;
+        switch (ds) {
+            case 0: ret = "未响应";
+                break;
+            case 1: ret = "已响应";
+                break;
+            case 2: ret = "已响应";
+                break;
+            case 3: ret = "已完成";
+                break;
+            case 4: ret = "已回访";
+                break;
+        }
+        return ret;
+    }
+
+</script>

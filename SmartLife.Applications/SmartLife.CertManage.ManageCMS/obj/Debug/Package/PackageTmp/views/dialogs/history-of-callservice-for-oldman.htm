@@ -1,0 +1,125 @@
+﻿<div id="the-history" class="easyui-dialog" style="width: 1024px; height: 588px; background-color:gray;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-history">
+    <table id="dg-history-of-callservice-for-oldman" >
+    </table>
+</div>
+<div id="btn-history">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doClose()">关闭</a>
+</div>
+<div id="dlg-YY" class="easyui-dialog" style="width: 230px; height: 150px; padding: 10px;"
+ closed="true" cache="false" >
+    <ul id="YY-Content">
+    </ul>
+</div> 
+<div id="service-history-block"></div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (!dialogData) return false;
+        var oldManId = dialogData.OldManId;
+        $("#dg-history-of-callservice-for-oldman").height($("#dg-history-of-callservice-for-oldman").parent().height());
+        $('#dg-history-of-callservice-for-oldman').datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Oca/CallService/ListForEasyUIgrid',
+            method: 'POST',
+            //            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    Status: 1,
+                    OldManId: dialogData.OldManId
+                },
+                filterFields: [{ key: 'ServiceQueueNo', value: dialogData.ServiceQueueNo}]
+            },
+            onLoadSuccess: function (data) {
+
+                $('.iconYY').linkbutton({ text: '录音', plain: true, iconCls: 'icon-loud' }).unbind('click').bind('click', function () {
+                    var callServiceId = $(this).attr('CallServiceId');
+                    getTo(baseCMSInvokeUrl + '/Oca/CallService/GetServiceVoice/' + callServiceId, null, function (ret) {
+                        if (ret.rows.length > 0) {
+                            $('#YY-Content').html(_.map(ret.rows, function (o) {
+                                return '<li><a class="iconYY" href="http://' + o.IP + ':' + o.Port + (o.VoiceType == 0 ? '/manager/recordfile.php?uniqueid=' : "/manager/conf_recordfile.php?recordfile=") + o.Address + '" target="_blank">' + (o.VoiceType == 0 ? '外网服务录音' : "外网三方通话录音") + '</a><a class="iconYY" href="http://' + o.IPInner + ':' + o.PortInner + (o.VoiceType == 0 ? '/manager/recordfile.php?uniqueid=' : "/manager/conf_recordfile.php?recordfile=") + o.Address + '" target="_blank">' + (o.VoiceType == 0 ? '内网服务录音' : "内网三方录音") + '</a></li>';
+                            }).join(""));
+
+                            $("#dlg-YY").dialog({
+                                onClose: function () {
+                                },
+                                onBeforeOpen: function () {
+                                    $('.iconYY').linkbutton({ plain: true, iconCls: 'icon-loud' });
+                                },
+                                modal: true
+                            }).dialog('open').dialog('setTitle', '查看服务录音');
+                        }
+                        else {
+                            alertError('当前服务没有录音');
+                        }
+                    });
+                });
+
+                $('.iconTrackLog').linkbutton({ text: '查看', plain: true, iconCls: 'icon-search' }).unbind('click').bind('click', function () {
+                    var callServiceId = $(this).attr('CallServiceId');
+                    getHtml(baseUrl + '/views/dialogs/get-history-service-process-content.htm', function (str) {
+                        $("#service-history-block").html(str);
+                        $.parser.parse('#btn-history-content');
+                        $("#the-history-content").dialog({
+                            inline: false,
+                            onClose: function () {
+                                $(this).dialog('destroy');
+                            },
+                            onBeforeOpen: function () {
+                                dialogOpen(null, { CallServiceId: callServiceId });
+                            },
+                            modal: true
+                        }).dialog('open').dialog('setTitle', '查看-服务历史日志');
+                    });
+                });
+            },
+            pageSize: 17,
+            pageList: [17],
+            columns: [[
+                { field: 'CallServiceId', title: '呼叫服务编号', width: 150, hidden: true },
+                { field: 'Content', title: '呼叫服务内容', width: 160 },
+                { field: 'CheckInTime', title: '呼入时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'OperatedOn', title: '最后响应时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'DoStatus', title: '服务状态', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '未受理:0~t受理中:1~t处理中:2~t处理完成:3' },
+                { field: 'OldManId', title: '老人编号', width: 100, hidden: true },
+                { field: 'OperatedBy', title: '服务工号', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+                    var ret = "";
+                    if (row.OperatedBy) {
+                        var url = baseCMSInvokeUrl + '/Pub/UserService/' + row.OperatedBy;
+
+                        getTo(url, null, function (result) {
+                            ret = result.instance;
+                        }, { async: false });
+                    }
+                    return ret;
+                }, textField: "UserCode", valueField: "UserId"
+                },
+                { field: 'ServiceExtNo', title: '接收分机编号', width: 80, align: 'center' },
+                { field: 'TrackLog', title: '处理日志记录', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconTrackLog" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                },
+                { field: 'YY', title: '语音', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconYY" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function doClose() {
+        $('#the-history').dialog('close');
+    }
+
+    function dialogBeforeSubmit() {
+
+    }
+    function dialogClose(dialogId) {
+
+    }
+</script>

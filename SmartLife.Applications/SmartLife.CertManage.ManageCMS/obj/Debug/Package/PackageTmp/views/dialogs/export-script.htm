@@ -1,0 +1,22 @@
+﻿<div id="scriptContent-c" style="width:100%; margin:0 auto;">
+<form id="fm-export-script" method="post" novalidate>
+<textarea id="scriptContent" name="scriptContent" style="width: 100%; height: 420px; border: 0px;"  rows="10"></textarea>
+</form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        getTo(dialogData.url).done(function (result) {
+            autosize('scriptContent');
+            $("#scriptContent").val(result.join('\r\n\r\n'));
+        });
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        return true;
+    }
+</script>

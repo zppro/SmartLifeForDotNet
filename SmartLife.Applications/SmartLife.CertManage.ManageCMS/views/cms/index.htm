@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浙江蓝谷智慧养老</title>
+    <link rel="stylesheet" type="text/css" href="http://share.lifeblue.com.cn/css/easyui/1.3.3/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="http://share.lifeblue.com.cn/css/easyui/1.3.3/icon.css" />
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/underscore/underscore-1.5.0-min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/flash4ajax/ajaxf.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/xml2json-v1.1.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script>
+    <script type="text/javascript" src="../../script/cms.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var imgs = [{ url: "../../images/cms/home_art_img1.jpg"}];
+            var areaId = appDeployArea.id;
+//            alert(areaId);
+            loadfiles([
+                { type: "css", url: "../../css/cms/" + areaId + ".css" }
+                ], function () { }
+            );
+
+            //            initSonMenu();
+
+            //            $("#jMenu").jMenu({
+            //                openClick: false,
+            //                ulWidth: 'auto',
+            //                TimeBeforeOpening: 100,
+            //                TimeBeforeClosing: 11,
+            //                animatedText: false,
+            //                paddingLeft: 1,
+            //                absoluteTop: 43,
+            //                absoluteLeft: 35
+            //            });
+            loadHeadFoot();
+
+            postTo(ServiceUrl + "HomeColumnsWithArticles", $.toJSON({ ShowMode: 2, AreaId: areaId }), function (result) {
+//                                alert($.toJSON(result.rows));
+                //                var columnArticle = _.map(result.rows, function (item) {
+                //                    return xml2json.parser(item, 'StringObjectDictionary');
+                //                });
+                var html = createCoumnArticleHtml(result.rows, imgs);
+                $("#s_lt_1").html(html);
+            }, { async: false }, { ConnectId: baseInfoNode });
+
+            //特殊栏目(专栏)
+            postTo(ServiceUrl + "HomeColumnsWithArticles", $.toJSON({ ShowMode: 3, AreaId: areaId }), function (result) {
+                var html = createSpecialCoumnArticleHtml(result.rows);
+                if (html) {
+                    $("#s_rt_1").html(html);
+                } else {
+                    $("#s_rt_1").hide();
+                }
+            }, { async: false }, { ConnectId: baseInfoNode });
+
+            //图片文章
+            postTo(ServiceUrl + "HomeColumnsWithPicArticles", $.toJSON({ ShowMode: 4, AreaId: areaId }), function (result) {
+                var html = createPicArticleHtml(result.rows);
+                $("#huodong").html(html);
+            }, { async: false }, { ConnectId: baseInfoNode });
+        });
+
+        function createCoumnArticleHtml(data, imgs) {
+            var html = null;
+            if (data) {
+                html = [];
+                var imgAmout = 0;
+                for (var index in data) {
+                    html.push("<div class=\"home_ar_div\">");
+                    html.push("<div class=\"home_ar_div_title\">");
+                    html.push("<div class=\"home_ar_div_tab\">" + data[index].Column.COL_Name+"</div>");
+                    html.push("<a href=\"articleList.htm?cid=" + data[index].Column.ColumnId + "&cname=" + escape(data[index].Column.COL_Name) + "\">更多>></a>");
+                    html.push("</div>");
+                    html.push("<div class=\"home_ar_div_content\">");
+                    //栏目所有文章
+                    if (data[index].Articles) { 
+                        html.push("<ul>");
+                        for (var index2 in data[index].Articles) {
+                            html.push("<li>");
+                            html.push("<a href=\"article.htm?aid=" + data[index].Articles[index2].ArticleId + "&cname=" +  escape(data[index].Column.COL_Name) + "\" target=\"_blank\" >" + exchangeTiltle(data[index].Articles[index2].Title) + "</a>");
+                            if (data[index].Articles[index2].PublishDate) {//发布日期
+                                html.push("<label>" + ndateFormatterX(data[index].Articles[index2].PublishDate, "yyyy-MM-dd") + "</label>");
+                            }
+                            html.push("</li>");
+                        }
+                        html.push("</ul>");
+                    }
+                    html.push("</div>");
+                    html.push("</div>");
+                    //只有一个栏目
+                    if (data.length == 1 && imgs) {
+                        if (imgAmout <= imgs.length - 1) { //验证是否超过图片数量
+                            html.push("<div class=\"home_ar_imgdiv\">");
+                            html.push("<img src=\"" + imgs[imgAmout].url + "\" />");
+                            html.push("</div>");
+                            imgAmout++;
+                        }
+                    }
+                    //每2块内容后插入1个图片模块
+                    else if (1 == index % 2 && imgs) {
+                        if (imgAmout <= imgs.length - 1) { //验证是否超过图片数量
+                            html.push("<div class=\"home_ar_imgdiv\">");
+                            html.push("<img src=\"" + imgs[imgAmout].url + "\" />");
+                            html.push("</div>");
+                            imgAmout++;
+                        }
+                    }
+                }
+                html=html.join("");
+            }
+            return html;
+        }
+
+        //左侧专栏
+        function createSpecialCoumnArticleHtml(data, limitedNum,showSize) {
+            if (null == limitedNum) limitedNum = 0; //同类型栏目读取数
+            var html = null;
+            if (data) {
+                html = [];
+                for (var index in data) {
+                    html.push("<div class=\"s_rt_1_div\">");
+                    html.push("<img src=\"../../images/cms/tzgg_cion.gif\" />");
+                    html.push("&nbsp;&nbsp;" + data[index].Column.COL_Name);
+                    html.push("<a href=\"articleList.htm?cid=" + data[index].Column.ColumnId + "&cname=" + escape(data[index].Column.COL_Name) + "\">更多>></a>");
+                    html.push("</div>");
+                    html.push("<div class=\"s_rt_1_div2\">");
+                    //栏目所有文章
+                    if (data[index].Articles) { 
+                        html.push("<ul>");
+                        for (var index2 in data[index].Articles) {
+                            html.push("<li>");
+                            html.push("<a href=\"article.htm?aid=" + data[index].Articles[index2].ArticleId + "&cname=" +  escape(data[index].Column.COL_Name) + "\" target=\"_blank\" >" + exchangeTiltle(data[index].Articles[index2].Title,14) + "</a>");
+                            html.push("</li>");
+                        }
+                        html.push("</ul>");
+                    }
+                    html.push("</div>");
+                }
+                html=html.join("");
+            }
+            return html;
+        }
+
+        //图片新闻
+        function createPicArticleHtml(data, limitedNum) {
+            if (null == limitedNum) limitedNum = 0; //同类型栏目读取数
+            var virPath="/ContentServices";
+            var html = [];
+            if (data) {
+                _.each(data, function (o) {
+                    html.push("<div class=\"xz2\">");
+                    html.push("<img src=\"../../images/cms/huodong_tt.gif\" />");
+                    html.push("<h1>" + o.Column.COL_Name + "</h1>");
+                    html.push("<a href=\"articleList.htm?cid=" + o.Column.ColumnId + "&cname=" + escape(o.Column.COL_Name) + "\">更多>></a>");
+                    html.push("</div>");
+                    html.push("<div class=\"map2\">");
+                    if (o.Articles) {
+                        html.push("<ul class=\"huodongimg\">");
+                        var strHtml = [];
+                        for (var index2 in o.Articles) {
+                            strHtml.push("<li>");
+                            strHtml.push("<a href=\"article.htm?aid=" + o.Articles[index2].ArticleId + "&cname=" + escape(o.Column.COL_Name) + "\" target=\"_blank\" >");
+                            if (o.Articles[index2].Attachments && o.Articles[index2].Attachments.length > 0) {
+                                strHtml.push("<img src=\"" + virPath + o.Articles[index2].Attachments[0].SaveName + "\" /></a>");
+                            } else {
+                                strHtml.push("<img src=\"\" /></a>");
+                            }
+                            strHtml.push("<span><a href=\"article.htm?aid=" + o.Articles[index2].ArticleId + "&cname=" + escape(o.Column.COL_Name) + "\" target=\"_blank\" >" + exchangeTiltle(o.Articles[index2].Title, 12) + "</a></span>");
+                            strHtml.push("</li>");
+                        }
+                        html.push(strHtml.join(""));
+                        html.push("</ul>");
+                    }
+                    html.push("</div>");
+                });
+            }
+            return html.join("");
+        }
+
+
+//        function initSonMenu() {
+//            postTo(ServiceUrl + "HomeColumns", null, function (result) {
+//                var html = null;
+//                if (result.rows) {
+//                    html = [];
+//                    html.push("<ul>");
+//                    for (var index in result.rows) {
+//                        html.push("<li>");
+//                        html.push("<a href=\"articleList.htm?cid=" + result.rows[index].ColumnId + "&cname=" + escape(result.rows[index].COL_Name) + "\">" + result.rows[index].COL_Name + "</a>");
+//                        html.push("</li>");
+//                    }
+//                    html.push("</ul>");
+//                    html = html.join("");
+//                    $("#jMenu li:last").append(html);
+//                }
+//            }, { async: false }, { ConnectId: baseInfoNode });
+//        }
+
+        function SearchOrg() {
+            var _keyword = $("#ogran").val();
+            _keyword = $.trim(_keyword);
+            if (_keyword) {
+                window.location.href = "orgList.htm?stype=00003&keyword_s=" + escape(_keyword);
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="header"></div>
+<!--body-->
+<div class="contain">
+  <!--通告-->
+  <div class="list_top">
+    <div class="Empty">通知公告</div>
+    <div id="hottitle" class="hot">
+		<ul id="ulid">
+		</ul>
+	</div>
+  </div>
+  <!--通告end-->
+  <div class="contain_m"> 
+    <!--body-left-->
+    <div class="s_rt">
+        <div class="s_rt_0"> 
+        <a href="stationList.htm?stype=00002&stype2=00002"><img src="../../images/cms/click.jpg" /></a>
+      </div>
+      <div id="s_rt_1" class="s_rt_1">
+        <!--<div class="s_rt_1_div">
+          <img src="../../images/cms/tzgg_cion.gif" />&nbsp;&nbsp;协会动态
+          <a href="articleList.htm?" >更多>></a>
+        </div>
+        <div class="s_rt_1_div2"></div>-->
+      </div>
+      <div class="s_rt_1">
+        <div class="s_rt_2_div">
+            <img src="../../images/cms/zzjg_cion.gif" />&nbsp;&nbsp;组织机构
+        </div>
+        <div class="s_rt_2_div2">
+          <table width="180" style="margin-left: 20px; margin-top: 10px;">
+            <tbody>
+              <tr>
+                <td height="24"><input name="ogran" id="ogran" type="text" /></td>
+              </tr>
+              <tr>
+                <td height="30"><img src="../../images/cms/search_bn.gif" onclick="SearchOrg();" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="s_rt_1">
+          <div class="s_rt_3_div">
+            <a href="articleList.htm?"><img src="../../images/cms/book.jpg"/></a>
+          </div>
+      </div>
+      <div class="s_rt_1">
+          <div class="s_rt_2_div">
+            <img src="../../images/cms/xiang.png"/>&nbsp;&nbsp;在线培训
+          </div>
+          <div class="s_rt_4_div"> 
+              <a  href="videoList.htm"><img src="../../images/cms/video.jpg"/></a>
+            </div>
+      </div>
+      <div class="s_rt_1"> 
+            <div class="s_rt_5_div">
+                <img src="../../images/cms/cert1.jpg" />
+                <img src="../../images/cms/cert2.jpg" />
+            </div>
+      </div>
+    </div>
+    <!--body-right-->
+    <div class="s_lt">
+       <!--图片新闻区-->
+        <div class="s_lt_0">
+      <div class="atlas">
+      <div class="xz">
+        <img src="../../images/cms/atlas.jpg"/>
+        <h1>养老机构查询</h1>
+      </div>
+         <div class="map">
+            <!--<img name="img_map" src="../../images/cms/map_jianggan.jpg" />-->
+          <!--<img name="img_map" src="../../images/map/map_hz_gongshu.jpg" width="350" height="330" border="0" usemap="#map_hz_gongshu" />
+            <map name="map_hz_gongshu" id="map_hz_gongshu">
+              <area shape="poly" coords="276,855,188,868,141,865,132,753,135,738,113,710,121,698,85,615,68,603,58,604,50,585,37,572,27,573,15,565,65,530,76,546,83,536,88,530,82,520,104,511,101,497,128,491,136,499,149,498,165,483,179,510,203,519,220,525,244,524,274,523,296,500,304,489,308,495,330,500,357,502,358,555,373,620,327,623,320,681,302,679,292,693,265,671,250,665,224,684,215,674,196,685,330,797,275,855" href="#" alt="祥符街道" id="AAA01192-0010-0000-0000-000000000000" />
+              <area shape="poly" coords="518,471,528,476,580,457,585,458,608,503,632,527,682,450,699,435,740,432,765,413,803,403,838,371,871,347,885,328,845,272,850,262,840,196,865,177,874,152,884,128,830,131,806,117,761,73,753,41,715,47,729,90,685,162,680,179,614,252,602,254,594,229,588,254,561,262,557,293,583,310,566,334,542,336,530,354,498,359,491,398,522,396,527,422,516,456" href="#" alt="半山街道" id="AAA01192-0007-0000-0000-000000000000" />
+              <area shape="poly" coords="253,676,229,691,214,685,208,689,290,758,331,737" href="#"  alt="和睦街道" id="AAA01192-0004-0000-0000-000000000000" />
+              <area shape="poly" coords="373,703,424,705,430,754,387,784,411,825,390,827,387,853,337,863,314,850,282,853,333,799,293,762,336,739,362,764,372,763" href="#" alt="小河街道" id="AAA01192-0003-0000-0000-000000000000" />
+              <area shape="poly" coords="436,753,480,720,493,733,492,743,535,801,551,830,551,853,530,864" href="#" alt="大关街道" id="AAA01192-0005-0000-0000-000000000000" />
+              <area shape="poly" coords="309,174,324,351,346,394,364,495,368,470,379,470,391,496,428,493,426,459,484,459,513,475,505,435,517,412,487,402,488,354,510,346,526,351,542,329,559,330,571,309,548,291,554,262,505,253,505,234,468,229,462,194,428,212,374,214,368,198,336,193" href="#" alt="康桥街道" id="AAA01192-0009-0000-0000-000000000000"/>
+              <area shape="poly" coords="510,479,525,482,580,465,591,488,617,530,625,537,493,728,482,718,435,749,431,707,420,621,450,615,439,573,439,566,362,566,362,520,369,474,377,476,383,499,434,503,430,463,483,463" href="#" alt="上塘街道" id="AAA01192-0008-0000-0000-000000000000" />
+              <area shape="poly" coords="298,699,364,759,369,706,371,696,423,702,415,619,437,614,434,570,367,573,378,619,329,632,327,683,303,688" href="#" alt="拱宸桥街道" id="AAA01192-0006-0000-0000-000000000000" />
+              <area shape="poly" coords="393,784,431,759,445,772,443,810,450,833,461,841,470,862,415,891,391,851,394,831,419,825" href="#" alt="湖墅街道" id="AAA01192-0001-0000-0000-000000000000" />
+              <area shape="poly" coords="417,896,455,974,473,1000,481,1019,515,1013,521,1001,522,987,511,941,484,946,465,915,463,894,468,883,503,872,502,860,476,867" href="#" alt="米市巷街道"  id="AAA01192-0002-0000-0000-000000000000" />
+            </map>-->
+          </div>
+        </div>
+        <div id="huodong" class="huodong"></div>
+        <div style=" clear:both;"></div>
+      </div>
+      <!--主页栏目文章区-->
+      <div class="s_lt_1" id="s_lt_1">
+        <!--<div class="home_ar_div ">
+            <div class="home_ar_div_title">
+                <div class="home_ar_div_tab">社会福利信息</div>
+                <a href="#">更多<<</a>
+            </div>
+            <div class="home_ar_div_content">
+                <ul>
+		            <li><a href="il.htm?a=si&id=4028e48147db0bc10147f79385100201&key=zjmz_flycs/tzgg" target="_blank">2014年“老年服务与管理”...</a>
+		            </li>
+                </ul>
+            </div>
+        </div>
+        <div class="home_ar_div ">
+        </div>
+        <div class="home_ar_imgdiv">
+            <img src="../../images/cms/home_art_img1.jpg" />
+        </div>-->
+      </div>
+    </div>
+    <div style=" clear:both"></div>
+  </div>
+</div>
+<!--foot-->
+<div class="footer"></div> 
+</body>
+</html>

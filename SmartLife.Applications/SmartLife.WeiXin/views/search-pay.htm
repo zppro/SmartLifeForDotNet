@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"> <!-- 不能放大 -->
+    <title></title>
+</head>
+<body>
+    <div data-role="page" id="search-pay">
+    <script type="text/javascript">
+        function jsonstr() {
+            var Request = new Object();
+            Request = GetRequest();
+            var openid = Request['openid'];
+            var type = Request['type'];
+            var followToIDNo = Request['FollowToIDNo'];
+            var startTime = $("#startScroller").val();
+            var endTime = $("#endScroller").val();
+
+            var params = new Object();
+            params.openid = openid;
+            params.type = type;
+            params.startTime = startTime;
+            params.endTime = endTime;
+            params.followToIDNo = followToIDNo;
+            var json = JSON.stringify(params);
+            return json;
+        }
+
+        $(function () {
+            //alert(window.location.href);
+            jsonstr();
+        })
+    </script>
+       <div data-role="header" data-theme="f">
+         <a href="#" data-role="button" data-rel="back" data-transition="flip" data-iocn="arrow-l">返回</a>
+         <h1>充值记录</h1>
+       </div>
+
+       <div data-role="content">
+         <div class="ui-grid-c">
+            <div class="ui-block-a"><h1>充值时间</h1></div>
+            <div class="ui-block-b"><h1>充值人</h1></div>
+            <div class="ui-block-c"><h1>充值方式</h1></div>
+            <div class="ui-block-d"><h1>充值金额</h1></div>
+
+            <div class="ui-block-a">2014-03-16</div>
+            <div class="ui-block-b">儿子</div>
+            <div class="ui-block-c">现金充值</div>
+            <div class="ui-block-d">100元</div>
+
+            <div class="ui-block-a">2014-04-16</div>
+            <div class="ui-block-b">儿子11</div>
+            <div class="ui-block-c">现金充值</div>
+            <div class="ui-block-d">10011元</div>
+         </div>
+       </div>
+   </div>
+
+</body>
+</html>

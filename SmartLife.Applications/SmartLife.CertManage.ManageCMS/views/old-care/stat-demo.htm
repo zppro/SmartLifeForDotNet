@@ -1,0 +1,639 @@
+﻿<style type="text/css">
+
+
+    table.t1 td, th
+    {
+        height:30px;
+        font-size: 14px;
+        text-align: center;
+        border-width: 0px 1px 1px 0px;
+        border-style: solid dashed dashed dashed;
+    }
+    
+    #caption
+    {
+       font-size: 25px;
+       height:50px;
+       text-align:center;   
+       border-style: solid;
+    }
+    
+    #lsattab {
+        position:absolute;
+        bottom:0px;
+        right:16px;
+        width:100%;
+        height:20px;
+        text-align:center;
+        background:#ccc;
+        z-index:2;
+        overflow:hidden;
+   }
+    
+    table.t1 th
+    {
+        background-image: linear-gradient(rgb(253, 253, 253) 0px, rgb(245, 245, 245) 100%);
+    }
+    .datagrid-header
+    {
+        background-image: linear-gradient(rgb(253, 253, 253) 0px, rgb(245, 245, 245) 100%);
+    }
+    .datagrid-toolbar
+    {
+        height: auto;
+        padding: 1px 2px;
+        border-width: 0 1px 1px 1px; 
+        border-style: solid;
+    }
+    
+  .datagrid-tools
+    {
+        height: 30px;
+        margin-top: 20px;
+    }
+    
+    .context
+    {
+        margin: 0;
+        padding: 0 4px;
+        white-space: nowrap;
+        line-height: 18px;
+        font-size: 12px;
+    }
+    
+   .print
+    {
+        background: url('../../images/report-form/print.jpg') no-repeat;
+      
+    }
+    .export
+    {
+        background: url(../../images/report-form/export.jpg) no-repeat;
+        margin-left: 20px;
+    }
+    
+    .statistics
+    {
+        background: url(../../images/report-form/statistics.jpg) no-repeat;
+        margin-left: 20px;
+    }
+    
+    .icon-blank
+    {
+        background-position: left center;
+        width: 60px;
+        height: 30px;
+        margin-top: 20px;
+    }
+   a
+    {
+        display: inline-block;
+        vertical-align: baseline;
+        width: auto;
+        height: 16px;
+        line-height: 16px;
+        font-size: 12px;
+    }
+</style>
+<script type="text/javascript">
+    var info;
+    var page = 1;
+
+    //显示控制器
+    function statistics() {      
+        $("#ssss").hide();
+        $("#dataTable").hide();
+        $("#lsattab").hide();
+        $("#caption").hide();
+        $("#thead").hide();
+        $("#container").show();
+      
+        lodcontainer();
+    }
+    function tabletu() {
+        $("#ssss").show();
+        $("#dataTable").show();
+        $("#lsattab").show();
+        $("#caption").show();
+        $("#thead").show();
+        $("#container").hide();
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var CheckInTimeF = $("#CheckInTimeF").val();
+        var CheckInTimeT = $("#CheckInTimeT").val();
+        var OldManN = $("#OldManN").val();
+        var GenderS = $("#GenderS").val();
+        var OperatedOnF = $("#OperatedOnF").val();
+        var OperatedOnT = $("#OperatedOnT").val();
+        var Addres = $("#Addres").val();
+        var Telt = $("#Telt").val();
+        //var area = $("#selArea").val();
+        var Area = $("#Area").val();
+
+
+        var params = new Object();
+        params.CheckInTimeF = CheckInTimeF;
+        params.CheckInTimeT = CheckInTimeT;
+        params.OldManN = OldManN;
+        params.GenderS = GenderS;
+        params.OperatedOnF = OperatedOnF;
+        params.OperatedOnT = OperatedOnT;
+        params.Addres = Addres;
+        params.Telt = Telt;
+        params.Area = Area;
+        var json = JSON.stringify(params);
+        return json;
+    }
+
+
+    function reset() {
+        //$("#AreaSelect").empty();
+//        $('#CheckInTimeFrom').datebox('setValue', "");
+//        $('#CheckInTimeTo').datebox('setValue', "");
+        $('#AreaSelect').combotree('setValue',"");      
+    }
+
+    //查询方法   查询条件放入隐藏域 
+    function query() {
+        var CheckInTimeFrom = $("#CheckInTimeFrom").val();
+        $("#CheckInTimeF").val(CheckInTimeFrom);
+
+        var CheckInTimeTo = $("#CheckInTimeTo").val();
+        $("#CheckInTimeT").val(CheckInTimeTo);
+
+//        var OldManName = $("#OldManName").val();
+//        $("#OldManN").val(OldManName);
+
+//        var Gender = $(':radio[name="Gender"]:checked').val();
+//        $("#GenderS").val(Gender);
+
+//        var OperatedOnFrom = $("#OperatedOnFrom").datebox('getValue');
+//        $("#OperatedOnF").val(OperatedOnFrom);
+
+//        var OperatedOnTo = $("#OperatedOnTo").datebox('getValue');
+//        $("#OperatedOnT").val(OperatedOnTo);
+
+//        var Address = $("#Address").val();
+//        $("#Addres").val(Address);
+
+//        var Tel = $("#Tel").val();
+//        $("#Telt").val(Tel);
+
+//        var area = $("#selArea").val();
+//        $("#Area").val(area);
+
+        var area = $('#AreaSelect').combotree('getValue');
+        $("#Area").val(area);
+
+
+        //var param = $.toJSON({ 'OldManName': $("#OldManN").val() });
+
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+            lodcontainer();
+        });
+    }
+
+
+    function firstPage() {
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+        });
+    }
+    //上一页
+    function upPage() {
+        page = $("#nowpage").val();
+        page--;
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, page);
+            };
+        });
+    }
+    //最后一页
+    function lastPage() {
+        page = $("#nowpage").val();
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                var last = $("#sum").text();
+                createTable(info, last);
+            };
+        });
+    }
+
+    //刷新
+    function refresh() {
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+        });
+    }
+
+    //下一页
+    function nextPage() {
+        page = $("#nowpage").val();
+        page++;
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, page);
+            };
+        });
+    }
+    //-----------------------------------------------------------------创建表格
+    function createTable(data, page) {
+
+        var tabStr = "<table class='t1'>"
+       
+       
+            var dataArray = eval(data);
+            var len = dataArray.length;
+
+            if (len > 0) {
+                    if (len % 50 == 0) {
+                        sumpage = parseInt(len / 50);
+                    } else {
+                        sumpage = parseInt(len / 50)+1;
+                    }
+                    $("#nowpage").val(sumpage);
+                    $("#sum").text(sumpage);
+                 if (page < 1) {
+                    page = 1;
+                    $("#nowpage").val(page);
+                }
+                else {
+                    $("#nowpage").val(page);
+                    $("#sum").text(sumpage);
+                }
+
+                if (page > sumpage) {
+                    page = sumpage;
+                    $("#nowpage").val(sumpage);
+                }
+
+
+                if (len > 50 * page) {
+                    k = page * 50;
+                } else {
+                    k = (page - 1) * 50 + len % 50;
+                }
+               
+                for (var i = (page - 1) * 50; i < k; i++) {
+
+                    var j = i + 1;
+                    var nowyear = new Date().getFullYear();
+
+                    //document.write(dataArray[i].CheckInTime);
+                    //alert(ndateFormatter(dataArray[i].CheckInTime, "yyyy-MM-dd"))
+                    var FCheckInTime = ndateFormatter(dataArray[i].CheckInTime, "yyyy-MM-dd");
+                    var FBirthday = nowyear - ndateFormatter(dataArray[i].Birthday, "yyyy");
+                    var FOperatedOn = ndateFormatter(dataArray[i].OperatedOn, "yyyy-MM-dd");
+                    var gender = prseGender(dataArray[i].Gender);
+                    var HealthInsuranceFlag = dataArray[i].HealthInsuranceFlag == 0 ? '无' : '有';
+                    var SocialInsuranceFlag = dataArray[i].SocialInsuranceFlag == 0 ? '无' : '有';
+                    tabStr = tabStr + "<tr><td width='40'>" + j + "</td><td width='80'>" + dataArray[i].OldManName + "</td><td width='170'>" + dataArray[i].IDNo + "</td><td width='40'>" + gender + "</td><td width='50'>" + FBirthday
+            + "</td><td width='50'>" + HealthInsuranceFlag + "</td><td width='50'>" + SocialInsuranceFlag + "</td><td width='110'>" + dataArray[i].Tel + "</td><td width='110'>" + dataArray[i].Mobile + "</td><td width='290' style='border-right:none' >" + dataArray[i].Address + "</td></tr>";
+
+                }
+                tabStr += "</table>";
+                $("#dataTable").html(tabStr);
+            } else {
+                $("#nowpage").val(1);
+                $("#sum").text(1);
+                tabStr += "</table>";
+                $("#dataTable").html(tabStr);
+            }
+    }
+    function prseGender(gender) {
+        if (gender == "M") {
+            return "男";
+        } else {
+            return "女";
+        }
+    }
+
+    $(function () {
+
+        var winHeight = $(window).height();
+        $('#dataTable').height(winHeight - 270);
+        var id = top.appDeployArea.code;
+
+        //加载地域下拉列表                                     
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/AreaQueryPeople', { parms: $.toJSON({ 'AreaId': id }) }, function (ret) {
+            var data = eval(ret);
+            $('#AreaSelect').combotree({
+                data: data,
+                loadFilter: function (rows) {
+                    return convert(rows);
+                }
+            });
+        });
+
+
+        var sql = sqlstr(); //获取条件
+        //加载报表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/sqlQuery', { parms: sql }, function (ret) {
+            var info = ret;
+            if (info) {
+                createTable(info, page);
+            }
+
+        });
+
+
+
+    });
+
+
+    //---------------------------------------------------加载树
+    function convert(rows) {
+        function exists(rows, ParentId) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].AreaId == ParentId) return true;
+            }
+            return false;
+        }
+
+        var nodes = [];
+        // 得到顶层节点  
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (!exists(rows, row.ParentId)) {
+                nodes.push({
+                    id: row.AreaId,
+                    text: row.AreaName
+                });
+            }
+        }
+
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+        while (toDo.length) {
+            var node = toDo.shift();    // 父节点   
+            // 得到子节点   
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.ParentId == node.id) {
+                    var child = { id: row.AreaId, text: row.AreaName };
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                    toDo.push(child);
+                }
+            }
+        }
+        return nodes;
+    }    
+
+
+
+    //---------------------------------------------------------------------统计图
+    function lodcontainer() {
+        var id = top.appDeployArea.id;
+        var getarea = $("#Area").val();
+        if ($("#Area").val() == "") {
+            getarea = id;
+        }
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetBaoBiao', { parms: getarea }, function (ret) {
+            info = eval(ret);
+            areaLength = info.length;
+            var params = "";
+            for (var i = 0; i < areaLength; i++) {
+                params += info[i].AreaId + ",";
+
+            }
+            var CheckInTimeF = $("#CheckInTimeF").val();
+            var CheckInTimeT = $("#CheckInTimeT").val();
+            params += $("#CheckInTimeF").val() + "," + $("#CheckInTimeT").val();
+            getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetAreaPeople', { parms: params }, function (rets) {
+                dataMans = rets.split(',');
+            }, { async: false });
+        }, { async: false });
+
+        var peopleTotal = 0;
+        //动态取值
+        var Name = "街道人数统计";
+        var categories = new Array();
+        for (var i = 0; i < areaLength; i++) {
+            categories[i] = info[i].AreaName;
+        }
+        var dataMan = new Array();
+        for (var res = 0; res < areaLength; res++) {
+            dataMan[res] = parseInt(dataMans[res]);
+            peopleTotal += parseInt(dataMan[res]);
+        }
+        $('#container').highcharts({
+            chart: {
+        },
+        title: {
+            text: Name
+        },
+        xAxis: {//街道
+            categories: categories
+        },
+        tooltip: {
+            formatter: function () {
+                var s;
+                if (this.point.name) { // the pie chart
+                    s = '' +
+                            this.point.name + ': ' + this.y + ' 人数';
+                } else {
+                    s = '' +
+                            this.x + ': ' + this.y;
+                }
+                return s;
+            }
+        },
+        labels: {
+            items: [{
+                html: '总人数',
+                style: {
+                    left: '40px',
+                    top: '8px',
+                    color: 'black'
+                }
+            }]
+        },
+        series: [{
+            type: 'column',
+            name: '街道总人数',
+            data: dataMan//[3, 2, 1, 3, 4] //这里就是和上面的街道对应，几个街道对应几个数组
+        }, {
+            //这里name不一样，colors[0]不一样.
+            type: 'pie',
+            name: '比例',
+            data: [{
+                name: '总人数',
+                y: peopleTotal, //可以代表人数
+                color: Highcharts.getOptions().colors[0] //这个是数组获取颜色，可以循环获取。
+            }],
+            center: [50, 30],
+            size: 50,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
+
+    });
+}
+
+
+//控制myDate97显示格式
+function getFormat() {
+    if ($("#reqMethod").val() == "month") {
+        return 'yyyy-MM';
+    } else if ($("#reqMethod").val() == "year") {
+        return 'yyyy';
+    } else {
+        return 'yyyy-MM-dd';
+    }
+}
+
+ 
+</script>
+<div>
+    <table style="margin-left:20px;padding-top:20px">
+        <tbody>
+            <tr>
+                <td width="60">
+                    添加时间：
+                </td>
+                <td width="200">
+                   <!-- <input class="Wdate" id="CheckInTimeFrom" style="width:180px" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>-->
+                    <input class="Wdate"  id="CheckInTimeFrom" style="width:180px" onFocus="var CheckInTimeTo=$dp.$('CheckInTimeTo');WdatePicker({onpicked:function(){CheckInTimeTo.focus();},dateFmt:getFormat(),maxDate:'#F{$dp.$D(\'CheckInTimeTo\')}'})"/>
+                </td>
+                <td width="240">
+                    到：<!--<input class="easyui-datebox" id="CheckInTimeTo" style="width:180px;" />-->
+                    <input class="Wdate"  id="CheckInTimeTo" style="width:180px" onFocus="WdatePicker({dateFmt:getFormat(),minDate:'#F{$dp.$D(\'CheckInTimeFrom\')}'})"/>
+                </td>
+             
+             <!--   <td style="width: 80px;">
+                    <span style="float: right">姓名：</span>
+                </td>
+                <td>
+                    <input style="text" id="OldManName" />
+                </td>
+                <td style="width: 80px;">
+                 <span style="float: right">性别：</span>
+                </td>
+                <td>
+                     <input id="Gender-M" type="radio" name="Gender" value="M"/><label for="Gender-M">男</label>
+                     <input id="Gender-F" type="radio" name="Gender" value="F"/><label for="Gender-F">女</label>
+                </td>-->
+          
+           <!-- <tr><td>区域：</td><td><input id="AreaSelect" class="easyui-combotree" style="width:200px;"/></td></tr>-->
+           <td width="40">区域：</td><td width="240"><input id="AreaSelect" class="easyui-combotree" style="width:200px;"/></td>
+           <td width="80"><button onclick="reset();">重置</button></td>
+           <td style="width: 100px"> <button align="right" onclick="query();">查询</button></td>
+         </tr>
+
+
+           <!-- <tr><td width="60">省：</td><td><select name="selProvince" id="selProvince" onchange="selectProvince()" style="width:153px"></select></td><td>市：<select name="selCity" id="selCity" onchange="selCity()" style="width:153px"></select></td><td valign="middle">区：<select name="selArea" id="selArea" style="width:153px"></select></td>   <td style="width: 100px">
+                    <button align="right" onclick="query();">
+                        查询</button>
+                </td></tr>-->
+           <!-- <tr>
+                <td>
+                    访问时间：
+                </td>
+                <td>
+                    <input class="easyui-datebox" id="OperatedOnFrom" />
+                </td>
+                <td>
+                    到<input class="easyui-datebox" id="OperatedOnTo" />
+                </td>
+                <td style="width: 80px;">
+                    <span style="float: right">地址：</span>
+                </td>
+                <td>
+                    <input style="text" id="Address" />
+                </td>
+                <td style="width: 80px;">
+                    <span style="float: right">号码：</span>
+                </td>
+                <td>
+                    <input style="text" id="Tel" />
+                </td>
+                <td style="width: 100px">
+                    <button align="right" onclick="query();">
+                        查询</button>
+                </td>
+            </tr>-->
+        </tbody>
+     </table>
+        <input type="hidden" id="CheckInTimeF" />
+        <input type="hidden" id="CheckInTimeT" />
+        <input type="hidden" id="OperatedOnF" />
+        <input type="hidden" id="OperatedOnT" />
+        <input type="hidden" id="OldManN" />
+        <input type="hidden" id="GenderS" />
+        <input type="hidden" id="Addres" />
+        <input type="hidden" id="Telt" />
+        <input type="hidden" id="Area" />
+        
+ 
+    <div class="datagrid-tools" style="height:30px;background-color:#fafafa">
+        <span><img style="margin-left: 30px" src="../../images/report-form/export.jpg" /><a href="javascript:void(0)">导出</a></span>
+        <span><img style="margin-left: 30px" src="../../images/report-form/print.jpg" /><a href="javascript:void(0)">打印</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/statistics.jpg"/><a href="javascript:void(0)" onclick="statistics()">统计</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/table.jpg"/><a href="javascript:void(0)" onclick="tabletu()">表格</a></span>
+    </div>
+    </div>
+    <div id="caption" style=" text-align: center;margin-top:15px" >老人基本信息统计报表</div>
+    <div id="thead" style="border:1px solid;width:1020px;margin-right:auto;margin-left:auto;border-bottom:none"><table><tr><th width='42' height='30'>序号</th><th width='80'>姓名</th><th width='170'>身份证</th><th width='40'>性别</th><th width='50'>年龄</th><th width='50'>医保</th><th width='50'>社保</th><th width='110'>座机</th><th width='110'>手机</th><th  width='290' style="border-right:none">家庭住址</th><th width='19' style="border:none;border-bottom:1px dashed "></th></tr></table></div>
+    <div id="dataTable"align="center" style="overflow-y:scroll; border:1px solid;border-top:none;width:1020px;margin-right:auto;margin-left:auto;" >
+    </div>
+    
+    <div id="lsattab" style="padding-bottom: 0px; width: 100%; height: 30px;margin-top:10px;
+        border-right: 1px solid #CCC; border-bottom: 1px solid #CCC; border-left: 1px solid #CCC;"
+        >
+        <!--<button style="background-image: url(img/firstPage.jpg) norepeat ;width:10px; height:10px;border:none; "></button>-->
+        <select  id="page" style="margin-left: 20px;margin-top: 8px;" onchange="">
+            <option value="min">50</option>
+            <!--<option value="common">15</option>
+<option value="max">18</option>-->
+        </select>
+        <input type="button" style="width: 10px; height: 10px; margin-left: 20px; border: 0;
+            background: url(../../images/report-form/firstPage.jpg) no-repeat; cursor: pointer"
+            onclick="firstPage()" />
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/upPage.jpg) no-repeat; cursor: pointer"
+            onclick="upPage()" />
+        第<input type="text" style="width: 15px; height: 10px" id="nowpage" value="1" onchange="pagechang();" />共<label
+            id="sum"></label>页
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/nextPage.jpg) no-repeat; cursor: pointer"
+            onclick="nextPage()" />
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/lastPage.jpg) no-repeat; cursor: pointer"
+            onclick="lastPage()" />
+  <!--      <input type="button" style="width: 10px; height: 13px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/refresh.jpg) no-repeat; cursor: pointer"
+            onclick="refresh()" />-->
+    </div> 
+</div>
+<div id="container" style="min-width: 310px; height: 400px; width: 1000; margin: 0">
+</div>

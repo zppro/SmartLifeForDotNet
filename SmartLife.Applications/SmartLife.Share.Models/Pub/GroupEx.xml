@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_DBA_SyncAuth_LisenceGroupParam" class="StringObjectDictionary">
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_DBA_SyncAuth_LisenceGroup" parameterMap="SP_DBA_SyncAuth_LisenceGroupParam" resultClass="StringObjectDictionary">
+      SP_DBA_SyncAuth_LisenceGroup
+    </procedure>
+    <select id="ListGroupByUserId" parameterClass="StringObjectDictionary" resultClass="Group" >
+      select a.*  from Pub_Group a left join (select * from  Pub_GroupMember where UserId='$UserId$') b on a.GroupId=b.GroupId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="GroupId" >GroupId=#GroupId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GroupCode" >GroupCode=#GroupCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GroupName" >GroupName=#GroupName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GroupType" >GroupType=#GroupType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

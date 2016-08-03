@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Ewallet_OldMan" type="SmartLife.Share.Models.Oca.Ewallet_OldMan, SmartLife.Share.Models" />
+    <typeAlias alias="Ewallet_OldManPK" type="SmartLife.Share.Models.Oca.Ewallet_OldManPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Ewallet_OldMan_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_Ewallet_OldMan(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfGovernment" >BalanceOfGovernment</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfSelf" >BalanceOfSelf</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfGovernment" >#BalanceOfGovernment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfSelf" >#BalanceOfSelf#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Ewallet_OldMan_Update" parameterClass="StringObjectDictionary" >
+      update Oca_Ewallet_OldMan
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfGovernment" >BalanceOfGovernment=#BalanceOfGovernment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BalanceOfSelf" >BalanceOfSelf=#BalanceOfSelf#</isPropertyAvailable>
+      </dynamic>
+      where OldManId=#OldManId#
+    </update>
+    <delete id="Ewallet_OldMan_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_Ewallet_OldMan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BalanceOfGovernment" >BalanceOfGovernment=#BalanceOfGovernment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BalanceOfSelf" >BalanceOfSelf=#BalanceOfSelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Ewallet_OldMan_Load" parameterClass="Ewallet_OldManPK" resultClass="Ewallet_OldMan" >
+      select OldManId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,BalanceOfGovernment,BalanceOfSelf from Oca_Ewallet_OldMan
+      where OldManId=#OldManId#
+    </select>
+    <select id="Ewallet_OldMan_List" parameterClass="StringObjectDictionary" resultClass="Ewallet_OldMan" >
+      select OldManId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,BalanceOfGovernment,BalanceOfSelf from Oca_Ewallet_OldMan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BalanceOfGovernment" >BalanceOfGovernment=#BalanceOfGovernment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BalanceOfSelf" >BalanceOfSelf=#BalanceOfSelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

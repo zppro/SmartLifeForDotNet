@@ -1,0 +1,41 @@
+﻿<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height: 36px;">
+        <div id="selectedArea" style="font-weight: bold; color: blue;"></div>
+        <div id="selectToArea" style="font-weight: bold; color: red;"></div>
+    </div>
+    <div id="c-tree-set-user-area" data-options="region:'center',border:false"></div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        
+        $('#c-tree-set-user-area').append('<ul id="tree-' + dialogId + '"></ul>');
+        initTree('easyUITree', 'tree-' + dialogId, {
+            onClick: function (node) {
+                $('#selectToArea').text(getAreaPath($('#tree-' + dialogId), node));
+            }
+        }, treeDataOfGet_InvokeUrl2 + "01$01$01,null,null");
+
+        $('#selectedArea').text(dialogData);
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        return $('#tree-' + dialogId).tree('getSelected');
+    }
+
+    
+    function getAreaPath(tree, node) {
+        var ret = node.attributes.PureName;
+        if (node.attributes.PId == "_") {
+            return ret;
+        }
+        else {
+            ret = getAreaPath(tree, tree.tree('find', node.attributes.PId)) + '/' + ret;
+        }
+        return ret;
+    } 
+</script>

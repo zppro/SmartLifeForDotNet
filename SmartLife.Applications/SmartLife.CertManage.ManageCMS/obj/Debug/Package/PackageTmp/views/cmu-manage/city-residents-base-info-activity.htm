@@ -1,0 +1,389 @@
+﻿<style type="text/css">
+    .baseinfo tr td
+    {
+        height: 30px;
+    }
+     .baseinfo tr td input
+    {
+       color:#888;
+    } 
+</style>
+<table id="cc-B120207" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B120207">
+            </ul>
+            <input id='AreaId2' type="hidden" />
+            <input id='AreaId3' type="hidden" />
+        </td>
+        <td valign="top">
+            <div id="toolbar-B120207">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="openActivityLog()">查看</a> 
+                </div>  
+            <div id="search-sample-B120207" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B120207" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="KeyWord" name="KeyWord" class="easyui-validatebox" placeholder="姓名、身份证、电话、手机"/>
+                        </td>
+                        <td style="text-align: right">
+                            状态：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="residentStatus" name="ResidentStatus_Start" class="combobox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx('',true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfmEx()">
+                                重置</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B120207">
+            </table>
+        </td>
+    </tr>
+</table> 
+<div id="dlg-search-B120207" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B120207">
+    <div class="ftitle">
+        <form id="fm-search-B120207" method="post" novalidate>
+        <div class="fitem">
+            <table class="baseinfo">
+                <tr>
+                    <td style="text-align: right">
+                        姓 名:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="ResidentName" />
+                    </td>
+                    <td style="text-align: right">
+                        性 别:
+                    </td>
+                    <td style="text-align: left">
+                        <input id="CC-Gender" name="Gender_Start" class="combobox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        身份证:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="IDNo" />
+                    </td>
+                    <td style="text-align: right">
+                        座机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Tel" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        手机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Mobile" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="btn-search-B120207">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="execEx('',false)">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<div id="dlg-B120207" class="easyui-dialog" style="width: 900px; height: 490px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B120207">  
+    <table id="dg-log-B120207">
+    </table>
+</div>
+<div id="btn-B120207"> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div>
+<script type="text/javascript">
+    placeholder(); //占位符初始化
+    var arrActivityType;
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            gridLogId: 'dg-log-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'residentId-' + currentMenuCode,
+            pk: 'ResidentId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '居民基本资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+
+        autosize("cc-B120207", -30); //datagrid收缩30个像素点
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/07001', null, function (result) {
+            arrActivityType = result;
+        }, { async: false });
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13);
+                        $('#AreaId2').val(treeNodeId);
+                        $('#AreaId3').val(null);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18);
+                        $('#AreaId2').val(null);
+                        $('#AreaId3').val(treeNodeId);
+                    }
+                }
+                else {
+                    areaId = "";
+                    $('#AreaId2').val(null);
+                    $('#AreaId3').val(null);
+                };
+                execEx(areaId, true);
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    fit: true,
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ResidentBaseInfoForActivityLog/' + models[currentMenuCode].headers.ConnectId,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        fuzzyFieldOP: ' or ',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                            ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        openActivityLog(row);
+                    },
+                    frozenColumns: [[
+                                        { field: 'CK', title: '', checkbox: true },
+                    { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                    { field: 'ActivityLog', title: '有无变动', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '有:1~t无:0~t' },
+                    { field: 'ResidentStatus', title: '居民状态', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '正常:1~t迁出:3~t死亡:5' }
+                    ]],
+                    columns: [[
+                    { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                    //                    { field: 'FlowFromName', title: '审核状态', width: 70, align: 'center' },
+                    {field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                    { field: 'NationName', title: '民族', width: 80, align: 'center' },
+                    { field: 'Tel', title: '座机', align: 'center', width: 100 },
+                    { field: 'Mobile', title: '手机', align: 'center', width: 100 },
+                    { field: 'AreaId2', title: '街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'NativePlaceName', title: '籍贯', align: 'center', width: 150 },
+                    { field: 'AccountTypeName', title: '户口类型', width: 80, align: 'center', width: 80 },
+                    { field: 'HouseholdRegisterName', title: '户籍', align: 'center', width: 150 },
+                    { field: 'PlaceOfHouseholdRegister', title: '户籍(详)', width: 100, align: 'center' },
+                    { field: 'ResidentialOfHometownName', title: '现居地', align: 'center', width: 150 },
+                    { field: 'ResidentialAddress', title: '现居(详)', width: 100, align: 'center' },
+                    { field: 'EducationLevelName', title: '文化程度', align: 'center', width: 80 },
+                    { field: 'MarriageName', title: '婚姻状况', align: 'center', width: 60 },
+                    { field: 'IncomeStatusName', title: '收入情况', align: 'center', width: 80 },
+                    { field: 'HousingStatusName', title: '住房情况', align: 'center', width: 80 },
+                    { field: 'PostCode', title: '邮编', width: 80, align: 'center' },
+                    { field: 'Remark', title: '备注', align: 'center', width: 250 }
+            ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            }); //end loadTree  
+
+        $('#residentStatus').combobox({
+            width: 80,
+            panelHeight: 82,
+            data: [{ ItemId: '1', ItemName: '正常' },
+                   { ItemId: '0', ItemName: '作废' },
+                   { ItemId: '3', ItemName: '迁移' },
+                   { ItemId: '5', ItemName: '死亡'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 1
+        });
+        $('#CC-Gender').combobox({
+            width: 140,
+            panelHeight: 63,
+            data: [{ ItemId: 'N', ItemName: '全部' },
+                   { ItemId: 'M', ItemName: '男' },
+                   { ItemId: 'F', ItemName: '女'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 'N'
+        });
+
+        loadfiles([
+            { type: "css", url: "../../css/old-care/base-data.css" },
+            { type: "js", url: "../../script/old-care/base-data.js" }
+            ], function () {
+            });
+
+    });
+
+    function getActivityLog(strResidentId) {
+        $('#' + models[currentMenuCode].gridLogId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ResidentActivityLog_ForEasyUIgrid/' + models[currentMenuCode].headers.ConnectId,
+            method: 'POST', 
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: { ResidentId: strResidentId }
+            },  
+            columns: [[
+                    { field: 'Id', title: '编号', width: 150, hidden: true },
+                    { field: 'ActivityTime', title: '记录时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                    { field: 'ActivityType', title: '变更类型', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: arrActivityType },
+                    { field: 'ActivityDescription', title: '说明',  width: 540 },
+                    { field: 'Remark', title: '备注', align: 'center', width: 50} 
+            ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    } 
+
+    function execEx(strAreaId,v) {
+        var residentStatus = $('#residentStatus').combobox("getValue");
+        var keyWord = $.trim($('#KeyWord').val());
+        var param = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            fuzzyFieldOP: ' or ', 
+            filterFields: [{ key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                           { key: 'AreaId2', value: $('#AreaId2').val() },
+                           { key: 'AreaId3', value: $('#AreaId3').val()}],
+            fuzzyFields: [{ key: 'AreaId', value: strAreaId}]
+        }
+
+        if (residentStatus == 1 || residentStatus == 0) {
+            param.filterFields.push({ key: 'Status', value: residentStatus });
+        }
+        else {
+            param.filterFields.push({ key: 'Status', value: 3 });
+            param.filterFields.push({ key: 'ResidentStatus', value: residentStatus });
+        }
+
+        if (keyWord != '' && v) {
+            param.fuzzyFields.push({ key: 'ResidentName', value: keyWord });
+            param.fuzzyFields.push({ key: 'IDNo', value: keyWord });
+            param.fuzzyFields.push({ key: 'Tel', value: keyWord });
+            param.fuzzyFields.push({ key: 'Mobile', value: keyWord });
+            param.fuzzyFields.push({ key: 'InputCode1', value: keyWord });
+            param.fuzzyFields.push({ key: 'InputCode2', value: keyWord });
+        }
+        else if (!v) {
+            var fmSearch = getJQO('#' + models[currentMenuCode].fmSearchId).serializeObject(); 
+            param.filterFields.push({ key: 'ResidentName', value: fmSearch.ResidentName });
+            param.filterFields.push({ key: 'Gender_Start', value: fmSearch.Gender_Start });
+            param.filterFields.push({ key: 'IDNo', value: fmSearch.IDNo });
+            param.filterFields.push({ key: 'Tel', value: fmSearch.Tel });
+            param.filterFields.push({ key: 'Mobile', value: fmSearch.Mobile });
+
+            quit();
+        }
+         
+        $('#' + models[currentMenuCode].gridId).datagrid('load', param);
+
+    }
+
+
+    function openActivityLog(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            $('#' + models[currentMenuCode].dialogId).dialog(_.extend({
+                onClose: function () {
+                },
+                onOpen: function () {
+                    getActivityLog(row.ResidentId);
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '查看“' + row.ResidentName + '”的信息变更');
+        }
+        else {
+            alertError('请选中要操作的记录');
+        }
+    }
+
+    function resetfmEx() {
+        $('#KeyWord').val(null);
+        $('#residentStatus').combobox("setValue", 1);
+    } 
+</script>

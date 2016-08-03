@@ -1,0 +1,34 @@
+﻿<div id="workorder-block" ></div>
+<script type="text/javascript">
+    var urlRoot;
+    var outside = getQueryString('outside');
+    if (outside == "1") {
+        urlRoot = getUrlRootFromOutside('views/');
+    }
+    else {
+        urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+    }
+    var fromWhere = getQueryString('fromWhere');
+    $(function () { 
+        loadfiles([
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            getHtml(urlRoot + 'old-care/life-aid-workorder.htm', function (str) {
+                $("#workorder-block").html(str);
+                $.parser.parse('#btn-workorder');
+                $("#the-workorder").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () { 
+                        loadWorkOrderContent(pageData.WorkOrderId);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '工单对话框');
+            });
+        });
+    });
+    
+</script>

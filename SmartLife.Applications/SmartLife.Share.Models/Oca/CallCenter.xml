@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="CallCenter" type="SmartLife.Share.Models.Oca.CallCenter, SmartLife.Share.Models" />
+        <typeAlias alias="CallCenterPK" type="SmartLife.Share.Models.Oca.CallCenterPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="CallCenter_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_CallCenter(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >IP</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Port" >Port</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPInner" >IPInner</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortInner" >PortInner</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPProxy" >IPProxy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortProxy" >PortProxy</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Port" >#Port#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPInner" >#IPInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortInner" >#PortInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPProxy" >#IPProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortProxy" >#PortProxy#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="CallCenter_Update" parameterClass="StringObjectDictionary" >
+            update Oca_CallCenter
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Port" >Port=#Port#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPInner" >IPInner=#IPInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortInner" >PortInner=#PortInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPProxy" >IPProxy=#IPProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PortProxy" >PortProxy=#PortProxy#</isPropertyAvailable>
+            </dynamic>
+            where StationId=#StationId#
+        </update>
+        <delete id="CallCenter_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_CallCenter
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Port" >Port=#Port#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPInner" >IPInner=#IPInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortInner" >PortInner=#PortInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPProxy" >IPProxy=#IPProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortProxy" >PortProxy=#PortProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="CallCenter_Load" parameterClass="CallCenterPK" resultClass="CallCenter" >
+            select StationId,CheckInTime,OperatedBy,OperatedOn,DataSource,IP,Port,IPInner,PortInner,IPProxy,PortProxy from Oca_CallCenter
+            where StationId=#StationId#
+        </select>
+        <select id="CallCenter_List" parameterClass="StringObjectDictionary" resultClass="CallCenter" >
+            select StationId,CheckInTime,OperatedBy,OperatedOn,DataSource,IP,Port,IPInner,PortInner,IPProxy,PortProxy from Oca_CallCenter
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Port" >Port=#Port#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPInner" >IPInner=#IPInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortInner" >PortInner=#PortInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPProxy" >IPProxy=#IPProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortProxy" >PortProxy=#PortProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="CallCenter_ListByPage" parameterClass="StringObjectDictionary" resultClass="CallCenter" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,StationId,CheckInTime,OperatedBy,OperatedOn,DataSource,IP,Port,IPInner,PortInner,IPProxy,PortProxy from Oca_CallCenter
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Port" >Port=#Port#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPInner" >IPInner=#IPInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortInner" >PortInner=#PortInner#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPProxy" >IPProxy=#IPProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PortProxy" >PortProxy=#PortProxy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

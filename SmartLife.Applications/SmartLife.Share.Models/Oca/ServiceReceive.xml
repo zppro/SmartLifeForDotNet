@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ServiceReceive" type="SmartLife.Share.Models.Oca.ServiceReceive, SmartLife.Share.Models" />
+    <typeAlias alias="ServiceReceivePK" type="SmartLife.Share.Models.Oca.ServiceReceivePK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ServiceReceive_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_ServiceReceive(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ServiceReceiveId" >ServiceReceiveId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveStatus" >ReceiveStatus</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DispatchType" >DispatchType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveType" >ReceiveType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderId" >WorkOrderId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ServiceReceiveId" >#ServiceReceiveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveStatus" >#ReceiveStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DispatchType" >#DispatchType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveType" >#ReceiveType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderId" >#WorkOrderId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ServiceReceive_Update" parameterClass="StringObjectDictionary" >
+      update Oca_ServiceReceive
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveStatus" >ReceiveStatus=#ReceiveStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DispatchType" >DispatchType=#DispatchType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReceiveType" >ReceiveType=#ReceiveType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+      </dynamic>
+      where ServiceReceiveId=#ServiceReceiveId#
+    </update>
+    <delete id="ServiceReceive_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_ServiceReceive
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ServiceReceiveId" >ServiceReceiveId=#ServiceReceiveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReceiveStatus" >ReceiveStatus=#ReceiveStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DispatchType" >DispatchType=#DispatchType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReceiveType" >ReceiveType=#ReceiveType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ServiceReceive_Load" parameterClass="ServiceReceivePK" resultClass="ServiceReceive" >
+      select ServiceReceiveId,Id,CheckInTime,Status,OperatedBy,OperatedOn,ReceiveStatus,StationId,DispatchType,ReceiveType,WorkOrderId from Oca_ServiceReceive
+      where ServiceReceiveId=#ServiceReceiveId#
+    </select>
+    <select id="ServiceReceive_List" parameterClass="StringObjectDictionary" resultClass="ServiceReceive" >
+      select ServiceReceiveId,Id,CheckInTime,Status,OperatedBy,OperatedOn,ReceiveStatus,StationId,DispatchType,ReceiveType,WorkOrderId from Oca_ServiceReceive
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ServiceReceiveId" >ServiceReceiveId=#ServiceReceiveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReceiveStatus" >ReceiveStatus=#ReceiveStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DispatchType" >DispatchType=#DispatchType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReceiveType" >ReceiveType=#ReceiveType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

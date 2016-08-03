@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="FlowDefineMapping" type="SmartLife.Share.Models.Pub.FlowDefineMapping, SmartLife.Share.Models" />
+        <typeAlias alias="FlowDefineMappingPK" type="SmartLife.Share.Models.Pub.FlowDefineMappingPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="FlowDefineMapping_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_FlowDefineMapping(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingType" >MappingType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingId" >MappingId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FlowName" >FlowName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingColumn" >MappingColumn</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingType" >#MappingType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingId" >#MappingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FlowName" >#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingColumn" >#MappingColumn#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="FlowDefineMapping_Update" parameterClass="StringObjectDictionary" >
+            update Pub_FlowDefineMapping
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingType" >MappingType=#MappingType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingId" >MappingId=#MappingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FlowName" >FlowName=#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MappingColumn" >MappingColumn=#MappingColumn#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="FlowDefineMapping_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_FlowDefineMapping
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingType" >MappingType=#MappingType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingId" >MappingId=#MappingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowName" >FlowName=#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingColumn" >MappingColumn=#MappingColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="FlowDefineMapping_Load" parameterClass="FlowDefineMappingPK" resultClass="FlowDefineMapping" >
+            select Id,Status,CheckInTime,OperatedBy,OperatedOn,MappingType,MappingId,FlowName,MappingColumn from Pub_FlowDefineMapping
+            where Id=#Id#
+        </select>
+        <select id="FlowDefineMapping_List" parameterClass="StringObjectDictionary" resultClass="FlowDefineMapping" >
+            select Id,Status,CheckInTime,OperatedBy,OperatedOn,MappingType,MappingId,FlowName,MappingColumn from Pub_FlowDefineMapping
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingType" >MappingType=#MappingType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingId" >MappingId=#MappingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowName" >FlowName=#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingColumn" >MappingColumn=#MappingColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="FlowDefineMapping_ListByPage" parameterClass="StringObjectDictionary" resultClass="FlowDefineMapping" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,Status,CheckInTime,OperatedBy,OperatedOn,MappingType,MappingId,FlowName,MappingColumn from Pub_FlowDefineMapping
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingType" >MappingType=#MappingType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingId" >MappingId=#MappingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowName" >FlowName=#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MappingColumn" >MappingColumn=#MappingColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

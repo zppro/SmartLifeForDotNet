@@ -1,0 +1,77 @@
+﻿<div id="jp-container" class="jp-container">
+
+</div>
+<script type="text/javascript">
+    var scrollHeight = 0;
+    var userInfo;
+    var repeatTime = 1000; //1秒
+    $(function () {
+
+        loadfiles([
+            { type: "css", url: "../../css/client/wx-service-online.css" }
+        //,{ type: "js", url: "../seat-client/jquery.ui.chatbox.js" }
+            ], function () {
+                getTo(window.baseWeiXinOfServiceOnlineInovkeAddress + '/api/share/v1/GetWXUserInfoAsJSONP/' + WX_openId, null, function (ret1) {
+                    if (ret1.Success) {
+                        userInfo = ret1.ret;
+                        window.external.SetWXUserInfo(userInfo.NickName);
+                        //设置循环读取 
+                        setTimeout(function () {
+                            //取微信消息
+                            getTo(window.baseWeiXinOfServiceOnlineInovkeAddress + '/api/v1/RetrieveMessageAsJSONP/' + WX_openId, null, function (ret2) {
+                                if (ret2.Success) {
+                                    if (ret2.ret) {
+                                        receiveMsg({ MsgContent: ret2.ret.Content, MsgTimeStr: Date.parse('1970-01-01T08:00:00').addSeconds(ret2.ret.CreateTime).toString('yyyy-MM-dd HH:mm:ss') });
+                                    }
+                                }
+                            }, { dataType: 'jsonp', jsonp: 'jsoncallback', async: false });
+
+                            setTimeout(arguments.callee, repeatTime);
+                        }, 0);
+                    }
+
+                }, { dataType: 'jsonp', jsonp: 'jsoncallback' });
+
+            });
+    });
+
+    function testData() {
+        var msgs = [
+                { MsgContent: '1、对方的回答是：1+1=2', MsgTimeStr: '2014-09-15 15:06' },
+                { MsgContent: '2、我的问题是：1+1=？', MsgTimeStr: '2014-09-15 15:06', isFromSeat: true },
+                { MsgContent: '3、我的问题是：1+1真的等于2吗？不会是等于3吧', MsgTimeStr: '2014-09-15 15:06', isFromSeat: true },
+                { MsgContent: '4、对方的回答是：1+1=2', MsgTimeStr: '2014-09-15 15:06' },
+                { MsgContent: '5、<a href="javascript:void"><img src="http://i.stack.imgur.com/clBzd.jpg?s=32&g=1" width="45" height:"45" /></a>我的问题是：1+1真的等于2吗？不会是等于3吧', MsgTimeStr: '2014-09-15 15:06', isFromSeat: true },
+                { MsgContent: '6、对方的回答是：1+1=2', MsgTimeStr: '2014-09-15 15:06' }
+            ];
+        ;
+        receiveMsg(msgs);
+    }
+
+    function sendMsg(msgContent) {
+        receiveMsg({ MsgContent: msgContent, MsgTimeStr: Date.parse('now').toString('yyyy-MM-dd HH:mm:ss'), isFromSeat: true });
+    }
+
+    function receiveMsg(msgs) {
+        var arrMsgs;
+        if (_.isArray(msgs)) {
+            arrMsgs = msgs;
+        }
+        else {
+            arrMsgs = [msgs];
+        }
+        _.each(arrMsgs, function (o) {
+            var classRecordBox = o.isFromSeat ? 'talk_recordboxme' : "talk_recordbox";
+            var wxUserHeaderUrl;
+            if (userInfo && userInfo.HeadImgUrl) {
+                wxUserHeaderUrl = userInfo.HeadImgUrl;
+            }
+            var userHeadUrl = o.isFromSeat ? '../../images/service-online/seat-default.png' : wxUserHeaderUrl;
+            $('<div class="' + classRecordBox + '"><div class="user"><img src="' + userHeadUrl + '" height="45" width="45" /></div><div class="talk_recordtextbg">&nbsp;</div><div class="talk_recordtext"><h3>' + o.MsgContent + '</h3><span class="talk_time">' + o.MsgTimeStr + '</span></div></div>').appendTo($('#jp-container'));
+        });
+        scrollHeight += $("#jp-container div:last").offset().top;
+        $("#jp-container").animate({
+            scrollTop: scrollHeight
+        }, 300);
+    }
+</script>

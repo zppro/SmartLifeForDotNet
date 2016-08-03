@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="FamilyCamera" type="SmartLife.Share.Models.Oca.FamilyCamera, SmartLife.Share.Models" />
+        <typeAlias alias="FamilyCameraPK" type="SmartLife.Share.Models.Oca.FamilyCameraPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="FamilyCamera_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_FamilyCamera(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="DeviceId" >DeviceId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceCode" >DeviceCode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceName" >DeviceName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="DeviceId" >#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceCode" >#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceName" >#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="FamilyCamera_Update" parameterClass="StringObjectDictionary" >
+            update Oca_FamilyCamera
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceCode" >DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceName" >DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+            </dynamic>
+            where DeviceId=#DeviceId#
+        </update>
+        <delete id="FamilyCamera_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_FamilyCamera
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceCode" >DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceName" >DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="FamilyCamera_Load" parameterClass="FamilyCameraPK" resultClass="FamilyCamera" >
+            select DeviceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,DeviceCode,DeviceName,AreaId,Remark,InputCode1,InputCode2 from Oca_FamilyCamera
+            where DeviceId=#DeviceId#
+        </select>
+        <select id="FamilyCamera_List" parameterClass="StringObjectDictionary" resultClass="FamilyCamera" >
+            select DeviceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,DeviceCode,DeviceName,AreaId,Remark,InputCode1,InputCode2 from Oca_FamilyCamera
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceCode" >DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceName" >DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="FamilyCamera_ListByPage" parameterClass="StringObjectDictionary" resultClass="FamilyCamera" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,DeviceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,DeviceCode,DeviceName,AreaId,Remark,InputCode1,InputCode2 from Oca_FamilyCamera
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceCode" >DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceName" >DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

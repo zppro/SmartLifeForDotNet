@@ -1,0 +1,107 @@
+﻿<table id="cc-B11040601" style="width: 100%; height: 100%;">
+    <tr>
+        <td valign="top">
+            <div id="toolbar-B11040601">
+                <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="query()">高级查询</a>
+                <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                    plain="true" onclick="edit()">编辑</a> <!--<a behaviorcode="03" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">
+                        作废</a>-->
+            </div>
+            <table id="dg-B11040601">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B11040601" class="easyui-dialog" style="width: 260px; height: 180px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B11040601">
+    <form id="fm-B11040601" method="post" novalidate>
+            <input type="hidden" name="Status" />
+            <div class="fitem">
+                <label>
+                    表　　名:</label>
+                <input name="TableName" id="tableName-B11040601" type="easyui-validatebox" disabled="true" />
+            </div>
+            <div class="fitem">
+                <label>
+                    表中文名:</label>
+                <input name="TableCName" class="easyui-validatebox" required="true"/>
+            </div>
+        </form>
+</div>
+<div id="btn-B11040601">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B11040601" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B11040601">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B11040601" method="post" novalidate>
+    
+    </form>
+</div>
+<div id="btn-search-B11040601">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'tableName-' + currentMenuCode,
+            pk: 'TableName',
+            uiMode: 'list',
+            entityName: '公共表',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/SetTableService/',
+            defaultModel: { Status: 1 }
+        };
+
+        autosize("cc-" + currentMenuCode);
+        createGrid();
+    });
+
+    function createGrid() {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status }
+                            ]
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+                    { field: 'Id', title: '编号', hidden: true },
+//                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'TableName', title: '表名', width: 150 },
+                    { field: 'TableCName', title: '表中文名', width: 180, align: 'center' },
+                    { field: 'Status', title: '状态', width: 80, align: 'center', formatter: easyuigrid_statusFormatter },
+                    { field: 'CheckInTime', title: '创建时间', align: 'center', width: 80, formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" }
+            ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+</script>

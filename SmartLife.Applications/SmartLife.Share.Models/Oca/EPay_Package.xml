@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="EPay_Package" type="SmartLife.Share.Models.Oca.EPay_Package, SmartLife.Share.Models" />
+        <typeAlias alias="EPay_PackagePK" type="SmartLife.Share.Models.Oca.EPay_PackagePK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="EPay_Package_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_EPay_Package(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="PackageId" >PackageId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageName" >PackageName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageComment" >PackageComment</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageCharges" >PackageCharges</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodType" >PeriodType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageBeginDate" >PackageBeginDate</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageEndDate" >PackageEndDate</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageType" >PackageType</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="PackageId" >#PackageId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageName" >#PackageName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageComment" >#PackageComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageCharges" >#PackageCharges#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodType" >#PeriodType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageBeginDate" >#PackageBeginDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageEndDate" >#PackageEndDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageType" >#PackageType#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="EPay_Package_Update" parameterClass="StringObjectDictionary" >
+            update Oca_EPay_Package
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageName" >PackageName=#PackageName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageComment" >PackageComment=#PackageComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageCharges" >PackageCharges=#PackageCharges#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodType" >PeriodType=#PeriodType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageBeginDate" >PackageBeginDate=#PackageBeginDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageEndDate" >PackageEndDate=#PackageEndDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PackageType" >PackageType=#PackageType#</isPropertyAvailable>
+            </dynamic>
+            where PackageId=#PackageId#
+        </update>
+        <delete id="EPay_Package_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_EPay_Package
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="PackageId" >PackageId=#PackageId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageName" >PackageName=#PackageName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageComment" >PackageComment=#PackageComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageCharges" >PackageCharges=#PackageCharges#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodType" >PeriodType=#PeriodType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_Start" >PackageBeginDate>=to_date(#PackageBeginDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_End" >PackageBeginDate&lt;=to_date(#PackageBeginDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_Start" >PackageEndDate>=to_date(#PackageEndDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_End" >PackageEndDate&lt;=to_date(#PackageEndDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageType" >PackageType=#PackageType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="EPay_Package_Load" parameterClass="EPay_PackagePK" resultClass="EPay_Package" >
+            select PackageId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,PackageName,PackageComment,PackageCharges,PeriodType,PackageBeginDate,PackageEndDate,Remark,PackageType from Oca_EPay_Package
+            where PackageId=#PackageId#
+        </select>
+        <select id="EPay_Package_List" parameterClass="StringObjectDictionary" resultClass="EPay_Package" >
+            select PackageId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,PackageName,PackageComment,PackageCharges,PeriodType,PackageBeginDate,PackageEndDate,Remark,PackageType from Oca_EPay_Package
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="PackageId" >PackageId=#PackageId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageName" >PackageName=#PackageName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageComment" >PackageComment=#PackageComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageCharges" >PackageCharges=#PackageCharges#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodType" >PeriodType=#PeriodType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_Start" >PackageBeginDate>=to_date(#PackageBeginDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_End" >PackageBeginDate&lt;=to_date(#PackageBeginDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_Start" >PackageEndDate>=to_date(#PackageEndDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_End" >PackageEndDate&lt;=to_date(#PackageEndDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageType" >PackageType=#PackageType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="EPay_Package_ListByPage" parameterClass="StringObjectDictionary" resultClass="EPay_Package" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,PackageId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,PackageName,PackageComment,PackageCharges,PeriodType,PackageBeginDate,PackageEndDate,Remark,PackageType from Oca_EPay_Package
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="PackageId" >PackageId=#PackageId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageName" >PackageName=#PackageName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageComment" >PackageComment=#PackageComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageCharges" >PackageCharges=#PackageCharges#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodType" >PeriodType=#PeriodType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_Start" >PackageBeginDate>=to_date(#PackageBeginDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageBeginDate_End" >PackageBeginDate&lt;=to_date(#PackageBeginDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_Start" >PackageEndDate>=to_date(#PackageEndDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageEndDate_End" >PackageEndDate&lt;=to_date(#PackageEndDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PackageType" >PackageType=#PackageType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

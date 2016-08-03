@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="WXButton" type="SmartLife.Share.Models.WeiXin.Pub.WXButton, SmartLife.Share.Models" />
+    <typeAlias alias="WXButtonPK" type="SmartLife.Share.Models.WeiXin.Pub.WXButtonPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="WXButton_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_WXButton(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ButtonId" >ButtonId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ButtonCode" >ButtonCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Type" >Type</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ButtonName" >ButtonName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="KeyOrUrl" >KeyOrUrl</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ButtonId" >#ButtonId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ButtonCode" >#ButtonCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Type" >#Type#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ButtonName" >#ButtonName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="KeyOrUrl" >#KeyOrUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="WXButton_Update" parameterClass="StringObjectDictionary" >
+      update Pub_WXButton
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ButtonCode" >ButtonCode=#ButtonCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Type" >Type=#Type#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ButtonName" >ButtonName=#ButtonName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="KeyOrUrl" >KeyOrUrl=#KeyOrUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      where ButtonId=#ButtonId#
+    </update>
+    <delete id="WXButton_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_WXButton
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ButtonId" >ButtonId=#ButtonId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ButtonCode" >ButtonCode=#ButtonCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Type" >Type=#Type#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ButtonName" >ButtonName=#ButtonName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="KeyOrUrl" >KeyOrUrl=#KeyOrUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="WXButton_Load" parameterClass="WXButtonPK" resultClass="WXButton" >
+      select ButtonId,ButtonCode,Id,CheckInTime,Status,Type,ButtonName,KeyOrUrl,ParentId,Levels,EndFlag,Picture,OrderNo from Pub_WXButton
+      where ButtonId=#ButtonId#
+    </select>
+    <select id="WXButton_List" parameterClass="StringObjectDictionary" resultClass="WXButton" >
+      select ButtonId,ButtonCode,Id,CheckInTime,Status,Type,ButtonName,KeyOrUrl,ParentId,Levels,EndFlag,Picture,OrderNo from Pub_WXButton
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ButtonId" >ButtonId=#ButtonId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ButtonCode" >ButtonCode=#ButtonCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Type" >Type=#Type#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ButtonName" >ButtonName=#ButtonName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="KeyOrUrl" >KeyOrUrl=#KeyOrUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,340 @@
+﻿<style type="text/css">
+    .td_image{ width:130px;}
+    .td_oldmaninfo{ width:320px;}
+    .service-history-content { width:450px;  height:160px; border:solid 1px #999; overflow-y:scroll;}
+</style>
+<div id="serve-call-info-from" title="老人详细资料" style=" padding: 10px;">
+    <div class="fitem" style="height: 340px; width: 100%; text-align: center;">
+    <input id="OldManId" type="hidden" />
+    <table style=" margin:auto;" >
+    <tr>
+    <td class="td_image" id="oldman-portrait"></td>
+    <td class="td_oldmaninfo"><label id="oldManInfo"></label></td>
+    <td><div id="service-history-content-tt" class="service-history-content"> </div></td>
+    </tr>
+    <tr>
+    <td colspan="3">
+    <table id="dg-serve-call"  style=" height:330px;  ">
+            </table>
+    </td></tr>
+    </table>
+    </div>
+    <div id="toolbar-serve-call" title="查询" style="padding:3px; width:100%; height:30px;">
+    <form id="fm-serve-call" method="post" >
+        <table width="100%">
+            <tr>
+                <td style=" text-align:right">服务内容：</td>
+                <td style=" text-align:left"><input name="Content" class="easyui-validatebox" /></td>
+                <td style=" text-align:right">呼入时间：</td>
+                <td style=" text-align:left"><input name="CheckInTime_Start" class="Wdate"  onfocus="WdatePicker()" /></td>
+                <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  onclick="execEx()">查询</a></td>
+                <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfmEx()">清空</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</div>
+<div id="dlg-YY" class="easyui-dialog" style="width: 230px; height: 150px; padding: 10px;"
+ closed="true" cache="false" >
+    <ul id="YY-Content">
+    </ul>
+</div> 
+<!--<div id="service-history-block"></div>-->
+<script type="text/javascript">
+
+    function dialogOpen(dialogId, dialogData) {
+        var oldmaninfo;
+        if (dialogData.OldManId) {
+            $('#OldManId').val(dialogData.OldManId);
+            var queryParams = {
+                sort: 'OperatedOn',
+                order: 'desc',
+                page: '1',
+                rows: '5',
+                instance: {
+                    Status: 1,
+                    OldManId: dialogData.OldManId
+                }
+            }
+            postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/OldManBaseInfo_ForMonitor_V_ListByPage', $.toJSON(queryParams), function (ret) {
+                //                                alert($.toJSON(ret.rows[0].AssessLevel));
+                if (ret.Success) {
+                    oldmaninfo = "姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：" + isnull(ret.rows[0].OldManName, '无') + "</br>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：" + isnull(ret.rows[0].Gender, '无') + "</br>出生日期：" + isnull(ndateFormatter(ret.rows[0].Birthday, 'yyyy-MM-dd'), '无') + "</br>身份证号：" + isnull(ret.rows[0].IDNo, '无') + "</br>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机："
+        + isnull(ret.rows[0].Mobile, '无') + "</br>电话号码：" + isnull(ret.rows[0].Tel, '无') + "</br>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：" + isnull(ret.rows[0].AreaId2, '无') + "," + isnull(ret.rows[0].AreaId3, '无') + "," + isnull(ret.rows[0].Address, '无') + "</br>医&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保："
+        + boolValue2String(ret.rows[0].HealthInsuranceFlag) + "</br>社&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保：" + boolValue2String(ret.rows[0].SocialInsuranceFlag) + "</br>居住情况："
+        + isnull(ret.rows[0].LivingState, '无') + "</br>评估等级：" + isnull(ret.rows[0].AssessLevel, '无');
+                    if (ret.rows[0].Gender != null) {
+                        $("#oldman-portrait").html('<img width="128px" height="128px" src="../../images/public/portrait-' + (ret.rows[0].Gender == "女" ? "f" : "m") + '.png">');
+                    }
+                    else {
+                        $("#oldman-portrait").html('<img width="128px" height="128px" src="../../images/public/portrait.png">');
+                    }
+                }
+            }, { async: false });
+        }
+//        alert(oldmaninfo);
+        $('#oldManInfo').html(oldmaninfo);
+
+        //////////////服务历史
+        if (dialogData.CallServiceId) {
+            serviceHistory(dialogData.CallServiceId);
+        }
+        else {
+            serviceHistory(null);
+        }
+
+
+
+        //呼叫记录
+        $('#dg-serve-call').datagrid(easyuigrid_settings({
+            title: "呼叫历史",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            toolbar: '#toolbar-serve-call',
+            url: baseCMSInvokeUrl + '/Oca/CallService/Oca_CallService_ForMonitor_V_ListByPage',
+            method: 'POST',
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    Status: 1,
+                    OldManId: dialogData.OldManId
+                }
+            },
+            onSelect: function (Index, Data) {
+                if (Data.CallServiceId) {
+                    serviceHistory(Data.CallServiceId);
+                }
+            },
+            onLoadSuccess: function (data) {
+
+                $('.iconYY').linkbutton({ text: '', plain: true });
+                _.each(data.rows, function (obj) {
+                    var yyBtn = $('.iconYY[CallServiceId="' + obj.CallServiceId + '"]');
+                    getTo(baseCMSInvokeUrl + '/Oca/CallService/GetServiceVoice/' + obj.CallServiceId, null, function (ret) {
+                        if (ret.rows.length > 0) {
+                            yyBtn.linkbutton({ text: '录音', plain: true, iconCls: 'icon-loud' }).unbind('click').bind('click', function () {
+                                $('#YY-Content').html(_.map(ret.rows, function (o, i) {
+                                    var seqName = i + 1;
+                                    var urlOutter = '#';
+                                    var nameOutter = '';
+                                    if (o.VoiceType == 0) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType0, o);
+                                        nameOutter = '服务录音' + seqName + '(外网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType1, o);
+                                        nameOutter = '多方通话录音' + seqName + '(外网)';
+                                    }
+                                    else {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType2, o);
+                                        nameOutter = '录音' + seqName + '(外网)';
+                                    }
+                                    var urlInner = '#';
+                                    var nameInner = '';
+                                    if (o.VoiceType == 0) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType0ForInner, o);
+                                        nameInner = '服务录音' + seqName + '(内网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType1ForInner, o);
+                                        nameInner = '多方通话录音' + seqName + '(内网)';
+                                    }
+                                    else {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType2ForInner, o);
+                                        nameInner = '录音' + seqName + '(内网)';
+                                    }
+                                    return '<li><a class="iconYYD" href="' + urlOutter + '" target="_blank">' + nameOutter + '</a><a class="iconYYD" href="' + urlInner + '" target="_blank">' + nameInner + '</a></li>';
+                                }).join(""));
+
+                                $("#dlg-YY").dialog({
+                                    onClose: function () {
+                                    },
+                                    onBeforeOpen: function () {
+                                        $('.iconYYD').linkbutton({ plain: true, iconCls: 'icon-loud' });
+                                    },
+                                    modal: true
+                                }).dialog('open').dialog('setTitle', '查看服务录音');
+                            });
+                        }
+                        else {
+                            yyBtn.remove();
+                        }
+                    });
+                });
+                if (data.rows.length > 0) {
+                    serviceHistory(data.rows[0].CallServiceId);
+                }
+                else {
+                    serviceHistory(null);
+                }
+                
+            },
+            frozenColumns: [[
+            
+                {field: 'YY', title: '语音', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconYY" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+            }
+              ]],
+            columns: [[
+                { field: 'CallServiceId', title: '呼叫ID', width: 150, hidden: true },
+                { field: 'CheckInTime', title: '呼入时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'Content', title: '呼叫服务内容', width: 200 },
+                { field: 'CallSeconds', title: '呼叫秒数', width: 80, align: 'center' },
+                { field: 'DoStatus', title: '处理状态', width: 60, align: 'center' },
+                { field: 'DoResults', title: '处理结果', width: 60, align: 'center' },
+                { field: 'ServiceCatalog', title: '服务类别', width: 100, align: 'center' },
+                { field: 'ServiceArchive', title: '服务归档', width: 100, align: 'center' },
+                {field: 'AbandonFlag', title: '放弃标识', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '否:0~t是:1' },
+                { field: 'DialBackCount', title: '回拨次数', width: 80, align: 'center' },
+                { field: 'AbandonOn', title: '放弃日期', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'LastDialBackOn', title: '最后回拨时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'Caller', title: '主叫号码', width: 100, align: 'center' },
+                { field: 'Callee', title: '被叫号码', width: 100, align: 'center' }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function boolValue2String(v) {
+        var result;
+        if (v == 1) {
+            result = "有";
+        }
+        else if (v == 0) {
+            result = "无";
+        }
+        else {
+            result = "未知";
+        }
+        return result;
+    }
+
+    function serviceHistory(callServiceId) {
+        var html = [];
+        if (callServiceId && callServiceId != null) {
+            getTo(top.baseCMSInvokeUrl + '/Oca/CallService/GetServiceWorkOrderInProcess/' + callServiceId, null, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                _.each(rows, function (o, index) {
+                    html.push(((index > 0 && index % 2 == 0) ? '<br/>' : '') + '<a id="' + o.WorkOrderId + '" style="cursor:pointer; " class="workorder-link" onclick="openWorkOrder(\'' + o.WorkOrderId + '\')">' + o.WorkOrderNo + '' + (o.DoStatus == 9 ? '【作废】' : '') + '</a>');
+                });
+            }, { async: false });
+
+            getTo(serviceTrackLog_InvokeUrl + '/Query?parms=' + $.toJSON({ CallServiceId: callServiceId }), null, function (result) {
+                var htmls = [];
+                if (result.rows.length > 0) {
+                    _.each(result.rows, function (row) {
+                        var strLogContent = row.LogContent;
+                        var strLogFileType = row.LogFileType;
+                        var strContent;
+                        if (strLogContent) {
+                            strContent = strLogContent;
+                            if (strContent.indexOf('[') != -1) {
+                                var re = /\[(\d+):(.+):(.+)\]/;
+                                re.test(strContent);
+                                var type = parseInt(RegExp.$1);
+                                if (type == 0) {
+                                    //紧急电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-red-1-small" >$3</a>');
+                                }
+                                else if (type == 1) {
+                                    //社区电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-yellow-1-small" >$3</a>');
+                                }
+                                else if (type == 2) {
+                                    //亲人电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-blue-1-small" >$3</a>');
+                                }
+                                else if (type == 11) {
+                                    //生活服务
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-red-2-small" >$3</a>');
+                                }
+                                else if (type == 98 || type == 99) {
+                                    //老人与坐席
+                                    strContent = strContent.replace(re, '$3');
+                                }
+                                //alert(RegExp.$1 + '|' + RegExp.$2 + '|' + RegExp.$3 + '|' + RegExp.$4);
+                            }
+                        }
+                        else {
+
+                        }
+
+                        var fontClass = "";
+                        if (row.LogType == 0) {
+                            //系统
+                            fontClass = "TrackLogRed";
+                        }
+                        else if (row.LogType == 1) {
+                            //座席
+                            fontClass = "TrackLogBlack";
+                        }
+                        else if (row.LogType == 2) {
+                            //亲人
+                            fontClass = "TrackLogBlue";
+                        }
+                        else if (row.LogType == 3) {
+                            //商家
+                            fontClass = "TrackLogGreen";
+                        }
+                        if (strContent.indexOf("派单") > 0 && html.length > 0) strContent += "=>单号【" + html.join("") + "】";
+                        htmls.push("<div class=\"TrackLog " + fontClass + "\">" + ndateFormatter(row.CheckInTime, 'yyyy-MM-dd HH:mm:ss') + "&nbsp;&nbsp;" + strContent + "</div>");
+                    });
+                }
+                if (htmls.length > 0) {
+                    $('#service-history-content-tt').html(htmls.join(""));
+                }
+            });
+        }
+        else {
+            $('#service-history-content-tt').html(null);
+        }
+    
+    }
+    function execEx() {
+        var content = $('input[name="Content"]').val();
+        var checkInTime = $('input[name="CheckInTime_Start"]').val();
+        var fuzzyFields = [];
+        var order = 'desc';
+        if (content && content != '') {
+            fuzzyFields.push({ key: 'Content', value: content });
+        }
+        if (checkInTime && checkInTime != '') {
+            fuzzyFields.push({ key: 'CheckInTime', value: checkInTime });
+            order = 'asc';
+        }
+        $('#dg-serve-call').datagrid('load', {
+            sort: 'CheckInTime',
+            order: order,
+            instance: {
+                Status: 1,
+                OldManId: $('#OldManId').val()
+            },
+            fuzzyFields: fuzzyFields
+        });
+    }
+
+    function resetfmEx() {
+        $('input[name="Content"]').val(null);
+        $('input[name="CheckInTime_Start"]').val(null);
+    }
+
+    function dialogBeforeSubmit() {
+
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        //        $('#' + dialogId).dialog('close');
+        return true;
+    }
+
+    function onDialogClose(dialogId) {
+        $('#' + dialogId).dialog('close');
+    }
+
+</script>

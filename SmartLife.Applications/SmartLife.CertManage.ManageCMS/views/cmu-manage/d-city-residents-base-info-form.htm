@@ -1,0 +1,231 @@
+﻿<div id="div_residentsInfo" class="easyui-tabs">
+        <div title="基本信息" style="padding: 10px;">
+            <div style="width:70%; float:left;">
+                <div class="ftitle">
+                </div>
+                <form id="fm-B12010101" method="post" novalidate>
+                <input type="hidden" name="ResidentId" id="residentId-B12010101" />
+                <div class="fitem">
+                    <label>
+                        姓　　名:</label>
+                    <input name="ResidentName" class="easyui-validatebox" required="true" missingmessage="姓名不能为空">
+                    <label>
+                        性　　别:</label>
+                    <input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+                    <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>
+                    <label style="margin-left: 80px;">
+                        出生日期:</label>
+                    <input id="Birthday" name="Birthday" disabled="true">
+                </div>
+                <div class="fitem">
+                    <label>
+                        街道社区:</label>
+                    <input id="AreaOfStreetAndCommunity" required="true" missingmessage="街道社区不能为空" />
+                    <input type="hidden" name="AreaId2" id="AreaId2" />
+                    <input type="hidden" name="AreaId3" id="AreaId3" />
+                    <label>
+                        民　　族:</label>
+                    <input name="NationName" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        身 份 证 :</label>
+                    <input id="IDNo" name="IDNo" class="easyui-validatebox" required="true" missingmessage="身份证不能为空"/>
+                    <label>
+                        业务身份:</label>
+                    <input  name="ResidentBizIdName" class="easyui-validatebox" />
+                    <label>
+                        年　　龄:</label>
+                    <input id="age" name="age" class="easyui-validatebox" disabled="true" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        座　　机:</label>
+                    <input name="Tel" />
+                    <label>
+                        手　　机:</label>
+                    <input name="Mobile" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        籍　　贯:</label>
+                    <input name="NativePlaceName" />
+                    <input type="hidden" name="NativePlace"  />
+                    <label>
+                        户口类型:</label>
+                    <input name="AccountTypeName" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        户　　籍:</label>
+                    <input name="HouseholdRegisterName" />
+                    <input type="hidden" name="HouseholdRegister"  />
+                    <label>
+                        详细地址:</label>
+                    <input name="PlaceOfHouseholdRegister"  />
+                </div>
+                <div class="fitem">
+                    <label>
+                        现居地址:</label>
+                    <input name="ResidentialOfHometownName" />
+                    <input type="hidden" name="ResidentialOfHometown"  />
+                    <label>
+                        详细地址:</label>
+                    <input name="ResidentialAddress"  />
+                </div>
+                <div class="fitem">
+                    <label>
+                        邮　　编:</label>
+                    <input name="PostCode" maxlength="6" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        文化程度:</label>
+                    <input name="EducationLevelName"  />
+                    <label>
+                        婚姻状况:</label>
+                    <input name="MarriageName"  />
+                </div>
+                <div class="fitem">
+                    <label>
+                        收入情况:</label>
+                    <input name="IncomeStatusName" />
+                    <label>
+                        住房情况:</label>
+                    <input name="HousingStatusName"/>
+                </div>
+                <div class="fitem">
+                    <label>
+                        备　　注:</label>
+                    <input name="Remark" style="width: 580px;" maxlength="400">
+                </div>
+                </form>
+             </div>
+            <!-- <div style="width:30%; float:right;">
+                <div class="fitem"></div>
+                <input type="image" id="img" alt="请上传本人照片" style="margin-left: 10px; height:180px; width:150px;"/>
+                    <input type="button" class="easyui-linkbutton" id="img_upload2" value="上传照片" style="margin-left:left;"/>
+                <div class="fitem">
+                <label>
+                    出生日期:</label>
+                <input id="Text1" name="Birthday" disabled="true">
+                </div>
+                <div class="fitem">
+                <label>
+                    年　　龄:</label>
+                <input id="Text2" name="age" class="easyui-validatebox" disabled="true" />
+                </div>
+             </div>-->
+        </div>
+        <!--<div title="健康信息" closable="false" style="overflow: auto; padding: 20px;">
+            tab2
+        </div>-->
+    </div>
+
+<script type="text/javascript">
+    $(function () {
+
+        var areas;
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        $('#div_residentsInfo').tabs({ border: false });
+
+        var residentId = $('#residentId-B12010101').val();
+        if (residentId) {
+            var areaId2 = $('#AreaId2').val();
+            var areaId3 = $('#AreaId3').val(); ;
+            if (areaId3 != "") {
+                $('#AreaOfStreetAndCommunity').val(GetItemName(areas, areaId3));
+            }
+            else {
+                if (areaId2 != "") {
+                    $('#AreaOfStreetAndCommunity').val(GetItemName(areas, areaId2));
+                }
+            }
+            getAgeBirthday();
+        }
+        else {
+            residentId = $('#BizId').val();
+            if (residentId) {
+                var pamam = {
+                    sort: 'CheckInTime',
+                    order: 'asc',
+                    page: '1',
+                    rows: '1',
+                    filterFields: [
+                { key: 'ResidentId', value: residentId}]
+                };
+
+                postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/ResidentBaseInfo33' , $.toJSON(pamam), null, null, null).done(function (ret) {
+                    var rows = _.map(ret.rows, function (o) {
+                        return xml2json.parser(o, 'StringObjectDictionary');
+                    });
+                    $('#fm-B12010101').form('clear');
+                    $('#fm-B12010101').form('load', rows[0]);
+
+                    var areaId2 = rows[0].AreaId2.toLowerCase();
+                    var areaId3 = rows[0].AreaId3.toLowerCase();
+                    if (areaId3 != "") {
+                        $('#AreaOfStreetAndCommunity').val(GetItemName(areas, areaId3));
+                    }
+                    else {
+                        if (areaId2 != "") {
+                            $('#AreaOfStreetAndCommunity').val(GetItemName(areas, areaId2));
+                        }
+                    }
+                    getAgeBirthday();
+                });
+            }
+
+        }
+
+    });
+
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.AreaId == value; }).AreaName;
+    }
+
+    function getAgeBirthday() {
+        var tmpStr = "";
+        var idDate = "";
+        var tmpInt = 0;
+        var strReturn = "";
+        var iIdNo = $("#IDNo").val();
+        iIdNo = easyuigrid_IDNo(iIdNo, null, null);
+        $("#IDNo").val(iIdNo);
+        if (iIdNo != "") {
+            if ((iIdNo.length != 15) && (iIdNo.length != 18)) {
+                strReturn = "输入的身份证号位数错误";
+                alert(strReturn);
+            }
+
+            if (iIdNo.length == 15) {
+                tmpStr = iIdNo.substring(6, 12);
+                tmpStr = "19" + tmpStr;
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+            }
+            else {
+                tmpStr = iIdNo.substring(6, 14);
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+            }
+            $("#Birthday").val(tmpStr);
+            //获取年龄 
+            var myDate = new Date();
+            var month = myDate.getMonth() + 1;
+            var day = myDate.getDate();
+            var age = myDate.getFullYear() - iIdNo.substring(6, 10);  //- 1;
+            //            if (iIdNo.substring(10, 12) < month || iIdNo.substring(10, 12) == month && iIdNo.substring(12, 14) <= day) {
+            //                age++;
+            //            }
+            if (age > 0)
+                $("#age").val(age)
+            else
+                $("#age").val("");
+        }
+    }
+</script>
+<style type="text/css">
+<!-- input {border: none ;padding: 5px} --> 
+</style>

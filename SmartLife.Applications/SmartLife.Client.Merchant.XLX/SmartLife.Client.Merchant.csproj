@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2F0CC413-025A-47A7-94E3-33BCF796EE83}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Client.Merchant</RootNamespace>
+    <AssemblyName>MerXLX</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Disco.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>V2X</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>V2X</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Solution-Bins\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution-Bins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartLife.Share.Models.Auth">
+      <HintPath>..\..\Solution-Bins\SmartLife.Share.Models.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.core">
+      <HintPath>..\..\Solution-Bins\win.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.updater">
+      <HintPath>..\..\Solution-Bins\win.updater.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common.cs" />
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMainV2X.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainV2X.Designer.cs">
+      <DependentUpon>frmMainV2X.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmServiceSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServiceSettings.Designer.cs">
+      <DependentUpon>frmServiceSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderDetail.Designer.cs">
+      <DependentUpon>frmWorkOrderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderFinishedDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderFinishedDetail.Designer.cs">
+      <DependentUpon>frmWorkOrderFinishedDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderNotify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderNotify.Designer.cs">
+      <DependentUpon>frmWorkOrderNotify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessed.Designer.cs">
+      <DependentUpon>frmWorkOrderProcessed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessedDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessedDetail.Designer.cs">
+      <DependentUpon>frmWorkOrderProcessedDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessing.Designer.cs">
+      <DependentUpon>frmWorkOrderProcessing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessingDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderProcessingDetail.Designer.cs">
+      <DependentUpon>frmWorkOrderProcessingDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderToResponse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderToResponse.Designer.cs">
+      <DependentUpon>frmWorkOrderToResponse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWorkOrderToResponseDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderToResponseDetail.Designer.cs">
+      <DependentUpon>frmWorkOrderToResponseDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InteractiveDelegate.cs" />
+    <Compile Include="InteractiveEventArgs.cs" />
+    <Compile Include="MerchantVar.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="frmWorkOrderFinished.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWorkOrderFinished.Designer.cs">
+      <DependentUpon>frmWorkOrderFinished.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsVar.cs" />
+    <Compile Include="WorkOrderInfo.cs" />
+    <Compile Include="WorkOrderReminderInfo.cs" />
+    <Compile Include="WorkOrderReminderStatInfo.cs" />
+    <None Include="Resources\WattingResponse.wav" />
+    <None Include="Resources\Dealing.wav" />
+    <None Include="Resources\WeiXing.wav" />
+    <None Include="Resources\transparent.png" />
+    <None Include="Resources\loginBG.png" />
+    <None Include="Resources\settings2.png" />
+    <None Include="Disco.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="发布历史.txt" />
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMainV2X.resx">
+      <DependentUpon>frmMainV2X.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmServiceSettings.resx">
+      <DependentUpon>frmServiceSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderDetail.resx">
+      <DependentUpon>frmWorkOrderDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderFinishedDetail.resx">
+      <DependentUpon>frmWorkOrderFinishedDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderNotify.resx">
+      <DependentUpon>frmWorkOrderNotify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderProcessed.resx">
+      <DependentUpon>frmWorkOrderProcessed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderProcessedDetail.resx">
+      <DependentUpon>frmWorkOrderProcessedDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderProcessing.resx">
+      <DependentUpon>frmWorkOrderProcessing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderProcessingDetail.resx">
+      <DependentUpon>frmWorkOrderProcessingDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderToResponse.resx">
+      <DependentUpon>frmWorkOrderToResponse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWorkOrderToResponseDetail.resx">
+      <DependentUpon>frmWorkOrderToResponseDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="frmWorkOrderFinished.resx">
+      <DependentUpon>frmWorkOrderFinished.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <EmbeddedResource Include="log4net.config" />
+    <None Include="config.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="config_debug.ini" />
+    <None Include="config_release.ini" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\close.png" />
+    <None Include="Resources\close_on.png" />
+    <None Include="Resources\coffee.png" />
+    <None Include="Resources\man.png" />
+    <None Include="Resources\max.png" />
+    <None Include="Resources\max_on.png" />
+    <None Include="Resources\min.png" />
+    <None Include="Resources\min_on.png" />
+    <None Include="Resources\normal.png" />
+    <None Include="Resources\normal_on.png" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\Sync.png" />
+    <None Include="Resources\titleBG.png" />
+    <None Include="Resources\window.png" />
+    <None Include="Resources\长条.png" />
+    <Content Include="MerXLX.reg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="config_release_old.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\empty.ico" />
+    <None Include="Resources\Close2.bmp" />
+    <None Include="Resources\Close1.bmp" />
+    <None Include="Resources\remind_bg.png" />
+    <None Include="Resources\right.png" />
+    <None Include="Resources\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

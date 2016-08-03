@@ -1,0 +1,111 @@
+﻿table.t1 td, th
+    {
+        height: 30px;
+        font-size: 14px;
+        text-align: center;
+        border-width: 0px 1px 1px 0px;
+        border-style: solid dashed dashed dashed;
+    }
+    #noneborder
+    {
+       border: 0px;
+    }   
+    
+    #leftbar
+    {
+        height:30px;
+        font-size: 14px;
+        text-align: center;
+        border-width: 0px 1px 1px 0px;
+        border-style: solid dashed dashed dashed;
+    }
+    #caption
+    {
+        font-size: 25px;
+        height: 50px;
+        text-align: center;
+        border-style: solid;
+    }
+    
+    #lsattab
+    {
+        position: absolute;
+        bottom: 0px;
+        right: 16px;
+        width: 100%;
+        height: 20px;
+        text-align: center;
+        background: #ccc;
+        z-index: 2;
+        overflow: hidden;
+    }
+    
+    table.t1 th
+    {
+        background-image: linear-gradient(rgb(253, 253, 253) 0px, rgb(245, 245, 245) 100%);
+    }
+    .datagrid-header
+    {
+        background-image: linear-gradient(rgb(253, 253, 253) 0px, rgb(245, 245, 245) 100%);
+    }
+    .datagrid-toolbar
+    {
+        height: auto;
+        padding: 1px 2px;
+        border-width: 0 1px 1px 1px;
+        border-style: solid;
+    }
+    
+    .datagrid-tools
+    {
+        height: 30px;
+        margin-top: 20px;
+    }
+    
+    .context
+    {
+        margin: 0;
+        padding: 0 4px;
+        white-space: nowrap;
+        line-height: 18px;
+        font-size: 12px;
+    }
+    
+    .print
+    {
+        background: url('../../images/report-form/print.jpg') no-repeat;
+    }
+    .export
+    {
+        background: url(../../images/report-form/export.jpg) no-repeat;
+        margin-left: 20px;
+    }
+    
+    .statistics
+    {
+        background: url(../../images/report-form/statistics.jpg) no-repeat;
+        margin-left: 20px;
+    }
+    
+    .icon-blank
+    {
+        background-position: left center;
+        width: 60px;
+        height: 30px;
+        margin-top: 20px;
+    }
+    a
+    {
+        display: inline-block;
+        vertical-align: baseline;
+        width: auto;
+        height: 16px;
+        line-height: 16px;
+        font-size: 12px;
+    }
+#callbox tr td
+{
+    
+    }
+    
+    

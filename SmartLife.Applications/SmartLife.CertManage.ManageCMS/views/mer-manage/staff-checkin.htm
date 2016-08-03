@@ -1,0 +1,255 @@
+﻿<div id="toolbar-CheckIn" >
+    <table width="100%;"  height="60px">
+        <tr>
+            
+            <td style="text-align: left;width:400px;">
+                从<input id="CheckInOn_Start" name="CheckInOn_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input id="CheckInOn_End" name="CheckInOn_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="queryData()">查询</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="queryLastWeek()">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="queryNextWeek()">
+                            下周</a>
+            </td>
+            <td id="CurrentMerchant-cc" style="text-align: left;">
+                <div id="CurrentMerchant-c" style="display: inline-block;"><input id="CurrentMerchant" /></div>
+            </td> 
+        </tr>
+    </table>
+</div>
+<table id="dg-CheckIn" class="main-area">
+</table>
+
+<script type="text/javascript">
+
+    var mouseClickDown = false;
+    var templateOfCheckInfoForView = '<li class="check-info-item"><span class="check-info-item-content" >[CheckInfo]</span></li>';
+    var daysBeforehand = -1; //今天之前的不能修改
+    $(function () {
+        loadfiles([
+            { type: "css", url: "../../css/mer/staff-checkin.css" }
+            ], function () {
+
+
+                //加载商家
+                $('#CurrentMerchant').combobox({
+                    width: 180,
+                    panelWidth: 300,
+                    data: top.gUserInfo.MappingMerchants,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onSelect: function (record) {
+                        buildPageByMerchant();
+                    }
+                });
+                if (top.gUserInfo.MappingMerchants.length > 0) {
+                    $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+
+                    buildPageByMerchant();
+
+                    if (top.gUserInfo.MappingMerchants.length == 1) {
+                        $('#CurrentMerchant-c').hide();
+                        $('#CurrentMerchant-cc').width(190);
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何商家');
+                    $('#toolbar-CheckIn').hide();
+                }
+            });
+    });
+
+    function buildPageByMerchant() {
+        autosize('dg-CheckIn', -64);
+        //createGrid(); 
+        var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+        var sunday = Date.today().moveToDayOfWeek(0);
+        queryFromTo(monday, sunday); 
+    }
+      
+    function queryLastWeek() {
+        var beginDate = Date.parse($('#CheckInOn_Start').val()).moveToDayOfWeek(1, -1);
+        var endDate = Date.parse($('#CheckInOn_Start').val()).moveToDayOfWeek(0, -1);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryNextWeek() {
+        var beginDate = Date.parse($('#CheckInOn_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#CheckInOn_Start').val()).moveToDayOfWeek(0, 1).addDays(7);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryFromTo(beginDate, endDate, loadDataFlag) {
+        $('#CheckInOn_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#CheckInOn_End').val(endDate.toString('yyyy-MM-dd'));
+        queryData();
+    }
+
+    function queryData() {
+        _queryData();
+    }
+    function _queryData() {
+        var beginDateStr = $('#CheckInOn_Start').val();
+        if (!beginDateStr) {
+            alertInfo('请选择一个开始日期');
+            return;
+        }
+        var endDateStr = $('#CheckInOn_End').val();
+        if (!endDateStr) {
+            alertInfo('请选择一个结束日期');
+            return;
+        } 
+        var currentDate = Date.parse(beginDateStr);
+        var days = DateDiff('d', currentDate, Date.parse(endDateStr));
+        
+        var frozenColumns = [[
+                    { field: 'UserId', title: '用户编号', width: 150, hidden: true },
+                    { field: 'UserName', title: '姓名', align: 'center', width: 80, styler: function () { return 'background-color:#72ADFE;color:#fff'; } },
+                    { field: 'NickName', title: '微信号', align: 'center', width: 150, formatter: nickNameFormatter }
+            ]];
+        var columns = [[]];
+        
+        for (var i = 0; i <= days; i++) {
+            var spanDays = DateDiff('d', Date.today(), currentDate);
+            
+            var changeFlag = true;
+            if (spanDays <= daysBeforehand) {
+                changeFlag = false; 
+            }
+            
+            var theColumn = { changeFlag: changeFlag, field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 150, formatter: checkinfoFormatter, styler: cellStyler };
+            columns[0].push(theColumn);
+            currentDate = currentDate.addDays(1);
+        }
+        //columns[0].push({ field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 150, formatter: checkinfoFormatter, styler: cellStyler });
+
+        $('#dg-CheckIn').datagrid({
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListCheckIn',
+            rownumbers: true,
+            singleSelect: false,
+            method: 'POST',
+            autoRowHeight: false,
+            queryParams: {
+                instance: { StationId: $('#CurrentMerchant').combobox('getValue'), BeginDateStr: beginDateStr, EndDateStr: endDateStr }
+            },
+            loader: easyuiLoaderForStringObjectDictionary,
+            frozenColumns: frozenColumns,
+            columns: columns
+        }).datagrid('freezeRow', 2).datagrid('attachCellSelect', {
+            onmousedown: function (e) {
+                if (e.button == 0 || e.button == 1) {
+                    if (!e.ctrlKey) {
+                        if ($('.selectedCell').size() > 0) {
+                            $('.selectedCell').removeClass('selectedCell');
+                        }
+                    }
+                    mouseClickDown = true;
+                    var columnOption = $('#dg-CheckIn').datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption.field != 'UserName' && columnOption.field != 'NickName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+
+                    }
+                }
+            },
+            onmouseup: function (e) {
+                var userSelection;
+                if (window.getSelection) { //现代浏览器
+                    userSelection = window.getSelection();
+                } else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面
+                    userSelection = document.selection.createRange();
+                }
+                mouseClickDown = false;
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        try {
+                            window.getSelection().removeAllRanges();
+                        }
+                        catch (e) {}
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            },
+            onmouseover: function (e) {
+                if (mouseClickDown) {
+                    var columnOption = $('#dg-CheckIn').datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption.field != 'UserName' && columnOption.field != 'NickName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+                    }
+                }
+            },
+            onkeydown: function (e) {
+                if (e.which == 46) {
+                    //删除按钮
+                }
+            },
+            onbodyclick: function (e) {
+                if (e.target.className == 'datagrid-body') {
+                    if ($('.selectedCell').size() > 0) {
+                        $('.selectedCell').removeClass('selectedCell');
+                    }
+                }
+            }
+        });
+    }
+
+    function nickNameFormatter(value, row, index) {
+        if (top.WeiXinFlag == '1' && row.OpenId) {
+            return value + '<a NickName="' + row.NickName + '" OpenId="' + row.OpenId + '" style="display:inline-block" title="发送微信消息" onclick="remindcheckinfoItemByWX(this)" class="actionServeInfoItem nicon-blue nicon-R9C11"></a>';
+        }
+        else {
+            return value;
+        }
+        
+    }   
+
+    function checkinfoFormatter(value, row, index) {
+        var formallis = '';
+        var reserveDate = this.field.substr(1);
+        var columnOption = $('#dg-CheckIn').datagrid('getColumnOption', this.field);
+        if (value) {
+            formallis = _.map(value.split(','), function (o) {
+                return replaceWithKeys(templateOfCheckInfoForView, { CheckInfo: o });
+            }).join("");
+        }
+        else {
+            formallis = replaceWithKeys(templateOfCheckInfoForView, { CheckInfo: '--' });
+        }
+        var htmls = [];
+        htmls.push('<div class="checkinfo"><ul class="formal">' + formallis + '</ul>');
+        return htmls.join('');
+    }
+
+    function cellStyler(value, row, index) {
+
+        if (this.title.indexOf('六') != -1 || this.title.indexOf('日') != -1) {
+            return { "class": 'restday' };
+        }
+        else if (!this.changeFlag) { 
+            return { "class": 'cantchangeday' };
+        }
+    }
+
+    function remindcheckinfoItemByWX(o) {
+        var openId = $(o).attr('OpenId');
+        var nickName = $(o).attr('NickName');
+        openDialog('sendWXMessageSlim', dialogUrlPrefix + 'views/dialogs/send-wxmessage-slim.htm', function (callback, dialogData) {
+            postTo(baseWeiXinOfServiceOnlineInovkeAddress + '/api/share/v1/SendWXMessage', $.toJSON({ touser: openId, msgtype: 'text', text: { content: dialogData.Content} }), function (ret) {
+                if (ret.Success) {
+                    alertInfo('微信消息发送完成');
+                }
+            });
+            callback(); //新增成功之后关闭对话框
+        }, { dialogData: { NickName: nickName }
+        , title: '发送微信消息', width: 360, height: 320, padding: 5, mergeDefault: true
+        });
+
+    } 
+     
+    
+</script>

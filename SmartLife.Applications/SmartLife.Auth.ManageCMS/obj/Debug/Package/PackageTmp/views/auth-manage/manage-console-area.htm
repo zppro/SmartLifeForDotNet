@@ -1,0 +1,30 @@
+﻿<div id="city-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+</div>
+<script type="text/javascript">
+    $(function () {
+        var nodeUrl = getQueryStringInTab("nodeUrl"); //紧跟页面的为getQueryStringInTab
+        var namePrefix = getQueryString("namePrefix"); //其他用getQueryString
+        loadfiles([
+        { type: "css", url: "../../css/auth-manage/console.css" }
+        ], function () {
+            autosize('city-panel', -10);
+            getAll([ajaxData_InvokeUrl + '/GetCityAndAreaInProvince/' + top.appDeployArea.id], function (cityAndAreas) {
+                var htmls = [];
+                var citys = _.filter(cityAndAreas, function (o) { return o.ItemCode.length == 4 });
+                _.each(citys, function (o1, index) {
+                    htmls.push('<ul class="city-zone">');
+                    htmls.push('<li class="city-name">' + o1.ItemName + '</li>');
+
+                    htmls.push('<li class="area-zone"><ul>');
+                    _.each(_.filter(cityAndAreas, function (o) { return o.ItemCode.length > 4 && o.ItemCode.substr(0, 4) == o1.ItemCode }), function (o3) {
+                        htmls.push('<li class="area-name"><a href="javascript:void(0);" onclick="top.openTab(\'' + currentMenuCode + '--' + o3.ItemId + '\', \'' + currentMenuCode + '--' + o3.ItemCode + '\', \'' + namePrefix + '(' + o3.ItemName + ')\', \'' + nodeUrl + '\', null,null,true, true, false, false);">' + o3.ItemName + '</a></li>');
+                    });
+                    htmls.push('</ul></li>');
+
+                    htmls.push('</ul>')
+                });
+                $('#city-panel').html(htmls.join(""));
+            });
+        });
+    });
+</script>

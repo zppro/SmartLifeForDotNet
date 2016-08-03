@@ -1,0 +1,111 @@
+﻿<div id='div_user' style="width: 435px;   float: left;">
+    <table id="dg-Users">
+    </table>
+</div>
+<div id='div_permission' class="easyui-panel" title="房间权限树" style="background: #fafafa; padding: 5px 0 0 5px;
+      float: left;">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',border:false" style="height: 30px;">
+            <div id="CurrentAgencys-c" style="display: inline-block;">
+                <input id="CurrentAgencys" /></div>
+            <a id="savePermission" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-save">
+                保存</a>
+        </div>
+        <div data-options="region:'center',border:false">
+        <div id="d_tree" style="overflow: auto;">
+            <ul id="tree-Permission">
+            </ul>
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"> 
+    var areaId = top.objectId == '*' ? '00000' : top.appDeployArea.id;
+    $(function () {
+        //加载机构
+        $('#CurrentAgencys').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: false,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                    $('#toolbar-Schedule').hide();
+                }
+            },
+            onSelect: function (record) {
+                $('#d_tree').hide();
+                _loading();
+            }
+        });
+        _autosize();
+        _loading();
+    });
+    function _loading() {
+        stationId = $('#CurrentAgencys').combobox('getValue');
+        $('#dg-Users').datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            width: 252,
+            height: 300,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/GetAllUsersOfPensionAgency/' + stationId + ',' + areaId,
+            method: 'GET',
+            onSelect: function (rowIndex, rowData) {
+                $('#d_tree').show();
+                initTree('easyUITree', 'tree-Permission', {
+                    checkbox: true,
+                    width: 152,
+                    panelWidth: 200,
+                    panelHeight: 260,
+                    onLoadSuccess: function () {
+                        //默认展开
+                        $('#tree-Permission').tree("expandAll");
+                    }
+                }, function (d) {
+                    getTreeData('01$02$09', "OrderNo asc", '{"StationId":"' + stationId + '" , "UserId":"' + rowData.UserId + '" }', d);
+                }, null, function (treeObj) {
+                    $('#savePermission').unbind('click').bind('click', function () {
+                        var row = $('#dg-Users').datagrid('getSelected');
+                        if (row) {
+                            var groupId = row.UserId;
+                            var checked_nodes = _.map(treeObj.tree('getChecked'), function (o) { return o.id });
+                            //                        var indeterminate_nodes = _.map(treeObj.tree('getChecked', 'indeterminate'), function (o) { return o.id });
+                            //                        var postData = $.toJSON(_.union(checked_nodes, indeterminate_nodes));
+                            var postData = $.toJSON(checked_nodes);
+                            postTo(baseCMSInvokeUrl + '/Pam/RoomService/UserPermissionRoom/' + groupId, postData).done(function (ret) {
+                                if (ret.Success) {
+                                    alertInfo('授权成功！');
+                                }
+                            });
+                        }
+                    });
+                });
+            },
+            columns: [[
+        { field: 'UserId', title: '用户编号', width: 150, hidden: true },
+        { field: 'UserName', title: '用户名称', width: 180 },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'GroupName', title: '组名称', width: 170 }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+    }
+
+    function _autosize() {
+        var h1 = $('#div_user').parent().parent().parent().height()-5;
+        var h2 = $('#div_permission').parent().parent().parent().height() - 5; 
+        $("#div_user").height(h1);
+        $("#div_permission").height(h2);
+        $("#d_tree").height(h2-70);
+    }
+</script>

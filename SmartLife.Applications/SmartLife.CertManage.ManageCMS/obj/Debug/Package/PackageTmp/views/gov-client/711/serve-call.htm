@@ -1,0 +1,478 @@
+﻿<style type="text/css">
+    .query 
+    {
+        list-style: none;
+        display: inline;
+        float: left;
+    }
+    .query li
+    {
+        width: 190px;
+        text-align: right;
+        line-height: 30px;
+    }
+    .query li input
+    {
+        width: 100px;
+    }
+
+</style>
+<div id="search-sample-service-object" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-service-object" method="post">
+    <table width="100%">
+        <tr>
+            <td>
+                <ul  class="query">
+                    <li>
+                        <label>
+                            姓名:</label><input name="OldManName" /></li>
+                    <li>
+                        <label>
+                            处理状态:</label><input name="DoStatus" id="DoStatus"></li>
+                        
+                </ul>
+                <ul class="query">
+                    <li>
+                        <label>
+                            性别:</label><input name="Gender" id="Gender" /></li>
+                    <li>
+                        <label>
+                            所属街道:</label><input id="AreaIdStreet" />
+                        <input type="hidden" name="AreaId2" id="AreaId2" /></li>
+                        
+                </ul>
+                <ul class="query">
+                    <li>
+                        <label>
+                            电话号码:</label><input name="PhoneNo"/></li>
+                    <li>
+                        <label>
+                            所属社区:</label><input id="AreaIdCommunity" />
+                        <input type="hidden" name="AreaId3" id="AreaId3" /></li>
+                    
+                </ul>
+                <ul class="query">
+                    <li>
+                        <label>
+                            处理结果:</label><input name="DoResults" id="DoResults" /></li>
+                    <li>
+                        <label>
+                            呼入时间:</label><input name="CheckInTime" id="CheckInTime" class="Wdate"  onfocus="WdatePicker()" /></li>
+                </ul>
+            </td>
+            <td style="width: 90px;">
+                <div style="float: left;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                        查询</a>
+                <div>　</div>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="clearForm()">
+                        清空</a>
+                </div>
+            </td>
+            <td style=" width:65px;">
+             <label id="total">
+                    </label>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<table id="dg-service-object">
+</table>
+<div id="dlg-YY" class="easyui-dialog" style="width: 230px; height: 150px; padding: 10px;"
+ closed="true" cache="false" >
+    <ul id="YY-Content">
+    </ul>
+</div> 
+<div id="service-history-block"></div>
+<script type="text/javascript">
+    $(function () {
+        var areas;
+        var currentMenuCode = "service-object";
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            pkId: 'callServiceId-' + currentMenuCode,
+            pk: 'CallServiceId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '政府监管平台',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/CallService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        autosize('dg-service-object', -105);
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11001',
+        ajaxData_InvokeUrl + '/GetDictionaryItem/11002',
+        ajaxData_InvokeUrl + '/GetDictionaryItem/12008'], function (livingState_d, oldManIdentity_d, assessLevel_d) {
+            livingState = livingState_d;
+            oldManIdentity = oldManIdentity_d;
+            assessLevel = assessLevel_d;
+
+            setCombobox("LivingState", livingState);
+            setCombobox("OldManIdentity", oldManIdentity);
+            setCombobox("AssessLevel", assessLevel);
+        });
+
+        $('#dg-service-object').datagrid(easyuigrid_settings({
+            title: "",
+            view: scrollview,
+            rownumbers: true,
+            singleSelect: true,
+            autoRowHeight: false,
+            pageSize: 50,
+            url: models[currentMenuCode].baseModelUrl + 'Oca_CallService_ForMonitor_V_ListByPage',
+            method: 'POST',
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                GetCallServiceInfo(row);
+            },
+            onLoadSuccess: function (data) {
+                $('#total').html('总计：</br></br>' + data.total + '条');
+
+                $('.iconSrviceHistory').linkbutton({ text: '查看', plain: true, iconCls: 'icon-search' }).unbind('click').bind('click', function () {
+                    var callServiceId = $(this).attr('CallServiceId');
+                    var oldManId = $(this).attr('OldManId');
+                    GetCallServiceInfo({ OldManId: oldManId, CallServiceId: callServiceId })
+                });
+
+                $('.iconTrackLog').linkbutton({ text: '查看', plain: true, iconCls: 'icon-search' }).unbind('click').bind('click', function () {
+                    var callServiceId = $(this).attr('CallServiceId');
+                    getHtml(baseUrl + '/views/gov-client/dialogs/get-history-service-process-content.htm', function (str) {
+                        $("#service-history-block").html(str);
+                        $.parser.parse('#btn-history-content');
+                        $("#the-history-content").dialog({
+                            inline: false,
+                            onClose: function () {
+                                $(this).dialog('destroy');
+                            },
+                            onBeforeOpen: function () {
+                                dialogOpen(null, { CallServiceId: callServiceId });
+                            },
+                            modal: true
+                        }).dialog('open').dialog('setTitle', '查看-服务历史日志');
+                    });
+                });
+
+                $('.iconYY').linkbutton({ text: '', plain: true });
+                _.each(data.rows, function (obj) {
+                    var yyBtn = $('.iconYY[CallServiceId="' + obj.CallServiceId + '"]');
+                    getTo(models[currentMenuCode].baseModelUrl + 'GetServiceVoice/' + obj.CallServiceId, null, function (ret) {
+                        if (ret.rows.length > 0) {
+                            yyBtn.linkbutton({ text: '录音', plain: true, iconCls: 'icon-loud' }).unbind('click').bind('click', function () {
+                                $('#YY-Content').html(_.map(ret.rows, function (o, i) {
+                                    var seqName = i + 1;
+                                    var urlOutter = '#';
+                                    var nameOutter = '';
+                                    if (o.VoiceType == 0) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType0, o);
+                                        nameOutter = '服务录音' + seqName + '(外网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType1, o);
+                                        nameOutter = '多方通话录音' + seqName + '(外网)';
+                                    }
+                                    else {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType2, o);
+                                        nameOutter = '录音' + seqName + '(外网)';
+                                    }
+                                    var urlInner = '#';
+                                    var nameInner = '';
+                                    if (o.VoiceType == 0) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType0ForInner, o);
+                                        nameInner = '服务录音' + seqName + '(内网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType1ForInner, o);
+                                        nameInner = '多方通话录音' + seqName + '(内网)';
+                                    }
+                                    else {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType2ForInner, o);
+                                        nameInner = '录音' + seqName + '(内网)';
+                                    }
+                                    return '<li><a class="iconYYD" href="' + urlOutter + '" target="_blank">' + nameOutter + '</a><a class="iconYYD" href="' + urlInner + '" target="_blank">' + nameInner + '</a></li>';
+                                }).join(""));
+
+                                $("#dlg-YY").dialog({
+                                    onClose: function () {
+                                    },
+                                    onBeforeOpen: function () {
+                                        $('.iconYYD').linkbutton({ plain: true, iconCls: 'icon-loud' });
+                                    },
+                                    modal: true
+                                }).dialog('open').dialog('setTitle', '查看服务录音');
+                            });
+                        }
+                        else {
+                            yyBtn.remove();
+                        }
+                    });
+                });
+            },
+            frozenColumns: [[
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'SrviceHistory', title: '呼叫历史', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconSrviceHistory" OldManId="' + row.OldManId + '" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                },
+                { field: 'TrackLog', title: '处理日志记录', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconTrackLog" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                },
+                { field: 'YY', title: '语音', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconYY" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                }
+              ]],
+            columns: [[
+                { field: 'CallServiceId', title: '呼叫ID', width: 150, hidden: true },
+                { field: 'Gender', title: '性别', width: 50, align: 'center' },
+                { field: 'CheckInTime', title: '呼入时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'Content', title: '呼叫服务内容', width: 200 },
+                { field: 'CallSeconds', title: '呼叫秒数', width: 80, align: 'center' },
+                { field: 'DoStatus', title: '处理状态', width: 60, align: 'center' },
+                { field: 'DoResults', title: '处理结果', width: 60, align: 'center' },
+                { field: 'ServiceCatalog', title: '服务类别', width: 100, align: 'center' },
+                { field: 'ServiceArchive', title: '服务归档', width: 100, align: 'center' },
+                { field: 'CallNo', title: '号码', width: 80, align: 'center' },
+                { field: 'AreaId2', title: '所属街道', width: 100 },
+                { field: 'AreaId3', title: '所属社区', width: 100 },
+            //                { field: 'ServiceQueueNo', title: '服务队列编号', width: 90, align: 'center' },
+            //                { field: 'ServiceExtNo', title: '接收分机编号', width: 90, align: 'center' },
+                {field: 'AbandonFlag', title: '放弃标识', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '否:0~t是:1' },
+                { field: 'DialBackCount', title: '回拨次数', width: 80, align: 'center' },
+                { field: 'AbandonOn', title: '放弃日期', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'LastDialBackOn', title: '最后回拨时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'Caller', title: '主叫号码', width: 100, align: 'center' },
+                { field: 'Callee', title: '被叫号码', width: 100, align: 'center' }
+        ]],
+            loader: easyuiLoader
+        }));
+    });
+    function execEx() { 
+    var checkInTime=$('#CheckInTime').val();
+    if (isnull(checkInTime,'')!='') {
+        $('#dg-service-object').datagrid('options').queryParams.order = 'asc';
+        query();
+    }
+    else {
+        query();
+    }
+    }
+    function query() {
+        var formData = getJQO('#fm-search-rough-service-object').serializeObject();
+        formData['Caller'] = formData['PhoneNo'];
+        formData['Callee'] = formData['PhoneNo'];
+        formData['CallNo'] = formData['PhoneNo'];
+//        formData['InputCode1'] = formData['OldManName'];
+//        formData['InputCode2'] = formData['OldManName'];
+        formData['PhoneNo'] = undefined;
+        //修改models的默认值
+        var queryParamsArray = getJQO('#dg-service-object').datagrid('options').queryParams;
+        for (var instance in queryParamsArray.instance) {
+            if (_.has(formData, instance)) {
+                queryParamsArray.instance[instance] = formData[instance];
+                formData[instance] = undefined;
+            }
+        }
+        //清除前一次查询的匹配条件
+        for (var o in formData) {
+            if (queryParamsArray.fuzzyFields && _.isArray(queryParamsArray.fuzzyFields)) {
+                for (var i = 0; i < queryParamsArray.fuzzyFields.length; i++) {
+                    if (queryParamsArray.fuzzyFields[i].key == o) {
+                        queryParamsArray.fuzzyFields.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            if (queryParamsArray.filterFields && _.isArray(queryParamsArray.filterFields)) {
+                for (var i = 0; i < queryParamsArray.filterFields.length; i++) {
+                    if (queryParamsArray.filterFields[i].key == o) {
+                        queryParamsArray.filterFields.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        }
+        //添加当前查询条件
+        var filterFields = queryParamsArray.filterFields || [];
+        var fuzzyFields = queryParamsArray.fuzzyFields || [];
+        for (var o in formData) {
+            if (formData[o]) {
+                var dataItem = { key: o, value: formData[o] };
+                if (o.indexOf('_Start') == -1 && o.indexOf('_End') == -1) {
+                    fuzzyFields.push(dataItem);
+                }
+                else {
+                    filterFields.push(dataItem);
+                }
+            }
+        }
+
+        queryParamsArray.fuzzyFields = fuzzyFields;
+        queryParamsArray.filterFields = filterFields;
+        queryParamsArray.fuzzyFieldOP = "OR";
+        getJQO('#dg-service-object').datagrid('load', queryParamsArray);
+    }
+    function clearForm() {
+        getJQO('#fm-search-rough-service-object').form('clear');
+        var community = GetStreetAndCommunityInArea(top.appDeployArea.id, "5"); //获取社区数据
+        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+    }
+    function getJQO(selector, fromTab) {
+        if ($(selector).size() == 0) {
+            if (window.frames['tab_' + currentMenuId]) {
+                return window.frames['tab_' + currentMenuId].$(selector);
+            }
+        }
+        return $(selector);
+    }
+    //街道
+    $('#AreaIdStreet').combobox({
+        width: 106,
+        panelHeight: 150,
+        method: 'get',
+        data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        filter: function (q, row) {
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) == 0;
+        },
+        //姓名选择为空的时候    清除表单中的所以内容
+        onHidePanel: function () {
+            if ($('#AreaIdStreet').combo('getText') == "") {
+                $('#AreaIdCommunity').combobox('setValue', null);
+                $('#AreaId2').val(null);
+                $('#AreaId3').val(null);
+            }
+        },
+        onSelect: function (d) {
+            $('#AreaId2').val(d.ItemName);
+            var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+            $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+            //如果该街道下有社区，则自动填充
+            if (community.length > 0) {
+                $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                $('#AreaId3').val(community[0].ItemName);
+            }
+            //否则为空
+            else {
+                $('#AreaIdCommunity').combobox('setValue', null);
+                $('#AreaId3').val(null);
+            }
+        }
+    });
+    //社区
+    $('#AreaIdCommunity').combobox({
+        width: 106,
+        panelHeight: 150,
+        method: 'get',
+        data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        filter: function (q, row) {
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) == 0;
+        },
+        //姓名选择为空的时候    清除表单中的所以内容
+        onHidePanel: function () {
+            if ($('#AreaIdCommunity').combo('getText') == "") {
+                $('#AreaId3').val(null);
+            }
+        },
+        onSelect: function (d) {
+            $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+            $('#AreaId2').val(d.ParentId);
+            $('#AreaId3').val(d.ItemName);
+        }
+    });
+
+    //获取街道和社区信息
+    function GetStreetAndCommunityInArea(parentId, levels) {
+        var arr = [];
+        if (parentId != null) {
+            getTo(ajaxData_InvokeUrl + "/GetStreetAndCommunityInArea/" + parentId, null, function (result) {
+                //根据levels选择不同层的数据
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].Levels == levels) {
+                        arr.push(result[i]);
+                    }
+                }
+            }, { async: false });
+        }
+        return arr;
+    }
+
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 106,
+            panelHeight: 80,
+            method: 'get',
+            data: data,
+            valueField: 'ItemName',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    setCombobox2("Gender", "男", "男", "女", "女");
+    setCombobox3("DoStatus");
+    setCombobox2("DoResults", "处理完成", "处理完成", "未处理", "未处理");
+    setCombobox2("SocialInsuranceFlag", "0", "无社保", "1", "有社保");
+    setCombobox2("PopFlag", "已响应", "已响应", "未知", "未知");
+    function setCombobox2(controlsId, itemId1, itemName1, itemId2, itemName2) {
+        $('#' + controlsId + '').combobox({
+            width: 106,
+            panelHeight: 50,
+            data: [{ ItemId: itemId1, ItemName: itemName1 },
+                   { ItemId: itemId2, ItemName: itemName2}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    function setCombobox3(controlsId) {
+        $('#' + controlsId + '').combobox({
+            width: 106,
+            panelHeight: 105,
+            data: [{ ItemId: '未受理', ItemName: '未受理' },
+                   { ItemId: '受理中', ItemName: '受理中' },
+                   { ItemId: '处理中', ItemName: '处理中' },
+                   { ItemId: '服务完成', ItemName: '服务完成' },
+                   { ItemId: '未知', ItemName: '未知' }],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    function GetCallServiceInfo(row) {
+        openDialog('set-serve-call-info', '/views/gov-client/dialogs/serve-call-info-from.htm', function (callback, dialogData) {
+
+            callback();
+            page_load();
+        }, { dialogData: row, title: '历史呼叫信息', width: 1010, height: 600, buttons: [{
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () { top.onDialogClose('set-serve-call-info'); }
+        }]
+        });
+    }
+</script>

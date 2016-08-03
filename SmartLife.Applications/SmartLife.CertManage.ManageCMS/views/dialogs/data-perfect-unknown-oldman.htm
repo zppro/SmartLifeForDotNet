@@ -1,0 +1,243 @@
+﻿<div id="unknown-oldman-perfect" class="easyui-dialog" style="width: 720px; height: 450px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-unknown-oldman-perfect"  >
+    <div class="ftitle"></div>
+    <form id="fm-unknown-oldman-perfect" method="post" novalidate>
+    <input type="hidden" name="OldManId" id="OldManId" /> 
+    <div class="fitem">
+        <label>老人姓名:</label>
+        <input name="OldManName" class="easyui-validatebox" required="true" missingMessage="姓名不能为空">
+        <label>性　　别:</label>
+        <input id="Gender" name="Gender" class="easyui-validatebox" missingmessage="性别不能为空" />
+        <label >出生日期:</label>
+        <input name="Birthday" class="easyui-datebox" >
+    </div>
+    <div class="fitem">
+        <label>
+            街道社区:</label> 
+        <input id="AreaOfStreetAndCommunity"   /> 
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+    </div>
+    <div class="fitem">
+        <label>
+            　身份证:</label>
+        <input id="IDNo" name="IDNo" class="easyui-validatebox" required="true" missingMessage="身份证不能为空">
+        <label>
+            身份情况:</label>
+        <input id="OldManIdentity" name="OldManIdentity" class="easyui-validatebox" missingmessage="身份情况不能为空" />
+        <label>
+            居住情况:</label>
+        <input id="LivingState" name="LivingState" class="easyui-validatebox" missingmessage="居住情况不能为空" />
+    </div>
+    <div class="fitem">
+        <label>
+        医　　保:</label> 
+        <input name="HealthInsuranceNumber" />
+        <label>
+        社　　保:</label> 
+        <input name="SocialInsuranceNumber"  />
+        <label>邮　　编:</label> 
+        <input name="PostCode" maxlength="6" />
+            
+    </div>
+    <div class="fitem">
+        <label>
+        座　　机:</label> 
+        <input name="Tel" />
+        <label>
+        手　　机:</label> 
+        <input name="Mobile"  />  
+        <label style=" display:none">
+        呼叫号码:</label> 
+        <input id="CallNo"  style=" display:none"/> 
+    </div>
+    <div class="fitem">
+        <label>
+            家庭地址:</label>
+            <textarea name="Address" style="width: 580px;" maxlength="200"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+        经　　度:</label> 
+        <input name="LongitudeS" maxlength="20"/>
+        <label>
+        纬　　度:</label> 
+        <input name="LatitudeS"  maxlength="20"/>  
+    </div>
+    <div class="fitem">
+        <label>
+            备　　注:</label>
+            <textarea name="Remark" style="width: 580px;" maxlength="400"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-unknown-oldman-perfect">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doSubmitPerfectOlaMan()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="doCancelPerfectOlaMan()">取消</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+
+        var areas;
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        $('#AreaOfStreetAndCommunity').combogrid({
+            delay: 500,
+            width: 370,
+            panelWidth: 600,
+            panelHeight: 240,
+            mode: 'local',
+            data: areas,
+            idField: 'AreaId',
+            textField: 'AreaName',
+            filter: function (q, row) {
+                return row["AreaName"].indexOf(q) != -1 || row["AreaCode"].indexOf(q) != -1 || (row["InputCode1"] && row["InputCode1"].indexOf(q) != -1);
+            },
+            columns: [[
+                { field: 'AreaCode', title: '编码', width: 120, sortable: true },
+                { field: 'AreaName', title: '名称', width: 400, sortable: true }
+            ]],
+            onHidePanel: function () {
+                if ($('#AreaOfStreetAndCommunity').combo('getText') == "") {
+                    $('#AreaId2').val("");
+                    $('#AreaId3').val("");
+                }
+            },
+            onSelect: function (index, record) {
+                if (record.ParentId.length == 5) {
+                    //选择街道
+                    $('#AreaId2').val(record.AreaId.toUpperCase());
+                    $('#AreaId3').val("");
+                }
+                else {
+                    //选择社区
+                    $('#AreaId2').val(record.ParentId.toUpperCase());
+                    $('#AreaId3').val(record.AreaId.toUpperCase());
+                }
+            }
+        });
+        $('#OldManIdentity').combobox({
+            width: 152,
+            panelHeight: 40,
+            required: true,
+            method: 'get',
+            url: ajaxData_InvokeUrl + '/GetDictionaryItem/11002',
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+
+        $('#LivingState').combobox({
+            width: 152,
+            panelHeight: 40,
+            required: true,
+            method: 'get',
+            url: ajaxData_InvokeUrl + '/GetDictionaryItem/11001',
+            valueField: 'ItemId',
+            textField: 'ItemName'
+        });
+        $('#Gender').combobox({
+            width: 152,
+            panelHeight: 40,
+            required: true,
+            data: [{ ItemName: '男', ItemId: 'M' }, {
+                ItemName: '女',
+                ItemId: 'F'
+            }, {
+                ItemName: '未知',
+                ItemId: 'N'
+            }],
+            valueField: 'ItemId',
+            textField: 'ItemName'
+        });
+    });
+    function loadUnknownOldManContent(oldManInfo) {
+        if (oldManInfo) {
+            $('#OldManId').val(oldManInfo.OldManId);
+            $('#fm-unknown-oldman-perfect').form('clear');
+            $('#fm-unknown-oldman-perfect').form('load', oldManInfo);
+            var dateboxs = $('.easyui-datebox');
+            if (dateboxs.size() > 1) {
+                _.each(dateboxs, function (o) {
+                    o.datebox('setValue', ndateFormatter(o.datebox('getValue'), 'yyyy-MM-dd'));
+                });
+            }
+            else if (dateboxs.size() == 1) {
+                dateboxs.datebox('setValue', ndateFormatter(dateboxs.datebox('getValue'), 'yyyy-MM-dd'));
+            }
+//            if (oldManInfo.OldManName.indexOf("未知号码") < 0) {
+//                $('#btn-unknown-oldman-perfect a').each(function () {
+//                    if ($(this).attr("iconcls") == "icon-ok") $(this).hide();
+//                });
+//            }
+
+            getTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + oldManInfo.OldManId, null, function (ret) {
+                $('#CallNo').val(ret.instance.CallNo);
+            });
+
+            var areaId2 = $('#AreaId2').val().toLowerCase();
+            var areaId3 = $('#AreaId3').val().toLowerCase();
+
+            if (areaId3 != "") {
+                $('#AreaOfStreetAndCommunity').combogrid('setValue', areaId3);
+            }
+            else {
+                if (areaId2 != "") {
+                    $('#AreaOfStreetAndCommunity').combogrid('setValue', areaId2);
+                }
+            }
+        }
+    }
+
+    function doSubmitPerfectOlaMan() {
+        alertConfirm('确定要提交老人信息？', function (ret) {
+            if (ret == true) {
+                if ($('#fm-unknown-oldman-perfect').form('validate')) {
+                    var formData = $('#fm-unknown-oldman-perfect').serializeObject();
+
+                    var dateboxs = $('.easyui-datebox');
+                    if (dateboxs.size() > 1) {
+                        _.each(dateboxs, function (o) {
+                            formData[o.attr('comboname')] = '\/Date(' + Date.parse(o.datebox('getValue')).getTime() + '+0800)\/';
+                        });
+                    }
+                    else if (dateboxs.size() == 1) {
+                        formData[dateboxs.attr('comboname')] = '\/Date(' + Date.parse(dateboxs.datebox('getValue')).getTime() + '+0800)\/';
+                    }
+
+                    var url = window.location.href.substring(window.location.href.indexOf('/views/'));
+                    //弹屏窗口还是查看信息窗口
+                    if (formData.OldManId.toUpperCase().indexOf("A9999999") > -1) {
+                        formData.OldManId = window.contants.guidAutoGenerate;
+                        postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/', $.toJSON(formData), function (ret) {
+                            alertInfo('信息已提交成功', function () {
+                                var objarray = { Content: formData.OldManName + "需要公共服务", OldManId: ret.instance.OldManId };
+                                putTo(baseCMSInvokeUrl + '/Oca/CallService/' + pageData.CallServiceId, $.toJSON(objarray), function (ret) {
+                                    if (ret.Success) {
+                                        doCancelPerfectOlaMan();
+                                        OpenNewWinAsCallService(url, pageData.CallServiceId, url.indexOf('&menuCode=') > 0 ? '' : 'info');
+                                    }
+                                });
+                            });
+                        });
+                    }
+                    else {
+                        putTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/' + formData.OldManId, $.toJSON(formData), function (ret) {
+                            alertInfo('信息已提交成功', function () {
+                                //putTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + formData.OldManId, $.toJSON({ OldManId: formData.OldManId, CallNo: $('#CallNo').val() }), function (ret) { });
+                                doCancelPerfectOlaMan();
+                                OpenNewWinAsCallService(url, pageData.CallServiceId, url.indexOf('&menuCode=') > 0 ? '' : 'info');
+                            });
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function doCancelPerfectOlaMan() {
+        $('#unknown-oldman-perfect').dialog('close');
+    }
+</script>

@@ -1,0 +1,57 @@
+﻿<div id="dlg-callback-service" class="easyui-dialog" style="width: 570px; height: 310px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-callback-service">
+    <form id="fm-callback-service" method="post">
+    <input type="hidden" name="CallBackId" id="CallBackId" /> 
+    <input type="hidden" name="CallServiceId" id="CallServiceId" /> 
+    <input type="hidden" name="OldManId" id="OldManId" /> 
+    <div class="fitem">
+        <label> 回访内容:</label>
+        <textarea name="Content" style="width:430px;"  rows="6" /> 
+    </div>
+    <div class="fitem">
+        <label> 回访评价:</label>
+        <div id="rdEvaluatedLevel" ></div>
+    </div>
+    <div class="fitem">
+        <label> 备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</label>
+        <textarea name="Remark" style="width:430px;"  rows="3" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-callback-service">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doCallBck()"> 确定</a> 
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancel()">取消</a>
+</div> 
+<script type="text/javascript">
+    function loadCallBackService(strCallBackId, evaluatLevel) {
+        $('#rdEvaluatedLevel').html(_.map(evaluatLevel, function (o) {
+            return '<span><input type="radio" name="EvaluatedLevel"  id="ST_' + o.ItemId + '" value="' + o.ItemId + '" /><label for="ST_' + o.ItemId + '">' + o.ItemName + '</label></span>';
+        }).join(""));
+
+        $("#fm-callback-service").form('clear');
+        getTo(top.baseCMSInvokeUrl + '/Oca/ServiceCallBackService/' + strCallBackId, null, function (ret) {
+            if (ret.Success) {
+                $('#fm-callback-service').form('load', ret.instance);
+            }
+        });
+    }
+
+    function doCallBck() {
+        var formData = $('#fm-callback-service').serializeObject();
+        if (formData) {
+            _.extend(formData, { DoStatus: 1 });
+            putTo(baseCMSInvokeUrl + '/Oca/ServiceCallBackService/' + formData.CallBackId, $.toJSON(formData), function (ret) {
+                if (ret.Success) {
+                    alert("信息已提交成功!");
+                    doCancel();
+                }
+            });
+        }
+    }
+
+
+    function doCancel() {
+        $('#dlg-callback-service').dialog('close');
+    }
+
+</script>

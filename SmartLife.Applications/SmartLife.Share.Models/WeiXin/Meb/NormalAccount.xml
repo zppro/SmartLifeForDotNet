@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Meb" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="NormalAccount" type="SmartLife.Share.Models.WeiXin.Meb.NormalAccount, SmartLife.Share.Models" />
+    <typeAlias alias="NormalAccountPK" type="SmartLife.Share.Models.WeiXin.Meb.NormalAccountPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="NormalAccount_Create" parameterClass="StringObjectDictionary" >
+      insert into Meb_NormalAccount(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountCode" >AccountCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >OpenId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowStatus" >FollowStatus</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="NickName" >NickName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Language" >Language</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Country" >Country</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Province" >Province</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="City" >City</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area" >Area</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="HeadImgUrl" >HeadImgUrl</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SubscribeTime" >SubscribeTime</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountCode" >#AccountCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowStatus" >#FollowStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="NickName" >#NickName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Language" >#Language#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Country" >#Country#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Province" >#Province#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="City" >#City#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area" >#Area#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="HeadImgUrl" >#HeadImgUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SubscribeTime" >#SubscribeTime#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="NormalAccount_Update" parameterClass="StringObjectDictionary" >
+      update Meb_NormalAccount
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountCode" >AccountCode=#AccountCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowStatus" >FollowStatus=#FollowStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="NickName" >NickName=#NickName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Language" >Language=#Language#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Country" >Country=#Country#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Province" >Province=#Province#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="City" >City=#City#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area" >Area=#Area#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="HeadImgUrl" >HeadImgUrl=#HeadImgUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SubscribeTime" >SubscribeTime=#SubscribeTime#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="NormalAccount_Delete" parameterClass="StringObjectDictionary" >
+      delete Meb_NormalAccount
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountCode" >AccountCode=#AccountCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowStatus" >FollowStatus=#FollowStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NickName" >NickName=#NickName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Language" >Language=#Language#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Country" >Country=#Country#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Province" >Province=#Province#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="City" >City=#City#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area" >Area=#Area#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HeadImgUrl" >HeadImgUrl=#HeadImgUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SubscribeTime_Start" >SubscribeTime>=to_date(#SubscribeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SubscribeTime_End" >SubscribeTime&lt;=to_date(#SubscribeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="NormalAccount_Load" parameterClass="NormalAccountPK" resultClass="NormalAccount" >
+      select Id,CheckInTime,Status,AccountCode,OpenId,FollowStatus,IDNo,Mobile,NickName,Gender,Language,Country,Province,City,Area,HeadImgUrl,SubscribeTime from Meb_NormalAccount
+      where Id=#Id#
+    </select>
+    <select id="NormalAccount_List" parameterClass="StringObjectDictionary" resultClass="NormalAccount" >
+      select Id,CheckInTime,Status,AccountCode,OpenId,FollowStatus,IDNo,Mobile,NickName,Gender,Language,Country,Province,City,Area,HeadImgUrl,SubscribeTime from Meb_NormalAccount
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountCode" >AccountCode=#AccountCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowStatus" >FollowStatus=#FollowStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NickName" >NickName=#NickName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Language" >Language=#Language#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Country" >Country=#Country#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Province" >Province=#Province#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="City" >City=#City#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area" >Area=#Area#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HeadImgUrl" >HeadImgUrl=#HeadImgUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SubscribeTime_Start" >SubscribeTime>=to_date(#SubscribeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SubscribeTime_End" >SubscribeTime&lt;=to_date(#SubscribeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

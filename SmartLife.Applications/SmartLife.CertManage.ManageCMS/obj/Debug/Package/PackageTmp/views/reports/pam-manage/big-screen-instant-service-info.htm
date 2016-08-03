@@ -1,0 +1,257 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    <div id="north-c" data-options="region:'north',border:false" style="height: 144px;">
+        <div id="head-block" class="easyui-layout" data-options="fit:true">
+            <div id="head-c1" data-options="region:'north',border:false" style="height: 60px;">
+                <span id="CurrentAgencysName"></span> 即时服务信息 
+            </div>
+            <div  id="head-c2" data-options="region:'center',border:false" style="height: 40px;"> 
+                        <div id="CurrentAgencys-c" style="display: inline-block;">
+                            <input id="CurrentAgencys" /></div> <span id="stat-time" onclick="showAndHide()"></span>
+            </div>
+            <div id="head-c3" data-options="region:'south',border:false" style="height: 36px;">
+                <div id="h-container">
+                    <div id="stat-all">
+                        未服务X项，占X%；服务中X项，占X%；已服务X项，占X%；总服务X项。</div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div id="all-c" data-options="region:'center',collapsed:false,border:false,split:false" >
+        <div class="scroll-head">
+            <span class="field-oldmanname">服务对象</span><span class="field-servicecontent">服务项目</span>
+            <span class="field-servemanname">服务人员</span><span class="field-roomno">所在房间</span>
+                <span class="field-remindtime">提醒时间</span>
+            <span class="field-servemanarrivetime">到达时间</span><span class="field-servemanleavetime">离开时间</span></div>
+        <div id="all-scroll" class="scroll">
+            <ul class="list">
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var maxid_all = 0;
+    var repeatTime = 30000;
+    var clearTime = 0.5 * 60 * 1000; //30秒  
+    var flog_show = true;
+    var serveStationId;
+    $(function () {
+        $('#CurrentAgencys-c').hide();
+        var agencys = top.gUserInfo.MappingAgencys; 
+        if (agencys && agencys.length > 0) {
+            getAgencys(top.gUserInfo.MappingAgencys); //获取商家
+            $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+            $('#CurrentAgencysName').text(top.gUserInfo.MappingAgencys[0].StationName);
+        }
+        else {
+            getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/Query?parms=' + $.toJSON({ 'StationType': '00006', 'StationType2': '00001', 'Status': 1 }), null, function (r2) {
+                if (r2.Success) {
+                    getAgencys(r2.rows); //获取商家
+                    if (r2.rows.length > 0) {
+                        $('#CurrentAgencys').combobox('setValue', r2.rows[0].StationId);
+                        $('#CurrentAgencysName').text(r2.rows[0].StationName);
+                    }
+                    else {
+                        alertInfo('没有可显示的商家');
+                    }
+                }
+            }, { async: false });
+        }
+        setTimeout(function () {
+            $('#stat-time').text((new Date()).toString('yyyy-MM-dd HH:mm:ss'));
+            setTimeout(arguments.callee, 1000);
+        }, 0);
+
+        autosize('scroll-block');
+        autosize('h-container');
+        autosize('all-scroll', -$('#north-c').height() - 40);
+
+        loadfiles([
+            { type: "css", url: "../../css/pam/big-screen-instant-service-info.css" }
+            ], function () {
+                $("#h-container").roll({ containerCss: { height: '36px', "line-height": '36px' }, contentCss: { color: 'yellow', 'font-size': '24px' }, restart: function () {
+
+                }
+                });
+
+                //即时服务
+                setTimeout(function () {
+                    serveStationId = $('#CurrentAgencys').combobox('getValue');
+                    load_loadServicesForScroll(serveStationId);
+                    _statServicesForBigScreen(serveStationId);
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+                //滚动
+                setInterval('autoScroll(".scroll")', 3000);
+
+                //定时将id清零
+                setTimeout(function () {
+                    maxid_all = 0;
+                    setTimeout(arguments.callee, clearTime);
+                }, clearTime);
+            });
+    });
+
+
+    //加载商家
+    function getAgencys(datas) {
+        $('#CurrentAgencys').combobox({
+            width: 200,
+            panelWidth: 200,
+            data: datas,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onSelect: function (record) {
+                $('#all-scroll ul').html('');
+                $('#CurrentAgencysName').text(record.StationName);
+                serveStationId = record.StationId;
+                load_loadServicesForScroll(serveStationId);
+                _statServicesForBigScreen(serveStationId);
+            },
+            //商家选择为空的时候
+            onHidePanel: function () {
+                if ($('#CurrentAgencys').combo('getText') == "") {
+                    load_loadServicesForScroll('');
+                    _statServicesForBigScreen('');
+                }
+            }
+        });
+    }
+    function load_loadServicesForScroll(serveStationId) {
+        _loadServicesForScroll(serveStationId, maxid_all, function (rows) {
+            var isAppend = true;
+            if (maxid_all == 0) {
+                isAppend = false;
+            }
+            //            alert($.toJSON(rows));
+            if (rows.length > 0) {
+                maxid_all = _.max(rows, function (o) {
+                    return o.Id;
+                }).Id;
+                var htmlstr = _.map(rows, function (o, index) {
+                    var rowclass = "row-color-red"; //"row-color-blue","row-color-yellow","row-color-green","row-color-orange" 
+                    if (convertTime(o.ServeManArriveTime) != '--点--分--秒' && convertTime(o.ServeManLeaveTime) == '--点--分--秒') {
+                        rowclass = "row-color-yellow";
+                    }
+                    else if (convertTime(o.ServeManArriveTime) != '--点--分--秒' && convertTime(o.ServeManLeaveTime) != '--点--分--秒') {
+                        rowclass = "row-color-green";
+                    } 
+                    return '<li style="height:25px; line-height:25px;"><a><span class="field-oldmanname ' + rowclass + '" >'
+                    + o.OldManName + '</span><span class="field-servicecontent ' + rowclass + '" >'
+                    + isempty(o.WorkItem, '&nbsp;') + '</span><span class="field-servemanname ' + rowclass + '" >'
+                    + isempty(o.UserName, '&nbsp;') + '</span><span class="field-roomno ' + rowclass + '">'
+                    + isempty(o.RoomNo, '&nbsp;') + '</span><span class="field-remindtime ' + rowclass + '">'
+                    + convertTime(o.RemindTime) + '</span><span class="field-servemanarrivetime ' + rowclass + '">'
+                    + convertTime(o.ServeManArriveTime) + '</span><span class="field-servemanleavetime ' + rowclass + '" >'
+                    + convertTime(o.ServeManLeaveTime) + '</span></a></li>';
+                }).join("");
+
+                if (isAppend) {
+                    $('#all-scroll ul').append(htmlstr);
+                }
+                else {
+                    $('#all-scroll ul').html(htmlstr);
+                }
+            }
+            else {
+                var htmlstr = '<li style="height:25px; line-height:25px;"><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span></a></li>';
+                if (isAppend) {
+                    $('#all-scroll ul').append(htmlstr);
+                }
+                else {
+                    $('#all-scroll ul').html(htmlstr);
+                }
+            }
+        });
+    }
+
+    function _loadServicesForScroll(serveStationId ,id, callback) { 
+        var timeSpanOfMinute = 10; //取当前时间10分钟内的数据 
+        //        serveStationId = '5341c2a3-9a55-456f-a2e7-080b43a64a02';
+        if (serveStationId && serveStationId != '') {
+            getTo(baseCMSInvokeUrl + '/Pam/WorkExecuteService/LoadAgencyServicesForBigScreen/' + serveStationId + ',' + timeSpanOfMinute, null, function (result) {
+                if (callback) {
+                    var rows = _.map(result.rows, function (o) {
+                        return xml2json.parser(o, 'StringObjectDictionary');
+                    });
+                    if (rows.length > 0) {
+                        callback.apply(this, [rows]);
+                    }
+                }
+            }, { async: false });
+        }
+        else {
+            alert('请选择一个机构');
+        }
+    }
+
+    function _statServicesForBigScreen(serveStationId) {
+        //        serveStationId =  '5341c2a3-9a55-456f-a2e7-080b43a64a02';
+        if (serveStationId && serveStationId != '') {
+            getTo(baseCMSInvokeUrl + '/Pam/WorkExecuteService/LoadAgencyServicesCountForBigScreen/' + serveStationId, null, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                /*************************计算百分比********************************/
+                if (rows.length > 0) {
+                    var undo = rows[0]["undo"]; //未服务
+                    var doing = rows[0]["doing"]; //服务中
+                    var doed = rows[0]["doed"]; //已服务
+                    var count = rows[0]["count"]; //总服务
+                    var htmls = '';  
+                    htmls = htmls + "未服务<a>" + isNum(undo) + "</a>项，占<a>" + isNum(((undo / count).toFixed(2) * 100)) + "%</a>；";
+                    htmls = htmls + "服务中<a>" + isNum(doing) + "</a>项，占<a>" + isNum(((doing / count).toFixed(2) * 100)) + "%</a>；";
+                    htmls = htmls + "已服务<a>" + isNum(doed) + "</a>项，占<a>" + isNum(((doed / count).toFixed(2) * 100)) + "%</a>；";
+                    htmls = htmls + "总服务<a>" + isNum(count) + "</a>项。";
+                    $('#stat-all').html(htmls);
+                }
+                /*************************计算百分比********************************/
+            }, { async: false });
+        }
+    }
+
+    //隐藏和显示商家下拉列表
+    function showAndHide() {
+        if (flog_show) {
+            $('#CurrentAgencys-c').show();
+            flog_show = false;
+        }
+        else {
+            $('#CurrentAgencys-c').hide();
+            flog_show = true;
+        }
+    }
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-50px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function convertTime(t) {
+        var result;
+        if (isempty(t, '') == '') {
+            result = '--点--分--秒';
+        }
+        else {
+            result = Date.parse(t).toString('HH点mm分ss秒');
+        }
+        return result;
+    }
+
+    function isNum(v) {
+        var res = '';
+        v = v.toString();
+        if (v == '' || v == 'NaN') {
+            res = 'X';
+        }
+        else {
+            res = v;
+        }
+        return res;
+    }
+</script>

@@ -1,0 +1,99 @@
+﻿<div id="toolbar-C110501">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a>
+</div>
+<table id="dg-C110501" >
+</table>
+<div id="dlg-C110501" class="easyui-dialog" style="width: 420px; height: 210px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-C110501"  >
+    <div class="ftitle"></div>
+    <form id="fm-C110501" method="post" novalidate>
+    <input type="hidden" name="Id" id="id-C110501" />
+    <div class="fitem">
+        <label>
+            选择应用:</label>
+        <input id="ApplicationId-C110501" name="ApplicationId" class="easyui-validatebox"  missingMessage="选择应用不能为空" />
+    </div>
+    <div class="fitem">
+        <label>
+            网络地址:</label>
+        <input name="IpAddress" class="easyui-validatebox" style="width:272px;" required="true" missingMessage="IpAddress不能为空">
+    </div>
+    </form>
+</div>
+<div id="btn-C110501">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'id-' + currentMenuCode,
+            pk: 'Id',
+            getPKValueWhenAdd: function () {
+                return window.contants.idAutoGenerate;
+            },
+            uiMode: 'list',
+            disabled: ['edit'],
+            entityName: '系统白名单',
+            baseModelUrl: baseCMSInvokeUrl + '/Sys/WhiteListService/',
+            defaultModel: {}
+        };
+        autosize(models[currentMenuCode].gridId);
+
+
+        getAll([window.ajaxData_InvokeUrl + '/Application'], function (apps) {
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'ApplicationId',
+                    order: 'asc'
+                },
+                onDblClickRow: function (idx, row) {
+                    edit(row);
+                },
+                columns: [[
+        { field: 'Id', title: '编号', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'ApplicationId', title: '应用', width: 300, formatter: easyuigrid_diFormatter, vals: _.map(apps, function (o) { return { ItemId: o.ApplicationId, ItemName: o.ApplicationName} }) },
+        { field: 'IpAddress', title: '网络地址', width: 200 }
+    ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+
+            $('#ApplicationId-C110501').combobox({
+                width: 280,
+                panelWidth: 280,
+                panelHeight: 140,
+                required: true,
+                data: apps,
+                valueField: 'ApplicationId',
+                textField: 'ApplicationName',
+                editable: false
+            });
+        });
+
+
+
+    });
+
+    
+    
+</script>

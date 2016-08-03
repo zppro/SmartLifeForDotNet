@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="http://share.lifeblue.com.cn/css/jqm/jquery.mobile-1.4.4.min.css" />
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/underscore/underscore-1.5.0-min.js"></script>
+    <script type="text/javascript" src="script/mobile-switch-var.js?12"></script>
+    <script type="text/javascript" src="script/mobile-global-var.js"></script>
+    <script type="text/javascript" src="script/mobile-site.js"></script>
+    <script type="text/javascript">
+        $(document).on('mobileinit', function () {
+            getTo(parameterData_InvokeUrl + "/Sys_TechSupport", null, function (result) {
+                $('.tech-support').text(result.ret.Value);
+            });
+        }); 
+    </script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jqm/jquery.mobile-1.4.4.min.js"></script>
+    <script type="text/javascript">
+        var theOpenId;
+        var theServeItemA;
+        var theMerchantOfAuthRequestTo;
+        $(document).on("pagebeforecreate", '#pageOfBegin', function () {
+            var url = baseWeiXinInvokeUrl + '/api/share/v1/GetOpenIdByOAuth2/' + getQueryString('code');
+            getTo(url, null, function (ret) {
+                if (ret.Success) {
+                    theOpenId = ret.ret;
+                }
+            }, { async: false }); 
+            ListMerchantAuthorized();
+        });
+        $(document).on("pagebeforecreate", '#pageOfServeItemA', function () {
+            //技术支持及信息  
+             
+            getTo(baseCMSInvokeUrl + '/share/ajaxdata/GetDictionaryItemByExtendCol/11012,PickForServeMan,b,1', null, function (ret) {
+                if (ret.length > 0) {
+                    $('#gridOfServeItemA').append(_.map(ret, function (o, i) {
+                        var blockClass;
+                        var colIndex = i % 2;
+                        if (colIndex == 0) {
+                            blockClass = 'ui-block-a';
+                        }
+                        else {
+                            blockClass = 'ui-block-b';
+                        }
+                        return ' <div class="' + blockClass + '"><input value="' + o.ItemName + '"  data-icon="arrow-r" data-iconpos="right" data-theme="a"  onclick="GoToMercantPage(\'' + o.ItemId + '\')" type="button"></div>';
+                    }).join(''));
+                }
+            }, { async: false });
+        });
+        
+        $(document).on('pagehide', '#pageOfMerchantInServeItem', function (e) {
+            $("#merchants").html('');
+        });
+
+        function GoToMercantPage(serveItemA) {
+            theServeItemA = serveItemA;
+            ListMerchant();
+        }
+        function ListMerchant(keyword) {
+            if (!keyword) {
+                keyword = 'null';
+            } 
+            getTo(baseCMSInvokeUrl + '/share/ajaxdata/GetMerhantsByServeItemA/' + theOpenId + ',' + theServeItemA + ',' + keyword, null, function (ret) {
+                $('#merchants').html('<ul data-role="listview" data-inset="true" data-filter-placeholder="查询商家" data-filter="true">' + _.map(ret.rows, function (o) {
+                    return '<li><a data-rel="popup" data-station-id="' + o.StationId + '" href="#popupAddMerchantAuthorizeRequest" onclick="preparePopup(this)">' + o.StationName + '</a></li>';
+                }).join("") + '</ul>');
+                $("#merchants").trigger('create');
+                $.mobile.changePage('#pageOfMerchantInServeItem', { transition: "slide" });
+            });
+        }
+        function preparePopup(o) {
+            $('.merchant-name-op').text($(o).text());
+            theMerchantOfAuthRequestTo = $(o).data('station-id');
+        }
+        function authRequest() { 
+
+            postTo(baseWeiXinInvokeUrl + '/api/v1/AuthServeMan', $.toJSON({ OpenId: theOpenId, StationId: theMerchantOfAuthRequestTo }), function () {
+                $.mobile.changePage('#pageOfAuthRequestSuccess', { transition: "slide" });
+            });
+            
+        }
+        function authRemove() {
+            var url = baseWeiXinInvokeUrl + '/api/v1/RemoveServeManForMerchant';
+            postTo(url, $.toJSON({ OpenId: theOpenId, StationId: theMerchantOfAuthRequestTo }), function (ret) {
+                ListMerchantAuthorized();
+            });
+        }
+        function ListMerchantAuthorized() {
+            getTo(baseWeiXinInvokeUrl + '/api/v1/GetMerchantsAuthorized/' + theOpenId, null, function (ret) {
+                $('#merchantsAuthorized').html('<ul data-role="listview" data-inset="true" >' + _.map(ret.rows, function (o) {
+                    return '<li data-icon="delete"><a data-rel="popup" data-station-id="' + o.StationId + '" href="#popupRemoveMerchantAuthorizeRequest" onclick="preparePopup(this)">' + o.StationName + '</a></li>';
+                }).join("") + '</ul>');
+                $("#merchantsAuthorized").trigger('create'); 
+            });
+        }
+    </script>
+</head>
+<body>
+    <div data-role="page" id="pageOfBegin">
+        <div data-role="header">
+            <h1>
+                1、开始</h1>
+        </div>
+        <div role="main" class="ui-content">
+             <a href="#pageOfServeItemA"  data-role="button" data-theme="b"  data-transition="slide">申请新的认证</a>
+              <h4>下列商家已通过您的服务人员资格认证：</h4>
+             <div id="merchantsAuthorized">
+            </div>
+            <div data-role="popup" id="popupRemoveMerchantAuthorizeRequest">
+                <h4 style="text-align:center;">
+                    确定要移除<div class="merchant-name-op"></div>认证过的服务人员资格？</h4>
+
+                <div style="width:80%; margin:0 auto;"><a href="#" data-rel="back"  data-role="button" onclick="authRemove();">
+                    确定</a> <a href="#" data-role="button"   data-rel="back" data-theme="b">取消</a>
+                    </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfServeItemA">
+        <div data-role="header">
+            <a href="#pageOfBegin" onclick="">上一步</a>
+            <h1>
+                1.1、选择大类</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <fieldset id="gridOfServeItemA" class="ui-grid-a">
+            </fieldset>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfMerchantInServeItem">
+        <div data-role="header">
+            <a href="#pageOfServeItemA" onclick="">上一步</a>
+            <h2>
+                1.2、选择商家</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <div id="merchants">
+            </div>
+            <div data-role="popup" id="popupAddMerchantAuthorizeRequest">
+                <h4 style="text-align:center;">
+                    确定要向<div class="merchant-name-op"></div>提交服务人员资格认证申请？</h4>
+
+                <div style="width:80%; margin:0 auto;"><a href="#"  data-role="button" onclick="authRequest();">
+                    确定</a> <a href="#" data-role="button"   data-rel="back" data-theme="b">取消</a>
+                    </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfAuthRequestSuccess">
+        <div data-role="header"> 
+            <a href="#pageOfBegin" onclick="">返回首页</a>
+            <h2>
+                1.3、申请提交成功</h2>
+        </div>
+        <div role="main" class="ui-content">
+             <h1 style="text-align:center;">
+                您已成功向<div class="merchant-name-op"></div>提交服务人员资格认证申请！</h1>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+</body>
+</html>

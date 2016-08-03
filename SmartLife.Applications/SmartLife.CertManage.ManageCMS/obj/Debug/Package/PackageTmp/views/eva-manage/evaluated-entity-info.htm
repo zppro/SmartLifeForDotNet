@@ -1,0 +1,131 @@
+﻿<div id="tab-evaluated-info" class="easyui-tabs">
+    <div id="evaluate-info-block" style="padding: 5px;" title="评估信息" >
+        <div class="ftitle"></div>
+        <form id="fm-EvaluateInfo" method="post">
+            <input type="hidden" name="ReportId" id="reportid-EntityBaseInfo" />
+            <div class="fitem">
+                <label>评估表编号:</label>
+                <input name='ReportCode'/>
+                <label>完成日期:</label>
+                <input name='OperatedOn '/>
+            </div>
+            <div class="fitem">
+                <label>确认完成:</label>
+                <input id="AssessType-00001" type="radio" name="AssessType" value="00001" /><label for="AssessType-00001">首次评估</label>
+                <input id="AssessType-00002" type="radio" name="AssessType" value="00002" /><label for="AssessType-00002">复检评估</label>
+                <input id="AssessType-00003" type="radio" name="AssessType" value="00003" /><label for="AssessType-00003">变更评估</label>
+            </div>
+            <div class="fitem">
+                <label>评估员姓名(2名):</label>
+                <input name='OperatedBy'/>
+                <label>联系电话:</label>
+                <input name='AssessmentCall '/>
+            </div>
+            <div class="fitem">
+                <label>所属单位:</label>
+                <input name='AssessmentUnit'/>
+            </div>
+            <div class="fitem">
+                <label>评估分值:</label>
+                <input name='AssessmentUnit'/>
+                <label>建议服务形式:</label>
+                <input id="ServeItemType-00001" type="radio" name="ServeItemType" value="00001" /><label for="ServeItemType-00001">居家养老(计时服务)</label>
+                <input id="ServeItemType-00002" type="radio" name="ServeItemType" value="00002" /><label for="ServeItemType-00002">机构养老(计费服务)</label>
+            </div>
+            <div class="fitem">
+                <label>服务起始时间:</label>
+                <input name='ServiceBeginTime'/>
+                <label>服务截止时间:</label>
+                <input name='ServiceEndTime'/>
+            </div>
+            <div class="fitem">
+                <label>评估员签字:</label>
+                <input name='Assessor'/>
+                <label>日期:</label>
+            </div>
+        </form>
+    </div>
+    <!--<div title="基本信息" style="overflow: auto; padding: 5px;" id="evaluate-entityinfo-block">
+            tab2
+    </div>-->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        alert(1);
+    });
+</script>
+
+
+
+
+<!--<table cellpadding='0' class="table">
+                <tr>
+                    <td height="70" colspan="4" class="title_4">评估表基本信息</td>
+                </tr>
+                <tr>
+                    <td width="20%" class="title_5">评估表编号</td>
+                    <td  width="30%" style="text-align:left;">
+                        <input name='ReportCode' class='txt_bg_01' disabled="disabled"/>
+                    </td>
+                    <td width="20%"  class="title_5">完成日期</td>
+                    <td width="30%" class="title_5">
+                        <input name="OperatedOn" class="txt_bg_01 Wdate" disabled="disabled"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="title_5">评估员姓名(2名)</td>
+                    <td width="30%" style="text-align:left;">
+                        <input name='OperatedBy' class='txt_bg_01 g_checker' disabled="disabled"/>
+                    </td>
+                    <td width="20%" rowspan="2" class="title_5">确认完成</td>
+                    <td width="30%" rowspan="2" class="title_5">
+                        &nbsp;<input name="AssessType" type="radio" value="00001" disabled="disabled"/>首次评估<br/>
+                        &nbsp;<input name="AssessType" type="radio" value="00002" disabled="disabled"/>复检评估<br/>
+                        &nbsp;<input name="AssessType" type="radio" value="00003" disabled="disabled"/>变更评估
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%"  class="title_5">联系电话</td>
+                    <td width="30%" style="text-align:left;">
+                        <input name='AssessmentCall' class='txt_bg_01' disabled="disabled"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%"  class="title_5">所属单位</td>
+                    <td colspan="3" style="text-align:left;">
+                        <input name='AssessmentUnit' class='txt_bg_01' disabled="disabled"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="title_5">评估分值</td>
+                    <td style="text-align:left;" >
+                        <input name='AssessmentScores' class='txt_bg_01' disabled="disabled"/>
+                    </td>
+                    <td width="20%" class="title_5">建议服务形式</td>
+                    <td width="30%" class="title_5">
+                        &nbsp;<input name="ServeItemType" type="radio" value="00001" disabled="disabled"/>居家养老(计时服务)<br/>
+                        &nbsp;<input name="ServeItemType" type="radio" value="00002" disabled="disabled"/>机构养老(计费服务)
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="title_5">服务起始时间</td>
+                    <td style="text-align:left;" >
+                        <input name="ServiceBeginTime" class="txt_bg_01 Wdate" disabled="disabled"/>
+                    </td>
+                    <td width="20%" class="title_5">服务截止时间</td>
+                    <td width="30%" class="title_5">
+                        <input name="ServiceEndTime" class="txt_bg_01 Wdate"  disabled="disabled"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="15%" class="title_5">评估员签字</td>
+                    <td style="text-align:left;" >
+                        <input name='Assessor' class='txt_bg_01' disabled="disabled"/>
+                    </td>
+                    <td width="20%" class="title_5">日期</td>
+                    <td width="30%" class="title_5">
+                    
+                    </td>
+                </tr>
+            </table>-->

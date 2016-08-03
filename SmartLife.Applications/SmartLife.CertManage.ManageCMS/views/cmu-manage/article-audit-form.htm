@@ -1,0 +1,311 @@
+﻿<div id="tt" class="easyui-tabs" style="width: 700px; height: 500px; margin:auto auto auto auto;">
+    <div title="基本信息" style="padding: 10px;">
+        <form id="fm-B12010401" class="st_input" method="post" novalidate>
+        <input type="hidden" name="ArticleId" id="articleId-B12010401" />
+        <input type="hidden" name="Content" id="hContent" />
+        <div class="fitem">
+            <label>
+                文章标题:</label>
+            <input name="Title" style="width: 580px;" />
+        </div>
+        <div class="fitem">
+            <label>
+                副&nbsp;标&nbsp;题 :</label>
+            <input name="SubTitle" style="width: 370px;" />
+            <label>
+                关&nbsp;键&nbsp;词 :</label>
+            <input name="Tags" id="Tags" />
+        </div>
+        <div class="fitem">
+            <label>
+                作&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 者:</label>
+            <input name="Author" id="Author" />
+            <label>
+                来&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 源:</label>
+            <input name="Source" id="Source" />
+            <label>
+                摘 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 要:</label>
+            <input name="Abstract" id="Abstract" />
+        </div>
+        <div class="fitem">
+            <label>
+                街 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</label>
+            <input id="AreaIdStreet" />
+            <input type="hidden" name="AreaId2" id="AreaId2" />
+            <label>
+                社&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 区:</label>
+            <input id="AreaIdCommunity" />
+            <input type="hidden" name="AreaId3" id="AreaId3" />
+            <label>
+                附件数量:</label>
+            <input name="Attachments" id="Attachments" />
+        </div>
+        <div class="fitem">
+            <label>
+                所属栏目:</label>
+            <input name="ColumnId" id="ColumnId" multiple="true" />
+            <label>
+                发布日期:</label>
+            <input name="PublishDate" id="PublishDate" />
+            <label>
+                过期日期:</label>
+            <input name="ExpiredDate" id="ExpiredDate" />
+        </div>
+        <div class="fitem">
+            <label>
+                附件方式:</label>
+            <input name="PreviewMode" id="PreviewMode" />
+            <label>
+                显示方式:</label>
+            <input name="ShowMode" id="ShowMode" />
+            <label>
+                首页显示:</label>
+            <input name="HomeShowFlag" id="HomeShowFlag" />
+        </div>
+        <div class="fitem">
+            <label>
+                图片新闻:</label>
+            <input name="PicFlag" id="PicFlag" />
+            <label>
+                视频新闻:</label>
+            <input name="VideoFlag" id="VideoFlag" />
+            <label>
+                动态新闻:</label>
+            <input name="NewsFlag" id='NewsFlag' />
+        </div>
+        <div class="fitem">
+            <label>
+                文章类别:</label>
+            <input name="Category" id="Category" />
+            <label>
+                是否置顶:</label>
+            <input name="TopFlag" id="TopFlag" />
+            <label>
+                置顶天数:</label>
+            <input name="TopDays" id="TopDays" />
+        </div>
+        <!-- <div class="fitem">
+                    <label>
+                内 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 容:</label>
+            <textarea name="Content" id="Content" style="width: 540px;height:200px;"></textarea>
+        </div>-->
+        </form>
+    </div>
+    <div title='内 容' style="overflow: visible">
+        <textarea name="Content" id="Content" style="width: 640px; height: 500px;"></textarea>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var areas;
+        loadfiles([
+            { type: "css", url: "script/kindeditor/kindeditor-4.1.10/themes/default/default.css" },
+            { type: "js", url: "script/kindeditor/kindeditor-4.1.10/kindeditor-min.js" },
+            { type: "js", url: "script/kindeditor/kindeditor-4.1.10/lang/zh_CN.js" },
+        //            { type: "js", url: "script/kindeditor/kindeditor-4.1.10/kindeditor.js" },
+        //            { type: "js", url: "script/kindeditor/kindeditor-4.1.10/kindeditor-all-min.js" },
+        //            { type: "js", url: "script/kindeditor/kindeditor-4.1.10/kindeditor-all.js" },
+                    {type: "js", url: "script/jquery/jquery.easyui.leblue.js" },
+                    { type: "js", url: "script/jquery/jquery.easyui-1.3.3.min.js" },
+                    { type: "js", url: "script/jquery/jquery.easyui.my97.js" }
+            ], function () {
+                getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+                    areas = result;
+                }, { async: false });
+
+                setCombobox('PreviewMode', [{ ItemId: "0", ItemName: "不预览" }, { ItemId: "1", ItemName: "预览不下载" }, { ItemId: "2", ItemName: "预览并下载"}]);
+                setCombobox('Category', [{ ItemId: "0", ItemName: "正文" }, { ItemId: "1", ItemName: "通知"}]);
+                setCombobox('ShowMode', [{ ItemId: "0", ItemName: "默认" }, { ItemId: "1", ItemName: "弹出" }, { ItemId: "2", ItemName: "漂浮"}]);
+                setCombobox('AnonCommentsFlag', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+                setCombobox('Anonymous_Vote_FLAG', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+                setCombobox('TopFlag', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+                $('#HomeShowFlag,#PicFlag,#VideoFlag,#NewsFlag,#TopFlag,#VoteFlag').combobox({
+                    width: 153,
+                    panelHeight: 40,
+                    data: top.shareOptions.YesOrNo,
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    editable: false
+                });
+            });
+        //            $('#tt').tabs({
+        //                border: false,
+        //                onSelect: function (title, index) {
+        //                    alert(909);
+        //                }
+        //            });
+        initTree('easyUIComboTree', 'ColumnId', {
+            width: 152,
+            panelWidth: 200,
+            panelHeight: 260,
+            cascadeCheck: false,
+            //            required: true,
+            editable: false,
+            onCheck: function (node, checked) {
+                if (checked) {
+                    var childrenNode = getTreeNode('getChildren', node.target);
+                    if (childrenNode.length > 0) {
+                        for (var i = 0; i < childrenNode.length; i++) {
+                            getTreeNode('check', childrenNode[i].target);
+                        }
+                    }
+                }
+                else {
+                    var pNode = getTreeNode('find', node.attributes.PId);
+                    if (pNode) {
+                        getTreeNode('uncheck', pNode.target);
+                    }
+                }
+            }
+        }, function (d) {
+            getTreeData('01$01$07', null, '{"AreaId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, { ConnectId: baseInfoNode });
+
+        }, null, function (treeObj) {
+            var hContent = $('#hContent').val();
+            //            alert($('#Content').val());
+            //            alert(hContent);
+            //                alert($('#articleId-B12010401').val());
+            var articleId;
+            Keditor();
+            if (articleId) {
+                KindEditor.html('#Content', hContent);
+                var areaId2 = $('#AreaId2').val();
+                var areaId3 = $('#AreaId3').val();
+                if (areaId2 != "") {
+                    $('#AreaIdStreet').val(GetItemName(areas, areaId2));
+                }
+                if (areaId3 != "") {
+                    $('#AreaIdCommunity').val(GetItemName(areas, areaId3));
+                }
+                $('#PublishDate').val($('#PublishDate').val().substring(0, 11));
+                $('#ExpiredDate').val($('#ExpiredDate').val().substring(0, 11));
+                setColumnData(articleId);
+            }
+            else {
+                articleId = $('#BizId').val();
+                if (articleId) {
+                    var pamam = {
+                        sort: 'CheckInTime',
+                        order: 'asc',
+                        page: '1',
+                        rows: '1',
+                        instance: { ArticleId: articleId }
+                    };
+                    postTo(baseCMSInvokeUrl + '/Pub/ArticleService/ListForEasyUIgrid/' + baseInfoNode, $.toJSON(pamam), null, null, null).done(function (ret) {
+                        if (ret.rows.length > 0) {
+                            var rows = ret.rows;
+                            var str = rows[0].Content;
+                            //                            var str = '<p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 7月16日下午，我区召开全区重点项目推进会，就年初所制定的重点项目推进工作进行逐一梳理，研讨解决项目推进过程中遇到的难题，加快推进项目建设，促进经济稳定快速发展。 </p> <p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 会上，开发区、各街道就各属地项目在6月11日重点项目推进会中明确事项的落实情况，以及目前存在的问题和下一步工作措施进行交流发言；项目实施单位和有关部门负责人作补充发言；副区长张菁通报了“9.20”拟签约、颁证、颁照和开工项目的情况。 </p> <p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 区长潘冬铃在听取了31个重点项目的推进情况后，就推进过程中遇到的难点、节点，和与会人员探讨研究具体对策，提出可行性解决方法。 </p> <p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 为了更好地推进重点项目工作，潘冬铃强调三点要求。一是要加快推进、能快则快。要紧紧抓住项目龙头，加快推进现有项目，努力再招新的项目。二是要明确进度、挂图作战。三是要街道牵头、部门服务。街道身为责任主体，要主动做好牵头工作，同时各部门要发挥联动作用，为项目主体单位提供更优质、高效的服务。 </p> <p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 区委常委、常务副区长戴文龙主持会议，他从“逐一过堂、挂图作战、全程推进”三方面要求各级各部门将潘区长讲话精神落实到具体实践中。 </p> <p style="color:#000000;text-indent:0px;background-color:#FFFFFF;"> 副区长何海平、徐伟东出席会议。开发区、各街道主要领导、分管领导；区发改局、经信局、教文局、科技局、建设局、城管局、商务局、环保局、房管局、规划分局、国土分局、审批办主要负责人；区部分重点项目实施单位负责人参加会议。（李婧 文/摄） </p>'
+                            KindEditor.html('#Content', str);
+                            //                        alert($('#Content').val());
+                            $('#fm-B12010401').form('clear');
+                            $('#fm-B12010401').form('load', rows[0]);
+
+
+                            var areaId2 = rows[0].AreaId2;
+                            var areaId3 = rows[0].AreaId3;
+                            if (areaId2 != "") {
+                                $('#AreaIdStreet').val(GetItemName(areas, areaId2));
+                            }
+                            if (areaId3 != "") {
+                                $('#AreaIdCommunity').val(GetItemName(areas, areaId3));
+                            } 
+                            $('#PublishDate').val(ndateFormatter(rows[0].PublishDate, 'yyyy-MM-dd hh:mm:ss'));
+                            $('#ExpiredDate').val(ndateFormatter(rows[0].ExpiredDate, 'yyyy-MM-dd hh:mm:ss'));
+
+                        }
+                        setColumnData(articleId);
+                    });
+                }
+            }
+        });
+
+
+    })
+     
+    function Keditor() {
+        editor1 = KindEditor.create('textarea[name="Content"]', {
+            langType: 'zh_CN',
+            imageTabIndex: 1,
+            //            imageSizeLimit: '2MB',无效
+            //            imageUploadLimit:10,无效
+            //改变站内本地URL.relative为相对路径，absolute为绝对路径，domain为带域名的绝对路径。
+            urlType: "domain",
+
+            //文件管理     
+            uploadJson: baseCMSInvokeUrl + '/Pub/_ArticleUploadify.ashx',
+            //获取空间文件管理
+            //            fileManagerJson: baseCMSInvokeUrl + '/Pub/_ArticleUploadify.ashx',
+            //文件空间管理
+            allowFileManager: false,
+            //网络图片上传
+            allowFlashUpload: false,
+            allowImageRemote: false,
+            allowImageUpload: true,
+            allowPreviewEmoticons: false,
+            //编辑器高度                
+            width: '695px',
+            //编辑器宽度                
+            height: '467px',
+            //配置编辑器的工具栏  显示html代码source              
+            items: ['undo', 'redo', '|', 'preview', 'print', 'template', 'cut', 'copy', 'paste', 'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'subscript', 'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage', 'table', 'hr', 'emoticons', 'baidumap', 'link', 'unlink'],
+            //上传图片后触发的事件 
+
+            afterChange: function () {
+                this.sync();
+            },
+            afterBlur: function () {
+                this.sync();
+            },
+            afterUpload: function (url) {
+                //                uploadimgsrc.push(url.split('uploadfiles')[1]);
+            },
+            //保存新上传的图片路径 
+            afterCreate: function () {
+                //            oldimgsrc = pickimg(editor.html());
+            },
+            //上传后的回调函数
+            afterUpload: function (url) {
+            },
+            afterError: function (str) {
+                alert('上传错误：' + str);
+            }
+        });
+        editor1.hideDialog();
+    }
+
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.AreaId.toLowerCase() == value.toLowerCase(); }).AreaName;
+    }
+
+    function getTreeNode(methods, target) {
+        var treeId = "ColumnId";
+        return $('#' + treeId).combotree('tree').tree(methods, target);
+    }
+    function setColumnData(articleId) {
+        //        alert($.toJSON($('#ColumnId').combotree('getValues')));
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleColumn_RelationService/Query?parms=' + $.toJSON({ ArticleId: articleId }), null, function (result) {
+            var ret = result.rows;
+            var retList = [];
+            for (var item in ret) {
+                retList.push(ret[item].ColumnId.toUpperCase());
+            }
+            $('#ColumnId').combotree('setValues', retList);
+            var queryParams = { 'SourceId': row.ArticleId, 'SourceTable': 'Pub_Article', 'Status': 1, OrderByClause: 'CheckInTime desc' };
+            getTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {
+                $('#Attachments').val(ret.rows.length);
+            });
+        }, { async: false }, { ConnectId: baseInfoNode });
+    }
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 153,
+            panelHeight: 70,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+</script>

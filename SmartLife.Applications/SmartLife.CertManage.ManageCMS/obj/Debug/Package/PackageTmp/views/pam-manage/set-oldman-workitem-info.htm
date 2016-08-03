@@ -1,0 +1,339 @@
+﻿<table style=" height:100%; margin:auto auto;"> 
+    <tr>
+        <td>
+            <table id="dg-unset-workitem"></table>
+        </td>
+    </tr>
+    <tr>
+        <td> 
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a>
+              <a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" ></a> 
+        </td>
+    </tr>
+    <tr>
+        <td> 
+            <table id="dg-set-workitem"></table> 
+        </td>
+    </tr>
+</table> 
+<div  id="toolbar-unset">
+    <table style=" width:100%;">
+        <tr>
+            <td style=" text-align:center;">
+                <a>可选中的所有服务项目</a>
+            </td>
+            <td   style=" width:200px; text-align:center;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="addWorkItemSelected()" 
+                            style="color: #0099FF;">添加选中</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="spinner-arrow-down" plain="true" onclick="addWorkItemSelected()"></a>
+            </td>
+            <td  style=" width:200px; text-align:center;">
+            <a href="javascript:void(0)" class="easyui-linkbutton"  plain="true" onclick="addWorkItemAll()"
+                            style="color: #0099FF;">添加本页</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-expand" plain="true" onclick="addWorkItemAll()"></a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div   id="toolbar-set">
+    <table style=" width:100%;">
+        <tr>
+            <td style=" text-align:center;">
+                <a>已选的服务项目</a>
+            </td>
+            <td  style=" width:200px; text-align:center;">
+                 <a href="javascript:void(0)" class="easyui-linkbutton"  plain="true" onclick="nullifWorkItemSelected()" style="color: #0099FF;">
+                                    移除选中</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="spinner-arrow-up" plain="true" onclick="nullifWorkItemSelected()"></a>
+            </td>
+            <td  style=" width:200px; text-align:center;">
+                 <a href="javascript:void(0)" class="easyui-linkbutton"  plain="true" onclick="nullifWorkItemAll()" style="color: #0099FF;">
+                                    移除本页</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="accordion-collapse" plain="true" onclick="nullifWorkItemAll()"></a>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    var stationId = '';
+    var oldManId = '';
+    function dialogOpen(dialogId, dialogData) {
+        stationId = dialogData.StationId;
+        oldManId= dialogData.OldManId;
+        //        alert($.toJSON(dialogData));
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (allWorkItem) {
+            setDataGridUnSet(allWorkItem);
+            setDataGridSet(allWorkItem); 
+        }); 
+    }
+
+    function setDataGridUnSet(allWorkItem) {
+        $('#dg-unset-workitem').datagrid(easyuigrid_settings({
+            title: "",
+            width: 720,
+            height: 240,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: baseCMSInvokeUrl + '/Pam/AssessmentItemService/ListForEasyUIgridByPage',
+            toolbar: '#toolbar-unset',
+            method: 'POST',
+            queryParams: {
+                sort: 'WorkSchedule',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: 1 },
+                               { key: 'StationId', value: stationId },
+                               { key: 'OldManId', value: " WorkItem not in (select WorkItem from Pam_AssessmentResult where Status=1 and OldManId='" + oldManId + "'  )" }
+                               ]
+            },
+            columns: [[
+        { field: 'Id', title: '序号', width: 150, hidden: true },
+//                    { field: 'CK', title: '', checkbox: true },
+        {field: 'WorkSchedule', title: '工作时间', width: 60, align: 'center', sortable: true },
+        { field: 'WorkItem', title: '工作项', width: 90, formatter: easyuigrid_ajaxFormatter, vals: allWorkItem },
+        { field: 'Workload', title: '工作量', width: 50, align: 'center' },
+        { field: 'RemindFlag', title: '提醒标识', width: 60, align: 'center', formatter: easyuigrid_boolFormatter },
+        { field: 'RemindRepeats', title: '重复次数', width: 60, align: 'center' },
+        { field: 'PlayRepeats', title: '播放次数', width: 60, align: 'center' },
+        { field: 'Remark', title: '说明', width: 150 }
+    ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function setDataGridSet(workitems) {
+        $('#dg-set-workitem').datagrid(easyuigrid_settings({
+            title: "",
+            width: 720,
+            height: 240,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: baseCMSInvokeUrl + '/Pam/AssessmentResultService/ListForEasyUIgridByPage',
+            toolbar: '#toolbar-set',
+            method: 'POST',
+            queryParams: {
+                sort: 'WorkSchedule',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: 1 },
+                               { key: 'OldManId', value: oldManId }
+                               ]
+            }, 
+            columns: [[
+                { field: 'Id', title: '序号', width: 150, hidden: true },
+                {field: 'WorkSchedule', title: '工作时间', width: 60, align: 'center', editor: 'text' },
+                { field: 'WorkItem', title: '工作项', width: 90, formatter: easyuigrid_ajaxFormatter, vals: workitems },
+                { field: 'Workload', title: '工作量', width: 50, align: 'center', editor: 'numberbox' },
+                { field: 'RemindFlag', title: '提醒标识', width: 60, align: 'center', formatter: easyuigrid_boolFormatter,
+                    editor: {
+                        type: 'combobox',
+                        options: {
+                            panelHeight: 42,
+                            valueField: 'value',
+                            textField: 'name',
+                            data: [{ value: "0", name: "否" }, { value: "1", name: "是"}],
+                            onSelect: function (record) {
+                                if (record.value == 0) {
+                                    $(this).closest('table').closest('td').next('td').find('input').attr('value', 0);
+                                    $(this).closest('table').closest('td').next('td').find('input').attr('readonly', "readonly");
+                                    $(this).closest('table').closest('td').next('td').find('input').css('background-color', "#ddd");
+
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').attr('value', 0);
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').attr('readonly', "readonly");
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').css('background-color', "#ddd");
+                                }
+                                else {
+                                    $(this).closest('table').closest('td').next('td').find('input').attr('value', 3);
+                                    $(this).closest('table').closest('td').next('td').find('input').removeAttr('readonly');
+                                    $(this).closest('table').closest('td').next('td').find('input').css('background-color', "#fff");
+
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').attr('value', 2);
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').removeAttr('readonly');
+                                    $(this).closest('table').closest('td').next('td').next('td').find('input').css('background-color', "#fff");
+                                }
+                            }
+                        }
+
+                    }
+                },
+                { field: 'RemindRepeats', title: '重复次数', width: 60, align: 'center', editor: 'numberbox' },
+                { field: 'PlayRepeats', title: '播放次数', width: 60, align: 'center', editor: 'numberbox' },
+                { field: 'CheckDescription', title: '说明', width: 150, editor: 'text' },
+                    { field: 'action', title: '操作', width: 70, align: 'center',
+                        formatter: function (value, row, index) {
+                            if (row.editing) {
+                                var s = '<a href="javascript:void(0)" class="easyui-linkbutton"  onclick="saverow(this)">保存</a> ';
+                                var c = '<a href="javascript:void(0)" class="easyui-linkbutton"  onclick="cancelrow(this)">取消</a>';
+                                return s + c;
+                            } else {
+                                var e = '<a href="javascript:void(0)" class="easyui-linkbutton"  onclick="editrow(this)">编辑</a> ';
+//                                var d = '<a href="javascript:void(0)" class="easyui-linkbutton"  onclick="deleterow(this)">作废</a>';
+                                return e ;
+                            }
+                        }
+                    },
+                { field: 'CheckFlag', title: '勾选标识', width: 60, align: 'center', formatter: easyuigrid_boolFormatter }
+            ]], 
+            onBeforeEdit: function (index, row) {
+                row.editing = true;
+                updateActions(index);
+            },
+            onAfterEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index);
+            },
+            onCancelEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index);
+            },
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    } 
+    function updateActions(index){
+        $('#dg-set-workitem').datagrid('updateRow',{
+            index: index,
+            row:{}
+        });
+    }
+    function getRowIndex(target) {
+        var tr = $(target).closest('tr.datagrid-row'); 
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function editrow(target) {
+        $('#dg-set-workitem').datagrid('beginEdit', getRowIndex(target));
+    }
+    function saverow(target) {
+        var index = getRowIndex(target);
+        $('#dg-set-workitem').datagrid('endEdit', getRowIndex(target));
+        var rows = $('#dg-set-workitem').datagrid('getRows');
+        var row = rows[index];
+//        var r = /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/; 
+        var r = /^(0\d{1}|1\d{1}|2[0-3]):([0-5]\d{1})$/;
+        if (r.test(rows[index]["WorkSchedule"])) {
+            putTo(baseCMSInvokeUrl + '/Pam/AssessmentResultService/UpdateWorkSchedule/' + rows[index]['Id'], $.toJSON(row), function (ret) {
+                if (ret.Success) {
+                    alert("编辑成功");
+//                    $('#dg-set-workitem').datagrid('reload');
+                }
+            });
+        }
+        else {
+            alert('工作时间的格式不正确，例：08:05'); 
+        }
+    }
+    function cancelrow(target) {
+        $('#dg-set-workitem').datagrid('cancelEdit', getRowIndex(target));
+    }
+
+    function addWorkItemSelected() {
+        var rows = $('#dg-unset-workitem').datagrid('getSelections');
+        addWorkItem(rows);
+    }
+    function addWorkItemAll() {
+        var rows = $('#dg-unset-workitem').datagrid('getRows');
+        addWorkItem(rows);
+     }
+     function addWorkItem(rows) { 
+        if (rows.length > 0) {
+            postTo(baseCMSInvokeUrl + '/Pam/AssessmentResultService/CreateAssessment/' + oldManId, $.toJSON(rows), function (ret) {
+                if (ret.Success) { 
+                    $('#dg-unset-workitem').datagrid('reload');
+                    $('#dg-set-workitem').datagrid('reload');
+                }
+            });
+        }
+        else {
+            alert('请选择需要添加的服务项目');
+        }
+    }
+
+    function nullifWorkItemSelected() {
+        var rows = $('#dg-set-workitem').datagrid('getSelections');
+        nullifWorkItem(rows);
+    }
+    function nullifWorkItemAll() {
+        var rows = $('#dg-set-workitem').datagrid('getRows');
+        nullifWorkItem(rows);
+    }
+    function nullifWorkItem(rows) {
+        if (rows.length > 0) {
+            $.messager.confirm('请确认', '确定要移除吗?', function (r) {
+                if (r) {
+                    var strIds = _.map(rows, function (o) {
+                        return o.Id;
+                    }).join('|');
+                    var workItems = _.map(rows, function (o) {
+                        return o.WorkItem;
+                    }).join('|');
+                    putTo(baseCMSInvokeUrl + '/Pam/AssessmentResultService/NullifyEx/' + strIds + ',' + oldManId + ',' + workItems, null, function (ret) {
+                        if (ret.Success) {
+                            alert("移除成功");
+                            $('#dg-unset-workitem').datagrid('reload');
+                            $('#dg-set-workitem').datagrid('reload');
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            alert('请选择需要移除的服务项目');
+        }
+    }
+    function closeDialogFrom() {
+        $('#set-oldman-workitem').dialog('close');         
+    }
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        return true;
+    
+    }
+    </script>

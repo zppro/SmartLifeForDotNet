@@ -1,0 +1,144 @@
+﻿<div id="toolbar-C110304">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a>
+</div>
+<table id="dg-C110304" >
+</table>
+<div id="dlg-C110304" class="easyui-dialog" style="width: 700px; height: 300px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-C110304"  >
+    <div class="ftitle"></div>
+    <form id="fm-C110304" method="post" novalidate>
+    <input id="OldConnectId" type="hidden"  />
+    <div class="fitem">
+        <label>
+            连接编号:</label>
+            <input id="connectid-C110304"  name="ConnectId" class="easyui-validatebox" required="true"  missingMessage="连接编号不能为空"  />
+            <label>
+            连接名称:</label>
+            <input  name="ConnectName" class="easyui-validatebox" required="true"  missingMessage="选择应用不能为空" />
+            <label>
+            　提供者:</label>
+
+            <input id="Provider-C110304" name="Provider"  class="easyui-validatebox" missingmessage="提供者不能为空" />
+    </div>
+    <div class="fitem">
+        <label>
+            服务器名:</label>
+            <input  name="ServerName" class="easyui-validatebox" required="true"  missingMessage="服务器名不能为空" />
+            <label>
+            用户代码:</label>
+            <input  name="UserCode" class="easyui-validatebox" required="true"  missingMessage="用户代码不能为空" />
+            <label>用户密码:</label>
+            <input  name="UserPassword" class="easyui-validatebox" required="true"  missingMessage="用户密码不能为空" />
+    </div>
+    <div class="fitem"> 
+            <label>数据库名:</label>
+            <input  name="DatabaseName" class="easyui-validatebox" required="true"  missingMessage="数据库名不能为空" />
+         <label>配置文件:</label>
+        <input name="IBatisMapId" class="easyui-validatebox" style="width:360px;" required="true" missingMessage="配置文件不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            文件引用:</label>
+            <input id="ConnectIbatisConfigFileRefer-C110304" name="IbatisConfigFileRefer" class="easyui-validatebox"  missingmessage="文件引用不能为空" />
+            <label>
+            文件位置:</label>
+            <input  name="IbatisConfigFileValue" class="easyui-validatebox" style="width:360px;" required="true"  missingMessage="文件位置不能为空" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-C110304">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'connectid-' + currentMenuCode,
+            pk: 'ConnectId',
+            onAfterDialogOpen: function (editrow) {
+                if (editrow) {
+                    $('#OldConnectId').val($('#connectid-' + currentMenuCode).val());
+                }
+                else {
+                    $('#Provider-C110304').combobox('setValue', '00001');
+                    $('#ConnectIbatisConfigFileRefer-C110304').combobox('setValue', 'embeded');
+                }
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["PK"] = $('#OldConnectId').val();
+            },
+            uiMode: 'list',
+            entityName: '数据连接',
+            baseModelUrl: baseCMSInvokeUrl + '/Sys/DatabaseConnectService/',
+            defaultModel: {}
+        };
+        autosize(models[currentMenuCode].gridId);
+
+
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/00015'], function (providers) {
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'ConnectId',
+                    order: 'asc'
+                },
+                onDblClickRow: function (idx, row) {
+                    edit(row);
+                },
+                columns: [[
+        { field: 'Id', title: 'Id', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'ConnectId', title: '连接编号', width: 150 },
+        { field: 'ConnectName', title: '连接名称', width: 200 },
+        { field: 'Provider', title: '提供者', width: 120, formatter: easyuigrid_ajaxFormatter, vals: providers },
+        { field: 'IBatisMapId', title: 'IBATIS映射ID', width: 200 }
+    ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#Provider-C110304').combobox({
+                width: 160,
+                panelWidth: 160,
+                panelHeight: 140,
+                required: true,
+                data: providers,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+        });
+
+        $('#ConnectIbatisConfigFileRefer-C110304').combobox({
+            width: 152,
+            panelWidth: 152,
+            panelHeight: 140,
+            required: true,
+            data: [{ "ItemId": "embedded" }, { "ItemId": "resource" }, { "ItemId": "url"}],
+            valueField: 'ItemId',
+            textField: 'ItemId',
+            editable: false
+        });
+
+    });
+
+    
+    
+</script>

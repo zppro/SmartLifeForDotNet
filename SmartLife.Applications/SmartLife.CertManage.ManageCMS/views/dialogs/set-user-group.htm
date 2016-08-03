@@ -1,0 +1,69 @@
+﻿<div id="dgc-Groups" class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',border:false" style="width: 450px; height: 330px;
+        padding: 0 2px 0 2px;">
+        <input name="UserType" type="hidden" />
+        <table id="dg-Groups">
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        //        getTo(ajaxData_InvokeUrl + '/Group', null, function (result) {
+        $('#dg-Groups').datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: baseCMSInvokeUrl + '/Pub/GroupService/ListForEasyUIgridByUserId',
+            method: 'POST',
+            pageSize: 1,
+            pageList: [50],
+            queryParams: {
+                order: 'desc',
+                instance: {
+                    AreaId: models[currentMenuCode].defaultModel.AreaId,
+                    Status: models[currentMenuCode].defaultModel.Status
+                    //                        SystemFlag: models[currentMenuCode].defaultModel.SystemFlag
+                },
+                filterFields: [
+                            { key: 'UserId', value: dialogData.UserId }
+                            ],
+                fuzzyFields: [{ key: 'GroupId', value: null}]
+            },
+            onLoadSuccess: function () {
+                getTo(models[currentMenuCode].baseModelUrl + 'GetGroup/' + dialogData.UserId, null, function (result) {//根据UserId获取到已选的组信息
+                    if (result) {
+                        $.each(result, function (index, item) {
+                            if (!item.checked) {
+                                $('#dg-Groups').datagrid('checkRow', index);
+                            }
+                        });
+                    }
+                }, { async: false });
+            },
+            columns: [[
+                            { field: 'GroupId', title: '角色编号', width: 150, hidden: true },
+                            { field: 'CK', title: '', checkbox: true },
+                            { field: 'GroupName', title: '角色名称', width: 370 }
+                          ]],
+            loader: easyuiLoader
+        }));
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        var groupids;
+        var rows = $('#dg-Groups').datagrid('getSelections'); //得到已选的组
+        if (rows) {
+            groupids = _.map(rows, function (o) {
+                return o.GroupId;
+            }).join(',');
+        }
+        $('#UserType').text(groupids);
+        return groupids; //返回组Id
+    }
+</script>

@@ -1,0 +1,53 @@
+﻿<div id="custom-block" class="easyui-layout" data-options="fit:true">
+    <div  style="height:32px; background:#efefef;border:1px solid #ccc; margin:0 auto; padding-top:6px; ">
+        <a  href="javascript:void(0);" class="easyui-linkbutton location" style=" margin-left:10px;" data-options="iconCls:'icon-search'" >筛选老人</a>
+    </div>
+    <div id="location-panel" >地图载入中...</div>
+</div>
+
+<div id="oldman-custom-location-block"></div>
+
+<script type="text/javascript">
+    $(function () {
+        autosize('custom-block');
+
+        $("#custom-block .location").unbind('click').bind('click', function () {
+            //搜索
+            getHtml(baseUrl + '/views/dialogs/get-location-oldman.htm', function (str) {
+                $("#oldman-custom-location-block").html(str);
+
+                $.parser.parse('#btn-custom-location');
+                $("#the-custom-location").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                        if ($('#dlg-SendSms').size() > 0) {
+                            $('#dlg-SendSms').dialog('destroy');
+                        }
+                    },
+                    onBeforeOpen: function () {
+                        dialogOpen(null, null);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '查看-定位设备');
+            });
+        });
+
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize("location-panel");
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            initMap("location-panel", longitude, latitude);
+        });
+
+    });
+
+    
+
+</script>

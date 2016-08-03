@@ -1,0 +1,484 @@
+﻿<table id="cc-B120304" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B120304" style="overflow: auto;">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B120304">
+                <!--<a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="query()">高级查询</a> -->
+                <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="add()">新增</a> <a behaviorcode="02" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+                <a behaviorcode="03" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove"
+                    plain="true" onclick="nullify()">作废</a>
+            </div>
+<div id="search-sample-B120304" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B120304" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td style="text-align: right">
+                            操作时间：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="OperatedOn" class="Wdate" onfocus="WdatePicker()" />
+                        </td>
+                        <td style="text-align: right">
+                            状态：
+                        </td>
+                        <td style="text-align: left">
+                            <select name="Status" class="easyui-combobox" style="width: 100px" panelheight="50px">
+                                <option value="1">有效</option>
+                                <option value="0">作废</option>
+                            </select>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>            
+            <table id="dg-B120304">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B120304" class="easyui-dialog" style="width: 600px; height: 350px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B120304">
+    <div id="tt" class="easyui-tabs" style="width: 520px; height: 230px;">
+        <div title="单元信息">
+            <div style="width: 100%">
+                <form id="fm-B120304" method="post" novalidate>
+                <input type="hidden" name="HouseId" id="houseId-B120304" />
+                <input type="hidden" name="AreaId2" id="AreaId2" />
+                <input type="hidden" name="AreaId3" id="AreaId3" />
+                <div class="fitem" style="text-align: center">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    单元名称:</label>
+                            </td>
+                            <td colspan="3" style="width: 75%">
+                                <input id="HouseNameOfUnit" required="true" missingmessage="单元名称不能为空，请选择一个楼宇或者单元" />
+                                <input type="hidden" name="UnitId" id="UnitId" />
+                                <!--<input type="hidden" name="RoadName" id="UnitName" />-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    房屋名称:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="HouseName" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    楼层号:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="FloorNo" id="FloorNo" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    固定电话:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="Tel" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    联系手机:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="Mobile" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    房屋产权人:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="PropertyRights" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    产权人电话:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="PropertyCall" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    房屋类型:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="HouseType" id="HouseType" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    备 注:</label>
+                            </td>
+                            <td colspan="3" style="width: 75%">
+                                <textarea name="Remark" style="width: 370px;" maxlength="400"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!--  <div title="健康信息" closable="false" style="overflow: auto; padding: 20px;">
+            tab2
+        </div>-->
+    </div>
+</div>
+<div id="btn-B120304">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="save()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B120304" class="easyui-dialog" style="width: 530px; height: 220px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B120304">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B120304" method="post" novalidate>
+    <div class="fitem">
+        <table width="100%">
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        房屋名称:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="HouseName" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        楼层号:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="FloorNo" id="Text1" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        固定电话:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="Tel" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        联系手机:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="Mobile" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        房屋产权人:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="PropertyRights" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        产权人电话:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="PropertyCall" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        房屋类型:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="HouseType" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="btn-search-B120304">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var areas;
+        var houseType;
+        var areaCId; //左边选择社区的节点
+        var areaPId; //左边选择社区的父节点
+        var areaLevels; //左边选择社区的节点的文本
+        var units;
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'houseId-' + currentMenuCode,
+            pk: 'HouseId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+                if ($('#FloorNo').val().trim() == "") {
+                    formData["FloorNo"] = 0;
+                }
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['HouseName'] = formData['KeyWord'];
+                formData['FloorNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['PropertyRights'] = formData['KeyWord'];
+                formData['PropertyCall'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onBeforeDialogOpen: function () {
+                //选择单元
+                $('#HouseNameOfUnit').combobox({
+                    width: 370,
+                    panelHeight: 100,
+                    required: true,
+                    mode: 'local',
+                    data: units,
+                    valueField: 'UnitId',
+                    textField: 'UnitName',
+                    onSelect: function (building) {
+                        $('#UnitId').val(building.UnitId);
+                        $('#AreaId2').val(building.AreaId2);
+                        $('#AreaId3').val(building.AreaId3);
+                    }
+                });
+
+            },
+            //编辑时显示数据
+            onAfterDialogOpen: function (row) {
+                if (row) {
+                    var areaId2 = $('#AreaId2').val();
+                    var areaId3 = $('#AreaId3').val();
+                    var unitId = $('#UnitId').val();
+                    var r = GetUnitName('unitId', unitId);
+                    GetUnitName('buildingId', r[0].BuildingId);
+                    $('#HouseNameOfUnit').combobox('setValue', unitId);
+                }
+                else {
+                    if (areaLevels < 6) {
+                        $('#HouseNameOfUnit').combobox('setValue', "至少选择到楼宇级，请重新选择！");
+                    }
+                    else if (areaLevels == 6) {
+                        var ret = GetUnitName('buildingid', areaCId);
+                        $('#AreaId2').val(ret[0].AreaId2);
+                        $('#AreaId3').val(ret[0].AreaId3);
+                        $('#HouseNameOfUnit').combobox('setValue', ret[0].UnitId);
+                        $('#UnitId').val(ret[0].UnitId);
+                    }
+                    else if (areaLevels == 7) {
+                        var ret = GetUnitName('buildingid', areaPId);
+                        $('#AreaId2').val(ret[0].AreaId2);
+                        $('#AreaId3').val(ret[0].AreaId3);
+                        $('#HouseNameOfUnit').combobox('setValue', areaCId.toLowerCase());
+                        $('#UnitId').val(areaCId);
+                    } 
+                    var dt = $('#HouseType').combobox('getData');
+                    if (dt[0]) {
+                        $('#HouseType').combobox('setValue', dt[0].ItemId);
+                    }
+                }
+            },
+            headers: { ConnectId: baseInfoNode }, //数据库名
+            uiMode: 'list',
+            entityName: '房屋信息',
+            baseModelUrl: baseCMSInvokeUrl + '/Bas/HouseBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+        validateUI();
+        autosize("cc-B120304", -30);
+        autosize(models[currentMenuCode].treeId);
+        autosize(models[currentMenuCode].gridId);
+        //获得街道、社区信息
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        //获得房屋类型信息
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/01010', null, function (houseType) {
+
+            //选择房屋类型input[name="ServeItemB"]
+            $('input[name="HouseType"]').combobox({
+                width: 155,
+                panelHeight: 80,
+                //                required: true,
+                mode: 'local',
+                editable: false,
+                data: houseType,
+                valueField: 'ItemId',
+                textField: 'ItemName'
+            });
+            //根据左边的树获得相应的数据
+            initTree('easyUITree', models[currentMenuCode].treeId, {
+                onClick: function (treeNode) {
+                    var areaType; //左边选择节点的类型
+                    var areaValue; //左边选择节点的值
+                    areaCId = treeNode.id; //选中节点id
+                    areaPId = treeNode.attributes.PId; //父节点id
+                    areaLevels = treeNode.attributes.Levels; //当前节点的层次
+                    if (areaLevels < 5) {
+                        areaType = 'AreaCode';
+                        areaCode = left(treeNode.attributes.Code, 3 + treeNode.attributes.Levels * 2);
+                    }
+                    else if (areaLevels == 5) {
+                        areaType = 'RoadId';
+                        areaValue = areaCId;
+                    }
+                    else if (areaLevels == 6) {
+                        areaType = 'BuildingId';
+                        areaValue = areaCId;
+                    }
+                    else if (areaLevels == 7) {
+                        areaType = 'UnitId';
+                        areaValue = areaCId;
+                    }
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                        sort: 'CheckInTime',
+                        order: 'asc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                            ],
+                        fuzzyFields: [{ key: areaType, value: areaValue}]
+                    });
+                    GetUnitName('BuildingId', areaPId);
+                },
+                onLoadSuccess: function () {
+                    var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                    $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                    $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                }
+            },
+
+            //根据不同的用户权限查询
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/HouseBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false }, models[currentMenuCode].headers)
+                if (res) {
+                    getTreeData('01$01$05', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, models[currentMenuCode].headers);
+                } else {
+                    getTreeData('01$02$04', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d, models[currentMenuCode].headers);
+                }
+            },
+            null,
+            //根据树的节点查询 
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    fit: true,
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage_ByUsers/' + models[currentMenuCode].headers.ConnectId,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                            ]
+                    },
+                    //双击事件
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                    { field: 'UnitId', title: '单元编号', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'HouseName', title: '房屋名称', width: 60, align: 'center' },
+                    { field: 'FloorNo', title: '楼层号', width: 50, align: 'center' },
+                    { field: 'Tel', title: '固定电话', width: 100, align: 'center' },
+                    { field: 'Mobile', title: '联系手机', width: 80, align: 'center' },
+                    { field: 'PropertyRights', title: '房屋产权人', width: 80, align: 'center' },
+                    { field: 'PropertyCall', title: '产权人电话', width: 100, align: 'center' },
+                    { field: 'HouseType', title: '房屋类型', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: houseType },
+                    { field: 'AreaId2', title: '街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'Remark', title: '备注', align: 'center', width: 250 }
+            ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            });
+            //end loadTree
+        }, null, models[currentMenuCode].headers);
+
+    });
+
+    //根据社区获得道路名称
+    function GetUnitName(key_value, param) {
+        var queryParams = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            page: '1',
+            rows: '20',
+            instance: {
+                Status: "1",
+                AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id)
+            },
+            headers: { ConnectId: baseInfoNode },
+            fuzzyFields: []
+        };
+        queryParams.fuzzyFields = [{ key: key_value, value: param}];
+        postTo(baseCMSInvokeUrl + "/Bas/BuildingUnitBaseInfoService/ListForEasyUIgrid2/" + models[currentMenuCode].headers.ConnectId, $.toJSON(queryParams), function (ret) {
+            units = ret.rows;
+            $('#HouseNameOfUnit').combobox("loadData", units);
+        }, { async: false })
+        return units;
+    };
+</script>
+` 

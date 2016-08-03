@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2EEA4005-E880-493F-9007-12C29CAA13C7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Client.Gov</RootNamespace>
+    <AssemblyName>SmartLife.Client.Gov</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>leblue.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Solution-Bins\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Solution-Bins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.core">
+      <HintPath>..\..\Solution-Bins\win.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.updater">
+      <HintPath>..\..\Solution-Bins\win.updater.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AreaInfo.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="DictionaryItem.cs" />
+    <Compile Include="formLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formLogin.Designer.cs">
+      <DependentUpon>formLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formMain.Designer.cs">
+      <DependentUpon>formMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formResidentBaseInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formResidentBaseInfo.Designer.cs">
+      <DependentUpon>formResidentBaseInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPopup.Designer.cs">
+      <DependentUpon>frmPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GovVar.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResidentBaseInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="userCtlResidentBaseInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userCtlResidentBaseInfo.Designer.cs">
+      <DependentUpon>userCtlResidentBaseInfo.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="formResidentBaseInfo.resx">
+      <DependentUpon>formResidentBaseInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userCtlResidentBaseInfo.resx">
+      <DependentUpon>userCtlResidentBaseInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\loginBG_.png" />
+    <Content Include="发布历史.txt" />
+    <EmbeddedResource Include="formLogin.resx">
+      <DependentUpon>formLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formMain.resx">
+      <DependentUpon>formMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPopup.resx">
+      <DependentUpon>frmPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="log4net.config" />
+    <None Include="app.config" />
+    <None Include="config.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Content Include="leblue.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\长条.png" />
+    <None Include="Resources\coffee.png" />
+    <None Include="Resources\man.png" />
+    <None Include="Resources\window.png" />
+    <None Include="Resources\max_on.png" />
+    <None Include="Resources\min.png" />
+    <None Include="Resources\min_on.png" />
+    <None Include="Resources\close_on.png" />
+    <None Include="Resources\close.png" />
+    <None Include="Resources\max.png" />
+    <None Include="Resources\titleBG.png" />
+    <None Include="Resources\normal_on.png" />
+    <None Include="Resources\normal.png" />
+    <None Include="Resources\loginBG.png" />
+    <None Include="Resources\Access alt 2.png" />
+    <None Include="Resources\Access.png" />
+    <None Include="Resources\Acer.png" />
+    <None Include="Resources\Adobe Acrobat Reader.png" />
+    <None Include="Resources\Adobe After Effects.png" />
+    <None Include="Resources\Adobe Audition.png" />
+    <None Include="Resources\Adobe Bridge.png" />
+    <None Include="Resources\Adobe Contribute.png" />
+    <None Include="Resources\Adobe Dreamweaver.png" />
+    <None Include="Resources\Adobe Encore.png" />
+    <None Include="Resources\Adobe Fireworks.png" />
+    <None Include="Resources\Adobe Flash Builder.png" />
+    <None Include="Resources\Adobe Flash Catalyst.png" />
+    <None Include="Resources\Adobe Flash.png" />
+    <None Include="Resources\Adobe Illustrator.png" />
+    <None Include="Resources\Adobe InDesign.png" />
+    <None Include="Resources\Adobe LightRoom.png" />
+    <None Include="Resources\Adobe OnLocation.png" />
+    <None Include="Resources\Adobe Photoshop.png" />
+    <None Include="Resources\Adobe Premiere Pro.png" />
+    <None Include="Resources\Adobe Soundbooth.png" />
+    <None Include="Resources\Aimp.png" />
+    <None Include="Resources\Amazon alt.png" />
+    <None Include="Resources\Amazon.png" />
+    <None Include="Resources\Android1.png" />
+    <None Include="Resources\Sync.png" />
+    <None Include="Resources\settings.png" />
+    <Content Include="SmartLife.Client.Gov.reg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="config_debug.ini" />
+    <None Include="config_release.ini" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

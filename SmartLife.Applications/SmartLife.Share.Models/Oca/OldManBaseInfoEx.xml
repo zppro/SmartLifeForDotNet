@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Count_ResidentRosterStatistics_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select OldManName,Status,IDNo,Gender,DateDiff(MM,Birthday,GETDATE())/12 as Age,
+      HealthInsuranceFlag,SocialInsuranceFlag,Tel,Mobile,LivingState,OldManIdentity,
+      dbo.FUNC_Tol_GetDictionaryItemName('11001', LivingState) as LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11002', OldManIdentity) as OldManIdentityName,
+      AreaId2,AreaId3, Address
+      from Oca_OldManBaseInfo
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AgeFrom" >Age>=#AgeFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeTo" >Age  &lt;=#AgeTo#</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ResidentRosterStatistics_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select OldManName,Status,IDNo,Gender,DateDiff(MM,Birthday,GETDATE())/12 as Age,
+      HealthInsuranceFlag,SocialInsuranceFlag,Tel,Mobile,LivingState,OldManIdentity,
+      dbo.FUNC_Tol_GetDictionaryItemName('11001', LivingState) as LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11002', OldManIdentity) as OldManIdentityName,
+      AreaId2,AreaId3, Address
+      from Oca_OldManBaseInfo
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AgeFrom" >Age>=#AgeFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeTo" >Age  &lt;=#AgeTo#</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="OldManStatistics" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select area.AreaName AreaName
+      ,Man,Woman,UnGender
+      ,HealthInsurance1,HealthInsurance0,UnHealthInsurance
+      ,SocialInsurance1,SocialInsurance0,UnSocialInsurance
+      ,LivingState1,LivingState2,LivingState3,LivingState4
+      ,OldManIdentity0,OldManIdentity1,OldManIdentity2
+      ,Age0,Age1,Age2,Age3,Age4,Age5,Total
+      from (
+      select distinct $AreaItem$ Area,
+      sum(Man)Man,sum(Woman)Woman,sum(UnGender)UnGender,
+      sum(HealthInsurance1)HealthInsurance1,sum(HealthInsurance0)HealthInsurance0,sum(UnHealthInsurance)UnHealthInsurance,
+      sum(SocialInsurance1)SocialInsurance1,sum(SocialInsurance0)SocialInsurance0,sum(UnSocialInsurance)UnSocialInsurance,
+      sum(LivingState1)LivingState1,sum(LivingState2)LivingState2,sum(LivingState3)LivingState3,sum(LivingState4)LivingState4,
+      sum(OldManIdentity0)OldManIdentity0,sum(OldManIdentity1)OldManIdentity1,sum(OldManIdentity2)OldManIdentity2,
+      sum(Age0)Age0,sum(Age1)Age1,sum(Age2)Age2,sum(Age3)Age3,sum(Age4)Age4,sum(Age5)Age5,
+      COUNT(*)Total
+      from Oca_OldManBaseInfo_Statistics_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeFrom" >Age>=#AgeFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeTo" >Age  &lt;=#AgeTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      group by $AreaItem$
+      ) info left join  pub_Area area on info.Area=area.AreaId
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManStatistics_Total" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" > 
+      select '合计' AreaName,
+      sum(Man)Man,sum(Woman)Woman,sum(UnGender)UnGender,
+      sum(HealthInsurance1)HealthInsurance1,sum(HealthInsurance0)HealthInsurance0,sum(UnHealthInsurance)UnHealthInsurance,
+      sum(SocialInsurance1)SocialInsurance1,sum(SocialInsurance0)SocialInsurance0,sum(UnSocialInsurance)UnSocialInsurance,
+      sum(LivingState1)LivingState1,sum(LivingState2)LivingState2,sum(LivingState3)LivingState3,sum(LivingState4)LivingState4,
+      sum(OldManIdentity0)OldManIdentity0,sum(OldManIdentity1)OldManIdentity1,sum(OldManIdentity2)OldManIdentity2,
+      sum(Age0)Age0,sum(Age1)Age1,sum(Age2)Age2,sum(Age3)Age3,sum(Age4)Age4,sum(Age5)Age5,
+      COUNT(*)Total
+      from Oca_OldManBaseInfo_Statistics_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeFrom" >Age>=#AgeFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AgeTo" >Age  &lt;=#AgeTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      group by Status 
+    </select>
+    <select id="OldManBaseInfoForName" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.OldManId,OldManName,dbo.FUNC_Tol_GetGenderName(Gender) as GenderName,
+      dbo.FUNC_Tol_GetAge(IDNo) as Age,IDNo,
+      case HealthInsuranceFlag when 1 then '是' else '否' end as HealthInsuranceFlagName,HealthInsuranceNumber,
+      case SocialInsuranceFlag when 1 then '是' else '否' end as SocialInsuranceFlagName,SocialInsuranceNumber,
+      dbo.FUNC_Tol_GetDictionaryItemName('11001', LivingState) as LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11002', OldManIdentity) as OldManIdentityName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00005', AreaId) as AreaIdName,
+      case when ISNULL(a.AreaId2,'')='' or a.AreaId2='NULL' then '' else
+      (select AreaName from Pub_Area where AreaId=a.AreaId2) end as AreaId2Name,
+      case when ISNULL(a.AreaId3,'')='' or a.AreaId3='NULL' then '' else
+      (select AreaName from Pub_Area where AreaId=a.AreaId3) end as AreaId3Name,Address,
+      LongitudeS,LatitudeS,PostCode,Tel,Mobile,Remark,CallNo,CallNo2,CallNo3,
+      case GovTurnkeyFlag when 1 then '是' else '否' end as GovTurnkeyFlagName,
+      dbo.FUNC_Tol_GetDictionaryItemName('12008', AssessLevel) as AssessLevelName
+      from Oca_OldManBaseInfo a left join Oca_OldManConfigInfo b on a.OldManId=b.OldManId
+      <dynamic prepend=" WHERE "> 
+      <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>   
+      <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </dynamic>
+    <dynamic prepend=" ORDER BY ">
+      <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+    </dynamic>
+    </select>
+    <select id="Count_GetListOldManByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select OldManId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManName,Gender,Birthday,
+      IDNo,HealthInsuranceFlag,HealthInsuranceNumber,SocialInsuranceFlag,SocialInsuranceNumber,LivingState,OldManIdentity,
+      AreaId,AreaId2,AreaId3,Address,LongitudeS,LatitudeS,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,ResidentStatus
+      ,(select r.RoomId from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as RoomId
+      ,(select FloorNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as FloorNo
+      ,(select RoomNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as RoomNo
+      ,(select ExtNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as ExtNo
+      ,(select SickBedNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as SickBedNo
+      from Oca_OldManBaseInfo info
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_Start" >Birthday>=to_date(#Birthday_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_End" >Birthday&lt;=to_date(#Birthday_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_Start" >DischargeTime>=to_date(#DischargeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_End" >DischargeTime&lt;=to_date(#DischargeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeNote" >DischargeNote=#DischargeNote#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area" >( AreaId3 in (select cast(AreaId as varchar (40)) from Pub_Area where AreaId2 like '$Area$%') or  AreaId2 in (select cast(AreaId as varchar (40)) from Pub_Area where AreaId3 like '$Area$%')) </isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="GetListOldManByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select OldManId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManName,Gender,Birthday,
+      IDNo,HealthInsuranceFlag,HealthInsuranceNumber,SocialInsuranceFlag,SocialInsuranceNumber,LivingState,OldManIdentity,
+      AreaId,AreaId2,AreaId3,Address,LongitudeS,LatitudeS,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,ResidentStatus
+      ,(select r.RoomId from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as RoomId
+      ,(select FloorNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as FloorNo
+      ,(select RoomNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as RoomNo
+      ,(select ExtNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as ExtNo
+      ,(select SickBedNo from Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId where StationId=#StationId# and Status=1 and ro.EndDate >GETDATE() and ro.OldManId=info.OldManId) as SickBedNo
+      from Oca_OldManBaseInfo info
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_Start" >Birthday>=to_date(#Birthday_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_End" >Birthday&lt;=to_date(#Birthday_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_Start" >DischargeTime>=to_date(#DischargeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_End" >DischargeTime&lt;=to_date(#DischargeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeNote" >DischargeNote=#DischargeNote#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area" >( AreaId3 in (select cast(AreaId as varchar (40)) from Pub_Area where AreaId2 like '$Area$%') or  AreaId2 in (select cast(AreaId as varchar (40)) from Pub_Area where AreaId3 like '$Area$%')) </isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="Count_ListForRoomOldManByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse,a.*, b.RoomId,b.FloorNo,b.RoomNo ,b.ExtNo,b.BedNo,b.OccupancyNumber,b.SickBedNo,c.CallNo3
+      from Oca_OldManBaseInfo  a left join (select x.OldManId,x.SickBedNo,y.* From  Pam_RoomOldMan x
+      inner join Pam_Room y on x.RoomId=y.RoomId where GETDATE() between x.BeginDate and x.EndDate and y.Status=1
+      and y.StationId='$StationId$') b on a.OldManId=b.OldManId
+      left join Oca_OldManConfigInfo c on a.OldManId=c.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >a.DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_Start" >a.Birthday>=to_date(#Birthday_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_End" >a.Birthday&lt;=to_date(#Birthday_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >a.IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >a.HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >a.HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >a.SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >a.SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >a.LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >a.OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >a.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >a.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >a.LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >a.LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >a.PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >a.Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >a.InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >a.InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >a.ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_Start" >a.DischargeTime>=to_date(#DischargeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_End" >a.DischargeTime&lt;=to_date(#DischargeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeNote" >a.DischargeNote=#DischargeNote#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >a.StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >b.RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >b.FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomNo" >b.RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ExtNo" >b.ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BedNo" >b.BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >b.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SickBedNo" >b.SickBedNo=#SickBedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallNo" >c.CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ListForRoomOldManByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.*, b.RoomId,b.FloorNo,b.RoomNo ,b.ExtNo,b.BedNo,b.OccupancyNumber,b.SickBedNo,c.CallNo3
+      from Oca_OldManBaseInfo  a left join (select x.OldManId,x.SickBedNo,y.* From  Pam_RoomOldMan x
+      inner join Pam_Room y on x.RoomId=y.RoomId where GETDATE() between x.BeginDate and x.EndDate and y.Status=1
+      and y.StationId='$StationId$') b on a.OldManId=b.OldManId
+      left join Oca_OldManConfigInfo c on a.OldManId=c.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >a.DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_Start" >a.Birthday>=to_date(#Birthday_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Birthday_End" >a.Birthday&lt;=to_date(#Birthday_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >a.IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >a.HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >a.HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >a.SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >a.SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingState" >a.LivingState=#LivingState#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManIdentity" >a.OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >a.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >a.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >a.LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >a.LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >a.PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >a.Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >a.InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >a.InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >a.ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_Start" >a.DischargeTime>=to_date(#DischargeTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeTime_End" >a.DischargeTime&lt;=to_date(#DischargeTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DischargeNote" >a.DischargeNote=#DischargeNote#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >a.StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >b.RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >b.FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomNo" >b.RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ExtNo" >b.ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BedNo" >b.BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >b.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SickBedNo" >b.SickBedNo=#SickBedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallNo" >c.CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="Count_GetListOldManLivingInRoom2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select distinct 1 as NoUse,info.OldManId,info.CheckInTime,info.Status,info.OperatedBy,info.OperatedOn,info.OldManName,info.Gender
+      ,info.Birthday,info.IDNo,info.HealthInsuranceFlag,info.HealthInsuranceNumber,info.SocialInsuranceFlag,info.SocialInsuranceNumber
+      ,info.LivingState,info.OldManIdentity,info.AreaId,info.AreaId2,info.AreaId3,info.Address,info.LongitudeS,info.LatitudeS,info.PostCode
+      ,info.Tel,info.Mobile,info.Remark,info.InputCode1,info.InputCode2,info.ResidentStatus
+      ,r.RoomId,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.StationId,ro.BeginDate,ro.EndDate
+      from  Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId left join Oca_OldManBaseInfo info on info.OldManId=ro.OldManId
+      <isEqual property="isMapping" compareValue="1">
+        left join Pam_OldManMappingServeMan oms on info.OldManId=oms.OldManId
+      </isEqual>
+      where info.Status=3 and info.ResidentStatus=7 and r.Status=1 and ro.EndDate >GETDATE()
+      <isEqual property="isMapping" compareValue="1">
+        and oms.EndTime>GETDATE()
+      </isEqual>
+      <isPropertyAvailable prepend=" AND " property="OldManId" >info.OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedBy" >info.OperatedBy=#OperatedBy#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManName" >info.OldManName=#OldManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >info.Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >info.IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >info.HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >info.HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >info.SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >info.SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LivingState" >info.LivingState=#LivingState#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManIdentity" >info.OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >info.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >info.AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >info.AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Address" >info.Address=#Address#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LongitudeS" >info.LongitudeS=#LongitudeS#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LatitudeS" >info.LatitudeS=#LatitudeS#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PostCode" >info.PostCode=#PostCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >info.Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >info.Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Remark" >info.Remark=#Remark#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >info.InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >info.InputCode2=#InputCode2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RoomId" >r.RoomId=#RoomId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RoomNo" >r.RoomNo=#RoomNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FloorNo" >r.FloorNo=#FloorNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ExtNo" >r.ExtNo=#ExtNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BedNo" >r.BedNo=#BedNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >r.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >r.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BeginDate" >r.BeginDate=#BeginDate#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="EndDate" >r.EndDate=#EndDate#</isPropertyAvailable>
+      <isEqual property="isMapping" compareValue="1">
+        <isPropertyAvailable prepend=" AND " property="UserId" >oms.UserId=#UserId#</isPropertyAvailable>
+      </isEqual>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </select>
+    <select id="GetListOldManLivingInRoom2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,abc.*
+      from ( select distinct info.OldManId,info.CheckInTime,info.Status,info.OperatedBy,info.OperatedOn,info.OldManName,info.Gender
+      ,info.Birthday,info.IDNo,info.HealthInsuranceFlag,info.HealthInsuranceNumber,info.SocialInsuranceFlag,info.SocialInsuranceNumber
+      ,info.LivingState,info.OldManIdentity,info.AreaId,info.AreaId2,info.AreaId3,info.Address,info.LongitudeS,info.LatitudeS,info.PostCode
+      ,info.Tel,info.Mobile,info.Remark,info.InputCode1,info.InputCode2,info.ResidentStatus
+      ,r.RoomId,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.StationId,ro.BeginDate,ro.EndDate
+      from  Pam_Room r left join Pam_RoomOldMan ro on ro.RoomId=r.RoomId left join Oca_OldManBaseInfo info on info.OldManId=ro.OldManId
+      <isEqual property="isMapping" compareValue="1">
+        left join Pam_OldManMappingServeMan oms on info.OldManId=oms.OldManId
+      </isEqual>
+      where info.Status=3 and info.ResidentStatus=7 and r.Status=1 and ro.EndDate >GETDATE()
+      <isEqual property="isMapping" compareValue="1">
+        and oms.EndTime>GETDATE()
+      </isEqual>
+      <isPropertyAvailable prepend=" AND " property="OldManId" >info.OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedBy" >info.OperatedBy=#OperatedBy#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManName" >info.OldManName=#OldManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >info.Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >info.IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HealthInsuranceFlag" >info.HealthInsuranceFlag=#HealthInsuranceFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HealthInsuranceNumber" >info.HealthInsuranceNumber=#HealthInsuranceNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="SocialInsuranceFlag" >info.SocialInsuranceFlag=#SocialInsuranceFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="SocialInsuranceNumber" >info.SocialInsuranceNumber=#SocialInsuranceNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LivingState" >info.LivingState=#LivingState#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManIdentity" >info.OldManIdentity=#OldManIdentity#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >info.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >info.AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >info.AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Address" >info.Address=#Address#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LongitudeS" >info.LongitudeS=#LongitudeS#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LatitudeS" >info.LatitudeS=#LatitudeS#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PostCode" >info.PostCode=#PostCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >info.Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >info.Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Remark" >info.Remark=#Remark#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >info.InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >info.InputCode2=#InputCode2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RoomId" >r.RoomId=#RoomId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RoomNo" >r.RoomNo=#RoomNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FloorNo" >r.FloorNo=#FloorNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ExtNo" >r.ExtNo=#ExtNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BedNo" >r.BedNo=#BedNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >r.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >r.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BeginDate" >r.BeginDate=#BeginDate#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="EndDate" >r.EndDate=#EndDate#</isPropertyAvailable>
+      <isEqual property="isMapping" compareValue="1">
+        <isPropertyAvailable prepend=" AND " property="UserId" >oms.UserId=#UserId#</isPropertyAvailable>
+      </isEqual>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      ) abc )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

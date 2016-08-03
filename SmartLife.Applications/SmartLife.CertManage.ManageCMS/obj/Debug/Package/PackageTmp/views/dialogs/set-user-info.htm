@@ -1,0 +1,68 @@
+﻿<div class="ftitle"></div>
+<form id="fm-login-setting" method="post" novalidate>
+<div class="fitem">
+    <label>
+        用&nbsp;&nbsp;&nbsp;&nbsp;户&nbsp;&nbsp;&nbsp;名:</label>  
+        <input id="UserName" readonly style="border:none; margin-top:6px;" />
+</div> 
+<div class="fitem">
+    <label>旧&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:</label> 
+    <input type="password" name="oldpassword" id="oldpassword" style=" margin-top:2px;"/> 
+</div> 
+<div class="fitem">
+    <label>新&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;码:</label> 
+    <input type="password" name="PasswordHash" id="PasswordHash" style=" margin-top:2px;"/> 
+</div> 
+<div class="fitem">
+    <label>重复新密码:</label> 
+    <input type="password" name="repassword" id="repassword"  style=" margin-top:2px;"/> 
+</div> 
+<div class="fitem" >
+    <label style="color:Red; margin-top:4px;" id="shwowlaber" ></label>  
+</div>
+</form>
+
+<script type="text/javascript">
+    var userid;
+    function dialogOpen(dialogId, dialogData) {
+        $('#UserName').val(dialogData.UserName);
+        userid = dialogData.UserId;
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+
+        var oldpassword = $("#oldpassword").val() || 'empty';
+        var url = baseCMSInvokeUrl + '/Pub/UserService/VerifyPassword/' + userid + "," + oldpassword;
+        var ret = null;
+        getTo(url, null, function (result) {
+            ret = result.instance;
+        }, { async: false });
+
+        if (!ret) {
+            showError("旧密码输入不正确");
+            $("#oldpasswordhash").focus();
+            return false;
+        }
+        if ($("#repassword").val() != $("#PasswordHash").val()) {
+            showError("两次输入密码不匹配");
+            $("#repassword").focus();
+            return false;
+        }
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var formData = $('#fm-login-setting').serializeObject();
+
+        return formData;
+    }
+
+    function showError(strinfo) {
+        $("#shwowlaber").html(strinfo);
+        //$('#fm-login-setting').get(0).reset();
+        //$("#oldpassword").val("");
+        //$("#PasswordHash").val("");
+        //$("#repassword").val("");
+    }
+</script>

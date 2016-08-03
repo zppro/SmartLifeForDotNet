@@ -1,0 +1,5 @@
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\Solution-Outputs\SmartLife.Share.Behaviors.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\Solution-Outputs\SmartLife.Share.Behaviors.pdb
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Behaviors\obj\Debug\ResolveAssemblyReference.cache
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Behaviors\obj\Debug\SmartLife.Share.Behaviors.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Behaviors\obj\Debug\SmartLife.Share.Behaviors.pdb

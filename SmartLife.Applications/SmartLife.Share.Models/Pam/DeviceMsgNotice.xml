@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="DeviceMsgNotice" type="SmartLife.Share.Models.Pam.DeviceMsgNotice, SmartLife.Share.Models" />
+        <typeAlias alias="DeviceMsgNoticePK" type="SmartLife.Share.Models.Pam.DeviceMsgNoticePK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="DeviceMsgNotice_Create" parameterClass="StringObjectDictionary" >
+            insert into Pam_DeviceMsgNotice(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BeginTime" >BeginTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EndTime" >EndTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceId" >DeviceId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticePosition" >NoticePosition</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeType" >NoticeType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeContent" >NoticeContent</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BeginTime" >#BeginTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EndTime" >#EndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceId" >#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticePosition" >#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeType" >#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeContent" >#NoticeContent#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="DeviceMsgNotice_Update" parameterClass="StringObjectDictionary" >
+            update Pam_DeviceMsgNotice
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BeginTime" >BeginTime=#BeginTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EndTime" >EndTime=#EndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticePosition" >NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeType" >NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NoticeContent" >NoticeContent=#NoticeContent#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="DeviceMsgNotice_Delete" parameterClass="StringObjectDictionary" >
+            delete Pam_DeviceMsgNotice
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_Start" >BeginTime>=to_date(#BeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_End" >BeginTime&lt;=to_date(#BeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_Start" >EndTime>=to_date(#EndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_End" >EndTime&lt;=to_date(#EndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticePosition" >NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeType" >NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeContent" >NoticeContent=#NoticeContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="DeviceMsgNotice_Load" parameterClass="DeviceMsgNoticePK" resultClass="DeviceMsgNotice" >
+            select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,BeginTime,EndTime,StationId,DeviceId,NoticePosition,NoticeType,NoticeContent from Pam_DeviceMsgNotice
+            where Id=#Id#
+        </select>
+        <select id="DeviceMsgNotice_List" parameterClass="StringObjectDictionary" resultClass="DeviceMsgNotice" >
+            select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,BeginTime,EndTime,StationId,DeviceId,NoticePosition,NoticeType,NoticeContent from Pam_DeviceMsgNotice
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_Start" >BeginTime>=to_date(#BeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_End" >BeginTime&lt;=to_date(#BeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_Start" >EndTime>=to_date(#EndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_End" >EndTime&lt;=to_date(#EndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticePosition" >NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeType" >NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeContent" >NoticeContent=#NoticeContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="DeviceMsgNotice_ListByPage" parameterClass="StringObjectDictionary" resultClass="DeviceMsgNotice" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,BeginTime,EndTime,StationId,DeviceId,NoticePosition,NoticeType,NoticeContent from Pam_DeviceMsgNotice
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_Start" >BeginTime>=to_date(#BeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_End" >BeginTime&lt;=to_date(#BeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_Start" >EndTime>=to_date(#EndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_End" >EndTime&lt;=to_date(#EndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticePosition" >NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeType" >NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeContent" >NoticeContent=#NoticeContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

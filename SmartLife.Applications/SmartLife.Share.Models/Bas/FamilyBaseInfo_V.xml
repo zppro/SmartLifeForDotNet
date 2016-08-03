@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Bas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="FamilyBaseInfo_V" type="SmartLife.Share.Models.Bas.FamilyBaseInfo_V, SmartLife.Share.Models" />
+        <typeAlias alias="FamilyBaseInfo_VPK" type="SmartLife.Share.Models.Bas.FamilyBaseInfo_VPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="FamilyBaseInfo_V_Create" parameterClass="StringObjectDictionary" >
+            insert into Bas_FamilyBaseInfo_V(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="FamilyId" >FamilyId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHolderName" >HouseHolderName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ImmigrationTime" >ImmigrationTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHoldType" >HouseHoldType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyHonor" >FamilyHonor</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyType" >FamilyType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SingleParent" >SingleParent</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ResidenceDistrict" >ResidenceDistrict</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseId" >HouseId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UnitId" >UnitId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BuildingId" >BuildingId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoadId" >RoadId</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="FamilyId" >#FamilyId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHolderName" >#HouseHolderName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ImmigrationTime" >#ImmigrationTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHoldType" >#HouseHoldType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyHonor" >#FamilyHonor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyType" >#FamilyType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SingleParent" >#SingleParent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ResidenceDistrict" >#ResidenceDistrict#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseId" >#HouseId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UnitId" >#UnitId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BuildingId" >#BuildingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoadId" >#RoadId#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="FamilyBaseInfo_V_Update" parameterClass="StringObjectDictionary" >
+            update Bas_FamilyBaseInfo_V
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="FamilyId" >FamilyId=#FamilyId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHolderName" >HouseHolderName=#HouseHolderName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ImmigrationTime" >ImmigrationTime=#ImmigrationTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseHoldType" >HouseHoldType=#HouseHoldType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyHonor" >FamilyHonor=#FamilyHonor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FamilyType" >FamilyType=#FamilyType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SingleParent" >SingleParent=#SingleParent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ResidenceDistrict" >ResidenceDistrict=#ResidenceDistrict#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HouseId" >HouseId=#HouseId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UnitId" >UnitId=#UnitId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BuildingId" >BuildingId=#BuildingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoadId" >RoadId=#RoadId#</isPropertyAvailable>
+            </dynamic>
+            where
+        </update>
+        <delete id="FamilyBaseInfo_V_Delete" parameterClass="StringObjectDictionary" >
+            delete Bas_FamilyBaseInfo_V
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="FamilyId" >FamilyId=#FamilyId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHolderName" >HouseHolderName=#HouseHolderName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_Start" >ImmigrationTime>=to_date(#ImmigrationTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_End" >ImmigrationTime&lt;=to_date(#ImmigrationTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHoldType" >HouseHoldType=#HouseHoldType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyHonor" >FamilyHonor=#FamilyHonor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyType" >FamilyType=#FamilyType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SingleParent" >SingleParent=#SingleParent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidenceDistrict" >ResidenceDistrict=#ResidenceDistrict#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseId" >HouseId=#HouseId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UnitId" >UnitId=#UnitId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BuildingId" >BuildingId=#BuildingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoadId" >RoadId=#RoadId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="FamilyBaseInfo_V_Load" parameterClass="FamilyBaseInfo_VPK" resultClass="FamilyBaseInfo_V" >
+            select FamilyId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,HouseHolderName,ImmigrationTime,HouseHoldType,FamilyHonor,FamilyType,SingleParent,ResidenceDistrict,HouseId,AreaId,AreaId2,AreaId3,Remark,InputCode1,InputCode2,UnitId,BuildingId,RoadId from Bas_FamilyBaseInfo_V
+            where
+        </select>
+        <select id="FamilyBaseInfo_V_List" parameterClass="StringObjectDictionary" resultClass="FamilyBaseInfo_V" >
+            select FamilyId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,HouseHolderName,ImmigrationTime,HouseHoldType,FamilyHonor,FamilyType,SingleParent,ResidenceDistrict,HouseId,AreaId,AreaId2,AreaId3,Remark,InputCode1,InputCode2,UnitId,BuildingId,RoadId from Bas_FamilyBaseInfo_V
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="FamilyId" >FamilyId=#FamilyId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHolderName" >HouseHolderName=#HouseHolderName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_Start" >ImmigrationTime>=to_date(#ImmigrationTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_End" >ImmigrationTime&lt;=to_date(#ImmigrationTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHoldType" >HouseHoldType=#HouseHoldType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyHonor" >FamilyHonor=#FamilyHonor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyType" >FamilyType=#FamilyType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SingleParent" >SingleParent=#SingleParent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidenceDistrict" >ResidenceDistrict=#ResidenceDistrict#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseId" >HouseId=#HouseId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UnitId" >UnitId=#UnitId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BuildingId" >BuildingId=#BuildingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoadId" >RoadId=#RoadId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="FamilyBaseInfo_V_ListByPage" parameterClass="StringObjectDictionary" resultClass="FamilyBaseInfo_V" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,FamilyId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,HouseHolderName,ImmigrationTime,HouseHoldType,FamilyHonor,FamilyType,SingleParent,ResidenceDistrict,HouseId,AreaId,AreaId2,AreaId3,Remark,InputCode1,InputCode2,UnitId,BuildingId,RoadId from Bas_FamilyBaseInfo_V
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="FamilyId" >FamilyId=#FamilyId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHolderName" >HouseHolderName=#HouseHolderName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_Start" >ImmigrationTime>=to_date(#ImmigrationTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ImmigrationTime_End" >ImmigrationTime&lt;=to_date(#ImmigrationTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseHoldType" >HouseHoldType=#HouseHoldType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyHonor" >FamilyHonor=#FamilyHonor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FamilyType" >FamilyType=#FamilyType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SingleParent" >SingleParent=#SingleParent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidenceDistrict" >ResidenceDistrict=#ResidenceDistrict#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseId" >HouseId=#HouseId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UnitId" >UnitId=#UnitId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BuildingId" >BuildingId=#BuildingId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoadId" >RoadId=#RoadId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="GetOpenNode" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select b.ItemName  from Cer_DeployNode a inner join Sys_DictionaryItem b on a.ObjectId=b.ItemCode
+      where b.DictionaryId='00005' 
+      <isEqual property="NodeType" compareValue="City">
+        and len(a.ObjectId)=4
+      </isEqual>
+      <isEqual property="NodeType" compareValue="Area">
+        and len(a.ObjectId)=6
+      </isEqual>
+      and a.ApplicationIdFrom='BP015' and a.ApplicationIdTo='IP013' Group By  b.ItemName
+    </select>
+  </statements>
+</sqlMap>

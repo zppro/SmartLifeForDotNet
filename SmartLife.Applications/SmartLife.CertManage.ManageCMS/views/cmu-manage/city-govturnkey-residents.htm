@@ -1,0 +1,327 @@
+﻿<table id="cc-B120801" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B120801">
+            </ul>
+        </td>
+        <td valign="top">
+            <table id="tb-B120801">
+                <tr>
+                    <td style="width: 50%; vertical-align:top;">
+                        <div id="search-sample-notGovTurnkeyResidents" title="查询" style=" padding: 3px;">
+                            <form id="fm-search-rough-notGovTurnkeyResidents" method="post">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align: right; width:60px;">
+                                       <label for="KeyWord">关键字：</label> 
+                                    </td>
+                                    <td style="text-align: left">
+                                        <input name="KeyWord" class="easyui-validatebox "    placeholder="姓名、身份证、电话、手机"/>
+                                    </td>
+                                    <td style="width: 90px;">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="searchGovTurnkeyResidents('notGovTurnkeyResidents')"> 查询</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            </form>
+                        </div>
+                        <!--<div id="toolbar-notGovTurnkeyResidents">
+                            &nbsp;&nbsp;关键字：<input name="KeyWord" class="easyui-validatebox "    />
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="exec(true)"> 查询</a>
+                        </div>-->
+                        <table id="dg-notGovTurnkeyResidents">
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectall" plain="true"
+                                        onclick="assignAll()"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectone" plain="true"
+                                        onclick="assignSelected()"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectone"
+                                        plain="true" onclick="unAssignSelected()"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectall"
+                                        plain="true" onclick="unAssignAll()"></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%;vertical-align:top;">
+                        <div id="search-sample-GovTurnkeyResidents" title="查询" style=" padding:3px;">
+                            <form id="fm-search-rough-GovTurnkeyResidents" method="post">
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align: right; width:60px;">
+                                       <label for="KeyWord">关键字：</label> 
+                                    </td>
+                                    <td style="text-align: left">
+                                        <input name="KeyWord" class="easyui-validatebox "    placeholder="姓名、身份证、电话、手机"/>
+                                    </td>
+                                    <td style="width: 90px;">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="searchGovTurnkeyResidents('GovTurnkeyResidents')"> 查询</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            </form>
+                        </div>
+                        <!--<div id="toolbar-GovTurnkeyResidents">
+                            &nbsp;&nbsp;关键字：<input name="KeyWord" class="easyui-validatebox "    />
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="exec(true)"> 查询</a>
+                        </div>-->
+                        <table id="dg-GovTurnkeyResidents">
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    placeholder(); //占位符初始化
+    var areas;
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //模糊查询时所需获取的ID
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '老人配置资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), OldManStatus: 1 }
+        };
+        autosize("cc-B120801", -30);
+        autosize("tb-B120801");
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var queryParams1 = $('#dg-notGovTurnkeyResidents').datagrid("options").queryParams;
+                var queryParams2 = $('#dg-GovTurnkeyResidents').datagrid("options").queryParams;
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点 
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点  
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点 
+                };
+                queryParams1.fuzzyFields = [{ key: 'AreaId ', value: areaId}];
+                queryParams2.fuzzyFields = [{ key: 'AreaId ', value: areaId}];
+
+                $('#dg-notGovTurnkeyResidents').datagrid('reload', queryParams1);
+                $('#dg-GovTurnkeyResidents').datagrid('reload', queryParams2);
+            },
+            onLoadSuccess: function () {
+                //左边的树默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+        function (d) {
+            postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                if (result) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                }
+                else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            });
+        },
+        null,
+        function (treeObj) {
+            $('#dg-notGovTurnkeyResidents').height($("#tb-B120801").height() - 10);
+            $('#dg-GovTurnkeyResidents').height($("#tb-B120801").height() - 30);
+
+            $('#dg-notGovTurnkeyResidents').datagrid(easyuigrid_settings({
+                title: "非政府统包对象",
+                //height: theHeight,
+                //toolbar:"#toolbar-notGovTurnkeyResidents",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                method: 'POST',
+                queryParams: {
+                    sort: 'isnull(b.OperatedOn,a.OperatedOn)',
+                    order: 'desc',
+                    filterFields: [
+                        { key: 'OldManStatus', value: models[currentMenuCode].defaultModel.OldManStatus },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                        { key: 'GovTurnkeyFlag', value: 0 }
+                        ]
+                },
+                columns: [[
+                    { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+                ]],
+                loader: easyuiLoaderForStringObjectDictionary
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#dg-GovTurnkeyResidents').datagrid(easyuigrid_settings({
+                title: "政府统包对象",
+                //height: theHeight,
+                //toolbar:"#toolbar-GovTurnkeyResidents",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                method: 'POST',
+                //                onBeforeLoad: function (params) {//禁止第一次加载
+                //                    return bInitGrid;
+                //                },
+                queryParams: {
+                    sort: 'isnull(b.OperatedOn,a.OperatedOn)',
+                    order: 'desc',
+                    filterFields: [
+                        { key: 'OldManStatus', value: models[currentMenuCode].defaultModel.OldManStatus },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                        { key: 'GovTurnkeyFlag', value: 1 }
+                        ]
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+                ]],
+                loader: easyuiLoaderForStringObjectDictionary
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+        });
+    });
+
+    //查询
+    function searchGovTurnkeyResidents(idTag) {
+        var qParams = $('#dg-' + idTag).datagrid("options").queryParams;
+        if (qParams) {
+            var formData = $('#fm-search-rough-' + idTag).serializeObject();
+            
+            //KeyWord模糊查询专用
+            formData['OldManName'] = formData['KeyWord'];
+            formData['IDNo'] = formData['KeyWord'];
+            formData['Tel'] = formData['KeyWord'];
+            formData['Mobile'] = formData['KeyWord'];
+            formData['InputCode1'] = formData['KeyWord'];
+            formData['InputCode2'] = formData['KeyWord'];
+            delete formData.KeyWord
+
+            //转换
+            var fFields = [];
+            for (var item in formData) {
+                fFields.push({ key: item, value: formData[item] });
+            }
+            //存在当前过滤属性
+            if (qParams.fuzzyFields) {
+                _.each(fFields, function (i) {
+                    var queryData = _.findWhere(qParams.fuzzyFields, { "key": i.key });
+                    if (queryData && queryData.value) {
+                        queryData.value = i.value;
+                    }
+                    else {
+                        qParams.fuzzyFields.push(i);
+                    }
+                });
+            }
+            else {
+                qParams.fuzzyFields = fFields;
+            }
+            
+            $('#dg-' + idTag).datagrid('reload', _.extend(qParams, { fuzzyFieldOP: "OR" }));
+        }
+    }
+
+
+    function assignAll() {
+        var rows = $('#dg-notGovTurnkeyResidents').datagrid('getRows'); 
+        saveGovTurnkeyFlagResidents(rows, 1);
+    }
+
+    function assignSelected() {
+        var rows = $('#dg-notGovTurnkeyResidents').datagrid('getSelections');
+        if (rows.length > 0) {
+            saveGovTurnkeyFlagResidents(rows, 1);
+        } else {
+            alertInfo('没有选中的老人！');
+        }
+    }
+
+    function unAssignSelected() {
+        var rows = $('#dg-GovTurnkeyResidents').datagrid('getSelections');
+        if (rows.length > 0) {
+            saveGovTurnkeyFlagResidents(rows, 0);
+        } else {
+            alertInfo('没有选中的老人！');
+        }
+    }
+    function unAssignAll() {
+        var rows = $('#dg-GovTurnkeyResidents').datagrid('getRows');
+        saveGovTurnkeyFlagResidents(rows, 0);
+    }
+
+    function saveGovTurnkeyFlagResidents(rows, canSetFlag) {
+        if (rows) {
+            var tmpData = _.map(rows, function (item) {
+                return { OldManId: item.OldManId, GovTurnkeyFlag: canSetFlag };
+            });
+
+            if (tmpData && tmpData.length > 0) {
+                alertConfirm('您确定要继续吗？', function (r) {
+                    if (r) { 
+                        postTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/BatchSetOldManGovTurnkey', $.toJSON(tmpData), function (ret) {
+                            if (ret.Success) {
+                                alertInfo('保存成功！');
+                                $('#dg-notGovTurnkeyResidents').datagrid('load');
+                                $('#dg-GovTurnkeyResidents').datagrid('load');
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        else {
+            alertInfo('没有选中的老人！');
+        }
+    }
+</script>

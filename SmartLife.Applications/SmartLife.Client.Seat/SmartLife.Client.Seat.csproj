@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4A831334-CF5C-4B71-BD50-AA980F20103F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Client.Seat</RootNamespace>
+    <AssemblyName>SmartLife.Client.Seat</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>V2X</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;V2X</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>leblue.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Solution-Bins\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Solution-Bins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartLife.Share.Models.PO">
+      <HintPath>..\..\Solution-Bins\SmartLife.Share.Models.PO.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+    <Reference Include="web.core.share.models">
+      <HintPath>..\..\Solution-Bins\web.core.share.models.dll</HintPath>
+    </Reference>
+    <Reference Include="win.core">
+      <HintPath>..\..\Solution-Bins\win.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.tools">
+      <HintPath>..\..\Solution-Bins\win.tools.dll</HintPath>
+    </Reference>
+    <Reference Include="win.updater">
+      <HintPath>..\..\Solution-Bins\win.updater.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common.cs" />
+    <Compile Include="DelegateAndEvent.cs" />
+    <Compile Include="EnvironmentVar.cs" />
+    <Compile Include="frmCallsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCallsDialog.Designer.cs">
+      <DependentUpon>frmCallsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConference.Designer.cs">
+      <DependentUpon>frmConference.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCTI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCTI.Designer.cs">
+      <DependentUpon>frmCTI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDialBack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDialBack.Designer.cs">
+      <DependentUpon>frmDialBack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInfo.Designer.cs">
+      <DependentUpon>frmInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMainV2X.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainV2X.Designer.cs">
+      <DependentUpon>frmMainV2X.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmServiceOnline.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServiceOnline.Designer.cs">
+      <DependentUpon>frmServiceOnline.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTransfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransfer.Designer.cs">
+      <DependentUpon>frmTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVoice.Designer.cs">
+      <DependentUpon>frmVoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Resources\Red.png" />
+    <None Include="Resources\Green.png" />
+    <None Include="Resources\ExtOffline.wav" />
+    <Content Include="发布历史.txt" />
+    <EmbeddedResource Include="frmCallsDialog.resx">
+      <DependentUpon>frmCallsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConference.resx">
+      <DependentUpon>frmConference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCTI.resx">
+      <DependentUpon>frmCTI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDialBack.resx">
+      <DependentUpon>frmDialBack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInfo.resx">
+      <DependentUpon>frmInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMainV2X.resx">
+      <DependentUpon>frmMainV2X.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmServiceOnline.resx">
+      <DependentUpon>frmServiceOnline.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTransfer.resx">
+      <DependentUpon>frmTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVoice.resx">
+      <DependentUpon>frmVoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <EmbeddedResource Include="log4net.config" />
+    <None Include="config.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="config_debug.ini" />
+    <None Include="config_release.ini" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\BG_Countdown.png" />
+    <None Include="Resources\图标笑脸.png" />
+    <None Include="Resources\close.png" />
+    <None Include="Resources\close_on.png" />
+    <None Include="Resources\min.png" />
+    <None Include="Resources\min_on.png" />
+    <None Include="Resources\ok.png" />
+    <None Include="Resources\R1.png" />
+    <None Include="Resources\R2.png" />
+    <None Include="Resources\R3.png" />
+    <None Include="Resources\R4.png" />
+    <None Include="Resources\R5.png" />
+    <None Include="Resources\R6.png" />
+    <None Include="Resources\R7.png" />
+    <None Include="Resources\R8.png" />
+    <None Include="Resources\R9.png" />
+    <None Include="Resources\R9Plus.png" />
+    <None Include="Resources\图标裁剪.png" />
+    <None Include="Resources\图标礼物.png" />
+    <None Include="Resources\图标图片.png" />
+    <None Include="Resources\图标文字.png" />
+    <None Include="Resources\Callin.wav" />
+    <Content Include="SmartLife.Client.Seat.reg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="htm\images\bg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htm\images\cover.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htm\local.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htm\main.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="leblue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,14 @@
+﻿.main-area{ width:99%; overflow-x:auto;overflow-y:hidden; padding:relative;}
+.root-block{ width:300px;}
+.selectedCell{ background-color:#ffee00 !important;color:Green;}
+.restday{background-color:#FFF0F0;}
+.cantchangeday{background-color:#E2E2E2;}
+.checkinfo{ position:relative; text-align:center; padding:2px; overflow-y:auto; }
+.tmp span{color:Blue;}
+ul.tmp li,ul.formal li{margin:0px auto;}
+.check-info-item-content{ margin:0 2px;color:Green;cursor:pointer; }
+.actionServeInfoItem{ cursor:pointer;} 
+/**********easyui datagrid 覆盖样式 **********/
+.datagrid-row{height: 50px;}
+.datagrid-row-selected{background:none;color:Green;}
+.datagrid-row-over{background:none;color:Green;} 

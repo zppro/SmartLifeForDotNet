@@ -1,0 +1,280 @@
+﻿<table id="cc-searchroom" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 120px; border: solid 1px #ddd;" valign="top">
+        <input id="roomId" type="hidden"/>
+        <input id="stationId" type="hidden"/> 
+        <input id="bedNo" type="hidden"/>
+        <input id="occupancyNumber" type="hidden"/> 
+            <div id="toolbar-oldman" style="line-height: 30px; text-align: center; background-color: #fafafa;">
+                房间内的老人
+            </div>
+            <div id="inside-oldman" style="overflow: auto; height:408px;">
+            </div>
+        </td>
+        <td valign="top">
+            <table id="dg-searcholdman">
+            </table> 
+        </td>
+    </tr>
+</table>
+<div id="toolbar-searcholdman"  > 
+    <table width="100%" >
+        <tr>
+            <td style="text-align: right;"  style="width:60px;">
+                关键字：
+            </td>
+            <td style="text-align: left;">
+                           <!-- <input id="ServiceManName" class="easyui-validatebox"   style=" width:150px;" /> -->
+                <input id="NameAndIDNo" class="easyui-validatebox"   placeholder="姓名、身份证"/>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="execEx()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="clearKeyWord()">清空</a>  
+            </td> 
+        </tr>
+    </table> 
+</div>
+<script type="text/javascript">
+    var remenberBedNo = 0;
+    function dialogOpen(dialogId, dialogData) {
+        loadfiles([
+            { type: "js", url: "script/date/date.js" } ], function () {
+            });
+        placeholder(); //占位符初始化
+        if (dialogData) { 
+            $('#roomId').val(dialogData.RoomId);
+            $('#stationId').val(dialogData.StationId);
+            $('#bedNo').val(dialogData.BedNo);
+            $('#occupancyNumber').val(dialogData.OccupancyNumber);
+            var areas;
+            var code = 'searcholdman';
+            models[code] = {
+                gridId: 'dg-' + code,
+                toolbarId: 'toolbar-' + code,
+                dialogId: 'dlg-' + currentMenuCode,
+                buttonId: 'btn-' + currentMenuCode,
+                pkId: 'oldManid-' + code,
+                pk: 'OldManId',
+                getPKValueWhenAdd: function () {
+                    return window.contants.guidAutoGenerate;
+                },
+                uiMode: 'list',
+                entityName: '房间入住老人',
+                baseModelUrl: baseCMSInvokeUrl + '/Pam/ServeManService/',
+                defaultModel: { StationId: dialogData.StationId, RoomId: dialogData.RoomId, AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 3,ResidentStatus:7 }
+            };
+            autosize('dg-searcholdman', -30);
+
+            getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+                areas = result;
+            }, { async: false });
+            $('#dg-searcholdman').datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                width: 590,
+                height: 445,
+                url: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/ListForEasyUIgridPage3',
+                method: 'POST',
+                toolbar: '#' + models[code].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    fuzzyFieldOP: ' or ',
+                    filterFields: [{ key: 'Status', value: models[code].defaultModel.Status },
+                        { key: 'ResidentStatus', value: models[currentMenuCode].defaultModel.ResidentStatus },
+                { key: 'isMapping', value: models[code].defaultModel.StationId },
+                { key: 'AreaId', value: models[code].defaultModel.AreaId },
+                { key: 'StationId', value: models[code].defaultModel.StationId }
+                ]
+                },
+                onSelect: function (index, row) {
+                    $('#name' + remenberBedNo).text(row.OldManName);
+                    $('#gender' + remenberBedNo).text(easyuigrid_genderFormatter(row.Gender, null, null));
+                    $('#age' + remenberBedNo).text(easyuigrid_ageFormatter3(null, row, null));
+                    $('#bed' + remenberBedNo).css({ "color": "#63B8FF" });
+                    $('#name' + remenberBedNo).css({ "color": "#63B8FF" });
+                    $('#gender' + remenberBedNo).css({ "color": "#63B8FF" });
+                    $('#age' + remenberBedNo).css({ "color": "#63B8FF" });
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 }, 
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                loader: easyuiLoaderForStringObjectDictionary
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            livedOldMan(models[code].defaultModel.RoomId, models[code].defaultModel.StationId, dialogData.BedNo); //获得这个老人在此养老机构已经住过的房间
+        }
+        else {
+            alertInfo("老人为空");
+        }
+    }
+    //模糊查询
+    function execEx() { 
+        $('#dg-searcholdman').datagrid('reload', {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    fuzzyFieldOP: ' or ',
+                    filterFields: [{ key: 'Status', value: 1 },
+                { key: 'isMapping', value: $('#stationId').val() },
+                { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                { key: 'StationId', value: $('#stationId').val() }
+                ],
+            fuzzyFields: [{ key: 'OldManName', value: $('#NameAndIDNo').val() },
+                          { key: 'IDNo', value: $('#NameAndIDNo').val() },
+                          { key: 'InputCode1', value: $('#NameAndIDNo').val() },
+                          { key: 'InputCode2', value: $('#NameAndIDNo').val() }
+                          ]
+        });
+    }
+    //清空查询
+    function clearKeyWord() {  
+        $('#NameAndIDNo').val(null); 
+    }
+    //获得这个房间里的所有老人
+    function livedOldMan(roomId, stationId, bedNo) { 
+        $('#binded-oldman').html(null);
+        getTo(baseCMSInvokeUrl + '/Pam/RoomService/RoomOldManNow/' + roomId + ',' + stationId, null, function (ret) {
+            var str = '<ul>';
+            if (ret.Success) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                for (var i = 1; i <= bedNo; i++) {
+                    var f = true;
+                    _.each(rows, function (o) {
+                        if (parseInt(o.SickBedNo) == i) {
+                            str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">床位：</label><label style=" color:#ff0066;font-weight:bolder;font-weight:bolder;">' + o.SickBedNo + ' 号床</label> </li>';
+                            str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">姓名：</label><label style=" color:#ff0066;">' + o.OldManName + '</label> </li>';
+                            str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">性别：</label><label style=" color:#ff0066;">' + easyuigrid_genderFormatter(o.Gender, null, null) + '</label> </li>';
+                            str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">年龄：</label><label style=" color:#ff0066;">' + easyuigrid_ageFormatter3(null, o, null) + '</label> </li>';
+                            str += '<li  style="margin-left:5px; margin-top:5px;"><label>&nbsp;&nbsp;&nbsp;</label></li>';
+                            f = false;
+                        }
+                    });
+                    if (f) {
+                        str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">床位：</label><label id="bed' + i + '" style=" color:#66cc66;font-weight:bolder;">' + i + ' 号床</label> </li>';
+                        str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">姓名：</label><label id="name' + i + '"></label></li>';
+                        str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">性别：</label><label id="gender' + i + '"></label></li>';
+                        str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">年龄：</label><label id="age' + i + '"></label></li>';
+                        str += '<li  style="margin-left:5px; margin-top:5px;" id="onclick' + i + '" ><span style=" color:#63B8FF;cursor:pointer;"  onclick=getBed("' + i + '")>选择此床位</span></li>';
+                        str += '<li  style="margin-left:5px; margin-top:5px;"><label>&nbsp;&nbsp;&nbsp;</label></li>';
+                    }
+                }
+            } 
+
+            str = str + '</ul>';
+            $('#inside-oldman').html(str);
+        }, { async: false });
+    }
+     
+     function getBed(i) {
+         var row = $('#dg-searcholdman').datagrid('getSelected');
+         if (row) { 
+             $('#name' + remenberBedNo).text('');
+             $('#gender' + remenberBedNo).text('');
+             $('#age' + remenberBedNo).text('');
+             $('#onclick' + remenberBedNo).show();
+             $('#bed' + remenberBedNo).css({ "color": "#66cc66" });
+             $('#name' + remenberBedNo).css({ "color": "#000" });
+             $('#gender' + remenberBedNo).css({ "color": "#000" });
+             $('#age' + remenberBedNo).css({ "color": "#000" });
+
+             $('#name' + i).text(row.OldManName);
+             $('#gender' + i).text(easyuigrid_genderFormatter(row.Gender, null, null));
+             $('#age' + i).text(easyuigrid_ageFormatter3(null, row, null));
+             $('#bed' + i).css({ "color": "#63B8FF" });
+             $('#name' + i).css({ "color": "#63B8FF" });
+             $('#gender' + i).css({ "color": "#63B8FF" });
+             $('#age' + i).css({ "color": "#63B8FF" });
+             $('#onclick' + i).hide();
+         }
+         else {
+             alert('请选择一个老人');
+         }
+         remenberBedNo = i;
+     }
+
+    function dialogBeforeSubmit() {
+        var result = false; 
+        var bedNo= $('#bedNo').val();
+        var occupancyNumber= $('#occupancyNumber').val();
+        var row = $('#dg-searcholdman').datagrid('getSelected');
+        if (parseInt(occupancyNumber) < parseInt(bedNo)) {
+            if (row) {
+                if (remenberBedNo != 0) {
+                    result = true;
+                }
+                else {
+                    result = false;
+                    alert("请选择床位");
+                }
+            }
+            else {
+                result = false;
+                alert("请选择一个老人");
+            }
+        }
+        else {
+            alert("此房间已满");
+        }
+        return result;
+        //        return false; 
+    }
+
+    function dialogClose() {
+        var row = $('#dg-searcholdman').datagrid('getSelected');
+        return { RoomId: $('#roomId').val(), OccupancyNumber: $('#occupancyNumber').val(), OldManId: row.OldManId, OldManName: row.OldManName,SickBedNo:remenberBedNo };
+    }
+
+
+    //初始化占位符
+    function placeholder() {
+        var JPlaceHolder = {
+            //检测
+            _check: function () {
+                return 'placeholder' in document.createElement('input');
+            },
+            //初始化
+            init: function () {
+                if (!this._check()) {
+                    this.fix();
+                }
+            },
+            //修复
+            fix: function () {
+                jQuery(':input[placeholder]').each(function (index, element) {
+                    var self = $(this), txt = self.attr('placeholder');
+                    self.wrap($('<div></div>').css({ position: 'relative', zoom: '1', border: 'none', background: 'none', padding: 'none', margin: 'none' }));
+                    var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
+                    var holder = $('<span></span>').text(txt).css({ position: 'absolute', left: pos.left, top: pos.top + 3, height: h, lienHeight: h, paddingLeft: paddingleft, color: '#888' }).appendTo(self.parent());
+                    self.focusin(function (e) {
+                        holder.hide();
+                    }).focusout(function (e) {
+                        if (!self.val()) {
+                            holder.show();
+                        }
+                    });
+                    holder.click(function (e) {
+                        holder.hide();
+                        self.focus();
+                    });
+                });
+            }
+        };
+        //执行
+        jQuery(function () {
+            JPlaceHolder.init();
+        });
+    }
+</script>

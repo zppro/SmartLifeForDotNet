@@ -1,0 +1,125 @@
+﻿<table id="cc-B120103" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <table id="dg-B120103">
+            </table>
+        </td>
+        <td valign="top">
+            <div class="easyui-panel" title="栏目权限表" style="background: #fafafa; padding: 5px 0 0 5px;"
+                data-options="fit:true">
+                <div class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'north',border:false" style="height: 30px;">
+                        <a id="savePermission" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-save">
+                            保存</a>
+                    </div>
+                    <div data-options="region:'center',border:false">
+                        <ul id="tree-B120103">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    var article;
+    var isConnect = 0; //不启用市级库数据库连接
+    getTo(baseCMSInvokeUrl + '/Sys/ParameterService/Query?parms=' + $.toJSON({ ParameterId: 'Sys_ConnectId', Status: 1 }), null, function (ret) {
+        if (ret.Success && ret.rows.length > 0) {
+            isConnect = ret.rows[0].ParameterValue;
+        }
+    }, { async: false }); 
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+
+            headers: { ConnectId: isConnect == 1 ? baseInfoNode : '' },
+            uiMode: 'list',
+            entityName: '栏目权限管理',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ArticleColumnPermitService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        validateUI();
+        autosize("cc-B120103");
+
+        createGrid();
+    });
+    function createGrid() {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            singleSelect: true,
+            url: ajaxData_InvokeUrl + '/Group',
+            method: 'GET',
+            onSelect: function (rowIndex, rowData) {
+                var groupId = $('#' + models[currentMenuCode].gridId).datagrid('getSelected').GroupId;
+                initTree('easyUITree', models[currentMenuCode].treeId, {
+                    checkbox: true,
+                    onlyLeafCheck: true,
+                    width: 152,
+                    panelWidth: 200,
+                    panelHeight: 260,
+                    onLoadSuccess: function (node, data) {
+                        var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                        $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                        $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                    },
+                    onCheck: function (node, checked) {
+                        var type = node.id.split('_');
+                        if (checked) {
+                            var pNode = getTreeNode('find', node.attributes.PId);
+                            var childrenNode = getTreeNode('getChildren', pNode.target);
+                            if (childrenNode.length > 2) {
+                                for (var i = 0; i < childrenNode.length; i++) {
+                                    var children = getTreeNode('getChildren', childrenNode[i].target);
+                                    if (children != '') {
+                                        getTreeNode('check', children[type[1] - 1].target);
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if (getTreeNode('find', node.attributes.PId)) {
+                                var pNode = getTreeNode('find', getTreeNode('find', node.attributes.PId).attributes.PId);
+                                if (pNode) {
+                                    var childrenNode = getTreeNode('getChildren', pNode.target);
+                                    getTreeNode('uncheck', childrenNode[type[1] - 1].target);
+                                }
+                            }
+                        }
+                    }
+                }, function (d) {
+                    getTreeData('01$02$06', null, '{"AreaId":"' + models[currentMenuCode].defaultModel.AreaId + '","OBJ_ID":"' + groupId + '"}', d, models[currentMenuCode].headers);
+                }, null, function (treeObj) {
+                    $('#savePermission').unbind('click').bind('click', function () {
+                        var checked_nodes = _.map(treeObj.tree('getChecked'), function (o) { return o.id });
+                        var postData = $.toJSON(checked_nodes);
+
+                        postTo(baseCMSInvokeUrl + '/Pub/ArticleColumnPermitService/SetUpColumnPermit/' + groupId, postData, function (result) {
+                            if (result.Success) {
+                                alertInfo('授权成功！');
+                            }
+                        }, { async: false }, models[currentMenuCode].headers);
+                    });
+                });
+            },
+            columns: [[
+        { field: 'GroupId', title: '角色编号', width: 150, hidden: true },
+        { field: 'GroupName', title: '角色名称', width: 150 }
+    ]],
+            loader: easyuiLoader
+        }));
+    }
+
+    function getTreeNode(methods, target) {
+        var treeId = models[currentMenuCode].treeId;
+        return $('#' + treeId).tree(methods, target);
+    }
+
+    function setPermitType(index, data) {
+        $("#checkBox-B120103").html('<input type="checkbox" value="0" name="checkbox" id="sel-' + data.GroupId + '"/>查看&nbsp;<input type="checkbox" value="1" name="checkbox" id="ins-' + data.GroupId + '"/>插入&nbsp;<input type="checkbox" value="2" name="checkbox" id="app-' + data.GroupId + '"/>审核 ');
+    }
+</script>

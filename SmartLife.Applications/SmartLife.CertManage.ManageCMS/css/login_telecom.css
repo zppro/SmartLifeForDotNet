@@ -1,0 +1,166 @@
+﻿html
+{
+    margin:0px;
+    padding:0px;
+}
+body
+{  
+    margin:0px;
+    padding:0px; 
+    background-color:#F7F7F7;
+    background-repeat:no-repeat;
+    position:relative; 
+}
+#MiddleBanner
+{
+    width:100%;  
+    height:204px;
+    background-image:url(../images/login_telecom/Middle-Banner.png);
+    background-position:center center; 
+    background-repeat:repeat-x; 
+    position:absolute;
+    top:232px
+}
+#Container
+{  
+    margin-left:auto;
+    margin-right:auto; 
+    padding-top:132px; 
+    width:1024px;  
+    height:605px; 
+    position:relative;  
+}
+#Logo
+{
+    position:absolute;
+    top:50px;
+    left:50px;
+    width:198px;
+    height:60px; 
+    background-image:url(../images/login_telecom/Login_Logo.png);
+    background-position:center center; 
+    background-repeat:no-repeat;    
+}
+#SystemName
+{
+    width:474px;
+    height:44px;
+    top:310px;
+    left:50px;
+    background-image:url(../images/login_telecom/Login_SystemName.png);
+    background-position:left center; 
+    background-repeat:no-repeat; 
+    position:absolute;
+}
+
+#Main
+{  
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;    
+    position:relative;
+}
+#MainLogin
+{ 
+    margin-left:auto;
+    margin-right:auto;
+    width:422px;
+    height:421px;
+    background-image:url(../images/login_telecom/Login_box.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+    position:absolute;
+    right:20px;
+} 
+
+#MainLogin table
+{
+    margin-left:auto;
+    margin-right:auto; 
+}
+#MainLogin td.login-field-head
+{
+    height:150px; 
+    width:366px;
+    background-image:url(../images/login_telecom/Login_Head.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+}
+#MainLogin td.login-field-label
+{
+    width:140px;
+    font-size:14px;
+    color:White;
+    text-align:right;
+}
+
+#MainLogin td.login-field-username
+{
+    width:358px;
+    height:45px; 
+    padding-left:20px;
+    padding-top:0px; 
+}
+#MainLogin td.login-field-password
+{
+    width:358px;
+    height:45px;  
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td.login-field-ext
+{
+    width:358px;
+    height:45px;   
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td input
+{
+    width:220px;
+    border:none;
+    height:25px;
+    line-height:25px;
+}  
+
+#RememberUserCodeDiv
+{
+    width:100%;
+}
+#LoginButton
+{
+    margin-left:auto;
+    margin-right:auto;
+    background-image:url(../images/login_telecom/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:76px;
+    height:37px; 
+    margin-bottom:6px;
+}
+
+#Foot
+{
+    width:100%;
+    height:30px; 
+    line-height:30px;
+    bottom:60px;  
+    position:absolute;
+    text-align:center; 
+    clear:both;
+    z-index:99; 
+    background:#d2d2d2;
+}
+.copyright
+{
+    color:#336201; 
+}
+.copyright a
+{
+    color:#336201;
+}
+#MainVerifyInfo
+{
+    clear:both; text-align:center; margin:0 auto; height:40px; line-height:40px; 
+}
+#MainVerifyInfo a{ color:Orange;text-decoration: none; font-size:11px; cursor:pointer;}

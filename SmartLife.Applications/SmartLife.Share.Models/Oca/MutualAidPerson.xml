@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="MutualAidPerson" type="SmartLife.Share.Models.Oca.MutualAidPerson, SmartLife.Share.Models" />
+        <typeAlias alias="MutualAidPersonPK" type="SmartLife.Share.Models.Oca.MutualAidPersonPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="MutualAidPerson_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_MutualAidPerson(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="MutualAidPersonId" >MutualAidPersonId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidPersonName" >MutualAidPersonName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IDNo" >IDNo</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Address" >Address</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >Mobile</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidItem" >MutualAidItem</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidNature" >MutualAidNature</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Fee" >Fee</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="MutualAidPersonId" >#MutualAidPersonId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidPersonName" >#MutualAidPersonName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IDNo" >#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Address" >#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidItem" >#MutualAidItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidNature" >#MutualAidNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Fee" >#Fee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="MutualAidPerson_Update" parameterClass="StringObjectDictionary" >
+            update Oca_MutualAidPerson
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidPersonName" >MutualAidPersonName=#MutualAidPersonName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidItem" >MutualAidItem=#MutualAidItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="MutualAidNature" >MutualAidNature=#MutualAidNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Fee" >Fee=#Fee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+            </dynamic>
+            where MutualAidPersonId=#MutualAidPersonId#
+        </update>
+        <delete id="MutualAidPerson_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_MutualAidPerson
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonId" >MutualAidPersonId=#MutualAidPersonId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonName" >MutualAidPersonName=#MutualAidPersonName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidItem" >MutualAidItem=#MutualAidItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidNature" >MutualAidNature=#MutualAidNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Fee" >Fee=#Fee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="MutualAidPerson_Load" parameterClass="MutualAidPersonPK" resultClass="MutualAidPerson" >
+            select MutualAidPersonId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,MutualAidPersonName,Gender,IDNo,AreaId,Address,Mobile,Remark,MutualAidItem,MutualAidNature,Fee,InputCode1,InputCode2 from Oca_MutualAidPerson
+            where MutualAidPersonId=#MutualAidPersonId#
+        </select>
+        <select id="MutualAidPerson_List" parameterClass="StringObjectDictionary" resultClass="MutualAidPerson" >
+            select MutualAidPersonId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,MutualAidPersonName,Gender,IDNo,AreaId,Address,Mobile,Remark,MutualAidItem,MutualAidNature,Fee,InputCode1,InputCode2 from Oca_MutualAidPerson
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonId" >MutualAidPersonId=#MutualAidPersonId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonName" >MutualAidPersonName=#MutualAidPersonName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidItem" >MutualAidItem=#MutualAidItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidNature" >MutualAidNature=#MutualAidNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Fee" >Fee=#Fee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="MutualAidPerson_ListByPage" parameterClass="StringObjectDictionary" resultClass="MutualAidPerson" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,MutualAidPersonId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,MutualAidPersonName,Gender,IDNo,AreaId,Address,Mobile,Remark,MutualAidItem,MutualAidNature,Fee,InputCode1,InputCode2 from Oca_MutualAidPerson
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonId" >MutualAidPersonId=#MutualAidPersonId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidPersonName" >MutualAidPersonName=#MutualAidPersonName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidItem" >MutualAidItem=#MutualAidItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="MutualAidNature" >MutualAidNature=#MutualAidNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Fee" >Fee=#Fee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

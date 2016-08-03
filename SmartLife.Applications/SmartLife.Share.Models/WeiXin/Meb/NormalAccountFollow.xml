@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Meb" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="NormalAccountFollow" type="SmartLife.Share.Models.WeiXin.Meb.NormalAccountFollow, SmartLife.Share.Models" />
+    <typeAlias alias="NormalAccountFollowPK" type="SmartLife.Share.Models.WeiXin.Meb.NormalAccountFollowPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="NormalAccountFollow_Create" parameterClass="StringObjectDictionary" >
+      insert into Meb_NormalAccountFollow(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >OpenId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToIDNo" >FollowToIDNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToName" >FollowToName</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToIDNo" >#FollowToIDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToName" >#FollowToName#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="NormalAccountFollow_Update" parameterClass="StringObjectDictionary" >
+      update Meb_NormalAccountFollow
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToIDNo" >FollowToIDNo=#FollowToIDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FollowToName" >FollowToName=#FollowToName#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="NormalAccountFollow_Delete" parameterClass="StringObjectDictionary" >
+      delete Meb_NormalAccountFollow
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowToIDNo" >FollowToIDNo=#FollowToIDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowToName" >FollowToName=#FollowToName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="NormalAccountFollow_Load" parameterClass="NormalAccountFollowPK" resultClass="NormalAccountFollow" >
+      select Id,CheckInTime,OpenId,IDNo,FollowToIDNo,FollowToName from Meb_NormalAccountFollow
+      where Id=#Id#
+    </select>
+    <select id="NormalAccountFollow_List" parameterClass="StringObjectDictionary" resultClass="NormalAccountFollow" >
+      select Id,CheckInTime,OpenId,IDNo,FollowToIDNo,FollowToName from Meb_NormalAccountFollow
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenId" >OpenId=#OpenId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowToIDNo" >FollowToIDNo=#FollowToIDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FollowToName" >FollowToName=#FollowToName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

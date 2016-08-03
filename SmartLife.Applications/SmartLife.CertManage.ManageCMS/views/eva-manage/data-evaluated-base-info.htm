@@ -1,0 +1,595 @@
+﻿<style type="text/css">
+    .baseinfo tr td
+    {
+        height: 30px;
+    }
+</style>
+<table id="cc-B140201" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B140201">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B140201">
+                <a a behaviorcode="c1" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload"
+                    plain="true" onclick="query_sync()">同步评估对象</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-search" plain="true" onclick="edit()">查看详细</a>
+            </div>
+            <div id="search-sample-B140201" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B140201" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B140201">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B140201" class="easyui-dialog" style="width: 720px; height: 480px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B140201">
+    <div class="ftitle">
+    </div>
+    <form id="fm-B140201" method="post" novalidate>
+    <input type="hidden" name="ResidentId" id="residentId-B140201" />
+    <div class="fitem">
+        <label>
+            姓 名:</label>
+        <input name="ResidentName" class="easyui-validatebox" required="true" missingmessage="姓名不能为空">
+        <label>
+            性 别:</label>
+        <input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+        <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>
+        <label style="margin-left: 75px;">
+            出生日期:</label>
+        <input id="Birthday" name="Birthday" disabled="true">
+    </div>
+    <div class="fitem">
+        <label>
+            街道社区:</label>
+        <!--<input id="AreaOfStreetAndCommunity" required="true" missingmessage="街道社区不能为空" />-->
+         <input name="AreaIdStreet" id="AreaIdStreet" />
+        <input name="AreaIdCommunity" id="AreaIdCommunity" />
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+        <label>
+            民 族:</label>
+        <input name="Nation" id="Nation" />
+    </div>
+    <div class="fitem">
+        <label>
+            身 份 证 :</label>
+        <input id="IDNo" name="IDNo" class="easyui-validatebox" required="true" missingmessage="身份证不能为空">
+        <label>
+            业务身份:</label>
+        <input id="ResidentBizId" name="ResidentBizId" class="easyui-validatebox" />
+        <label>
+            年 龄:</label>
+        <input id="age" name="age" class="easyui-validatebox" disabled="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            座 机:</label>
+        <input name="Tel" />
+        <label>
+            手 机:</label>
+        <input name="Mobile" />
+    </div>
+    <div class="fitem">
+        <label>
+            籍 贯:</label>
+        <input id="NativePlace1" />
+        <input type="hidden" name="NativePlace" id="NativePlace" />
+        <label>
+            户口类型:</label>
+        <input name="AccountType" id="AccountType" />
+    </div>
+    <div class="fitem">
+        <label>
+            户 籍:</label>
+        <input id="HouseholdRegister1" />
+        <input type="hidden" name="HouseholdRegister" id="HouseholdRegister" />
+        <label>
+            详细地址:</label>
+        <input name="PlaceOfHouseholdRegister" id="PlaceOfHouseholdRegister" />
+    </div>
+    <div class="fitem">
+        <label>
+            现居地址:</label>
+        <input id="ResidentialOfHometown1" />
+        <input type="hidden" name="ResidentialOfHometown" id="ResidentialOfHometown" />
+        <label>
+            详细地址:</label>
+        <input name="ResidentialAddress" id="ResidentialAddress" />
+    </div>
+    <div class="fitem">
+        <label>
+            邮 编:</label>
+        <input name="PostCode" maxlength="6" />
+    </div>
+    <div class="fitem">
+        <label>
+            文化程度:</label>
+        <input name="EducationLevel" id="EducationLevel" />
+        <label>
+            婚姻状况:</label>
+        <input name="Marriage" id="Marriage" />
+    </div>
+    <div class="fitem">
+        <label>
+            收入情况:</label>
+        <input name="IncomeStatus" id="IncomeStatus" />
+        <label>
+            住房情况:</label>
+        <input name="HousingStatus" id="HousingStatus" />
+    </div>
+    <div class="fitem">
+        <label>
+            备 注:</label>
+        <textarea name="Remark" style="width: 580px;" maxlength="400"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-B140201">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="cancel()">
+        取消</a>
+</div>
+<div id="dlg-sync-B140201" class="easyui-dialog" style="width: 550px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B140201">
+    <div class="ftitle">
+    </div>
+    <form id="fm-sync-B140201" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            年 龄:</label>
+        <input name="Age" id="Age1" class="easyui-validatebox" required="true" missingmessage="年龄不能为空">
+    </div>
+    </form>
+</div>
+<div id="btn-sync-B140201">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" onclick="Sync()">
+        同步</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<div id="dlg-search-B140201" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B140201">
+    <div class="ftitle">
+        <form id="fm-search-B140201" method="post" novalidate>
+        <div class="fitem">
+            <table class="baseinfo">
+                <tr>
+                    <td style="text-align: right">
+                        姓 名:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="ResidentName" />
+                    </td>
+                    <td style="text-align: right">
+                        性 别:
+                    </td>
+                    <td style="text-align: left">
+                        <input id="CC-Gender" name="Gender_Start" class="combobox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        身份证:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="IDNo" />
+                    </td>
+                    <td style="text-align: right">
+                        座机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Tel" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        手机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Mobile" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="btn-search-B140201">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        var areas;
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSyncId: 'dlg-sync-' + currentMenuCode,
+            fmSyncId: 'fm-sync-' + currentMenuCode,
+            btnSynchId: 'btn-sync-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'residentId-' + currentMenuCode,
+            pk: 'ResidentId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                //                formData['AreaCode_Start'] = formData['AreaCode'];
+                formData['ResidentName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Gender'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onBeforeDialogOpen: function () {
+                //街道
+                $('#AreaIdStreet').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    onHidePanel: function () {
+                        if ($('#AreaIdStreet').combo('getText') == "") {
+                        }
+                    },
+                    onSelect: function (d) {
+                        $('#AreaId2').val(d.ItemId);
+                        var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                        //如果该街道下有社区，则自动填充
+                        if (community.length > 0) {
+                            $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                            $('#AreaId3').val(community[0].ItemId);
+                        }
+                        //否则为空
+                        else {
+                            $('#AreaIdCommunity').combobox('setValue', null);
+                            $('#AreaId3').val(null);
+                        }
+                    }
+                });
+                //社区
+                $('#AreaIdCommunity').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    onHidePanel: function () {
+                        if ($('#AreaIdCommunity').combo('getText') == "") {
+                        }
+                    },
+                    onSelect: function (d) {
+                        $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                        $('#AreaId2').val(d.ParentId);
+                        $('#AreaId3').val(d.ItemId);
+                    }
+                });
+
+            },
+            onAfterDialogOpen: function (row) {
+                var areaId2 = $('#AreaId2').val();
+                var areaId3 = $('#AreaId3').val();
+                if (areaId2 != "") {
+                    $('#AreaIdStreet').combobox('setValue', areaId2);
+                }
+                if (areaId3 != "") {
+                    $('#AreaIdCommunity').combobox('setValue', areaId3);
+                }
+
+                $("#NativePlace1").val(row.NativePlaceName);
+
+                $("#HouseholdRegister1").val(row.HouseholdRegisterName);
+
+                $("#ResidentialOfHometown1").val(row.ResidentialOfHometownName);
+
+                $("#EducationLevel").val(row.EducationLevelName);
+
+                $("#Marriage").val(row.MarriageName);
+
+                $("#IncomeStatus").val(row.IncomeStatusName);
+
+                $("#HousingStatus").val(row.HousingStatusName);
+
+                $("#AccountType").val(row.AccountTypeName);
+
+                $("#Nation").val(row.NationName);
+
+                getAgeBirthday();
+
+            },
+            headers: { ConnectId: baseInfoNode },
+            onAfterSearchDialogOpen: function () {
+                $("#Age1").val("60");
+            },
+            uiMode: 'list',
+            entityName: '评估对象',
+            baseModelUrl: baseCMSInvokeUrl + '/Eva/EvaluatedBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+            defaultModelWhenAdd: { Gender: 'M' }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        autosize('cc-B140201');
+        autosize('dg-B140201', -30);
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaCode;
+                var areaLevels = treeNode.attributes.Levels; //当前节点的层次
+                if (areaLevels > 2) {
+                    areaCode = left(treeNode.attributes.Code, 3 + treeNode.attributes.Levels * 2);
+                }
+                else {
+                    areaCode = "";
+                };
+                //                $("#CC-FlowTo").combobox("setValue", '10'); //点击左边的树时，设置默认的状态为 “待提交”
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'CheckInTime',
+                    order: 'desc',
+                    filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                        ],
+                    fuzzyFields: [{ key: 'AreaCode', value: areaCode}]
+                });
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false })
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage2',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'CheckInTime',
+                        order: 'desc',
+                        filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                        ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                    { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                    { field: 'NationName', title: '民族', width: 80, align: 'center' },
+                    { field: 'Tel', title: '座机', align: 'center', width: 100 },
+                    { field: 'Mobile', title: '手机', align: 'center', width: 100 },
+                    { field: 'AreaId2', title: '街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'NativePlaceName', title: '籍贯', align: 'center', width: 150 },
+                    { field: 'AccountTypeName', title: '户口类型', width: 80, align: 'center', width: 80 },
+                    { field: 'HouseholdRegisterName', title: '户籍', align: 'center', width: 150 },
+                    { field: 'PlaceOfHouseholdRegister', title: '户籍(详)', width: 100, align: 'center' },
+                    { field: 'ResidentialOfHometownName', title: '现居地', align: 'center', width: 150 },
+                    { field: 'ResidentialAddress', title: '现居(详)', width: 100, align: 'center' },
+                    { field: 'EducationLevelName', title: '文化程度', align: 'center', width: 80 },
+                    { field: 'MarriageName', title: '婚姻状况', align: 'center', width: 60 },
+                    { field: 'IncomeStatusName', title: '收入情况', align: 'center', width: 80 },
+                    { field: 'HousingStatusName', title: '住房情况', align: 'center', width: 80 },
+                    { field: 'PostCode', title: '邮编', width: 80, align: 'center' },
+                    { field: 'Remark', title: '备注', align: 'center', width: 250 }
+            ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            }); //end loadTree
+
+    });
+
+    function Sync() {
+        var theModel = getModel();
+        var areas;
+        var searchIdKey = "dlgSearchId";
+        var age = $("#Age1").val().replace(/\s+/, '');
+
+        var AreaId = models[currentMenuCode].defaultModel.AreaId;
+        if (age != "" && !isNaN(age)) {
+            var arrSearchData = $('#fm-search-B140201').serializeArray();
+            postTo(baseCMSInvokeUrl + "/Eva/EvaluatedBaseInfoService/SynBaseInfo/" + age + "," + AreaId, null, function (ret) {
+
+                if (ret.Success) {
+
+                    alertInfo("同步成功！");
+
+                    $('#dg-B140201').datagrid('load');
+                }
+            }, null, theModel.headers);
+
+            getJQO('#' + theModel[searchIdKey]).dialog('close');
+        } else {
+            alertInfo("请输入正确的年龄！");
+            return false;
+        }
+    }
+    //验证身份证号并获取出生日期
+    function getAgeBirthday() {
+        var tmpStr = "";
+        var idDate = "";
+        var tmpInt = 0;
+        var strReturn = "";
+
+        var iIdNo = $("#IDNo").val();
+        if (iIdNo != "") {
+            if ((iIdNo.length != 15) && (iIdNo.length != 18) && type == "change") {
+                strReturn = "输入的身份证号位数错误";
+                alert(strReturn);
+            }
+
+            if (iIdNo.length == 15) {
+                tmpStr = iIdNo.substring(6, 12);
+                tmpStr = "19" + tmpStr;
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+            }
+            else {
+                tmpStr = iIdNo.substring(6, 14);
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+            }
+            $("#Birthday").val(tmpStr);
+            //获取年龄 
+            var myDate = new Date();
+            var month = myDate.getMonth() + 1;
+            var day = myDate.getDate();
+            var age = myDate.getFullYear() - iIdNo.substring(6, 10) - 1;
+            if (iIdNo.substring(10, 12) < month || iIdNo.substring(10, 12) == month && iIdNo.substring(12, 14) <= day) {
+                age++;
+            }
+            $("#age").val(age);
+        }
+    }
+    function GetItemName(param, value) {
+
+        return _.find(param, function (o) { return o.ItemId == value; }).ItemName;
+    }
+    function SetControlsValue(Controlsid, ItemId) {
+        if ($.trim(ItemId) != "") {
+            getTo(ajaxData_InvokeUrl + '/GetAreaFullName/' + ItemId, null, function (ret) {
+                $("#" + Controlsid).val(ret);
+            });
+        }
+    }
+    function query_sync() {
+        var theModel = getModel();
+        var searchIdKey = "dlgSyncId";
+        var dialogOptionKey = "dialogOption";
+        var entityNameKey = "entityName";
+        var formIdKey = "fmSyncId";
+        var pkIdKey = "pkId";
+        var disabledKey = "disabled";
+        var isSys = getJQO('#' + theModel[pkIdKey]).attr("type") == 'sys';
+
+        if (theModel.onBeforeSearchDialogOpen) {
+            if (_.isFunction(theModel.onBeforeSearchDialogOpen)) {
+                theModel.onBeforeSearchDialogOpen.apply(this, []);
+            }
+        }
+        getJQO('#' + theModel[searchIdKey]).dialog({
+            inline: false,
+            onClose: function () {
+                theModel.uiMode = 'list';
+            },
+            modal: true
+        }).dialog('open').dialog('setTitle', '同步-' + theModel[entityNameKey]);
+        getJQO('#' + theModel[formIdKey]).form('clear');
+
+        if (theModel.onAfterSearchDialogOpen) {
+            if (_.isFunction(theModel.onAfterSearchDialogOpen)) {
+                theModel.onAfterSearchDialogOpen.apply(this, []);
+            }
+        }
+    }
+
+    //获取街道和社区信息
+    function GetStreetAndCommunityInArea(parentId, levels) {
+        var arr = [];
+        if (parentId != null) {
+            getTo(ajaxData_InvokeUrl + "/GetStreetAndCommunityInArea/" + parentId, null, function (result) {
+                //根据levels选择不同层的数据
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].Levels == levels) {
+                        arr.push(result[i]);
+                    }
+                }
+            }, { async: false });
+        }
+        return arr;
+    }
+    $('#CC-Gender').combobox({
+        width: 140,
+        panelHeight: 60,
+        data: [{ ItemId: 'N', ItemName: '全部' },
+                   { ItemId: 'M', ItemName: '男' },
+                   { ItemId: 'F', ItemName: '女'}],
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        editable: false,
+        value: 'N'
+    });
+</script>

@@ -1,0 +1,217 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+<div id="north-c" data-options="region:'north',border:false" style="height: 110px;">
+        <div id="head-block" class="easyui-layout" data-options="fit:true">
+            <div id="head-c1" data-options="region:'north',border:false" style="height: 60px;">
+                <span id="CurrentAreaName"></span>各类服务统计表格
+            </div>
+            <div  id="head-c2" data-options="region:'center',border:false" style="height: 40px;">
+               <div id="areaComboTree" >街道社区：<input id="tree-AreaId" /> </div><span id="stat-time" onclick="showAndHide()"></span>
+            </div>
+        </div>
+    </div>
+    <div id="all-count-c" data-options="region:'west',collapsed:false,border:false,split:false" >
+        <table>
+            <tr><td colspan="6" class="head-c1">每日各类服务呼叫量统计</td></tr>
+            <tr><td colspan="6" class="stat-time2"></td></tr>
+            <tr  style=" height:30px;"><td rowspan="2">街道\类型</td><td>紧急服务</td><td>生活服务</td><td>政府购买服务</td><!--<td>公共服务</td>--><td>亲情通话</td></tr>
+            <tr style=" height:60px;"><td>（次数）</td><td>（次数）</td><td>（次数）</td><!--<td>（次数）</td>--><td>（次数）</td></tr>
+            <tr id="all-count-total" ><td>小计</td><td id="S1-all-count-total">0</td><td id="S2-all-count-total">0</td><td id="S3-all-count-total">0</td><!--<td id="S4-all-count-total">0</td>--><td id="S5-all-count-total">0</td></tr>
+        </table>
+    </div>
+    <div id="vouch-duration-c" data-options="region:'east',collapsed:false,border:false,split:false">
+        <table>
+            <tr><td colspan="7" class="head-c1">本月政府购买服务统计表</td></tr>
+            <tr><td colspan="7" class="stat-time2"></td></tr>
+            <tr  style=" height:30px;"><td rowspan="2">街道\类型</td><td colspan="3">本月&nbsp;&nbsp;政府购买服务</td><td colspan="3">今日&nbsp;&nbsp;政府购买服务</td></tr>
+            <tr style=" height:60px;"><td>家政<br/>（时长）</td><td>水电<br/>（人次）</td><td>医疗<br/>(人次)</td><td>家政<br/>（时长）</td><td>水电<br/>（人次）</td><td>医疗<br/>（人次）</td></tr>
+            <tr id="vouch-duration-total"><td>小计</td><td id="S1-vouch-duration-total">0</td><td id="S2-vouch-duration-total">0</td><td id="S3-vouch-duration-total">0</td><td id="S4-vouch-duration-total">0</td><td id="S5-vouch-duration-total">0</td><td id="S6-vouch-duration-total">0</td></tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var repeatTime = 20000;
+    var flog = false;
+    var flog_show = true;
+    $(function () {
+
+        $('#areaComboTree').hide();
+//        getTo(ajaxData_InvokeUrl + "/GetAreaName/" + top.appDeployArea.id, null, function (result) {
+//            $('#CurrentAreaName').text(result);
+//        });
+        initTree('easyUIComboTree', 'tree-AreaId', {
+            width: 150,
+            panelWidth: 200,
+            panelHeight: 260,
+            required: false,
+            editable: false,
+            onSelect: function (treeNode) {
+                flog = true;
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                var areaText = treeNode.text;
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18);
+                    }
+                }
+                else {
+                    areaId = "AAA";
+                    flog = false;
+                };
+                $('#CurrentAreaName').text(areaText); //显示选择的街道社区
+                //定时将id清零
+                maxid_all = 0;
+                load_table(areaId);
+            },
+            onLoadSuccess: function () {
+                //默认展开一级
+                var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+
+                var node_Children = $('#tree-AreaId').combotree('tree').tree('getChildren'); //取所有的节点
+                var rows = [];
+                _.each(node_Children, function (o) {
+                    if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+                        rows.push(o); //取所有的社区
+                    }
+                });
+                if (rows.length > 1) {//社区大于一个  为街道权限，默认设置第一个社区所在的街道
+                    $('#tree-AreaId').combotree('setValue', rows[0].attributes.PId);
+                }
+                else if (rows.length == 1) {//只有一个社区  为社区权限 ，默认设置社区
+                    $('#tree-AreaId').combotree('setValue', rows[0].id);
+                    $('#tree-AreaId').combotree('disable');
+                }
+                else {
+                    alert('没有任何权限');
+                }
+            }
+        },
+         function (d) {
+             var res;
+             postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                 res = result;
+             }, { async: false })
+             if (res) {
+                 getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+             } else {
+                 getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+             }
+         });
+
+        setTimeout(function () {
+            $('#stat-time').text((new Date()).toString('yyyy-MM-dd HH:mm:ss'));
+            setTimeout(arguments.callee, 1000);
+        }, 0);
+
+        $('.stat-time2').text("日期：" + (new Date()).toString('yyyy-MM-dd'));
+
+
+
+        $('#all-count-c').width(getTabWidth() / 2 );
+        $('#all-count-c table').width($('#all-count-c').width() - 15);
+        $('#vouch-duration-c').width(getTabWidth() / 2 );
+        $('#vouch-duration-c table').width($('#vouch-duration-c').width() - 15);
+
+        autosize('scroll-block');
+
+        loadfiles([
+            { type: "css", url: "../../css/old-care/big-screen.css" }
+            ], function () {
+                setTimeout(function () {
+                    var areaId;
+                    if (flog) {
+                        areaId = getAreaId();
+                        load_table(areaId);
+                        setTimeout(arguments.callee, repeatTime);
+                    }
+                }, 0);
+
+            });
+    });
+
+        //隐藏和显示街道社区下拉列表
+        function showAndHide() {
+            if (flog_show) {
+                $('#areaComboTree').show();
+                flog_show = false;
+            }
+            else {
+                $('#areaComboTree').hide();
+                flog_show = true;
+            }
+        }
+        function load_table(areaId) {
+            var selectedDate = (new Date()).toString('yyyy-MM-dd');
+            //selectedDate = '2014-01-21';
+
+            getTo(top.callservice_InvokeUrl + '/GetStatDataOfAllCountForBigScreenStreet/' + selectedDate + ',' + areaId, null, function (result) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                $('.all-count-compute-row').remove();
+                var htmls = [];
+                var all_count_sum = { S1: 0, S2: 0, S3: 0, S4: 0, S5: 0 };
+                _.each(rows, function (o) {
+                    all_count_sum.S1 += o.S1;
+                    all_count_sum.S2 += o.S2;
+                    all_count_sum.S3 += o.S3;
+                    //all_count_sum.S4 += o.S4;
+                    all_count_sum.S5 += o.S5;
+                    //htmls.push('<tr class="all-count-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S4 + '</td><td>' + o.S5 + '</td></tr>');
+                    htmls.push('<tr class="all-count-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S5 + '</td></tr>');
+                });
+
+                $(htmls.join("")).insertBefore('#all-count-total');
+                for (var key in all_count_sum) {
+                    $('#' + key + '-all-count-total').text(all_count_sum[key]);
+                }
+            });
+
+            getTo(top.callservice_InvokeUrl + '/GetStatDataOfVouchDurationForBigScreenStreet/' + areaId, null, function (result) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                $('.vouch-duration-compute-row').remove();
+                var htmls = [];
+                var all_count_sum = { S1: 0, S2: 0, S3: 0, S4: 0, S5: 0, S6: 0 };
+                _.each(rows, function (o) {
+                    all_count_sum.S1 += o.S1;
+                    all_count_sum.S2 += o.S2;
+                    all_count_sum.S3 += o.S3;
+                    all_count_sum.S4 += o.S4;
+                    all_count_sum.S5 += o.S5;
+                    all_count_sum.S6 += o.S6;
+                    htmls.push('<tr class="vouch-duration-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S4 + '</td><td>' + o.S5 + '</td><td>' + o.S6 + '</td></tr>');
+                });
+
+                $(htmls.join("")).insertBefore('#vouch-duration-total');
+                for (var key in all_count_sum) {
+                    $('#' + key + '-vouch-duration-total').text(all_count_sum[key]);
+                }
+            });
+        }
+        function getAreaId() {
+            var areaId;
+            var treeNodeId = $('#tree-AreaId').combotree('getValues').toString();
+            if (treeNodeId.length > 6) {
+                var sub_id = treeNodeId.substring(14, 18);
+                if (sub_id == '0000') {
+                    areaId = left(treeNodeId, 13);
+                }
+                else {
+                    areaId = left(treeNodeId, 18);
+                }
+            }
+            else {
+                areaId = "AAA";
+            };
+            return areaId;
+        }
+</script>

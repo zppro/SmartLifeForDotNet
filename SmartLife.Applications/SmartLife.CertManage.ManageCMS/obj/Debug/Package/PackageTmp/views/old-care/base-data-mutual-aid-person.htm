@@ -1,0 +1,104 @@
+﻿<div id="toolbar-B181008">
+    <!--<a id="uploadBaseDataOfMutualAidPerson" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true" >上传邻里互助人员资料</a>-->
+</div>
+<table id="dg-B181008" >
+</table>
+<div id="dlg-B181008" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B181008"  >
+    <div class="ftitle"></div>
+    <form id="fm-B181008" method="post" novalidate>   
+    <div class="fitem">
+        <label>
+            导出模板:</label>
+        <a  target="_blank" id="aTemplate"  class="easyui-linkbutton"  >点击下载excel模板</a> 
+    </div> 
+    <div class="fitem">
+            <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-B181008">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'mutualaidpersonid-' + currentMenuCode,
+            pk: 'MutualAidPersonId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '邻里互助人员资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/MutualAidPersonService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1}
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    }
+                },
+                columns: [[
+                { field: 'MutualAidPersonId', title: '互助人员编号', width: 150, hidden: true },
+                { field: 'MutualAidPersonName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+                { field: 'MutualAidItem', title: '互助项目', width: 150, align: 'center', formatter: easyuigrid_ajaxFormatter, dictionaryId: '11006', url: function () {
+                    var url = window.ajaxData_InvokeUrl + '/GetDictionaryItem/' + this.dictionaryId;
+                    var results = null;
+                    getTo(url, null, function (result) {
+                        results = result;
+                    }, { async: false });
+                    return results;
+                }
+                },
+                { field: 'MutualAidNature', title: '互助性质', width: 150, align: 'center', formatter: easyuigrid_ajaxFormatter, dictionaryId: '11007', url: function () {
+                    var url = window.ajaxData_InvokeUrl + '/GetDictionaryItem/' + this.dictionaryId;
+                    var results = null;
+                    getTo(url, null, function (result) {
+                        results = result;
+
+                    }, { async: false });
+                    return results;
+                } 
+                },
+                { field: 'Address', title: '地址', width: 300 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#uploadBaseDataOfMutualAidPerson').bind('click', function () {
+                uploadBaseData(models[currentMenuCode].entityName, models[currentMenuCode].defaultModel)
+            });
+        });
+
+    }); 
+</script>

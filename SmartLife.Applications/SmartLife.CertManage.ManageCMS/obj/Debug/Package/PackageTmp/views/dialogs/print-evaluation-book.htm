@@ -1,0 +1,115 @@
+﻿<style type="text/css">
+.wrap { width:100%; float:left; margin:0;}
+.inform { width:80%; margin:0 auto; }
+.gzs { width:100%; height:120px; line-height:120px; float:left; font-size:20px; font-weight:bold; text-align:center;}
+
+.number { width:100%; height:50px; line-height:50px; text-align:right; float:left;font-size:18px;}
+.content { width:100%; float:left; height:70%;}
+.txt_print_line{ width:100%; font-size:14px; height:30px; line-height:30px;}
+.date { height:30%; width:100%; line-height:30px; text-align:right; margin-right:20px; font-size:18px; margin-bottom:30px;}
+.txt_bg_02 {width:220px;height: 30px;line-height: 30px;border: none; font-size: 16px; text-align:left;}
+.txt_bg_03 {width: 160px;border: none; border-bottom: 1px solid #000;text-align:center; margin-left:5px; font-size:14px;}
+</style>
+<div class="easyui-layout" data-options="fit:true">
+    <div id="print-evaluation-book" data-options="region:'center',border:false">
+        <div class="wrap">            <div class="inform">                <!--startprint-->                <form id="fm-print-evaluation-book" method="post" novalidate>                    <input type="hidden" name="ReportId" />                </form>                <!--endprint-->                <!--<input type="button" value="打印" onclick="printAll()" />-->            </div>        </div>    </div></div><script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) {
+//            var CareLevel;
+//            getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/12008', null, function (ret) {
+//                CareLevel = ret;
+//            }, { async: false });
+
+            var reportId = _.map(dialogData, function (o) {
+                return  o.ReportId;
+            }).join("|");
+            if (reportId) {
+                $("input[type='hidden'][name='ReportId']").val(reportId);
+            }
+
+            var htm = createGZSHtm(dialogData);
+            $("#fm-print-evaluation-book").append(htm);
+            $(".printTime").text((new Date()).pattern("yyyy年MM月dd日"));
+            _.each($(".wdate"), function (o) {
+                var cTime = $(o).html();
+                if (cTime && cTime != 'null' && cTime != 'undefined' && cTime != '') {
+                    if (cTime.indexOf("Date") > -1) {
+                        $(o).text(ndateFormatter(cTime, "yyyy年MM月dd日"));
+                    }
+                    else {
+                        $(o).text((new Date(cTime)).pattern("yyyy年MM月dd日"));
+                    }
+                }
+                else {
+                    $(o).text("");
+                }
+            });
+        }
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = $("#fm-print-evaluation-book").serializeObject();
+        return formData;
+    }
+
+    function createGZSHtm(formdata,careLevel) {
+        var htm = [];
+
+        htm.push(_.map(formdata, function (o) {
+            var html = [];
+
+            html.push('<div class="gzs">养老服务告知书</div>');
+            html.push('<div class="number">编号<label style="font-size: 16px;">' + o.ReportCode + '</label></div>');
+            html.push('<div class="content">');
+            html.push('<div class="txt_print_line" >' + o.EvaluatedName + '同志：</div>');
+            html.push('<div class="txt_print_line">&nbsp;&nbsp;&nbsp;&nbsp;您的养老服务补贴申请已收悉，经审核，您的服务补贴申请被批准。经养老服务需求评估认定：');
+            //            html.push('<div>');
+            //            html.push(_.map(careLevel, function (i) {
+            //                return '<p style="padding-left:20px;"><input type="radio" name="AssessLevel_' + o.ReportId + '" value="' + i.ItemId + '" ' + (o.AssessLevel == i.ItemId ? "checked='checked'" : "") + ' disabled="disabled" >&nbsp;' + i.ItemName + "</p>";
+            //            }).join(""));
+            html.push('</div>');
+            html.push('<div class="txt_print_line" >您的服务形式：&nbsp;<input name="ServeItemType_' + o.ReportId + '" type="radio" ' + (o.ServeItemType == '00001' ? "checked='checked'" : "") + ' disabled="disabled" />&nbsp;居家养老 &nbsp;&nbsp;&nbsp;&nbsp;<input name="ServeItemType_' + o.ReportId + '" type="radio" ' + (o.ServeItemType == '00002' ? "checked='checked'" : "") + ' disabled="disabled"/>&nbsp;机构养老&nbsp;&nbsp;&nbsp;&nbsp;<input name="ServeItemType_' + o.ReportId + '" type="radio" ' + (o.ServeItemType == '00003' ? "checked='checked'" : "") + ' disabled="disabled"/>&nbsp;日照中心</div>');
+            html.push('<div class="txt_print_line" >您的服务标准：</div>');
+            var tmpret = o.OcaResult;
+            if (!tmpret) {
+                tmpret = "0";
+            }
+            html.push('<div class="txt_print_line" >1、居家养老服务，每月补助：<span class="txt_bg_03" >' + tmpret + '&nbsp;元</span></div>');
+            tmpret = o.PamResult;
+            if (!tmpret) {
+                tmpret = "0";
+            }
+            html.push('<div class="txt_print_line" >2、机构养老服务，每月补助：<span class="txt_bg_03" >' + tmpret + '&nbsp;元</span></div>');
+            tmpret = o.DccResult;
+            if (!tmpret) {
+                tmpret = "0";
+            }
+            html.push('<div class="txt_print_line" >3、日照中心服务，每月补助：<span class="txt_bg_03" >' + tmpret + '&nbsp;元</span></div>');
+            html.push('<div class="txt_print_line" >服务开始日期：<span class="wdate txt_bg_03" >' + o.ServiceBeginTime + '</span></div>');
+            html.push('<div class="txt_print_line" >特此告知</div>');
+            html.push('</div>');
+            html.push('<div class="date">');
+            html.push('市民政局（盖章）<br/>');
+            html.push('<label class="printTime" style=" font-size:16px;"></label>');
+            html.push('</div>');
+
+            return html.join("");
+        }).join(""));
+
+        return htm.join("");
+    }
+    function printAll() {
+        bdhtml = window.document.body.innerHTML;
+        sprnstr = "<!--startprint-->";
+        eprnstr = "<!--endprint-->";
+        prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
+        prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+        window.document.body.innerHTML = prnhtml;
+        window.print();
+    }
+</script>

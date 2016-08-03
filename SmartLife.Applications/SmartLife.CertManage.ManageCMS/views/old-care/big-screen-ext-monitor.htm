@@ -1,0 +1,223 @@
+﻿<style type="text/css">
+    .ext-monitor-mot{width:170px; height:175px;margin:15px; float:left; border:solid 1px #006699;  -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+    .ext-monitor-mot-head{width:100%;color:White;  text-indent:2px; line-height:30px; height:30px; font-size:12px; background-color:#3C87C0; position:relative; text-align:center; }
+    .ext-monitor-mot-body{width:100%; text-align:left; height:125px; font-size:20px;word-break:break-all; color:white; background-color:Green; }
+    .ext-monitor-mot-body-queue{width:90%; padding:5px;height:76px;text-align:left;font-size:14px;word-break:break-all; }
+    .ext-monitor-mot-body .bbody {margin-left:10px;padding-top:5px; height:80px;overflow-y: auto;}
+    .ext-monitor-mot-body .bfoot {margin-left:10px;  height:40px;}
+    .ext-monitor-mot-body .cbfoot {height:20px; line-height:20px;}
+    .ext-monitor-mot-foot{width:100%;color:#000; text-indent:5px; line-height:20px; height:20px; font-size:12px; position:relative; }
+    .ext-monitor-mot-foot a{ position:absolute; right:8px;}
+    
+    .que-mot {width:80px; height:25px; line-height:25px; margin:5px; float:left; text-align:center; border:solid 1px #006699; background-color:#5CACEE ; -moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;}
+    #extQueue { width:100%;height:40px; float:left; margin:5 0 5 0;}
+    #ext { width:99%;  margin:5 0 5 0;border:1px solid #5CACEE ; height:290px;overflow-y: auto;}
+    #nonExtQueue { width:100%;height:40px;float:left;margin:5 0 5 0;}
+    #nonQueueExt { width:99%; margin:5 0 5 0; border:1px solid #5CACEE ;height:150px; overflow-y: auto;}
+    .queuename {margin:5px 0;padding:0 5px;height:30px; line-height:30px; background-color:#B0E2FF; font-size:14px; font-weight:bolder; color:#fff;}
+    #extStats {margin:5px 0;}
+</style>
+<div id="ext-monitor-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+    <div style=" float:left; width:74%; height:100%">
+        <table style=" height:100% ; width:99%;">
+            <tr>
+                <td class="queuename"> 分机队列 </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="extQueue"></div>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:60%;">
+                <div id="ext"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="queuename"> 非分机队列 </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="nonExtQueue"></div>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:30%;">
+                    
+                <div id="nonQueueExt"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style=" float:left; width:25%;height:100%">
+        <table style=" height:160px; width:100%;">
+            <tr>
+                <td colspan="4" class="queuename">统计情况</td>
+            </tr>
+            <tr>
+                <td style=" width:25%;">
+                    分机总数：
+                </td>
+                <td style=" width:25%;">
+                    <span id="extNum" style=" color:Red;"></span>
+                </td>
+                <td style=" width:25%;">
+                    坐席总数：
+                </td>
+                <td style=" width:25%;">
+                    <span id="seatNum" style=" color:Red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>通&nbsp;&nbsp;话&nbsp;&nbsp;中：</td>
+                <td><span id="inCall" style=" color:Red;"></span></td>
+                <td>振&nbsp;&nbsp;铃&nbsp;&nbsp;中：</td>
+                <td><span id="inWatting" style=" color:Red;"></span></td>
+            </tr>
+            <tr>
+                <td>示&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;忙：</td>
+                <td><span id="Span3" style=" color:Red;"></span></td>
+                <td>示&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;闲：</td>
+                <td><span id="Span4" style=" color:Red;"></span></td>
+            </tr>
+            <tr>
+                <td>不&nbsp;&nbsp;可&nbsp;&nbsp;用：</td>
+                <td colspan="3"><span id="onBreak" style=" color:Red;"></span></td>
+            </tr>
+        </table >
+        <table style=" height:220px; width:100%; border:1px solid #B0E2FF;">
+            <tr>
+                <td colspan="4"  class="queuename">电话排队</td>
+            </tr>
+            <tr style=" background:#B0E2DD">
+                <td style=" height:25px;">&nbsp;队列</td>
+                <td>呼入号码</td>
+                <td>姓名</td>
+                <td>进入时间</td>
+            </tr>
+            <tr>
+                <td id="queuememberinfo" colspan="4" style=" vertical-align:top;">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var repeatTime = 60000; //6秒
+
+    $(function () {
+        autosize('ext-monitor-panel', -24);
+
+        if (top.gCallCenter) {
+            var areaQueueName = top.gCallCenter.StationId.substr(24, 3);
+
+            //获取队列URL
+            var queueUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_queue";
+            postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetRemoteData", $.toJSON({ RemoteUrl: queueUrl, RetType: "json" }), function (result) {
+                var ret = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+                if (ret.data) {
+                    var queue = [];
+                    var nonQueue = [];
+
+                    _.each(_.filter(ret.data, function (i) {
+                        return i.queue_name.indexOf("@" + areaQueueName) > -1;
+                    }), function (o) {
+                        var qname = o.queue_name.toString();
+                        if (qname.lastIndexOf("999") > -1) {
+                            nonQueue.push(qname);
+                        }
+                        else {
+                            queue.push(qname);
+                        }
+                    });
+
+                    var strQueue;
+                    if (queue && queue.length > 0) {
+                        strQueue = _.map(queue, function (o) {
+                            return "<li class='que-mot'>" + right(o, 6) + "</li>"
+                        }).join("");
+                        $('#extQueue').attr("QueueNames", queue.join(",")).html("<ul>" + strQueue + "</ul>");
+                    }
+                    if (nonQueue && nonQueue.length > 0) {
+                        strQueue = _.map(nonQueue, function (o) {
+                            return "<li class='que-mot'>" + right(o, 6) + "</li>"
+                        }).join("")
+                        $('#nonExtQueue').attr("nonQueueNames", nonQueue.join(",")).html("<ul>" + strQueue + "</ul>");
+                    }
+                }
+            }, { async: false });
+
+
+            //获取队列分机成员
+            var extUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_queue_agent&queuename=";
+            setTimeout(function () {
+                $('#ext').html("");
+                $('#nonQueueExt').html("");
+
+                var currentQueueName = $('#extQueue').attr("QueueNames") + "," + $('#nonExtQueue').attr("nonQueueNames");
+                var queueNames = currentQueueName.split(",");
+                postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/QueueAgentList", $.toJSON({ RemoteUrl: extUrl, QueueNames: queueNames }), function (result) {
+                    if (result.Success) {
+                        var ret = eval('(' + result.ret + ')');
+                        if (ret) {
+                            _.each(ret, function (i) {
+                                var htm = [];
+                                htm.push("<li class='ext-monitor-mot' id='" + i.agent_no + "'>");
+                                htm.push("<div class='ext-monitor-mot-head'><span>" + i.agent_no + "</span></div>");
+                                htm.push("<div class='ext-monitor-mot-body'>");
+                                htm.push("<div class='ext-monitor-mot-body-queue'>" + _.map(i.queueName, function (k) { return right(k, 6) }).join(",") + ",</dvi>");
+                                htm.push("</div>");
+                                htm.push("<div class='bfoot'>");
+                                htm.push("</div>");
+                                htm.push("<div class='ext-monitor-mot-foot'><a href='javascript:void(0);' title='离线' onclick='closeConference(\"" + i.agent_no + "\",\"" + (top.gCallCenter.IP + ":" + top.gCallCenter.Port) + "\")' >x</a></div>");
+                                htm.push("</li>");
+
+                                if (i.ext == "0") {
+                                    $('#ext').append("<ul>" + htm.join("") + "</ul>");
+                                }
+                                else {
+                                    $('#nonQueueExt').append("<ul>" + htm.join("") + "</ul>");
+                                }
+                            });
+
+                            $('#seatNum').html(_.filter(ret, function (i) { return i.ext == "0" }).length);
+                            $('#extNum').html(ret.length);
+                        }
+                    }
+                });
+
+                setTimeout(arguments.callee, repeatTime);
+            }, 0);
+
+            //获取队列排队成员
+            var queueMemberUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_queue_member&queuename=";
+            setTimeout(function () {
+                //清空
+                $('#queuememberinfo').html("");
+
+                var currentQueueName = $('#extQueue').attr("QueueNames") + "," + $('#nonExtQueue').attr("nonQueueNames");
+                var queueNames = currentQueueName.split(",");
+                postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/QueueMemberList", $.toJSON({ RemoteUrl: queueMemberUrl, QueueNames: queueNames }), function (result) {
+                    if (result.Success) {
+                        var ret = eval('(' + result.ret + ')');
+                        if (ret) {
+                            var htm = [];
+                            htm.push("<table style='width:100%;'>");
+                            htm.push(_.map(ret, function (i) {
+                                return '<tr><td style="height:20px;">' + right(i.queueName, 6) + '</td><td>' + i.cid_number + '</td><td>' + i.cid_name + '</td><td>' + ndateFormatter(i.join_time, 'yyyy-MM-dd HH:mm:ss') + '</td></tr>';
+                            }).join(""))
+                            htm.push("</table>");
+
+                            $('#queuememberinfo').html(htm.join(""));
+                        }
+                    }
+                });
+
+                setTimeout(arguments.callee, 5000);
+            }, 0);
+        }
+
+    });
+
+</script>

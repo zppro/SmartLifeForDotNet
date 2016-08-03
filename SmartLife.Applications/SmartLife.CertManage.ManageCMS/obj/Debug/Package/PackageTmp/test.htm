@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=300adc4b852e28d0bf9513dab376bcbd"></script>
+
+    <!--<link rel="stylesheet" type="text/css" href="css/easyui/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="css/easyui/icon.css" />
+    <link rel="stylesheet" type="text/css" href="css/icon.css" /> -->
+    <link rel="Stylesheet" type="text/css" href="css/ccombox.css" />
+    <script type="text/javascript" src="script/jquery/jquery-1.8.2.min.js"></script>
+    <!--<script type="text/javascript" src="script/jquery/jquery-1.8.2.js"></script>-->
+    <script type="text/javascript" src="script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="script/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="script/jquery/jquery-ui-1.8.23.custom.min.js"></script> 
+    <script type="text/javascript" src="script/ztree/jquery.ztree.all-3.4.min.js"></script>
+    <!--<script type="text/javascript" src="script/jquery/jquery.easyui.min.js"></script>-->
+    <script type="text/javascript" src="script/jquery/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="script/jquery/jquery.kwicks-1.5.1.pack.js"></script> 
+    <script type="text/javascript" src="script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="script/flash4ajax/ajaxf.js"></script>
+    <script type="text/javascript" src="script/switchVar.js"></script>
+    <script type="text/javascript" src="script/globalVar.js"></script>
+    <script type="text/javascript" src="script/site.js"></script>
+    <!--<script type="text/javascript" src="script/globalParam.js" ></script>-->
+    <!--<script type="text/javascript" src="script/ccombox.js" ></script>-->
+        <script type="text/javascript" src="script/jquery/highcharts.js"></script>
+    <script type="text/javascript" src="script/jquery/exporting.js" ></script>
+    <script type="text/javascript" src="script/jquery/Calendar4.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            getTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService', null, function (ret) {
+                alert($.toJSON(ret));
+            });
+
+//            getTo(baseCMSInvokeUrl + '/Oca/ListForEasyUIgrid', null, function (ret) {
+//                alert($.toJSON(ret));
+//            });
+
+            $.fn.ccombox2 = function (options) {
+                var defaults = {
+                    valfield: 'id',
+                    textfield: 'name',
+                    remote: function () { },
+                    data: null,
+                    prompttxt: '请选择',
+                    cstyle: '',
+                    defaultval: null
+                }
+                options = $.extend(defaults, options || {});
+
+                return this.each(function () {
+                    $(this).hide();
+                    var currentid = $(this).attr("id");
+                    //模拟下拉框的id
+                    var id = 'divSelect' + currentid;
+
+                    //获取动态宽度
+                    var getwidth = $(this).width();
+                    var getheight = $(this).height();
+
+                    //插入模拟的下拉框
+                    var adddiv = '<div ><div id="' + id + '"><input type="text" id="a_' + id;
+                    adddiv += '" value="' + options.prompttxt + '"/></div><div id="b_' + id + '"></div></div>';
+                    $(this).after(adddiv);
+
+                    var $did = $("#" + id);
+                    var $aid = $('#a_' + id);
+                    var $bid = $('#b_' + id);
+                    //插入样式
+                    if (options.cstyle != '') {
+                        $did.parents("div").addClass(options.cstyle);
+                    }
+                    $did.addClass('am').css({ 'width': getwidth, 'height': getheight, 'line-height': getheight });
+                    $aid.addClass('box').css({ 'color': "#999", 'height': '100%' });
+
+                    //获取数据，以本地数据优先;
+                    var tmpdata = options.data;
+                    if (!tmpdata) {
+                        if (options.remote) {
+                            tmpdata = options.remote();
+                        }
+                    }
+                    //获取子节点数据
+                    if (tmpdata) {
+                        //为输入框添加事件
+                        $aid.hover(function () {
+                            if ($(this).val() === options.prompttxt) {
+                                $(this).val("").css({ 'color': '' });
+                            }
+                        }, function () {
+                            //$(this).val(options.prompttxt);
+                        });
+                        $did.click(function (eb) {
+                            //输入框单击事件，实现隐藏和弹出
+                            if ($bid.is(":hidden")) {
+                                $bid.show();
+                            }
+                            else {
+                                $bid.hide();
+                            }
+                            try {
+                                eb.stopPropagation();
+                            }
+                            catch (e) {
+                                event.cancelBubble = true;
+                            }
+                        });
+                        $bid.addClass('bm').hide();
+
+                        //整合数据
+                        var markup = changeDataToHtml(tmpdata, "", null, 0);
+                        if (markup.length <= 0) {
+                            $bid.remove();
+                            return false;
+                        }
+                        else {
+                            var bid = $bid.attr("id");
+                            //绑定父节点 
+                            $bid.append(markup);
+                            $('#' + bid + " div").addClass('cur');
+                            $('#' + bid + " .cdiv").addClass('rowdiv');
+                            //绑定子节点
+                            $('#' + bid + " a").click(function () {
+                                $("#" + currentid).val($(this).attr("v"));
+                                $aid.val($(this).html().replace(/&nbsp;/g, ''));
+                                $bid.hide();
+                            }).hover(function () {
+                                $(this).addClass('choose');
+                            }, function () {
+                                $(this).removeClass('choose');
+                            }).addClass('first');
+                        }
+                        //获取高度
+                        var _count = $('#' + bid + " div").length;
+                        //设定下拉的高度
+                        if (_count > 10) {
+                            $bid.css({ "height": "250px", "overflow": "auto" });
+                        }
+                        //点击下拉框外的地方则关闭下拉框
+                        $(document).click(function () {
+                            $bid.hide();
+                        });
+                    }
+
+                    // 绑定初始值,待完善
+                    if (options.defaultval) {
+                        $aid.val('').val(options.defaultval);
+                        //$(this).val(options.defaultval);
+                    }
+                });
+            }
+
+            //获取下拉菜单的子元素
+            function changeDataToHtml(dtjson, pid, parr, nlevel) {
+                var ahtml = [];
+                $.each(dtjson, function (o, ov) {
+                    if (ov["pid"] == pid) {
+                        ahtml.push(changeDataToHtml(dtjson, ov["id"], ov, ++nlevel));
+                        nlevel--;
+                    }
+                });
+
+                //去掉最后父节点为空的节点
+                if (parr == null) return ahtml.join("");
+                //1,2行节点不可选择
+                var str = "";
+                if (nlevel == 1) {
+                    str = "<div >&nbsp;" + parr["name"] + "&nbsp;&nbsp;</div>";
+                    str += ahtml.join("");
+                }
+                else if (nlevel == 2) {
+                    str = "<div class='cdiv'>&nbsp;" + parr["name"] + "&nbsp;&nbsp;" + ahtml.join("") + "</div>";
+                }
+                else {
+                    //第三节点及其以下届点都属于可点击节点，并排在同一行
+                    str = "<a href='javascript:void(0)' v='" + parr["id"] + "' >&nbsp;&nbsp;" + parr["name"] + "&nbsp;&nbsp;</a>";
+                    str += ahtml.join("");
+                }
+
+                ahtml = [];
+                ahtml.push(str);
+                return ahtml.join("");
+            }
+        })(jQuery);
+
+    </script>
+    
+</head>
+<body>
+<div>
+<input style="text" id="CheckInTimeFrom"  onclick="MyCalendar.SetDate(this)"/>
+    sdfgsagadsfgagdasdgfdasggggggg
+    <div>sdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+
+    <input id="selFilter" type="text" style="width: 150px;" />  
+    
+    <div>sdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+
+    <input id="areaFilter" type="text" style="width: 150px;" /> 
+    <div>asdfasdfds</div>
+    </div>
+    <div id="allmap" style=" width:600px; height:400px;"></div>
+    <input onclick="$('#allmap div.anchorBL').remove();" type="button" style="width:100px;" value="删除"/>
+
+
+    
+</body>
+</html>
+<!--<script type="text/javascript">
+    $(function () {
+        //设置input 的宽度
+        //初始化下拉框
+        //valfield :绑定的值
+        //textfield :绑定的文本
+        //data: 为本地json数据
+        //remote: 为远程数据
+        //prompttxt: 提示性文字
+        //cstyle: 下拉框根div样式
+        //defaultval: 为默认选中值
+//        $("#selFilter").ccombox2({
+//            valfield: "AccessPoint",
+//            textfield: "ItemName",
+//            prompttxt: '请选择登录节点',
+//            cstyle: 'selectdiv',
+//            remote: function (tjson) {
+//                getTo(ajaxData_InvokeUrl + '/GetDeployAccessPoint', null, function (result) {
+//                    tjson = result.rows;
+//                }, { async: false });
+//                return tjson;
+//            }
+//        })
+
+        $("#areaFilter").ccombox2({
+            //            valfield: "id",
+            textfield: "name",
+            prompttxt: '请选择登录节点',
+            //            remote: function (tjson) {
+            //                getTo(treeDataOfGet_InvokeUrl2 + '01$01$01,null,null', null, function (result) {
+            //                    tjson = result;
+            //                }, { async: false });
+            //                return tjson;
+            //            }
+
+            data: [{ 'id': '0015', 'pid': '', 'name': '江西省', 'order': '15', 'levels': '0' }, 
+            { 'id': '00012', 'pid': '', 'name': '浙江省', 'order': '12', 'levels': '0' }, { 'id': '00110', 'pid': '00012', 'name': '舟山市', 'order': '1201', 'levels': '1' },
+            { 'id': '00111', 'pid': '00012', 'name': '衢州市', 'order': '1202', 'levels': '1' }, { 'id': '00112', 'pid': '00012', 'name': '杭州市', 'order': '1203', 'levels': '1' },
+            { 'id': '01111', 'pid': '00112', 'name': '西湖区', 'order': '120301', 'levels': '2' }, { 'id': '01112', 'pid': '00112', 'name': '拱墅区', 'order': '120301', 'levels': '2' },
+            { 'id': '11111', 'pid': '01112', 'name': '田园街道', 'order': '12030101', 'levels': '3' }, { 'id': '11112', 'pid': '01112', 'name': '申花街道', 'order': '12030102', 'levels': '3' },
+            { 'id': '00113', 'pid': '00012', 'name': '湖州市', 'order': '1204', 'levels': '1' }, { 'id': '00114', 'pid': '00012', 'name': '嘉兴市', 'order': '1205', 'levels': '1' },
+            { 'id': '00013', 'pid': '', 'name': '安徽省', 'order': '13', 'levels': '0' }, { 'id': '00121', 'pid': '00013', 'name': '合肥市', 'order': '1301', 'levels': '1' },
+            { 'id': '00122', 'pid': '00013', 'name': '芜湖市', 'order': '1302', 'levels': '1' }, { 'id': '00123', 'pid': '00013', 'name': '蚌埠市', 'order': '1303', 'levels': '1' },
+            { 'id': '00014', 'pid': '', 'name': '福建省', 'order': '14', 'levels': '0' }, { 'id': '00138', 'pid': '00014', 'name': '福州市', 'order': '1401', 'levels': '1' }
+            ]
+        })
+
+    })
+    </script>
+<script type="text/javascript">
+    var map = new BMap.Map("allmap");            // 创建Map实例
+    //var point = new BMap.Point(116.404, 39.915);    // 创建点坐标
+    map.centerAndZoom("杭州", 10);                     // 初始化地图,设置中心点坐标和地图级别。
+    map.enableScrollWheelZoom();                            //启用滚轮放大缩小
+
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.MapTypeControl({ anchor: BMAP_ANCHOR_TOP_RIGHT }));      //左上角，默认地图控件
+    map.setCurrentCity("杭州");   //由于有3D图，需要设置城市哦
+    map.addControl(new BMap.ScaleControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));    //添加默认比例尺控件 右下
+
+    
+
+//    var linePic = []; 	//保存点
+    map.addEventListener("click", function (e) {
+        //alert(e.point.lng + ", " + e.point.lat);
+        var point = new BMap.Point(e.point.lng, e.point.lat);
+        //linePic.push(point);  //画轨迹
+        //addMarker(point); //添加标注
+        drawCircle(point, 100); //画圆
+    });
+//    map.addEventListener("ondblclick", endLine);
+
+    //开启鼠标测距
+    //var myDis = new BMapLib.DistanceTool(map);
+    //map.addEventListener("load",function(){
+    //	myDis.open();  
+    //});
+    // 编写自定义函数,创建标注
+//    function addMarker(point) {
+//        var marker = new BMap.Marker(point);
+//        map.addOverlay(marker);
+//    }
+//    var polyline;
+//    //添加鼠标绘制工具监听事件，用于获取绘制结果
+//    function endLine() {
+//        if (linePic.length > 0) {
+//            polyline = new BMap.Polyline(linePic, { strokeColor: "blue", strokeWeight: 5, strokeOpacity: 0.4, fillOpacity: 0.6, strokeStyle: 'solid' });
+//            map.addOverlay(polyline);
+//            lineArr = [];
+//            lineArr.splice(0, lineArr.length);
+//        }
+    //    }
+
+    function drawCircle(point, dradius) {
+        map.centerAndZoom(point, 16);
+        var circle = new BMap.Circle(point, dradius, { strokeColor: "blue", strokeWeight: 1, strokeOpacity: 1, strokeStyle: 'solid' });
+        map.addOverlay(circle); 
+    }
+
+    map.addEventListener("rightclick", clearPolyline);
+    function clearPolyline() {
+//        if (typeof polyline != "undefined" && polyline != null) {
+//            map.removeOverlay(polyline);
+        //        }
+        map.clearOverlays();
+    }
+
+//    //反地址解析
+//    var curCity = "杭州";
+//    //创建地址解析器实例
+//    var myGeo = new BMap.Geocoder();
+//    myGeo.getLocation(map.getCenter(), function (rs) {
+//        var addComp = rs.addressComponents;
+//        curCity = addComp.city;
+//        //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+//    });
+//    
+//    // 将地址解析结果显示在地图上,并调整地图视野
+//    myGeo.getPoint("田园社区", function (point) {
+//        if (point) {
+//            map.centerAndZoom(point, 16);
+//            map.addOverlay(new BMap.Marker(point));
+//        }
+//    }, curCity);
+</script>-->

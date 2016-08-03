@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://115.236.175.110/wwwroot/SmartLifeFarm/Published.ManageServices/" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="配置文件1" publishMethod="FTP" replaceMatchingFiles="False" userName="ftp_admin" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAADGBo4scYBE2mrpsHfJEEpQAAAAACAAAAAAAQZgAAAAEAACAAAAD249nIvRt8kcAGMAsyB6lwRUOWhPA/mATa13OPGfJ+CAAAAAAOgAAAAAIAACAAAABhQARsYzC4MqFhEXMVP1qQdhyEys5az55C95/t9IbH0CAAAABxWfzAeXFB7T3wtYFHs8YoC/6l6xdYDgMhdjmA/254UkAAAAB0rIw+4GKreOgV6U5Tr3ikSQdfIaAMs2k1kzqDfWWyAAfCNe/cY+I0d1D9asxTbQYXOVsEJarbNFgu2hNH4kBP" SelectedForPublish="True">
+    <file relUrl="bin/Castle.DynamicProxy.dll" publishTime="02/06/2012 10:24:00" />
+    <file relUrl="AppShare/forReStart.ashx" publishTime="06/17/2016 05:15:00" />
+    <file relUrl="bin/System.Data.SQLite.dll" publishTime="07/28/2015 08:47:20" />
+    <file relUrl="Global.asax" publishTime="04/30/2015 10:18:39" />
+    <file relUrl="bin/log4net.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="Oca/_FamilyCameraUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/win.core.dll" publishTime="10/28/2015 13:03:07" />
+    <file relUrl="bin/SmartLife.CertManage.ManageServices.pdb" publishTime="06/24/2016 15:37:07" />
+    <file relUrl="bin/web.core.dll" publishTime="04/09/2015 10:34:50" />
+    <file relUrl="SQLite.Interop.dll" publishTime="10/08/2015 17:28:23" />
+    <file relUrl="bin/web.core.pdb" publishTime="07/28/2015 08:49:50" />
+    <file relUrl="bin/SQLite.Interop.dll" publishTime="10/08/2015 17:28:23" />
+    <file relUrl="bin/SmartLife.Share.Behaviors.dll" publishTime="06/18/2016 17:39:59" />
+    <file relUrl="dao.config" publishTime="06/24/2016 15:25:48" />
+    <file relUrl="Pub/_ArticleUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="AppShare/uploadify.ashx" publishTime="04/30/2015 10:18:39" />
+    <file relUrl="bin/web.core.share.models.pdb" publishTime="10/08/2015 12:36:55" />
+    <file relUrl="Pub/_ArticleUpdateContent.ashx" publishTime="07/21/2015 15:58:55" />
+    <file relUrl="bin/Ionic.Zip.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="bin/IBatisNet.DataMapper.pdb" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/IBatisNet.Common.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="Pub/_AreaBaseDataUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/SmartLife.CertManage.ManageServices.dll" publishTime="06/24/2016 15:37:07" />
+    <file relUrl="bin/IBatisNet.DataMapper.dll" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="Oca/_MutualAidPersonUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="Oca/_ResidentBaseUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/win.core.pdb" publishTime="12/09/2015 12:21:00" />
+    <file relUrl="Oca/_OldCareOldManBaseDataUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/NPOI.dll" publishTime="10/31/2013 16:23:20" />
+    <file relUrl="AppShare/ExportExcel.ashx" publishTime="04/30/2015 10:18:39" />
+    <file relUrl="bin/web.core.share.models.dll" publishTime="10/22/2014 11:10:48" />
+    <file relUrl="Oca/_FamilyMemberUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/SmartLife.Share.Models.PO.dll" publishTime="12/26/2014 13:29:45" />
+    <file relUrl="bin/IBatisNet.DataAccess.2005.dll" publishTime="03/21/2014 20:22:55" />
+    <file relUrl="Pub/_ServiceStationUploadify.ashx" publishTime="04/30/2015 10:18:40" />
+    <file relUrl="bin/SmartLife.Share.Models.dll" publishTime="06/24/2016 15:36:45" />
+    <file relUrl="Web.config" publishTime="06/28/2016 10:02:14" />
+  </publishProfile>
+</publishData>

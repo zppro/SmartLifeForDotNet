@@ -1,0 +1,29 @@
+﻿/*
+.ztree { margin:0; padding:0;height:100%;}
+.ztree li ul{ margin:0; padding:0;height:100%;}
+.ztree li {height:30px;line-height:30px;}
+.ztree li a {height:30px;padding-top: 0px;}
+.ztree li span {line-height:30px;}
+.ztree li a:hover {text-decoration:none;background-color: #E7E7E7;}
+.ztree li a span.button.switch {visibility:hidden}
+.ztree.showIcon li a span.button.switch {visibility:visible}
+.ztree li span.button {margin-top: -7px;}
+.ztree li span.button.switch {width: 16px;height: 16px;}
+.ztree li a.curSelectedNode {background-color:#D4D4D4;border:0;height:30px;}
+.ztree li ul{ margin:0; padding:0;height:100%;}
+*/
+
+
+.ztree li {line-height:30px;}
+.ztree li a {width:100%;height:30px;padding-top: 0px;}
+.ztree li a:hover {text-decoration:none; background-color: #E7E7E7;}
+.ztree li a span.button.switch {visibility:hidden}
+.ztree.showIcon li a span.button.switch {visibility:visible}
+.ztree li a.curSelectedNode {background-color:#D4D4D4;border:0;height:30px;}
+.ztree li span {line-height:30px;}
+.ztree li span.button {margin-top: -7px;}
+.ztree li span.button.switch {width: 16px;height: 16px;}
+
+.ztree li span.button.menu3_ico_docu{margin-right:2px;margin-top:5px; background: url(./img/diy/icon-arrows.png) no-repeat -16px 0 transparent; vertical-align:top; *vertical-align:middle}
+.ztree li span.button.menu3_ico_open{margin-right:2px;margin-top:5px; background: url(./img/diy/icon-arrows.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+.ztree li span.button.menu3_ico_close{margin-right:2px;margin-top:5px; background: url(./img/diy/icon-arrows.png) no-repeat scroll -16px 0 transparent; vertical-align:top; *vertical-align:middle}

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="WorkPlan" type="SmartLife.Share.Models.Pam.WorkPlan, SmartLife.Share.Models" />
+    <typeAlias alias="WorkPlanPK" type="SmartLife.Share.Models.Pam.WorkPlanPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="WorkPlan_Create" parameterClass="StringObjectDictionary" >
+      insert into Pam_WorkPlan(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="PlanId" >PlanId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlanDate" >PlanDate</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomId" >RoomId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FinishFlag" >FinishFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserId" >UserId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CompleteStatus" >CompleteStatus</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkloadActual" >WorkloadActual</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="PlanId" >#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlanDate" >#PlanDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomId" >#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FinishFlag" >#FinishFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserId" >#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CompleteStatus" >#CompleteStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkloadActual" >#WorkloadActual#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="WorkPlan_Update" parameterClass="StringObjectDictionary" >
+      update Pam_WorkPlan
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlanDate" >PlanDate=#PlanDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FinishFlag" >FinishFlag=#FinishFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CompleteStatus" >CompleteStatus=#CompleteStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkloadActual" >WorkloadActual=#WorkloadActual#</isPropertyAvailable>
+      </dynamic>
+      where PlanId=#PlanId#
+    </update>
+    <delete id="WorkPlan_Delete" parameterClass="StringObjectDictionary" >
+      delete Pam_WorkPlan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlanId" >PlanId=#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_Start" >PlanDate>=to_date(#PlanDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_End" >PlanDate&lt;=to_date(#PlanDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FinishFlag" >FinishFlag=#FinishFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CompleteStatus" >CompleteStatus=#CompleteStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkloadActual" >WorkloadActual=#WorkloadActual#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="WorkPlan_Load" parameterClass="WorkPlanPK" resultClass="WorkPlan" >
+      select PlanId,Id,Status,CheckInTime,OperatedBy,OperatedOn,PlanDate,RoomId,OldManId,WorkItem,FinishFlag,UserId,Remark,CompleteStatus,WorkloadActual from Pam_WorkPlan
+      where PlanId=#PlanId#
+    </select>
+    <select id="WorkPlan_List" parameterClass="StringObjectDictionary" resultClass="WorkPlan" >
+      select PlanId,Id,Status,CheckInTime,OperatedBy,OperatedOn,PlanDate,RoomId,OldManId,WorkItem,FinishFlag,UserId,Remark,CompleteStatus,WorkloadActual from Pam_WorkPlan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlanId" >PlanId=#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_Start" >PlanDate>=to_date(#PlanDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_End" >PlanDate&lt;=to_date(#PlanDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FinishFlag" >FinishFlag=#FinishFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CompleteStatus" >CompleteStatus=#CompleteStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkloadActual" >WorkloadActual=#WorkloadActual#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="WorkPlan_ListByPage" parameterClass="StringObjectDictionary" resultClass="WorkPlan" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,PlanId,Id,Status,CheckInTime,OperatedBy,OperatedOn,PlanDate,RoomId,OldManId,WorkItem,FinishFlag,UserId,Remark,CompleteStatus,WorkloadActual from Pam_WorkPlan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlanId" >PlanId=#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_Start" >PlanDate>=to_date(#PlanDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanDate_End" >PlanDate&lt;=to_date(#PlanDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FinishFlag" >FinishFlag=#FinishFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CompleteStatus" >CompleteStatus=#CompleteStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkloadActual" >WorkloadActual=#WorkloadActual#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,336 @@
+﻿<style type="text/css">
+   .fm-search ul
+    {
+        list-style: none;
+        display: inline;
+        float: left;
+    }
+   .fm-search ul li
+    {
+        width: 190px;
+        text-align: right;
+        line-height: 30px;
+    }
+   .fm-search ul li input
+    {
+        width: 100px;
+    }
+</style>
+<div id="search-sample-service-entity" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-service-entity" method="post">
+    <table width="100%">
+        <tr>
+            <td class="fm-search">
+                <ul>
+                    <li>
+                        <label>
+                            商家名称:</label><input name="StationName" />
+                    </li>
+                    <li>
+                        <label>
+                            服务区域:</label><input name="serveArea" /></li>
+                </ul>
+                <ul>
+                    <li>
+                        <label>
+                            联系人:</label><input name="LinkMan" id="LinkMan" /></li>
+                    <li>
+                        <label>
+                            服务项目:</label><input name="serveitemB" />
+                        </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label>
+                            联系号码:</label><input name="Tel" /></li>
+                    <li>
+                        <label>
+                            所属街道:</label><input id="AreaIdStreet" />
+                        <input type="hidden" name="AreaId2" id="AreaId2" />
+                        </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label>
+                            员工数量:</label><input name="num" /></li>
+                    <li>
+                        <label>
+                            所属社区:</label><input id="AreaIdCommunity" />
+                        <input type="hidden" name="AreaId3" id="AreaId3" /></li>
+                </ul>
+            </td>
+            <td style="width: 90px;">
+                <div style="float: left;  height:30px;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="query()">
+                        查询</a>
+                </div>
+                <div style="float: left;  height:30px;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="clearForm()">
+                        清空</a>
+                 </div>
+            </td>
+            <td style="width: 48px;">
+                <label id="total">
+                </label>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<table id="dg-service-entity">
+</table>
+<script type="text/javascript">
+    $(function () {
+        var currentMenuCode = "service-entity";
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            pkId: 'stationid-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '政府监管平台',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            defaultModel: { AreaId: (top.entityId == '*' ? '00000' : top.appDeployArea.id), Status: 1, StationType: '商家' }
+        };
+
+        autosize('dg-service-entity', -105);
+        $('#dg-service-entity').datagrid(easyuigrid_settings({
+            title: "",
+            view: scrollview,
+            rownumbers: true,
+            singleSelect: true,
+            autoRowHeight: false,
+            pageSize: 50,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/Pub_ServiceStation_ForMonitor_V',
+            method: 'POST',
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status,
+                    StationType: models[currentMenuCode].defaultModel.StationType
+                }
+            },
+
+            onDblClickRow: function (idx, row) {
+                getStationBaseInfo(row); //双击查看商家相关信息
+            },
+            onLoadSuccess: function (o) {
+                $('#total').html('总计：</br></br>' + o.total + '条'); //显示总共多少条数据
+
+                $.parser.parse($('.easyui-linkbutton').parent());
+//                $('.iconServeObjectInfo').linkbutton({ text: '查看', plain: true, iconCls: 'icon-search' }).unbind('click').bind('click', function () {
+//                    var row = $(this).attr('jsondate').replace(/#/gm, "\""); //取这个商家相关的信息
+//                    getStationBaseInfo($.parseJSON(row)); //查看商家相关信息
+//                });
+            },
+            frozenColumns: [[
+                { field: 'StationName', title: '商家名称', width: 165, align: 'center' },
+                { field: 'ServeObjectInfo', title: '相关信息', width: 80, align: 'center', formatter: function (val, row, idx) {
+                    return '<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="getStationBaseInfo(' + idx + ')">查看</a>';
+                }
+                }
+              ]],
+            columns: [[
+                { field: 'StationId', title: '商家编号', width: 150, hidden: true },
+                { field: 'LinkMan', title: '联系人', width: 60, align: 'center' },
+                { field: 'LinkManMobile', title: '联系电话', width: 100, align: 'center' },
+                { field: 'Tel', title: '座机', width: 100, align: 'center' },
+                { field: 'serveArea', title: '服务区域', width: 350, align: 'center' },
+                { field: 'serveitemB', title: '服务项目', width: 350, align: 'center' },
+                { field: 'num', title: '员工数量', width: 60, align: 'center' },
+                { field: 'AreaId2', title: '所属街道', width: 80, align: 'center' },
+                { field: 'AreaId3', title: '所属社区', width: 80, align: 'center' },
+                { field: 'Address', title: '地址', width: 300, align: 'center' },
+                { field: 'CheckInTime', title: '加入日期', width: 90, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'Fax', title: '传真', width: 80, align: 'center' },
+                { field: 'Email', title: 'Email', width: 80, align: 'center' },
+                { field: 'PostCode', title: '邮编', width: 80, align: 'center' },
+                { field: 'Intro', title: '商家简介', width: 170, align: 'center' },
+                { field: 'Remark', title: '备注', width: 170, align: 'center' }
+        ]],
+            loader: easyuiLoader
+        }));
+    });
+    function query() {
+        var formData = getJQO('#fm-search-rough-service-entity').serializeObject();
+        formData['LinkManMobile'] = formData['Tel'];
+        formData['InputCode1'] = formData['StationName'];
+        formData['InputCode2'] = formData['StationName'];
+
+
+        //修改models的默认值
+        var queryParamsArray = getJQO('#dg-service-entity').datagrid('options').queryParams;
+        for (var instance in queryParamsArray.instance) {
+            if (_.has(formData, instance)) {
+                queryParamsArray.instance[instance] = formData[instance];
+                formData[instance] = undefined;
+            }
+        }
+        //清除前一次查询的匹配条件
+        for (var o in formData) {
+            if (queryParamsArray.fuzzyFields && _.isArray(queryParamsArray.fuzzyFields)) {
+                for (var i = 0; i < queryParamsArray.fuzzyFields.length; i++) {
+                    if (queryParamsArray.fuzzyFields[i].key == o) {
+                        queryParamsArray.fuzzyFields.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            if (queryParamsArray.filterFields && _.isArray(queryParamsArray.filterFields)) {
+                for (var i = 0; i < queryParamsArray.filterFields.length; i++) {
+                    if (queryParamsArray.filterFields[i].key == o) {
+                        queryParamsArray.filterFields.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        }
+        //添加当前查询条件
+        var filterFields = queryParamsArray.filterFields || [];
+        var fuzzyFields = queryParamsArray.fuzzyFields || [];
+        for (var o in formData) {
+            if (formData[o]) {
+                var dataItem = { key: o, value: formData[o] };
+                if (o.indexOf('_Start') == -1 && o.indexOf('_End') == -1) {
+                    fuzzyFields.push(dataItem);
+                }
+                else {
+                    filterFields.push(dataItem);
+                }
+            }
+        }
+
+        queryParamsArray.fuzzyFields = fuzzyFields;
+        queryParamsArray.filterFields = filterFields;
+
+        queryParamsArray.fuzzyFieldOP = "OR";
+        getJQO('#dg-service-entity').datagrid('load', queryParamsArray);
+    }
+    function clearForm() {
+        getJQO('#fm-search-rough-service-entity').form('clear');
+        var community = GetStreetAndCommunityInArea(top.appDeployArea.id, "5"); //获取社区数据
+        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+    }
+    function getJQO(selector, fromTab) {
+        if ($(selector).size() == 0) {
+            if (window.frames['tab_' + currentMenuId]) {
+                return window.frames['tab_' + currentMenuId].$(selector);
+            }
+        }
+        return $(selector);
+    }
+    //街道
+    $('#AreaIdStreet').combobox({
+        width: 106,
+        panelHeight: 150,
+        method: 'get',
+        data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        filter: function (q, row) {
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) == 0;
+        },
+        //姓名选择为空的时候    清除表单中的所以内容
+        onHidePanel: function () {
+            if ($('#AreaIdStreet').combo('getText') == "") {
+                $('#AreaIdCommunity').combobox('setValue', null);
+                $('#AreaId2').val(null);
+                $('#AreaId3').val(null);
+            }
+        },
+        onSelect: function (d) {
+            $('#AreaId2').val(d.ItemName);
+            var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+            $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+            //如果该街道下有社区，则自动填充
+            if (community.length > 0) {
+                $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                $('#AreaId3').val(community[0].ItemName);
+            }
+            //否则为空
+            else {
+                $('#AreaIdCommunity').combobox('setValue', null);
+                $('#AreaId3').val(null);
+            }
+        }
+    });
+    //社区
+    $('#AreaIdCommunity').combobox({
+        width: 106,
+        panelHeight: 150,
+        method: 'get',
+        data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        filter: function (q, row) {
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) == 0;
+        },
+        //姓名选择为空的时候    清除表单中的所以内容
+        onHidePanel: function () {
+            if ($('#AreaIdCommunity').combo('getText') == "") {
+                $('#AreaId3').val(null);
+            }
+        },
+        onSelect: function (d) {
+            $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+            $('#AreaId2').val(d.ParentId);
+            $('#AreaId3').val(d.ItemName);
+        }
+    });
+
+    //获取街道和社区信息
+    function GetStreetAndCommunityInArea(parentId, levels) {
+        var arr = [];
+        if (parentId != null) {
+            getTo(ajaxData_InvokeUrl + "/GetStreetAndCommunityInArea/" + parentId, null, function (result) {
+                //根据levels选择不同层的数据
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].Levels == levels) {
+                        arr.push(result[i]);
+                    }
+                }
+            }, { async: false });
+        }
+        return arr;
+    }
+    function getStationBaseInfo(row) {
+        if (_.isNumber(row)) {
+            var rows = $('#dg-service-entity').datagrid('getRows');    // get current page rows
+            row = rows[row];    // your row data
+
+            $("#dlg-serve-entity-info-from").dialog({
+                onClose: function () {
+                },
+                onBeforeOpen: function () {
+                    $('.iconYYD').linkbutton({ plain: true, iconCls: 'icon-loud' });
+                },
+                modal: true
+            }).dialog('open').dialog('setTitle', '查看服务录音');
+        }
+        if (row) {
+            openDialog('set-serve-entity-info', '/views/gov-client/dialogs/serve-entity-info-from.htm', function (callback, dialogData) {
+
+                callback();
+                page_load();
+            }, { dialogData: row, title: '商家信息', width: 1010, height: 600, buttons: [{
+                text: '关闭',
+                iconCls: 'icon-cancel',
+                handler: function () { top.onDialogClose('set-serve-entity-info'); } //关闭
+            }]
+            });
+        }
+    return false;
+    }
+
+</script>

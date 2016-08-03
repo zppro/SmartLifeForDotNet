@@ -1,0 +1,267 @@
+﻿ <table>
+    <tr>
+        <td>
+            <table id="dg-outside-agency">
+            </table> 
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <td> 
+                        选中
+                    </td>
+                </tr>
+                <tr>
+                    <td  style=" height:30px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectone" plain="true"
+                            onclick="addSelected()"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td> 
+                       整页
+                    </td>
+                </tr>
+                <tr>
+                    <td  style=" height:30px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectall" plain="true"
+                            onclick="addAll()"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td  style=" height:100px;"> 
+                        
+                    </td>
+                </tr> 
+                <tr>
+                    <td> 
+                        选中
+                    </td>
+                </tr>
+                <tr>
+                    <td style=" height:30px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectone"
+                            plain="true" onclick="unAddSelected()"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td > 
+                       整页
+                    </td>
+                </tr>
+                <tr>
+                    <td style=" height:30px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectall"
+                            plain="true" onclick="unAddAll()"></a>
+                    </td>
+                </tr>
+            </table>        
+        </td>
+        <td>
+            <table id="dg-inside-agency">
+            </table> 
+        </td>
+    </tr>
+</table>
+<div id="toolbar-outside-agency">
+    <table >
+        <tr> 
+            <td style="text-align:left; width:250px;">
+                关键字：<input id="KeyWord_outside" class="easyui-validatebox" />
+            </td> 
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx('outside')">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetEx('outside')">
+                    清空</a>
+            </td> 
+        </tr>
+    </table> 
+</div>
+<div id="toolbar-inside-agency">
+    <table>
+        <tr> 
+            <td style="text-align:left;width:250px;">
+                关键字：<input  id="KeyWord_inside" class="easyui-validatebox" />
+            </td> 
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx('inside')">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetEx('inside')">
+                    清空</a>
+            </td> 
+        </tr>
+    </table> 
+</div>
+<script type="text/javascript">
+    var areas;
+    var stationType2;
+    function dialogOpen(dialogId, dialogData) {
+        stationType2 = dialogData;
+        getTo(baseCMSInvokeUrl + '/Sys/DictionaryItemService/Query?parms=' + $.toJSON({ 'DictionaryId': '00005', 'ItemId': (top.objectId == '*' ? '00000' : top.appDeployArea.id) }), null, function (result) {
+            getTo(ajaxData_InvokeUrl + '/GetCityAndAreaInProvince/' + result.rows[0].ParentId, null, function (result) {
+                areas = result;
+            }, { async: false });
+        }, { async: false });
+        var inside_url = baseCMSInvokeUrl + '/Pub/ServiceStationService/ListForEasyUIgridPageForPullSeller/' + baseInfoNode;
+        var inside_params = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            instance: {
+                Status: 1,
+                StationType: '00006',
+                StationType2: dialogData
+            }
+        };
+        var outside_params = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            instance: {
+                Status: 1,
+                StationType: '00002',
+                StationType2: dialogData
+            }
+        };
+        setDataGrid('dg-outside-agency', inside_url, 'toolbar-outside-agency', outside_params);
+        setDataGrid('dg-inside-agency', inside_url, 'toolbar-inside-agency', inside_params);
+    }
+
+    function addAll() {
+        var rows = $('#dg-outside-agency').datagrid('getRows');
+        addAgency(rows,1);
+    }
+
+    function addSelected() {
+        var rows = $('#dg-outside-agency').datagrid('getSelections');
+        if (rows.length > 0) {
+            addAgency(rows,0);
+        } else {
+            alertInfo('没有选中的机构！');
+        }
+    }
+
+    function addAgency(rows,s) {
+        if (rows) {
+            var tmpData = _.map(rows, function (item) {
+                return { StationId: item.StationId, StationType: '00006' };
+            });
+            if (tmpData && tmpData.length > 0) {
+                var message = s == 1 ? '确定添加左侧的“整页”机构吗？' : '确定添加左侧“选中”机构吗？';
+                alertConfirm(message, function (r) {
+                    if (r) {
+                        postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/AddAgencyBaseInfo', $.toJSON(tmpData), function (ret) {
+                            if (ret.Success) {
+                                alertInfo('新增成功！');
+                                $('#dg-outside-agency').datagrid('load');
+                                $('#dg-inside-agency').datagrid('load');
+                            }
+                        }, null, { ConnectId: baseInfoNode });
+                    }
+                });
+            }
+        }
+        else {
+            alertInfo('没有选中的机构！');
+        }
+    }
+    function unAddSelected() {
+        var rows = $('#dg-inside-agency').datagrid('getSelections');
+        if (rows.length > 0) {
+            unAddAgency(rows,0);
+        } else {
+            alertInfo('没有选中的机构！');
+        }
+    }
+    function unAddAll() {
+        var rows = $('#dg-inside-agency').datagrid('getRows');
+        unAddAgency(rows,1);
+    }
+
+    function unAddAgency(rows,s) {
+        if (rows) {
+            var tmpData = _.map(rows, function (item) {
+                return { StationId: item.StationId, StationType: '00002', StationType2: stationType2 };
+            });
+            if (tmpData && tmpData.length > 0) {
+                var message = s == 1 ? '确定添加左侧的“整页”机构吗？' : '确定添加左侧“选中”机构吗？';
+                alertConfirm(message, function (r) {
+                    if (r) {
+                        postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/UnAddAgencyBaseInfo', $.toJSON(tmpData), function (ret) {
+                            if (ret.Success) {
+                                alertInfo('变更成功！');
+                                $('#dg-outside-agency').datagrid('load');
+                                $('#dg-inside-agency').datagrid('load');
+                            }
+                        }, null, { ConnectId: baseInfoNode });
+                    }
+                });
+            }
+        }
+        else {
+            alertInfo('没有选中的机构！');
+        }
+    }
+    function setDataGrid(id, url, toolbar, params) {
+        $('#' + id).datagrid(easyuigrid_settings({
+            title: "",
+            height: 420,
+            width: 473,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: url,
+            method: 'POST',
+            toolbar: '#' + toolbar,
+            queryParams: params,
+            columns: [[
+                { field: 'StationId', title: '服务站编号', width: 50, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'StationName', title: '社会组织名称', width: 190 },
+                { field: 'LinkMan', title: '联系人', width: 64 },
+                { field: 'AreaId', title: '所属辖区', width: 100, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "ItemName", valueField: "ItemId" },
+                { field: 'Address', title: '地址', width: 200 }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+    function execEx(flog) {
+        var keyword = $('#KeyWord_' + flog).val();
+        var type = flog == 'inside' ? '00006' : '00002';
+        $('#dg-' + flog + '-agency').datagrid('reload', {
+            sort: 'OperatedOn',
+            order: 'desc',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: 1,
+                StationType: type
+            },
+            fuzzyFields: [{ key: 'StationName', value: keyword },
+                { key: 'Tel', value: keyword },
+                { key: 'LinkMan', value: keyword },
+                { key: 'LinkManMobile', value: keyword },
+                { key: 'Address', value: keyword },
+                { key: 'InputCode1', value: keyword },
+                { key: 'InputCode2', value: keyword}]
+        });
+    }
+    function resetEx(flog) {
+        $('#KeyWord_' + flog).val(null);
+        $('#KeyWord_' + flog).val(null);
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        return true;
+    }
+
+    function closeDialog() {
+        $('#add-pam-addagency-baseinfo').dialog('close');
+    }
+</script>

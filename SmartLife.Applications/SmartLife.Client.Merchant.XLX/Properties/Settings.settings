@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartLife.Client.Merchant.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MessageBoxTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">居家养老</Value>
+    </Setting>
+    <Setting Name="Company" Type="System.String" Scope="User">
+      <Value Profile="(Default)">lz</Value>
+    </Setting>
+    <Setting Name="Company_Phone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">82335718</Value>
+    </Setting>
+    <Setting Name="Company_Site" Type="System.String" Scope="User">
+      <Value Profile="(Default)">www.lz.com</Value>
+    </Setting>
+    <Setting Name="Author" Type="System.String" Scope="User">
+      <Value Profile="(Default)">zppro</Value>
+    </Setting>
+    <Setting Name="ProductName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">商家服务</Value>
+    </Setting>
+    <Setting Name="ProductVersionComment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">旗舰版</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,548 @@
+﻿<div id="_left" style="width: 280px; padding: 0 2px 0 2px; float: left;">
+    <table>
+        <tr style="height: 40px;">
+            <td style="border-left: 1px solid #ddd; border-top: 1px solid #ddd; background-color: #f5f5f5;">
+                <table style="padding-left: 5px;">
+                    <tr>
+                        <td>
+                            姓名：
+                        </td>
+                        <td>
+                            <input id="ServiceManName" style="width: 120px;" class="easyui-validatebox" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="reload_datagrid_service()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="removekeyword('ServiceManName')">清空</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="width: 280px; padding: 0 2px 0 2px; float: left;">
+                    <table id="dg-service-B130401">
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="_right" style="border: solid 1px #ddd; float: left;">
+    <table>
+        <tr>
+            <td colspan="5">
+                <table id="dg-old-B130401">
+                </table>
+            </td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: 130px; padding-left: 5px;">
+                工作项目：
+                <input id="WorkItem" style="width: 60px" />
+            </td>
+            <td style="width: 150px;">
+                用时(分)：
+                <input id="Workload_Start" style="width: 30px" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                -
+                <input id="Workload_End" style="width: 30px" onkeyup="value=value.replace(/[^\d]/g,'')" />
+            </td>
+            <td style="width: 130px;">
+                计划时间：
+                <input id="PlanSchedule_Start" class="easyui-timespinner" style="width: 60px" />
+            </td>
+            <td style="width: 130px;">
+                -
+                <input id="PlanSchedule_End" class="easyui-timespinner" style="width: 60px" />
+                <input id="uncheck" type="checkbox" title="不选"  />不选
+            </td>
+            <td >
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="draftPlan()">制定工作计划</a>
+            </td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: 130px; padding-left: 5px;">
+                计划周期：
+                <input id="PlanPeriod" style="width: 60px" />
+            </td>
+            <td>
+                提醒次数：
+                <input id="RemindRepeats_Start" style="width: 30px" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                -<input id="RemindRepeats_End" style="width: 30px" onkeyup="value=value.replace(/[^\d]/g,'')" />
+            </td>
+            <td>
+                提醒标识：
+                <input id="RemindFlag" style="width: 60px" />
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick=" reload_datagrid_plan('','')">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="removekeyword('')">清空</a>
+            </td>
+            <td >
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+        onclick="editPlan()">编辑工作计划</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <table id="dg-plan-B130401">
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="toolbar-service-B130401">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="serviceManDraftPlan()">制定工作计划</a>
+    <div id="CurrentAgencys-c" style="display: inline-block;">
+        <input id="CurrentAgencys" /></div>
+</div>
+<div id="toolbar-old-B130401">
+    <table>
+        <tr>
+            <td>
+                关键字：
+            </td>
+            <td>
+                <input name="old" id="old" class="easyui-validatebox" placeholder="姓名、身份证、电话、地址" />
+            </td>
+            <td style="width: 150px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="reload_datagrid_old()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="removekeyword('old')">清空</a>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="oldManDraftPlan()">制定工作计划</a>
+            </td>
+        </tr>
+    </table>
+</div> 
+<script type="text/javascript">
+//暂时不用，要改造
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    } 
+    var areas;
+    $(function () {
+        //加载养老机构
+        $('#CurrentAgencys').combobox({
+            width: 120,
+            panelWidth: 300,
+                       data: top.gUserInfo.MappingAgencys, 
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {     
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                              $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId); 
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何养老机构');
+                    $('#toolbar-Schedule').hide();
+                }
+            },
+            onSelect: function (record) {
+                _loading(); //加载 
+            }
+        });
+        _loading(); //加载 
+    });
+
+    function _loading() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        models[currentMenuCode] = {
+            gridServiceId: 'dg-service-' + currentMenuCode,
+            toolbarServiceId: 'toolbar-service-' + currentMenuCode,
+            gridOldId: 'dg-old-' + currentMenuCode,
+            toolbarOldId: 'toolbar-old-' + currentMenuCode,
+            gridPlanId: 'dg-plan-' + currentMenuCode,
+            toolbarPlanId: 'toolbar-plan-' + currentMenuCode,
+            baseServiceModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            baseOldModelUrl: baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/',
+            basePlanModelUrl: baseCMSInvokeUrl + '/Pam/WorkPlanService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00004|" + window.contants.GuidAsGroup_PensionAgencyServeMan, Status: 1 }
+        };
+
+        _autosize1(models[currentMenuCode].gridServiceId, -40); //自动调整大小 
+        _autosize2(models[currentMenuCode].gridOldId, -30); //自动调整大小
+        _autosize2(models[currentMenuCode].gridPlanId, -30); //自动调整大小
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        set_datagrid_serviceMan(); //加载服务人员
+        set_datagrid_oldMan(); //加载老人
+        set_datagrid_plan(); //加载工作计划
+        resetPlan(); //初始化工作计划的查询条件
+        $('#uncheck').on('change', function (o) {
+            if ($("#uncheck").attr("checked") == 'checked') {
+                $('#PlanSchedule_Start').attr('disabled', 'disabled'); 
+                $('#PlanSchedule_End').attr('disabled', 'disabled'); 
+            }
+            else {
+                $('#PlanSchedule_Start').removeAttr('disabled', 'disabled'); 
+                $('#PlanSchedule_End').removeAttr('disabled', 'disabled'); 
+            }
+        });
+    };
+     
+
+    function set_datagrid_serviceMan() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        $('#' + models[currentMenuCode].gridServiceId).datagrid(easyuigrid_settings({
+            title: "",
+            rownumbers: false,
+            singleSelect: true,
+            url: models[currentMenuCode].baseServiceModelUrl + 'PensionAgencyListForEasyUIgridByStationId/' + stationId,
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarServiceId,
+            queryParams: {
+                page: 1,
+                rows: 100,
+                fuzzyFieldOP: ' or ',
+                sort: 'UserName',
+                order: 'asc',
+                filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType }
+                            ]
+            },
+            onSelect: function (index, row) {
+                reload_datagrid_old();
+                reload_datagrid_plan(null, row.UserId);
+            },
+            columns: [[
+                    { field: 'UserId', title: '服务人员编号', width: 150, hidden: true },
+        { field: 'UserName', title: '名称', width: 105, align: 'center' },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'CallNo', title: '呼叫器号码', width: 120, align: 'center' }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+    }
+
+    function set_datagrid_oldMan() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        $('#' + models[currentMenuCode].gridOldId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseOldModelUrl + 'ListOldManLivingInRoom',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarOldId,
+            queryParams: {
+                sort: 'OldManName',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                { key: 'StationId', value: stationId } 
+                ]
+            },
+            onSelect: function (index, row) {
+                var _row = $('#' + models[currentMenuCode].gridServiceId).datagrid('getSelected');
+                var userId = null;
+                if (_row) { userId = _row.UserId; }
+                reload_datagrid_plan(row.OldManId, userId)
+            },
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 60, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 40, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'RoomNo', title: '所在房间', width: 60, align: 'center' },
+                { field: 'ExtNo', title: '分机号', width: 80, align: 'center' },
+                { field: 'Address', title: '家庭地址', width: 250 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function set_datagrid_plan() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        $('#' + models[currentMenuCode].gridPlanId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].basePlanModelUrl + 'ListForEasyUIgridByPage',
+            method: 'POST',
+            onDblClickRow: function (idx, row) {
+                editPlan(row);
+            },
+            toolbar: '#' + models[currentMenuCode].toolbarPlanId,
+            queryParams: {
+                sort: 'PlanSchedule',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status}]
+            },
+            columns: [[
+                { field: 'PlanId', title: '工作计划编号', width: 150, hidden: true },
+                { field: 'PlanSchedule', title: '计划时间', width: 80, align: 'center' },
+                { field: 'UserName', title: '服务人姓名', width: 80, align: 'center' },
+                { field: 'OldManName', title: '老人姓名', width: 80, align: 'center' },
+                { field: 'WorkItemName', title: '工作项目', width: 80, align: 'center' },
+                { field: 'WorkloadName', title: '用时(分)', width: 80, align: 'center' },
+                { field: 'RemindFlag', title: '提醒标识', width: 60, formatter: easyuigrid_boolFormatter, align: 'center' },
+                { field: 'RemindRepeats', title: '提醒次数', width: 60, align: 'center', formatter: function (val, row, idx) {
+                    if (val == 99) { return ''; }
+                    else { return val; }
+                }
+                },
+                { field: 'PlayRepeats', title: '重复次数', width: 60, align: 'center' },
+                { field: 'PlanPeriodName', title: '计划周期', width: 60, align: 'center' },
+                { field: 'ServerBeginTime', title: '计划开始时间', width: 80, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'RemarkWP', title: '注意事项', width: 150 }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+     
+    function reload_datagrid_service() {
+        var serviceManName = $('#ServiceManName').val();
+        var param = {
+            page: 1,
+            rows: 100,
+            fuzzyFieldOP: ' or ',
+            sort: 'UserName',
+            order: 'asc',
+            filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType }
+                            ],
+            fuzzyFields: [
+                            { key: 'UserCode', value: serviceManName },
+                            { key: 'UserName', value: serviceManName },
+                            { key: 'InputCode1', value: serviceManName },
+                            { key: 'InputCode2', value: serviceManName }
+                            ]
+        }
+        $('#' + models[currentMenuCode].gridServiceId).datagrid('load', param);
+        reload_datagrid_old();
+        var _row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+        var oldManId = null;
+        if (_row) { oldManId = _row.OldManId; }
+        reload_datagrid_plan(oldManId, null);
+    }
+
+    function reload_datagrid_old() {
+        var keyWord = $('#old').val();
+        var stationId = $('#CurrentAgencys').combobox('getValue'); 
+        var param = {
+            sort: 'OldManName',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                { key: 'StationId', value: stationId } 
+                ],
+            fuzzyFields: [{ key: 'OldManName', value: keyWord },
+                               { key: 'IDNo', value: keyWord },
+                               { key: 'Tel', value: keyWord },
+                               { key: 'Mobile', value: keyWord },
+                               { key: 'Address', value: keyWord },
+                               { key: 'InputCode1', value: keyWord },
+                               { key: 'InputCode2', value: keyWord}]
+        };
+        var _row = $('#' + models[currentMenuCode].gridServiceId).datagrid('getSelected');
+        if (_row) {
+            param.filterFields.push({ key: 'UserId', value: _row.UserId });
+        } 
+        $('#' + models[currentMenuCode].gridOldId).datagrid('load', param);
+
+        var userId = null;
+        if (_row) { userId = _row.UserId; }
+        reload_datagrid_plan(null, userId);
+    }
+
+    function reload_datagrid_plan(oldManId, userId) {
+        var keyWord = $('#plan').val();
+        var param = {
+            sort: 'PlanSchedule',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+            { key: 'WorkItem', value: $('#WorkItem').combobox('getValue') },
+            { key: 'PlanPeriod', value: $('#PlanPeriod').combobox('getValue') },
+            { key: 'RemindFlag', value: $('#RemindFlag').combobox('getValue')}],
+            fuzzyFields: [{ key: 'Workload_Start', value: $('#Workload_Start').val() },
+            { key: 'Workload_End', value: $('#Workload_End').val() },
+            { key: 'RemindRepeats_Start', value: $('#RemindRepeats_Start').val() },
+            { key: 'RemindRepeats_End', value: $('#RemindRepeats_End').val()}]
+        };
+        if (!$("#uncheck").attr("checked") == true) {
+            param.fuzzyFields.push({ key: 'PlanSchedule_Start', value: $('#PlanSchedule_Start').val() });
+            param.fuzzyFields.push({ key: 'PlanSchedule_End', value: $('#PlanSchedule_End').val() });
+        }
+        if (oldManId != null && oldManId != '') { param.filterFields.push({ key: 'OldManId', value: oldManId }); }
+        if (userId != null && userId != '') { param.filterFields.push({ key: 'UserId', value: userId }); }
+
+        $('#' + models[currentMenuCode].gridPlanId).datagrid('load', param);
+    }
+
+
+    //选择一个服务人员  为多个老人制定计划
+    function serviceManDraftPlan() {
+        var row = $('#' + models[currentMenuCode].gridServiceId).datagrid('getSelected');
+        if (row) {
+            openDialog('set-plan-serviceman', 'views/pam-manage/set-plan-serviceman.htm', function (callback, dialogData) {
+                callback(); 
+            }, { dialogData: { StationId: $('#CurrentAgencys').combobox('getValue'), UserId: row.UserId }, title: '设置“' + row.UserName + '”的工作计划', width: 805, height: 550, padding: 5, buttons: [{
+                text: '关闭',
+                iconCls: 'icon-cancel',
+                handler: function () { top.closeDialogFrom();  }
+            }]
+            });
+        }
+        else {
+            alertInfo('请选中要制定工作的服务人员');
+        }
+    }
+
+    //选择一个老人  为服务人员多个制定计划
+    function oldManDraftPlan() {
+        var row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+        if (row) {
+            openDialog('set-plan-oldman', 'views/pam-manage/set-plan-oldman.htm', function (callback, dialogData) {
+                callback();
+            }, { dialogData: { StationId: $('#CurrentAgencys').combobox('getValue'), OldManId: row.OldManId }, title: '设置“' + row.OldManName + '”的工作计划', width: 805, height: 550, padding: 5, buttons: [{
+                text: '关闭',
+                iconCls: 'icon-cancel',
+                handler: function () { top.closeDialogFrom(); }
+            }]
+            });
+        }
+        else {
+            alertInfo('请选中要制定工作的老人');
+        }
+    }
+
+    //选择一个老人和服务人员制定计划
+    function draftPlan() {
+        var row_s = $('#' + models[currentMenuCode].gridServiceId).datagrid('getSelected');
+        var row_o = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+        if (row_s && row_o) {
+            openDialog('set-plan', 'views/pam-manage/set-plan.htm', function (callback, dialogData) {
+                callback();
+            }, { dialogData: { UserId: row_s.UserId, OldManId: row_o.OldManId }, title: '设置“' + row_o.OldManName + '”和“' + row_s.UserName + '”的工作计划', width: 755, height: 170, padding: 5, buttons: [{
+                text: '关闭',
+                iconCls: 'icon-cancel',
+                handler: function () { top.closeDialogFrom(); }
+            }]
+            });
+        }
+        else {
+            alertInfo('请选择要制定工作的老人和服务人员');
+        }
+    } 
+
+    //编辑一个工作计划
+    function editPlan(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridPlanId).datagrid('getSelected');
+         } 
+        if (row) {
+            var title = '服务人员“' + row.UserName+'”'; 
+
+            if (row.ServerBeginTime != '') { title += ' 从“' +  row.ServerBeginTime.substring(0,9) + '”开始 在“' + row.PlanSchedule; }
+            else { title += ',从现在开始,在“' + row.PlanSchedule; }
+
+            title += '”为“' + row.OldManName + '”“' + row.WorkItemName + '” 用时约为“' + row.WorkloadName + '” ';
+
+            title += '“' + row.PlanPeriodName + '”做一次'; 
+            if (row.RemindFlag == 1) {title += ' 提示' + row.RemindRepeats + '次 ' + (row.PlayRepeats == "" ? "" : ' 重复提示' + row.PlayRepeats + '遍'); }
+            else { title += ' 不提醒 '; }
+
+            if (row.RemarkWP != '') { title += '注意事项：' + row.RemarkWP; }
+            openDialog('set-plan-eidt', 'views/pam-manage/set-plan-eidt.htm', function (callback, dialogData) {
+                callback();
+                alertConfirm('确定更改此项工作计划吗？', function (r) {
+                    if (r) {
+                        putTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/' + dialogData.PlanId, $.toJSON(dialogData), function (ret) {
+                            if (ret.Success) {
+                                alert("更改成功");
+                                var oldManId = null;
+                                var userId = null;
+                                var row_s = $('#' + models[currentMenuCode].gridServiceId).datagrid('getSelected');
+                                var row_o = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+                                if (row_s) { userId = row_s.UserId; }
+                                if (row_o) { oldManId = row_o.OldManId; }
+                                reload_datagrid_plan(oldManId, userId);
+                            }
+                        });
+                    }
+                });
+            }, { dialogData: { StationId: $('#CurrentAgencys').combobox('getValue'), row: row }, title: title, width: 805, height: 550, mergeDefault: true
+            });
+        }
+        else {
+            alertInfo('请选择要更改的工作计划');
+        }
+    }
+
+    function resetPlan() {
+        $('#Workload_Start').val(null);
+        $('#RemindRepeats_Start').val(null);
+        $('#Workload_End').val(null);
+        $('#RemindRepeats_End').val(null);
+        $("#uncheck").attr("checked", true);
+        $('#PlanSchedule_Start').attr('disabled', 'disabled');
+        $('#PlanSchedule_End').attr('disabled', 'disabled'); 
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/13001',
+        ajaxData_InvokeUrl + '/GetDictionaryItem/13002'], function (workItem_d, planPeriod_d) {
+            setCombobox("WorkItem", workItem_d, 62, 100, '');
+            setCombobox("PlanPeriod", planPeriod_d, 62, 82, '');
+            setCombobox("RemindFlag", [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}], 62, 62, '');
+            var d = new Date();
+            $('#PlanSchedule_Start').timespinner('setValue', d.getHours() - 2 + ':00');
+            $('#PlanSchedule_End').timespinner('setValue', d.getHours() + 2 + ':00');
+        });
+    }
+
+    function setCombobox(controlsId, data, w, h, v) {
+        data.unshift({ 'ItemId': '', 'ItemName': '全选' });
+        $('#' + controlsId + '').combobox({
+            width: w,
+            panelHeight: h,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: v
+        });
+    }
+    function removekeyword(id) {
+        $('#' + id).val(null);
+        if (id == null || id == '') { resetPlan(); }
+    }
+
+    function _autosize1(id, delta) {
+        $("#" + id).height($("#" + id).parent().parent().parent().parent().parent().parent().parent().parent().parent().height() + delta);
+    }
+    function _autosize2(id, delta) {
+        var w = $('#_left').width();
+        var ww = $('#_right').parent().width();
+        $("#" + id).width(ww - w - 10);
+        $("#" + id).height($("#" + id).parent().parent().parent().parent().parent().parent().parent().height() / 2 + delta);
+    } 
+</script>

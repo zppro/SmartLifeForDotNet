@@ -1,0 +1,18 @@
+﻿.form .validateTips { border: 1px solid transparent; text-align:center; }
+.form fieldset,.search-form fieldset{ margin-top:5px;}
+.form fieldset label,.search-form fieldset label {width:80px; float:left; text-align:right; padding-right:10px;  line-height:22px; margin-right:5px; }
+.form fieldset label.notempty{background: url('../images/common/notemptystar.png') center right no-repeat;}
+.form fieldset input,.search-form fieldset input { float:left; }
+.form fieldset select,.search-form fieldset select { float:left; }
+.search-form p{text-align:center;}
+.left-in-list{float:left;position: relative; margin: 0em;padding: 0em; overflow-x: hidden; overflow-y: auto; border-left: 0px none !important; border-top : 0px none !important; border-right : 0px none !important;}
+.right-in-list{float:right;}
+.form{ margin-top:10px;}
+.split{width:100%; float:left; }
+.iconPG{ text-decoration:underline; cursor:pointer;}
+
+/* -----------easyui------------*/
+.fitem{ padding-bottom:10px; padding-top:10px; clear:left;} 
+.fitem label{  float:left;margin:5px;}
+.fitem span.field{  float:left;margin:5px; width:140px;} 
+.fitem span.combo,.fitem input,.fitem textarea{float:left}

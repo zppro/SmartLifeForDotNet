@@ -1,0 +1,284 @@
+﻿<style type="text/css">
+    .livecourse-block{min-height:60px;height:auto;margin:0 auto;}
+    .livecourse-title{height:30px; line-height:30px; margin:5px 0 0 0 ; padding:2px; text-align:left; background-color:#87CEFF; font-size:16px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+
+    .livecourse-mot{width:255px; height:255px;margin:5px; float:left;text-align:center; border:solid 1px #006699;  -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; }
+    .livecourse-mot-head{width:100%;color:White; cursor:pointer; text-indent:2px; line-height:25px; height:25px; background-color:#006699; text-align:center; }
+    .livecourse-mot-body{width:100%;height:205px; color:white; background-color:#006030; }
+    .livecourse-mot-body .bbody {padding:2px; height:180px;overflow: auto;}
+    .livecourse-mot-body .bfoot {padding:0 2px; height:15px; line-height:15px;}
+    .livecourse-mot-foot{width:96%;color:#000; text-indent:5px; line-height:24px; height:24px; font-size:24px; position:relative; margin:0px 6px; }
+    
+    .alink { z-index:201; cursor:pointer;}
+</style>
+<div id="livecourse-block">
+    <div style="padding: 5px; width:99%; height:30px; ">
+        <table style=" width:100%; height:100%;">
+            <tr>
+                <td>
+                    <div id="CurrentAgency-c" style="display: inline-block;"><input id="CurrentAgency" /></div>
+                </td>
+                <td style="">
+                    课程类型：<input id="cbxVideoType" />
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="VideoSearch()">查询</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin: 5px; width:99%; height:30px;">
+        <table style=" width:50%; height:100%;">
+            <tr>
+                <td>
+                    起始时间：<input id="PushDate_Start" name="PushDate_Start" class="Wdate" onfocus="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d %H:%m:%s'})" style="width: 150px; border-left: none; border-right: none; border-top: none;"   />
+                </td>
+                <td>
+                    排放周期：<input id="PushCycleDay" type="text" class="easyui-numberbox" data-options="min:0,max:13" style="width:50px;">
+                </td>
+                <!--<td>
+                    截止时间：<input id="PushDate_End" name="PushDate_End" class="Wdate" onfocus="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'PushDate_Start\',{d:1})}'})" style="width: 150px; border-left: none; border-right: none; border-top: none;" />
+                </td>-->
+                <td>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="reserve()">预约</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="livecourse-panel" style="width:99%; height:86%; margin: 0 auto; border:1px solid #00CDCD;  overflow-y: auto; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; ">
+    </div>
+</div>
+
+<div id="dlg-B132003" class="easyui-dialog" style="width: 450px; height: 500px; padding: 10px;"
+    closed="true"  cache="false" buttons="#btn-B132003" >
+    <ul id="tree-B132003"></ul>
+    <input type="hidden"  id="_AreaId2" name='AreaId2'/>
+    <input type="hidden"  id="_AreaId3" name='AreaId3'/>
+</div>
+<div id="btn-B132003">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="dlgPushOK()">确定</a> 
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="dlgPushCancel()">取消</a>
+</div>
+
+
+<script type="text/javascript">
+
+    var bfirstLoadAreaTree = false; //默认首次加载
+    $(function () {
+        //加载机构 
+        $('#CurrentAgency').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgency').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgency-c').closest('td').hide();
+                        //$('#CurrentAgency-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                }
+            },
+            onSelect: function (record) {
+                loading();
+            }
+        });
+        loading();
+
+        autosize('livecourse-block');
+        $('#PushDate_Start').val(DateAdd('n', 1, (new Date())).pattern('yyyy-MM-dd HH:mm:ss'));
+        //$('#PushDate_End').val(DateAdd('d', 1, (new Date())).pattern('yyyy-MM-dd HH:mm:ss'));
+
+        //视频类型
+        $('#cbxVideoType').combobox({
+            width: 200,
+            panelWidth: 200,
+            data: null,
+            valueField: 'id',
+            textField: 'title',
+            editable: false
+        });
+
+        //获取视频类型
+        var inertfaceUrl = 'http://openapi.91stb.com:8081/api/live/main/sourceType';
+        postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetRemoteData", $.toJSON({ RemoteUrl: inertfaceUrl, RetType: "json" }), function (result) {
+            var videoContentType = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+            $('#cbxVideoType').combobox('loadData', videoContentType);
+        });
+    });
+
+    function loading() {
+        //初始化页面
+        videoContentToHtml();
+    }
+
+    function VideoSearch() {
+        var typeId = $('#cbxVideoType').combobox('getValue');
+        videoContentToHtml(typeId);
+    }
+
+
+    //转换-展示图片
+    function videoContentToHtml(typeId) {
+        //清空
+        $('#livecourse-panel').html('');
+
+        var inertfaceUrl = 'http://openapi.91stb.com:8081/api/live/main/source';
+        if (typeId) {
+            inertfaceUrl += '?typeid=' + typeId;
+        }
+
+        postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetRemoteData", $.toJSON({ RemoteUrl: inertfaceUrl, RetType: "json" }), function (result) {
+            videoContent = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+
+            var strDate = (new Date()).pattern('yyyy-MM-dd');    //日期-辅助计算时长
+            var defaultBeginDate = Date.parseExact(strDate + ' 00:00:00', 'yyyy-MM-dd HH:mm:ss');
+
+            var html = _.map(videoContent, function (o) {
+                var htm = _.map(o.list, function (i) {
+                    var tmphtm = [];
+                    tmphtm.push("<div class='livecourse-mot-head'><a href='javascript:void(0)' title='" + i.title + "' style='color:#fff;font-size:14px;' >" + i.title.substr(0, 20) + "</a></div>");
+                    tmphtm.push("<div class='livecourse-mot-body'><div class='bbody'><img style='height:100%;width:100%;' alt='" + i.title + "' src='" + i.cover + "' /></div><div class='bfoot'>大小:" + i.size + "&nbsp;&nbsp;时长:" + i.duration + "</div></div>");
+                    tmphtm.push("<div class='livecourse-mot-foot'><div style='float:left;width:9%;margin-left:3px;' class='footflag'></div><div style='float:left;width:85%;'></div><div style='float:right;width:9%;margin-right:3px;'><a title='预约' href='javascript:void(0)' class='reserve alink nicon-blue nicon-R2C11'></a></div></div>");
+                    //获取视频时长单位S
+                    var videoDuration = DateDiff('s', defaultBeginDate, Date.parseExact(strDate + ' ' + i.duration, 'yyyy-MM-dd HH:mm:ss'));
+                    return "<li class='livecourse-mot' scheduleInfo='" + $.toJSON({ CourseType: o.type_name, CourseId: i.id, CourseName: i.title, CourseDuration: videoDuration, CourseInfo: i.size + "|" + i.cover + "|" + i.vod_url }) + "'>" + tmphtm.join("") + "</li>";
+                });
+
+                var _height = 60;
+                if ((htm.length / 4) > 0) {
+                    _height = (parseInt(htm.length / 4) + 1) * 265 + 50;
+                }
+
+                return "<div style='min-height:" + _height + "px' class='livecourse-block'><div class='livecourse-title'>" + o.type_name + "</div><ul>" + htm.join("") + "</ul></div>";
+            });
+            $('#livecourse-panel').html(html.join(""));
+            $('#livecourse-panel ul li .reserve').unbind('click').bind('click', function (e) {
+                reserve($(this).closest('li'));
+
+                //阻止事件向上冒泡
+                return false;
+            });
+
+            $('#livecourse-panel ul li').mouseover(function () {
+                $(this).css("border-color", '#FF0000');
+            }).mouseout(function () {
+                $(this).css("border-color", '#006699');
+            }).click(function () {
+                $('#livecourse-panel ul li').removeClass('tmpselect').find('.footflag').html('');
+                $(this).addClass('tmpselect').find('.footflag').append('<a title="选中" class="alink nicon-blue nicon-R2C14"></a>');
+            });
+        });
+    }
+
+
+    function reserve(li) {
+        if (!li) {
+            li = $('#livecourse-panel .tmpselect');
+        }
+
+        if (li) {
+            $('#dlg-B132003').dialog(_.extend({
+                inline: false,
+                onOpen: function () {
+                    //首次加载
+                    if (!bfirstLoadAreaTree) {
+                        initTree('easyUITree', 'tree-B132003', {
+                            onClick: function (treeNode) {
+                                //获取节点
+                                var treeNodeId = treeNode.id; //当前节点
+                                if (treeNodeId.length > 6) {
+                                    var tmpAreaId = treeNodeId.substring(14, 18);
+                                    if (tmpAreaId == '0000') {//街道
+                                        $('#_AreaId2').val(treeNodeId);
+                                        $('#_AreaId3').val('');
+                                    }
+                                    else {//社区
+                                        $('#_AreaId2').val(treeNode.attributes.PId);
+                                        $('#_AreaId3').val(treeNodeId);
+                                    }
+                                }
+                                else {
+                                    $('#_AreaId2').val('');
+                                    $('#_AreaId3').val('');
+                                }
+                            },
+                            onLoadSuccess: function () {
+                                //左边的树，默认展开一级
+                                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                            }
+                        },
+                    function (d) {
+                        if (top.gUserInfo.isSuperAdmin) {
+                            getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                        } else {
+                            getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.gUserId + '"}', d);
+                        }
+                    },
+                    null,
+                    function (treeObj) {
+
+                    }); //end loadTree
+                    }
+                    else {
+                        $('#_AreaId2').val('');
+                        $('#_AreaId3').val('');
+                    }
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '新增-直播课程');
+        }
+        else {
+            alertInfo("请选择一个直播课程！");
+        }
+    }
+
+
+    function dlgPushOK() {
+        var stationId = $('#CurrentAgency').combobox('getValue');
+
+        var strAreaId2 = $('#_AreaId2').val();
+        var strAreaId3 = $('#_AreaId3').val();
+        if (!strAreaId2) {
+            alertInfo("请选择街道或者社区！");
+            return;
+        }
+
+        var courseli = $('#livecourse-panel .tmpselect')[0];
+        var courseInfo = $.parseJSON($(courseli).attr("scheduleInfo"));
+
+        var beginDate = $('#PushDate_Start').val();
+        var iCycleDay = $('#PushCycleDay').val();
+        var formData = _.extend(courseInfo, { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),
+            AreaId2: strAreaId2,
+            AreaId3: strAreaId3,
+            CourseFlag: 2,
+            BeginTime: toJsonDate(Date.parseExact(beginDate, 'yyyy-MM-dd HH:mm:ss'))
+        });
+        if (iCycleDay) {
+            formData = _.extend(formData, { DayCycle: iCycleDay });
+        }
+        alert($.toJSON(formData));
+
+        postTo(baseCMSInvokeUrl + '/Pam/CourseScheduleService/CreateLiveSchedule', $.toJSON(formData), function (ret) {
+            if (ret.Success) {
+                alertInfo('新增成功');
+
+                dlgPushCancel();
+            }
+        });
+    }
+
+
+    function dlgPushCancel() {
+        $('#dlg-B132003').dialog('close');
+    }
+</script>

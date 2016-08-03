@@ -1,0 +1,190 @@
+﻿<style type="text/css">
+ul,li{list-style:none; margin:0; padding:0;}
+.scroll{ width:98%;overflow:hidden; margin:0 auto;}
+.scroll li{ width:100%; height:64px; overflow:hidden;cursor:pointer; margin:3px 0px 0px 0px;}
+.abandoned{cursor:pointer;}
+.field-dialback{width:146px;height:82%;font-size:12px;display:block; color:White;text-align:left;position:relative;background:#f0f0f0;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; padding:5px;}
+.field-dialback .arrow-emergency{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #ed1b24;}
+.field-dialback .arrow-life{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #9bd3ae;}
+.field-dialback .arrow-family{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #00adef;}
+.field-dialback .arrow-infotainment{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #eee685;}
+
+.field-dialback .row{height:18px;line-height:18px;}
+.field-dialback .row .col1{height:100%;width:35%;float:left;}
+.field-dialback .row .col2{height:100%;width:15%;float:left;}
+.field-dialback .row .col3{height:100%;width:35%;float:left;}
+.field-dialback .row .detailed{color:white;text-decoration:underline;}
+
+/*
+--尖角
+.field-dialback-red{width:158px;height:84%;font-size:12px;display:block; color:White;text-align:left;position:relative;background:#ed1b24; padding:5px;}
+.field-dialback-red .arrow-red{position:absolute;top:0px;right:-20px;width:0;height:0px; border-style:solid; border-width:32px;border-color:#fff #fff #fff #ed1b24;}*/
+</style>
+<div id="callDialBack-Panel" style="width: 200px; height: 710px;margin:0 auto; padding:0;">
+    <div id="scroll-c" class="scroll">
+        <ul class="list">
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var maxid = 0;
+    var repeatTime = 10000; //10秒
+    var clearTime = 5 * 60 * 1000; //5miao
+    var serviceType = '0';
+    $(function () {
+
+        autosize("callDialBack-Panel");
+        //取数据
+        setTimeout(function () {
+            _loadDataForScroll(maxid, function (rows) {
+                var isAppend = true;
+                if (maxid == 0) {
+                    isAppend = false;
+                }
+                var pervOldManId;
+                if (rows.length > 0) {
+                    maxid = _.max(rows, function (o) {
+                        return o.Id;
+                    }).Id;
+                    var htmlstr = [], strTimes = [], strCallServiceIds = [], li_CallServiceList = [];
+                    var strOldManId, strServerQueueNo, strServerType, strBgColor, strArrow, strDates, strAddress;
+                    for (var i = 0; i < rows.length; i++) {
+                        var item = rows[i];
+                        if (i > 0 && strOldManId != item.OldManId) {
+                            var previtem = rows[i - 1];
+                            strServerQueueNo = previtem.ServiceQueueNo.toString();
+                            strServerType = strServerQueueNo.substr(strServerQueueNo.length - 1);
+                            //箭头颜色
+                            strArrow = strServerType == "0" ? "arrow-emergency" : (strServerType == "1" ? "arrow-family" : (strServerType == "3" ? "arrow-life" : "arrow-infotainment"));
+                            //背景颜色
+                            strBgColor = (strServerType == "0" ? "#ed1b24" : (strServerType == "1" ? "#00adef" : (strServerType == "3" ? "#9bd3ae" : "#eee685")));
+                            //时间展示
+                            strDates = strTimes.length > 1 ? (strTimes.join(",").substring(0, 16) + "...") : strTimes.join("");
+                            //地址的展示
+                            strAddress = previtem.Address.length > 10 ? (previtem.Address.substring(0, 10) + "...") : previtem.Address;
+                            htmlstr.push('<li onclick="processDialBack(this)" class="abandoned" CallServiceId="' + _.first(strCallServiceIds) + '" BatchCallServiceIds="' + strCallServiceIds.join(",") + '" CallNo="' + previtem.CallNo + '" OldManName="' + previtem.OldManName + '" OldManId="' + previtem.OldManId + '"><div class="field-dialback" style="background:' + strBgColor + '"><div class="row"><div class="col1">' + previtem.OldManName + '</div><div class="col2">' + previtem.Age + '</div><div class="col2">' + previtem.Sex + '</div><div class="col3"><a class="detailed" href="javascript:void(0)" CallServiceList=\'' + $.toJSON(li_CallServiceList) + '\'  onclick="ReminderDetailedInfo(this)">详细(' + li_CallServiceList.length + ')</a></div></div><div class="row">' + strDates + '</div><div class="row">' + strAddress + '</div><div class="' + strArrow + '"></div></div></li>');
+                            strTimes.length = 0;
+                            strCallServiceIds.length = 0;
+                            li_CallServiceList.length = 0;
+                        }
+
+                        //赋值
+                        strTimes.push(Date.parse(item.CheckInTime).toString('HH点mm分ss秒'));
+                        strCallServiceIds.push(item.CallServiceId);
+                        strOldManId = item.OldManId;
+                        li_CallServiceList.push(item);
+
+                        //最后一个
+                        if (i == rows.length - 1) {
+                            strServerQueueNo = item.ServiceQueueNo.toString();
+                            strServerType = strServerQueueNo.substr(strServerQueueNo.length - 1);
+                            //箭头颜色
+                            strArrow = strServerType == "0" ? "arrow-emergency" : (strServerType == "1" ? "arrow-family" : (strServerType == "3" ? "arrow-life" : "arrow-infotainment"));
+                            //背景颜色
+                            strBgColor = (strServerType == "0" ? "#ed1b24" : (strServerType == "1" ? "#00adef" : (strServerType == "3" ? "#9bd3ae" : "#eee685")));
+                            //时间展示
+                            strDates = strTimes.length > 1 ? (strTimes.join(",").substring(0, 16) + "...") : strTimes.join("");
+                            //地址的展示
+                            strAddress = item.Address.length > 10 ? (item.Address.substring(0, 10) + "...") : item.Address;
+
+                            htmlstr.push('<li onclick="processDialBack(this)" class="abandoned" CallServiceId="' + _.first(strCallServiceIds) + '" BatchCallServiceIds="' + strCallServiceIds.join(",") + '" CallNo="' + item.CallNo + '" OldManName="' + item.OldManName + '" OldManId="' + item.OldManId + '"><div class="field-dialback" style="background:' + strBgColor + '"><div class="row"><div class="col1">' + item.OldManName + '</div><div class="col2">' + item.Age + '</div><div class="col2">' + item.Sex + '</div><div class="col3"><a class="detailed" href="javascript:void(0)" CallServiceList=\'' + $.toJSON(li_CallServiceList) + '\' onclick="ReminderDetailedInfo(this)">详细(' + li_CallServiceList.length + ')</a></div></div><div class="row">' + strDates + '</div><div class="row">' + strAddress + '</div><div class="' + strArrow + '"></div></div></li>');
+                        }
+                    }
+
+                    if (isAppend) {
+                        $('#scroll-c ul').append(htmlstr.join(""));
+                    }
+                    else {
+                        $('#scroll-c ul').html(htmlstr.join(""));
+                    }
+
+                    $('#scroll-c .field-dialback .detailed').mouseover(function () {
+                        //鼠标移入
+                        $(this).css("color", "Yellow");
+                    }).mouseout(function () {
+                        //鼠标移出
+                        $(this).css("color", "white");
+                    });
+                }
+                else {
+                    if (!isAppend) {
+                        $('#scroll-c ul').html("");
+                    }
+                }
+            });
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+
+        //滚动
+        setInterval('autoScroll(".scroll")', 5000);
+
+        //定时将id清零
+        setTimeout(function () {
+            maxid = 0;
+            setTimeout(arguments.callee, clearTime);
+        }, clearTime);
+    });
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-25px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function _loadDataForScroll(id, callback) {
+        getTo(window.callservice_InvokeUrl + '/LoadRemindersForScroll/' + id, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                callback.apply(this, [rows]);
+                if (rows.length > 0 && window.external.PlaybackAlarmTone) {
+                    window.external.PlaybackAlarmTone();
+                }
+            }
+        });
+    }
+
+    function AbandonByCaller(serviceType, callNo) {
+
+        var abandoned = _.where($('.scroll li'), { CallNo: callNo, AbandonFlag: "0" });
+        if (abandoned.length > 0) {
+            _.each(abandoned, function (o) {
+                $(o).attr('AbandonFlag', '1').addClass('abandoned');
+            });
+        }
+        var selectedDate = Date.today().toString('yyyy-MM-dd');
+        postTo(window.callservice_InvokeUrl + '/AbandonByCaller', $.toJSON({ ServiceType: serviceType, CallNo: callNo, AbandonDate: selectedDate }));
+    }
+
+    function processDialBack(o) {
+        var $li = $(o);
+        window.external.DialBack($li.attr('CallServiceId'), $li.attr('OldManId'), $li.attr('CallNo'), $li.attr('OldManName'), serviceType, $li.attr('BatchCallServiceIds'));
+    }
+
+    function ReminderDetailedInfo(o) {
+        //阻止事件冒泡,避免触发li上的单击事件
+        var e = window.event;
+        if (e && e.stopPropagation) {
+            e.stopPropagation();
+        }
+        else {
+            e.cancelBubble = true;
+        }
+        var strCallServiceId = $(o).attr("CallServiceList");
+        if (strCallServiceId) {
+            window.external.OpenDailBackInfo(strCallServiceId);
+        }
+    }
+
+    function removeDialed(callserviceId) {
+        _.each($('#scroll-c ul li'), function (o) {
+            if ($(o).attr('CallServiceId') == callserviceId) {
+                $(o).remove();
+            }
+        });
+    }
+</script>

@@ -1,0 +1,233 @@
+﻿<table style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-X110203" style="overflow: auto;">
+            </ul>
+        </td>
+        <td style="width: 200px;" valign="top">
+            <a id="btnSaveOpenAuthority" href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-ok">访问授权</a>
+            <ul id="moduleTree" style="overflow: auto;">
+            </ul>
+        </td>
+        <td valign="top">
+            <table id="dg-ModuleSetting">
+            </table>
+        </td>
+        <td style="width: 280px;" valign="top">
+            <div id="detail-ModuleSetting" style="display:none;">
+            <a id="btnSaveAreaModuleSetting" href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-ok">保存</a><a id="btnRestoreDefaultAreaModuleSetting" href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-undo">恢复默认</a>
+                <div class="fitem">
+                    <label>
+                        模块编码:</label> 
+                    <label id="ModuleCode" style=" line-height:100%;"></label>
+                </div>
+                <div class="fitem">
+                    <label>
+                        模块名称:</label> 
+                    <label id="ModuleName"></label>
+                </div>
+                <form id="fm-AreaModuleSetting" method="post" novalidate>
+                <div class="fitem">
+                    <label>
+                        模块别名:</label>
+                    <input name="AliasName" class="easyui-validatebox" required="true" />
+                </div>
+                <input type="hidden" name="ModuleId"   />
+                <input type="hidden" name="AreaId"  />
+                <div class="fitem">
+                    <label>
+                        模块位置:</label>
+                    <input id="ModulePosition" name="Position" class="easyui-validatebox" missingmessage="模块位置不能为空" />
+                </div>
+                <div class="fitem">
+                    <label>
+                        模块坐标:</label>
+                    <input name="Location" />
+                </div>
+                <div class="fitem">
+                     <label>
+                        模块大小:</label>
+                    <input name="Size"   />
+                </div>
+                <div class="fitem">
+                    <label>
+                        前景颜色:</label>
+                    <input name="ForeColor"   />
+                </div>
+                <div class="fitem">
+                    <label>
+                        背景颜色:</label>
+                    <input name="BackColor"   />
+                </div>
+                </form>
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    var arrPosition = [{ ItemId: 'Bottom', ItemName: "下" }, { ItemId: 'Right', ItemName: "右" }, { ItemId: 'Top', ItemName: "上" }, { ItemId: 'Left', ItemName: "左"}];
+    var arrApplication;
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            baseModelUrl: baseCMSInvokeUrl + '/Auth/ModuleService/',
+            defaultModel: { Status: 1 }
+        };
+        autosize(models[currentMenuCode].treeId);
+
+
+        $('#btnSaveOpenAuthority').on('click', function () {
+            var nodes = _.map(_.filter($('#moduleTree').tree('getChecked'), function (o) {
+                return o.attributes.Levels == 2;
+            }), function (o) { return o.id });
+
+            var areaId = $('#' + models[currentMenuCode].treeId).tree('getSelected').id;
+            postTo(models[currentMenuCode].baseModelUrl + 'SaveModule4Area/' + areaId, $.toJSON(nodes), function (ret) {
+                if (ret.Success) {
+                    alertInfo('授权成功');
+                    $('#detail-ModuleSetting').hide();
+                    queryAreaModuleSetting(areaId);
+                }
+            });
+
+        }).linkbutton({ disabled: true });
+
+        $('#btnSaveAreaModuleSetting').on('click', function () {
+            if ($('#fm-AreaModuleSetting').form('validate')) {
+                var formData = $('#fm-AreaModuleSetting').serializeObject();
+
+                var dateboxs = $('#fm-AreaModuleSetting .easyui-datebox');
+                if (dateboxs.size() > 1) {
+                    _.each(dateboxs, function (o) {
+                        formData[o.attr('comboname')] = toJsonDate(o.datebox('getValue'));
+                    });
+                }
+                else if (dateboxs.size() == 1) {
+                    formData[dateboxs.attr('comboname')] = toJsonDate(dateboxs.datebox('getValue'));
+                }
+                postTo(baseCMSInvokeUrl + '/Auth/ModuleService/SaveAreaModuleSetting', $.toJSON(formData), function (ret) {
+                    if (ret.Success) {
+                        $('#dg-ModuleSetting').datagrid('reload');
+                        alertInfo('保存成功！');
+                    }
+                });
+            }
+        });
+        $('#btnRestoreDefaultAreaModuleSetting').on('click', function () {
+            var formData = $('#fm-AreaModuleSetting').serializeObject();
+            var dateboxs = $('#fm-AreaModuleSetting .easyui-datebox');
+            if (dateboxs.size() > 1) {
+                _.each(dateboxs, function (o) {
+                    formData[o.attr('comboname')] = toJsonDate(o.datebox('getValue'));
+                });
+            }
+            else if (dateboxs.size() == 1) {
+                formData[dateboxs.attr('comboname')] = toJsonDate(dateboxs.datebox('getValue'));
+            }
+            postTo(baseCMSInvokeUrl + '/Auth/ModuleService/RestoreDefaultAreaModuleSetting', $.toJSON(formData), function (ret) {
+                if (ret.Success) {
+                    $('#dg-ModuleSetting').datagrid('reload');
+                    loadAreaModuleSetting(formData.AreaId, formData.ModuleId);
+                    alertInfo('保存成功！');
+                }
+            });
+        });
+
+        getAll([ajaxData_InvokeUrl + '/Application'], function (applications) {
+            arrApplication = _.map(applications, function (o) {
+                return { ItemId: o.ApplicationId, ItemName: o.ApplicationName };
+            });
+            initTree('easyUITree', models[currentMenuCode].treeId, {
+                onClick: function (treeNode) {
+                    //autosize('moduleTree');
+                    var areaId = treeNode.id;
+                    $('#btnSaveOpenAuthority').linkbutton({ disabled: false });
+                    initTree('easyUITree', 'moduleTree', { checkbox: true }, //, onlyLeafCheck: true
+                    function (d) {
+                        getTreeData('00$02$03', 'Code asc', '{"AreaId":"' + areaId + '"}', d);
+                    }, null, function (treeObj) { treeObj.tree('expandAll'); }); //end loadTree
+                    autosize('dg-ModuleSetting');
+                    $('#detail-ModuleSetting').hide();
+                    queryAreaModuleSetting(areaId);
+
+                }
+            },
+            function (d) {
+                getTreeData('00$00$06', null, null, d);
+            },
+            null,
+            function (treeObj) {
+
+                var rootNode = treeObj.tree('getRoot');
+                var cityNodes = treeObj.tree('getLeafChildren', rootNode.target);
+                for (var i = 0; i < cityNodes.length; i++) {
+                    treeObj.tree('expand', cityNodes[i].target);
+                    var areaNodes = treeObj.tree('getLeafChildren', cityNodes[i].target);
+                    for (var i = 0; i < areaNodes.length; i++) {
+                        treeObj.tree('collapse', areaNodes[i].target);
+                    }
+                }
+            }); //end loadTree
+        });
+
+        $('#ModulePosition').combobox({
+            width: 152,
+            panelHeight: 200,
+            required: true,
+            data: arrPosition,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+
+    });
+
+    function queryAreaModuleSetting(areaId) {
+        $('#dg-ModuleSetting').datagrid(easyuigrid_settings({
+            url: baseCMSInvokeUrl + '/Auth/ModuleService/GetAreaModuleSettingForEasyUIgrid',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                instance: { AreaId: areaId }
+            },
+            method: 'POST',
+            onSelect: function (idx, row) {
+                $('#detail-ModuleSetting').show();
+                loadAreaModuleSetting(areaId, row.ModuleId);
+            },
+            columns: [[
+        { field: 'ModuleId', title: '模块编号', width: 150, hidden: true },
+        { field: 'ApplicationId', title: '应用', width: 200, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: arrApplication },
+        { field: 'ModuleCode', title: '编码', width: 80 },
+        { field: 'AliasName', title: '别名', width: 120 },
+        { field: 'Position', title: '位置', width: 40, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: arrPosition },
+        { field: 'Location', title: '坐标', width: 80, align: 'center' },
+        { field: 'Size', title: '大小', width: 80, align: 'center' },
+        { field: 'ForeColor', title: '前景色', width: 80, align: 'center' },
+        { field: 'BackColor', title: '背景色', width: 80, align: 'center' }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+    }
+
+    function loadAreaModuleSetting(areaId,moduleId) {
+        getTo(baseCMSInvokeUrl + '/Auth/ModuleService/LoadAreaModuleSetting/' + areaId + ',' + moduleId).done(function (ret) {
+            $('#fm-AreaModuleSetting').form('clear');
+            $('#fm-AreaModuleSetting').form('load', ret.instance);
+            $('#ModuleCode').text(ret.instance.ModuleCode);
+            $('#ModuleName').text(ret.instance.ModuleName);
+            var dateboxs = $('#fm-AreaModuleSetting .easyui-datebox');
+            if (dateboxs.size() > 1) {
+                _.each(dateboxs, function (o) {
+                    o.datebox('setValue', ndateFormatter(o.datebox('getValue'), 'yyyy-MM-dd'));
+                });
+            }
+            else if (dateboxs.size() == 1) {
+                dateboxs.datebox('setValue', ndateFormatter(dateboxs.datebox('getValue'), 'yyyy-MM-dd'));
+            }
+        });
+    }
+</script>

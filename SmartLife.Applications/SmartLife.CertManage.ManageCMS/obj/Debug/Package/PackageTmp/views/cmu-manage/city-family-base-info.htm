@@ -1,0 +1,540 @@
+﻿<div id="toolbar-B120305">
+    <!--<a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+        plain="true" onclick="query()">高级查询</a> -->
+    <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+        plain="true" onclick="add()">新增</a> <a behaviorcode="02" href="javascript:void(0)"
+            class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+    <a behaviorcode="03" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove"
+        plain="true" onclick="nullify()">作废</a>
+</div>
+<table id="cc-B120305" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B120305" style="overflow: auto;">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="search-sample-B120305" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B120305" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td style="text-align: right">
+                            操作时间：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="OperatedOn" class="Wdate" onfocus="WdatePicker()" />
+                        </td>
+                        <td style="text-align: right">
+                            状态：
+                        </td>
+                        <td style="text-align: left">
+                            <select name="Status" class="easyui-combobox" style="width: 100px" panelheight="50px">
+                                <option value="1">有效</option>
+                                <option value="0">作废</option>
+                            </select>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B120305">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B120305" class="easyui-dialog" style="width: 600px; height: 350px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B120305">
+    <div id="tt" class="easyui-tabs" style="width: 520px; height: 230px;">
+        <div title="家庭信息">
+            <div style="width: 100%">
+                <form id="fm-B120305" method="post" novalidate>
+                <input type="hidden" name="FamilyId" id="familyId-B120305" />
+                <input type="hidden" name="AreaId2" id="AreaId2" />
+                <input type="hidden" name="AreaId3" id="AreaId3" />
+                <div class="fitem" style="text-align: center">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    房屋名称:</label>
+                            </td>
+                            <td colspan="3" style="width: 75%">
+                                <input id="FamilyNameOfHouse" required="true" missingmessage="房屋名称不能为空，请选择一个单元或者房屋" />
+                                <input type="hidden" name="HouseId" id="HouseId" />
+                                <!--<input type="hidden" name="RoadName" id="FamilyName" />-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    户主姓名:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="HouseHolderName" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    迁入时间:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="ImmigrationTime" id="ImmigrationTime" class="easyui-datebox" required="true"
+                                    missingmessage="不能为空，请选择迁入时间" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    住户类型:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="HouseHoldType" id="HouseHoldType" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    家庭荣誉:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="FamilyHonor" id="FamilyHonor" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    家庭类型:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="FamilyType" id="FamilyType" />
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    单亲家庭:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="SingleParent" id="SingleParent" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    户籍城区:</label>
+                            </td>
+                            <td style="width: 35%">
+                                <input name="ResidenceDistrict" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%; text-align: right;">
+                                <label>
+                                    备 注:</label>
+                            </td>
+                            <td colspan="3" style="width: 75%">
+                                <textarea name="Remark" style="width: 370px;" maxlength="400"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!--  <div title="健康信息" closable="false" style="overflow: auto; padding: 20px;">
+            tab2
+        </div>-->
+    </div>
+</div>
+<div id="btn-B120305">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="save()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B120305" class="easyui-dialog" style="width: 520px; height: 220px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B120305">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B120305" method="post" novalidate>
+    <div class="fitem">
+        <table width="100%">
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        户主姓名:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="HouseHolderName" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        迁入时间:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="ImmigrationTime" class="Wdate" onfocus="WdatePicker()" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        住户类型:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="HouseHoldType" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        家庭荣誉:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="FamilyHonor" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        家庭类型:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="FamilyType" />
+                </td>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        单亲家庭:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="SingleParent" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%; text-align: right;">
+                    <label>
+                        户籍城区:</label>
+                </td>
+                <td style="width: 35%">
+                    <input name="ResidenceDistrict" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="btn-search-B120305">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var areas;
+        var houseHoldType; //户主类型
+        var familyHonor; //家庭荣誉
+        var familyType; //家庭类型
+        var areaCId; //左边选择社区的节点
+        var areaPId; //左边选择社区的父节点
+        var areaLevels; //左边选择社区的节点的文本
+        var houses;
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'familyId-' + currentMenuCode,
+            pk: 'FamilyId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['HouseHolderName'] = formData['KeyWord'];
+                formData['ResidenceDistrict'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onBeforeDialogOpen: function () {
+                //选择房屋
+                $('#FamilyNameOfHouse').combobox({
+                    width: 370,
+                    panelHeight: 100,
+                    required: true,
+                    mode: 'local',
+                    data: houses,
+                    valueField: 'HouseId',
+                    textField: 'HouseName',
+                    onSelect: function (building) {
+                        $('#FamilyId').val(building.FamilyId);
+                        $('#AreaId2').val(building.AreaId2);
+                        $('#AreaId3').val(building.AreaId3);
+                    }
+                });
+
+            },
+            //编辑时显示数据
+            onAfterDialogOpen: function (row) {
+                if (row) {
+                    var areaId2 = $('#AreaId2').val();
+                    var areaId3 = $('#AreaId3').val();
+                    var houseId = $('#HouseId').val();
+                    var r = GetFamilyName('HouseId', houseId);
+                    GetFamilyName('unitId', r[0].UnitId);
+                    $('#FamilyNameOfHouse').combobox('setValue', houseId);
+                }
+                else {
+                    if (areaLevels < 7) {
+                        $('#FamilyNameOfHouse').combobox('setValue', "至少选择到单元级，请重新选择！");
+                    }
+                    else if (areaLevels == 7) {
+                        var ret = GetFamilyName('unitId', areaCId);
+                        $('#AreaId2').val(ret[0].AreaId2);
+                        $('#AreaId3').val(ret[0].AreaId3);
+                        $('#FamilyNameOfHouse').combobox('setValue', ret[0].HouseId);
+                        $('#HouseId').val(ret[0].HouseId);
+                    }
+                    else if (areaLevels == 8) {
+                        var ret = GetFamilyName('unitId', areaPId);
+                        $('#AreaId2').val(ret[0].AreaId2);
+                        $('#AreaId3').val(ret[0].AreaId3);
+                        $('#FamilyNameOfHouse').combobox('setValue', areaCId.toLowerCase());
+                        $('#HouseId').val(areaCId);
+                    }
+                    var dt_HouseHoldType = $('#HouseHoldType').combobox('getData');
+                    var dt_FamilyHonor = $('#FamilyHonor').combobox('getData');
+                    var dt_FamilyType = $('#FamilyType').combobox('getData');
+                    if (dt_HouseHoldType[0]) {
+                        $('#HouseHoldType').combobox('setValue', dt_HouseHoldType[0].ItemId);
+                    }
+                    if (dt_FamilyHonor[0]) {
+                        $('#FamilyHonor').combobox('setValue', dt_FamilyHonor[0].ItemId);
+                    }
+                    if (dt_FamilyType[0]) {
+                        $('#FamilyType').combobox('setValue', dt_FamilyType[0].ItemId);
+                    }
+                    $('#SingleParent').combobox('setValue', '0');
+                }
+            },
+            headers: { ConnectId: baseInfoNode }, //数据库名
+            uiMode: 'list',
+            entityName: '家庭信息',
+            baseModelUrl: baseCMSInvokeUrl + '/Bas/FamilyBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+        validateUI();
+        autosize("cc-B120305", -30);
+        autosize(models[currentMenuCode].treeId);
+        autosize(models[currentMenuCode].gridId);
+
+        //获得街道、社区信息
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/01010' //户主类型
+              , ajaxData_InvokeUrl + '/GetDictionaryItem/01011'//家庭荣誉
+              , ajaxData_InvokeUrl + '/GetDictionaryItem/01012'//家庭类型
+              ], function (houseHoldType, familyHonor, familyType) {
+
+                  //选择住户类型input[name="FamilyType"]
+                  $('input[name="HouseHoldType"]').combobox({
+                      width: 155,
+                      panelHeight: 80,
+                      //                      required: true,
+                      editable: false,
+                      mode: 'local',
+                      data: houseHoldType,
+                      valueField: 'ItemId',
+                      textField: 'ItemName'
+                  });
+
+                  //选择家庭荣誉
+                  $('input[name="FamilyHonor"]').combobox({
+                      width: 155,
+                      panelHeight: 80,
+                      //                      required: true,
+                      editable: false,
+                      mode: 'local',
+                      data: familyHonor,
+                      valueField: 'ItemId',
+                      textField: 'ItemName'
+                  });
+
+                  //选择家庭类型
+                  $('input[name="FamilyType"]').combobox({
+                      width: 155,
+                      panelHeight: 80,
+                      //                      required: true,
+                      editable: false,
+                      mode: 'local',
+                      data: familyType,
+                      valueField: 'ItemId',
+                      textField: 'ItemName'
+                  });
+                  //选择是否是单亲家庭
+                  $('input[name="SingleParent"]').combobox({
+                      width: 155,
+                      panelHeight: 50,
+                      //                      required: true,
+                      editable: false,
+                      mode: 'local',
+                      data: [{
+                          label: "非单亲家庭",
+                          value: 0
+                      }, {
+                          label: "单亲家庭",
+                          value: 1
+                      }],
+                      valueField: 'value',
+                      textField: 'label'
+                  });
+
+                  //根据左边的树获得相应的数据
+                  initTree('easyUITree', models[currentMenuCode].treeId, {
+                      onClick: function (treeNode) {
+                          var areaType; //左边选择节点的类型
+                          var areaValue; //左边选择节点的值
+                          areaCId = treeNode.id; //选中节点id
+                          areaPId = treeNode.attributes.PId; //父节点id
+                          areaLevels = treeNode.attributes.Levels; //当前节点的层次
+
+                          if (areaLevels < 5) {
+                              areaType = 'AreaCode';
+                              areaValue = left(treeNode.attributes.Code, 3 + treeNode.attributes.Levels * 2);
+                          }
+                          else if (areaLevels == 5) {
+                              areaType = 'RoadId';
+                              areaValue = areaCId;
+                          }
+                          else if (areaLevels == 6) {
+                              areaType = 'BuildingId';
+                              areaValue = areaCId;
+                          }
+                          else if (areaLevels == 7) {
+                              areaType = 'UnitId';
+                              areaValue = areaCId;
+                          }
+
+                          else if (areaLevels == 8) {
+                              areaType = 'HouseId';
+                              areaValue = areaCId;
+                          }
+                          $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                              sort: 'CheckInTime',
+                              order: 'asc',
+                              filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                            ],
+                              fuzzyFields: [{ key: areaType, value: areaValue}]
+                          });
+                      },
+                      onLoadSuccess: function () {
+                          var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                          $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                          $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                      }
+                  },
+                  //根据不同的用户权限查询
+                function (d) {
+                    var res;
+                    postTo(baseCMSInvokeUrl + "/Bas/FamilyBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                        res = result;
+                    }, { async: false }, models[currentMenuCode].headers)
+                    if (res) {
+                        getTreeData('01$01$06', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, models[currentMenuCode].headers);
+                    } else {
+                        getTreeData('01$02$05', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d, models[currentMenuCode].headers);
+                    }
+                },
+                null,
+                  //根据树的节点查询 
+                function (treeObj) {
+                    $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                        title: "",
+                        fit: true,
+                        pagination: true,
+                        rownumbers: true,
+                        singleSelect: true,
+                        url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage_ByUsers/' + models[currentMenuCode].headers.ConnectId,
+                        method: 'POST',
+                        toolbar: '#' + models[currentMenuCode].toolbarId,
+                        queryParams: {
+                            sort: 'OperatedOn',
+                            order: 'desc',
+                            filterFields: [
+                                { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                                ]
+                        },
+                        //双击事件
+                        onDblClickRow: function (idx, row) {
+                            edit(row);
+                        },
+                        columns: [[
+                        { field: 'FamilyId', title: '单元编号', width: 150, hidden: true },
+                        { field: 'CK', title: '', checkbox: true },
+                        { field: 'HouseHolderName', title: '户主姓名', width: 80, align: 'center' },
+                        { field: 'ImmigrationTime', title: '迁入时间', width: 80, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                        { field: 'HouseHoldType', title: '住户类型', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: houseHoldType },
+                        { field: 'FamilyHonor', title: '家庭荣誉', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: familyHonor },
+                        { field: 'FamilyType', title: '家庭类型', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: familyType },
+                        { field: 'SingleParent', title: '单亲家庭', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '非单亲家庭:0~t单亲家庭:1' },
+                        { field: 'ResidenceDistrict', title: '户籍城区', width: 100, align: 'center' },
+                        { field: 'AreaId2', title: '街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                        { field: 'AreaId3', title: '社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                        { field: 'Remark', title: '备注', align: 'center', width: 250 }
+                ]],
+                        loader: easyuiLoader
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+                });
+                  //end loadTree
+
+              }, null, models[currentMenuCode].headers);
+
+    });
+
+    //根据社区获得房屋名称
+    function GetFamilyName(key_value, param) {
+        var queryParams = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            page: '1',
+            rows: '20',
+            instance: {
+                Status: "1",
+                AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id)
+            },
+            headers: { ConnectId: baseInfoNode },
+            fuzzyFields: []
+        };
+        queryParams.fuzzyFields = [{ key: key_value, value: param}];
+        postTo(baseCMSInvokeUrl + "/Bas/HouseBaseInfoService/ListForEasyUIgrid2/" + models[currentMenuCode].headers.ConnectId, $.toJSON(queryParams), function (ret) {
+            houses = ret.rows;
+            $('#FamilyNameOfHouse').combobox("loadData", houses);
+        }, { async: false })
+        return houses;
+    };
+</script>
+` 

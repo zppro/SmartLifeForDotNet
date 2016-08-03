@@ -1,0 +1,291 @@
+﻿<table id="cc-B11040801" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd;  border-right: solid 1px #ddd;background-color: #fafafa; float:left;">
+                流转定义名称
+            </div>
+            <div id="div_tree" style="border: solid 1px #ddd; width: 100%; float: left; overflow: auto; float:left;">
+                <ul id="tree-B11040801">
+                </ul>
+                <input type="hidden"  id="_ServiceType" />
+                <input type="hidden"  id="_FlowName" />
+            </div>
+            <div style="height: 103px; width: 100%; text-align: left; border-left: solid 1px #ddd;
+                border-bottom: solid 1px #ddd; padding-left:5px; padding-top:8px; float:left;">
+                <label style=" font-weight:bolder;">备注：</label> <br />&nbsp;&nbsp;&nbsp;&nbsp; 流转定义编码规则：
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style=" font-weight:bolder;">X_XXXXXXXXXXX_X </label><br />
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流转类型_地区编码_多次流转  <br />
+                 &nbsp;&nbsp;&nbsp;&nbsp;例如：<br />
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style=" font-weight:bolder;">E_12060700000_3</label> <br />
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评估审核_象山县_3次流转
+            </div>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B11040801">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                        plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                            iconcls="icon-remove" plain="true" onclick="nullify()">作废</a>
+            </div>
+            <div id="search-sample-B11040801" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B11040801" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right">
+                            关键字：
+                        </td>
+                        <td style="text-align:left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="流转名称、表名、列名"/> 
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B11040801">
+            </table>
+        </td>
+    </tr>
+</table> 
+<div id="dlg-B11040801" class="easyui-dialog" style="width: 530px; height: 300px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B11040801"> 
+    <form id="fm-B11040801" method="post" novalidate>
+    <input type="hidden" name="FlowDefineId" id="flowDefineId-B11040801" /> 
+    <div class="fitem">
+        <label>
+            流转名称:</label>
+        <input name="FlowCName" class="easyui-validatebox" required="true" missingmessage="流转名称不能为空">
+        <label>
+            流转编码:</label>
+        <input name="FlowName" class="easyui-validatebox" required="true" missingmessage="流转名称不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            流转表名:</label>
+        <input name="TableName" class="easyui-validatebox" required="true" missingmessage="流转表名不能为空">
+        <label>
+            流转列名:</label>
+        <input name="TableColumn" class="easyui-validatebox" required="true" missingmessage="流转列名不能为空" />
+    </div>
+    <div class="fitem">
+        <label>
+            当前状态:</label>
+        <input name="CurrentState" id="CurrentState" class="easyui-validatebox"  >
+        <label>
+            目标状态:</label>
+        <input name="FlowTo"  id="FlowTo" class="easyui-validatebox"  />
+    </div>
+    <div class="fitem">
+        <label>
+            处理动作:</label>
+        <input name="ProcessAction" id="ProcessAction"class="easyui-validatebox"  >
+        <label>
+            动作名称:</label>
+        <input name="ProcessActionName"  class="easyui-validatebox" required="true" missingmessage="动作名称不能为空"  />
+    </div>
+    <div class="fitem">
+        <label>
+            &nbsp;处 理 方&nbsp;:</label>
+        <input name="ProcessorTitle"   class="easyui-validatebox" required="true" missingmessage="处理方不能为空" />
+        <label>
+            流转类别:</label>
+        <input name="ServiceType" id="ServiceType" class="easyui-validatebox" />
+    </div>
+    <div class="fitem">
+        <label style=" color:Red;">
+            注意:是否开启城市库数据库连接</label> 
+    </div>
+    </form>
+</div>
+<div id="btn-B11040801">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B11040801" class="easyui-dialog" style="width: 530px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B11040801"> 
+    <form id="fm-search-B11040801" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            流转名称:</label>
+        <input name="FlowName" class="easyui-validatebox" > 
+        <label>
+            流转表名:</label>
+        <input name="TableName" class="easyui-validatebox" >
+    </div>
+    <div class="fitem">
+        <label>
+            流转列名:</label>
+        <input name="TableColumn" class="easyui-validatebox"  />
+    </div> 
+    </form>
+</div>
+<div id="btn-search-B11040801">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+    var serviceType;
+    var isConnect = 0; //不启用市级库数据库连接
+    getTo(baseCMSInvokeUrl + '/Sys/ParameterService/Query?parms=' + $.toJSON({ ParameterId: 'Sys_ConnectId', Status: 1 }), null, function (ret) {
+        if (ret.Success && ret.rows.length > 0) {
+            isConnect = ret.rows[0].ParameterValue;
+        }
+    }, { async: false }); 
+    placeholder(); //占位符初始化
+    $(function () {
+        validateUI();
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            treeId: 'tree-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'flowDefineId-' + currentMenuCode,
+            pk: 'FlowDefineId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            }, 
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['FlowName'] = formData['KeyWord'];
+                formData['TableName'] = formData['KeyWord'];
+                formData['TableColumn'] = formData['KeyWord']; 
+                formData['KeyWord'] = undefined;
+            },
+            onBeforeDialogOpen: function () {
+                var currentStateData = [{ ItemId: "10", ItemName: "10" }, { ItemId: "11", ItemName: "11" }, { ItemId: "20", ItemName: "20" }, { ItemId: "21", ItemName: "21" }, { ItemId: "22", ItemName: "22" }, { ItemId: "30", ItemName: "30" }, { ItemId: "31", ItemName: "31" }, { ItemId: "32", ItemName: "32" }, { ItemId: "40", ItemName: "40" }, { ItemId: "41", ItemName: "41" }, { ItemId: "42", ItemName: "42"}];
+                var flowToData = [{ ItemId: "10", ItemName: "10" }, { ItemId: "20", ItemName: "20" }, { ItemId: "30", ItemName: "30" }, { ItemId: "40", ItemName: "40" }, { ItemId: "50", ItemName: "50"}];
+                var processActionData = [{ ItemId: "0", ItemName: "撤销/未处理" }, { ItemId: "1", ItemName: "通过" }, { ItemId: "2", ItemName: "不通过"}];
+                setCombobox('ServiceType', serviceType, 82);
+                setCombobox('CurrentState', currentStateData, 220);
+                setCombobox('FlowTo', flowToData, 102);
+                setCombobox('ProcessAction', processActionData, 62);
+            }, 
+            uiMode: 'list',
+            entityName: '流转定义',
+            headers: { ConnectId: isConnect == 1 ? baseInfoNode : '' },  
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/FlowDefineService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+        autoSizeOfHeight("cc-B11040801", -34); //datagrid收缩30个像素点;
+        autosize("div_tree", -154);
+
+        getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/01016', null, function (result) {
+            serviceType = result;
+        }, { async: false }, models[currentMenuCode].headers);
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNode.attributes.Levels == 4) {
+                    $("#_FlowName").val(treeNodeId);
+                    $("#_ServiceType").val(treeNode.attributes.PId);
+                }
+                else if (treeNode.attributes.Levels == 3) {
+                    $("#_FlowName").val(null);
+                    $("#_ServiceType").val(treeNodeId);
+                }
+                else {
+                    $("#_FlowName").val(null);
+                    $("#_ServiceType").val(null);
+                };
+
+                $('#' + models[currentMenuCode].gridId).datagrid('load', getParam());
+            } 
+        },
+            function (d) {
+                getTreeData('01$01$11', null, null, d, models[currentMenuCode].headers);
+            },
+            null,
+            function (treeObj) {
+                var str_url = models[currentMenuCode].baseModelUrl + (isConnect == 1 ? 'ListForEasyUIgridPage/' + models[currentMenuCode].headers.ConnectId : 'ListForEasyUIgrid');
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: str_url,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: getParam(),
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                                { field: 'FlowDefineId', title: '流转定义ID', width: 150, hidden: true },
+                                { field: 'CK', title: '', checkbox: true },
+                                { field: 'FlowCName', title: '流转定义名称', width: 150 },
+                                { field: 'FlowName', title: '流转定义编码', width: 200 },
+                                { field: 'ServiceType', title: '流转定义类别', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serviceType },
+                                { field: 'TableName', title: '表名', width: 150  },
+                                { field: 'TableColumn', title: '列名', width: 100 },
+                                { field: 'CurrentState', title: '当前状态', width: 80, align: 'center' },
+                                { field: 'FlowTo', title: '目标状态', width: 80, align: 'center' },
+                                { field: 'ProcessAction', title: '处理动作', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '撤销/未处理:0~t通过:1~t不通过:2' },
+                                { field: 'ProcessActionName', title: '动作名称', width: 80, align: 'center' },
+                                { field: 'ProcessorTitle', title: '处理方', width: 100, align: 'center' }
+                        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+    });
+
+
+        function getParam() {
+            var params = {
+                sort: ' TableName,FlowName,CurrentState ',
+                order: ' asc ',
+                fuzzyFieldOP:' or ',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status
+                }
+            }
+            var flowName= $("#_FlowName").val();
+            var serviceType = $("#_ServiceType").val();
+            if (flowName && flowName != '') {
+                params.instance.FlowName = flowName;
+            }
+            if (serviceType && serviceType != '') {
+                params.instance.ServiceType = serviceType;
+            }
+            return params;
+    }
+
+    //设置下拉框
+    function setCombobox(controlsId, data,hight) {
+        $('#' + controlsId + '').combobox({
+            width: 152,
+            panelHeight: hight,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+        //自动调高
+        function autoSizeOfHeight(id, iwidth) {
+            autosize(id, iwidth);
+            $("#" + models[currentMenuCode].gridId).height($("#" + id).height());
+        }
+
+    
+</script>

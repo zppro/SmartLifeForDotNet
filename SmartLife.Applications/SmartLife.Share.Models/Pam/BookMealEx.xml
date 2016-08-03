@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <insert id="BookMeal_Create_All" parameterClass="StringObjectDictionary" >
+      if(0=(select COUNT(*) c from Pam_BookMeal))
+      begin
+      Insert Into Pam_BookMeal ( CheckInTime,Status,OperatedBy,OperatedOn,DataSource,StationId,
+      OldManId,MealType,SetMealId,BookDate,FetchFlag)
+      values
+      (GETDATE(),1,'00000000-0000-0000-0000-000000000000',GETDATE(),'00003','6203dd5c-c480-436f-8ca3-1672055ea5c7',
+      'A9999999-0000-0000-0000-000000000000','00001','A9999999-0000-0000-0000-000000000000',GETDATE(),0)
+      end
+      Insert Into Pam_BookMeal ( CheckInTime,Status,OperatedBy,OperatedOn,DataSource,StationId,
+      OldManId,MealType,SetMealId,BookDate,FetchFlag)
+      select top 1 GETDATE(),1,#OperatedBy#,#OperatedOn#,#DataSource#,#StationId#,
+      #OldManId#,#MealType#,#SetMealId#,#BookDate#,#FetchFlag#
+      from Pam_BookMeal
+      where 0=(select COUNT(*) c from Pam_BookMeal
+      where StationId=#StationId# and OldManId=#OldManId#
+      and MealType=#MealType# and datediff(D, BookDate,#BookDate#)=0 and Status=1)
+    </insert>
+    <select id="BookMealList" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.OldManId,OldManName,$PivotColumnsForSelect$ from Oca_OldManBaseInfo x left join (
+      select OldManId,$PivotColumns$
+      from(
+      select oldManId,BookDate,dbo.JoinStr(MealInfo) as MealInfo from
+      (select bm.oldManId,SUBSTRING(CONVERT(varchar(100),  bm.BookDate, 112),1,11) BookDate
+      ,dbo.JoinStr(CAST(bm.Id as CHAR(20))
+      +'|'+cast(bm.MealType as char(5))+'|'+ dbo.FUNC_Tol_GetDictionaryItemName('13003',bm.MealType)
+      +'|' + cast(bm.OldManId as char(36))+'|' + cast(sm.SetMealId as char(36))+'|'+sm.SetMealName
+      +'|'+cast(bm.FetchFlag as CHAR(2))+'|'+case bm.FetchFlag when 0 then '未取' else   '已取' end +'|'+isnull(bm.Remark,'')
+      ) as MealInfo
+      from  Pam_BookMeal bm left join Pam_SetMeal sm  on bm.SetMealId=sm.SetMealId
+      where bm.Status=1
+      group By  bm.oldManId, bm.BookDate
+      ) b group By  oldManId, BookDate
+      ) a
+      pivot(max(MealInfo) for BookDate  in($PivotColumns$))b
+      ) y on x.OldManId =y.OldManId
+      <isEqual property="isRoomFlag" compareValue="1">
+        inner join
+        (select ro.OldManId,ro.RoomId,r.FloorNo
+        from Pam_RoomOldMan ro inner join Pam_Room r on ro.RoomId=r.RoomId
+        where ro.EndDate>GETDATE() and r.Status=1 and r.StationId=#StationId# ) z
+        on x.OldManId=z.OldManId
+      </isEqual>
+      where  x.StationId=#StationId#  and x.Status =3
+      <isEqual property="isRoomFlag" compareValue="1">
+        <isPropertyAvailable prepend=" And " property="RoomId" >z.RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FloorNo" >z.FloorNo=#FloorNo#</isPropertyAvailable>
+      </isEqual>
+      <isPropertyAvailable prepend=" And " property="OldManName" >$OldManName$</isPropertyAvailable>
+      order by OldManName asc
+    </select>
+    <update id="CopyBookMeal" parameterClass="StringObjectDictionary" >
+      delete Pam_BookMeal
+      where Status=1 and BookDate>=#CopyTo_Start# and BookDate&lt;=#CopyTo_End#
+      and OldManId in ($OldManIds$)
+      insert into Pam_BookMeal
+      (CheckInTime,OperatedBy,OperatedOn
+      ,DataSource,StationId,OldManId,MealType,SetMealId,BookDate,FetchFlag,Remark )
+      select GETDATE() CheckInTime,'$OperatedBy$' OperatedBy,GETDATE() OperatedOn
+      ,DataSource,StationId,OldManId,MealType,SetMealId ,dateadd(day,#Days#,BookDate) BookDate,FetchFlag,Remark
+      from Pam_BookMeal
+      where Status=1 and BookDate>=#CopyFrom_Start# and BookDate&lt;=#CopyFrom_End#
+      and OldManId in ($OldManIds$)
+    </update>
+  </statements>
+</sqlMap>

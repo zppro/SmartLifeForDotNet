@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.CertManage.ManageServices", "SmartLife.CertManage.ManageServices.csproj", "{1E979317-66B8-4B49-8EC8-AECE9B48CB11}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 1
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccProjectUniqueName0 = SmartLife.CertManage.ManageServices.csproj
+		SccProjectName0 = .
+		SccAuxPath0 = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccLocalPath0 = .
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E979317-66B8-4B49-8EC8-AECE9B48CB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E979317-66B8-4B49-8EC8-AECE9B48CB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E979317-66B8-4B49-8EC8-AECE9B48CB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E979317-66B8-4B49-8EC8-AECE9B48CB11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

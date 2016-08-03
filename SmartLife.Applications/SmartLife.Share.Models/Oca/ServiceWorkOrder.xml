@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ServiceWorkOrder" type="SmartLife.Share.Models.Oca.ServiceWorkOrder, SmartLife.Share.Models" />
+    <typeAlias alias="ServiceWorkOrderPK" type="SmartLife.Share.Models.Oca.ServiceWorkOrderPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ServiceWorkOrder_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_ServiceWorkOrder(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="WorkOrderId" >WorkOrderId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderNo" >WorkOrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderContent" >WorkOrderContent</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemA" >ServeItemA</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeMode" >ServeMode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeRadius" >ServeRadius</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeKeyword" >ServeKeyword</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeType" >ServeType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFee" >ServeFee</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeByGov" >ServeFeeByGov</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeBySelf" >ServeFeeBySelf</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherCharges" >OtherCharges</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherChargesFee" >OtherChargesFee</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceTimeRequired" >ServiceTimeRequired</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemarkRequired" >RemarkRequired</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SuperviseTime" >SuperviseTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SupervisedBy" >SupervisedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >OldManName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Address" >Address</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >LongitudeS</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >LatitudeS</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tel" >Tel</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationId" >ServeStationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationName" >ServeStationName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManName" >ServeManName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManDispatchedTime" >ServeManDispatchedTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeBeginTime" >ServeBeginTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeEndTime" >ServeEndTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputtedTimeByServiceStation" >InputtedTimeByServiceStation</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResult" >ServeResult</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResultRemark" >ServeResultRemark</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackBy" >FeedbackBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToServiceStation" >FeedbackToServiceStation</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToServiceStation" >FeedbackTimeToServiceStation</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToServiceStation" >FeedbackRemarkToServiceStation</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToOldMan" >FeedbackToOldMan</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToOldMan" >FeedbackTimeToOldMan</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToOldMan" >FeedbackRemarkToOldMan</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >ServeManArriveTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >ServeManLeaveTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResult" >ServeFinalResult</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResultRemark" >ServeFinalResultRemark</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SpecialFlag" >SpecialFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManId" >ServeManId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="WorkOrderId" >#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderNo" >#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderContent" >#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemA" >#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemB" >#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeMode" >#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeRadius" >#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeKeyword" >#ServeKeyword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeType" >#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFee" >#ServeFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeByGov" >#ServeFeeByGov#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeBySelf" >#ServeFeeBySelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherCharges" >#OtherCharges#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherChargesFee" >#OtherChargesFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceTimeRequired" >#ServiceTimeRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemarkRequired" >#RemarkRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SuperviseTime" >#SuperviseTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SupervisedBy" >#SupervisedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Address" >#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tel" >#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationId" >#ServeStationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationName" >#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManName" >#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManDispatchedTime" >#ServeManDispatchedTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeBeginTime" >#ServeBeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeEndTime" >#ServeEndTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputtedTimeByServiceStation" >#InputtedTimeByServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResult" >#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResultRemark" >#ServeResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackBy" >#FeedbackBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToServiceStation" >#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToServiceStation" >#FeedbackTimeToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToServiceStation" >#FeedbackRemarkToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToOldMan" >#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToOldMan" >#FeedbackTimeToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToOldMan" >#FeedbackRemarkToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >#ServeManArriveTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >#ServeManLeaveTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResult" >#ServeFinalResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResultRemark" >#ServeFinalResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SpecialFlag" >#SpecialFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManId" >#ServeManId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ServiceWorkOrder_Update" parameterClass="StringObjectDictionary" >
+      update Oca_ServiceWorkOrder
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderNo" >WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeMode" >ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeRadius" >ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeKeyword" >ServeKeyword=#ServeKeyword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeType" >ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFee" >ServeFee=#ServeFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeByGov" >ServeFeeByGov=#ServeFeeByGov#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFeeBySelf" >ServeFeeBySelf=#ServeFeeBySelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherCharges" >OtherCharges=#OtherCharges#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OtherChargesFee" >OtherChargesFee=#OtherChargesFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceTimeRequired" >ServiceTimeRequired=#ServiceTimeRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemarkRequired" >RemarkRequired=#RemarkRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SuperviseTime" >SuperviseTime=#SuperviseTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SupervisedBy" >SupervisedBy=#SupervisedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeStationName" >ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManDispatchedTime" >ServeManDispatchedTime=#ServeManDispatchedTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeBeginTime" >ServeBeginTime=#ServeBeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeEndTime" >ServeEndTime=#ServeEndTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputtedTimeByServiceStation" >InputtedTimeByServiceStation=#InputtedTimeByServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResult" >ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeResultRemark" >ServeResultRemark=#ServeResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackBy" >FeedbackBy=#FeedbackBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToServiceStation" >FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToServiceStation" >FeedbackTimeToServiceStation=#FeedbackTimeToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToServiceStation" >FeedbackRemarkToServiceStation=#FeedbackRemarkToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackToOldMan" >FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackTimeToOldMan" >FeedbackTimeToOldMan=#FeedbackTimeToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FeedbackRemarkToOldMan" >FeedbackRemarkToOldMan=#FeedbackRemarkToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >ServeManArriveTime=#ServeManArriveTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >ServeManLeaveTime=#ServeManLeaveTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResult" >ServeFinalResult=#ServeFinalResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeFinalResultRemark" >ServeFinalResultRemark=#ServeFinalResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SpecialFlag" >SpecialFlag=#SpecialFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManId" >ServeManId=#ServeManId#</isPropertyAvailable>
+      </dynamic>
+      where WorkOrderId=#WorkOrderId#
+    </update>
+    <delete id="ServiceWorkOrder_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_ServiceWorkOrder
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderNo" >WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeMode" >ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeRadius" >ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeKeyword" >ServeKeyword=#ServeKeyword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeType" >ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFee" >ServeFee=#ServeFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeByGov" >ServeFeeByGov=#ServeFeeByGov#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeBySelf" >ServeFeeBySelf=#ServeFeeBySelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherCharges" >OtherCharges=#OtherCharges#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherChargesFee" >OtherChargesFee=#OtherChargesFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_Start" >ServiceTimeRequired>=to_date(#ServiceTimeRequired_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_End" >ServiceTimeRequired&lt;=to_date(#ServiceTimeRequired_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemarkRequired" >RemarkRequired=#RemarkRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_Start" >SuperviseTime>=to_date(#SuperviseTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_End" >SuperviseTime&lt;=to_date(#SuperviseTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SupervisedBy" >SupervisedBy=#SupervisedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationName" >ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_Start" >ServeManDispatchedTime>=to_date(#ServeManDispatchedTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_End" >ServeManDispatchedTime&lt;=to_date(#ServeManDispatchedTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_Start" >ServeBeginTime>=to_date(#ServeBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_End" >ServeBeginTime&lt;=to_date(#ServeBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_Start" >ServeEndTime>=to_date(#ServeEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_End" >ServeEndTime&lt;=to_date(#ServeEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_Start" >InputtedTimeByServiceStation>=to_date(#InputtedTimeByServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_End" >InputtedTimeByServiceStation&lt;=to_date(#InputtedTimeByServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResult" >ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResultRemark" >ServeResultRemark=#ServeResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackBy" >FeedbackBy=#FeedbackBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToServiceStation" >FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_Start" >FeedbackTimeToServiceStation>=to_date(#FeedbackTimeToServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_End" >FeedbackTimeToServiceStation&lt;=to_date(#FeedbackTimeToServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToServiceStation" >FeedbackRemarkToServiceStation=#FeedbackRemarkToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToOldMan" >FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_Start" >FeedbackTimeToOldMan>=to_date(#FeedbackTimeToOldMan_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_End" >FeedbackTimeToOldMan&lt;=to_date(#FeedbackTimeToOldMan_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToOldMan" >FeedbackRemarkToOldMan=#FeedbackRemarkToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResult" >ServeFinalResult=#ServeFinalResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResultRemark" >ServeFinalResultRemark=#ServeFinalResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SpecialFlag" >SpecialFlag=#SpecialFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManId" >ServeManId=#ServeManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ServiceWorkOrder_Load" parameterClass="ServiceWorkOrderPK" resultClass="ServiceWorkOrder" >
+      select WorkOrderId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,WorkOrderNo,WorkOrderContent,ServeItemA,ServeItemB,ServeMode,ServeRadius,ServeKeyword,ServeType,ServeFee,ServeFeeByGov,ServeFeeBySelf,OtherCharges,OtherChargesFee,ServiceTimeRequired,RemarkRequired,SuperviseTime,SupervisedBy,CallServiceId,OldManId,OldManName,Gender,Address,LongitudeS,LatitudeS,Tel,Mobile,ServeStationId,ServeStationName,ServeManName,ServeManDispatchedTime,ServeBeginTime,ServeEndTime,InputtedTimeByServiceStation,DoStatus,ServeResult,ServeResultRemark,FeedbackBy,FeedbackToServiceStation,FeedbackTimeToServiceStation,FeedbackRemarkToServiceStation,FeedbackToOldMan,FeedbackTimeToOldMan,FeedbackRemarkToOldMan,ServeManArriveTime,ServeManLeaveTime,ServeFinalResult,ServeFinalResultRemark,SpecialFlag,ServeManId from Oca_ServiceWorkOrder
+      where WorkOrderId=#WorkOrderId#
+    </select>
+    <select id="ServiceWorkOrder_List" parameterClass="StringObjectDictionary" resultClass="ServiceWorkOrder" >
+      select WorkOrderId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,WorkOrderNo,WorkOrderContent,ServeItemA,ServeItemB,ServeMode,ServeRadius,ServeKeyword,ServeType,ServeFee,ServeFeeByGov,ServeFeeBySelf,OtherCharges,OtherChargesFee,ServiceTimeRequired,RemarkRequired,SuperviseTime,SupervisedBy,CallServiceId,OldManId,OldManName,Gender,Address,LongitudeS,LatitudeS,Tel,Mobile,ServeStationId,ServeStationName,ServeManName,ServeManDispatchedTime,ServeBeginTime,ServeEndTime,InputtedTimeByServiceStation,DoStatus,ServeResult,ServeResultRemark,FeedbackBy,FeedbackToServiceStation,FeedbackTimeToServiceStation,FeedbackRemarkToServiceStation,FeedbackToOldMan,FeedbackTimeToOldMan,FeedbackRemarkToOldMan,ServeManArriveTime,ServeManLeaveTime,ServeFinalResult,ServeFinalResultRemark,SpecialFlag,ServeManId from Oca_ServiceWorkOrder
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderNo" >WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeMode" >ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeRadius" >ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeKeyword" >ServeKeyword=#ServeKeyword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeType" >ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFee" >ServeFee=#ServeFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeByGov" >ServeFeeByGov=#ServeFeeByGov#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeBySelf" >ServeFeeBySelf=#ServeFeeBySelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherCharges" >OtherCharges=#OtherCharges#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherChargesFee" >OtherChargesFee=#OtherChargesFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_Start" >ServiceTimeRequired>=to_date(#ServiceTimeRequired_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_End" >ServiceTimeRequired&lt;=to_date(#ServiceTimeRequired_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemarkRequired" >RemarkRequired=#RemarkRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_Start" >SuperviseTime>=to_date(#SuperviseTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_End" >SuperviseTime&lt;=to_date(#SuperviseTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SupervisedBy" >SupervisedBy=#SupervisedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationName" >ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_Start" >ServeManDispatchedTime>=to_date(#ServeManDispatchedTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_End" >ServeManDispatchedTime&lt;=to_date(#ServeManDispatchedTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_Start" >ServeBeginTime>=to_date(#ServeBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_End" >ServeBeginTime&lt;=to_date(#ServeBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_Start" >ServeEndTime>=to_date(#ServeEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_End" >ServeEndTime&lt;=to_date(#ServeEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_Start" >InputtedTimeByServiceStation>=to_date(#InputtedTimeByServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_End" >InputtedTimeByServiceStation&lt;=to_date(#InputtedTimeByServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResult" >ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResultRemark" >ServeResultRemark=#ServeResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackBy" >FeedbackBy=#FeedbackBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToServiceStation" >FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_Start" >FeedbackTimeToServiceStation>=to_date(#FeedbackTimeToServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_End" >FeedbackTimeToServiceStation&lt;=to_date(#FeedbackTimeToServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToServiceStation" >FeedbackRemarkToServiceStation=#FeedbackRemarkToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToOldMan" >FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_Start" >FeedbackTimeToOldMan>=to_date(#FeedbackTimeToOldMan_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_End" >FeedbackTimeToOldMan&lt;=to_date(#FeedbackTimeToOldMan_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToOldMan" >FeedbackRemarkToOldMan=#FeedbackRemarkToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResult" >ServeFinalResult=#ServeFinalResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResultRemark" >ServeFinalResultRemark=#ServeFinalResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SpecialFlag" >SpecialFlag=#SpecialFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManId" >ServeManId=#ServeManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ServiceWorkOrder_ListByPage" parameterClass="StringObjectDictionary" resultClass="ServiceWorkOrder" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,WorkOrderId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,WorkOrderNo,WorkOrderContent,ServeItemA,ServeItemB,ServeMode,ServeRadius,ServeKeyword,ServeType,ServeFee,ServeFeeByGov,ServeFeeBySelf,OtherCharges,OtherChargesFee,ServiceTimeRequired,RemarkRequired,SuperviseTime,SupervisedBy,CallServiceId,OldManId,OldManName,Gender,Address,LongitudeS,LatitudeS,Tel,Mobile,ServeStationId,ServeStationName,ServeManName,ServeManDispatchedTime,ServeBeginTime,ServeEndTime,InputtedTimeByServiceStation,DoStatus,ServeResult,ServeResultRemark,FeedbackBy,FeedbackToServiceStation,FeedbackTimeToServiceStation,FeedbackRemarkToServiceStation,FeedbackToOldMan,FeedbackTimeToOldMan,FeedbackRemarkToOldMan,ServeManArriveTime,ServeManLeaveTime,ServeFinalResult,ServeFinalResultRemark,SpecialFlag,ServeManId from Oca_ServiceWorkOrder
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderNo" >WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeMode" >ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeRadius" >ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeKeyword" >ServeKeyword=#ServeKeyword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeType" >ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFee" >ServeFee=#ServeFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeByGov" >ServeFeeByGov=#ServeFeeByGov#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFeeBySelf" >ServeFeeBySelf=#ServeFeeBySelf#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherCharges" >OtherCharges=#OtherCharges#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OtherChargesFee" >OtherChargesFee=#OtherChargesFee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_Start" >ServiceTimeRequired>=to_date(#ServiceTimeRequired_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceTimeRequired_End" >ServiceTimeRequired&lt;=to_date(#ServiceTimeRequired_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemarkRequired" >RemarkRequired=#RemarkRequired#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_Start" >SuperviseTime>=to_date(#SuperviseTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SuperviseTime_End" >SuperviseTime&lt;=to_date(#SuperviseTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SupervisedBy" >SupervisedBy=#SupervisedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeStationName" >ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_Start" >ServeManDispatchedTime>=to_date(#ServeManDispatchedTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManDispatchedTime_End" >ServeManDispatchedTime&lt;=to_date(#ServeManDispatchedTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_Start" >ServeBeginTime>=to_date(#ServeBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeBeginTime_End" >ServeBeginTime&lt;=to_date(#ServeBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_Start" >ServeEndTime>=to_date(#ServeEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeEndTime_End" >ServeEndTime&lt;=to_date(#ServeEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_Start" >InputtedTimeByServiceStation>=to_date(#InputtedTimeByServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputtedTimeByServiceStation_End" >InputtedTimeByServiceStation&lt;=to_date(#InputtedTimeByServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResult" >ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeResultRemark" >ServeResultRemark=#ServeResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackBy" >FeedbackBy=#FeedbackBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToServiceStation" >FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_Start" >FeedbackTimeToServiceStation>=to_date(#FeedbackTimeToServiceStation_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToServiceStation_End" >FeedbackTimeToServiceStation&lt;=to_date(#FeedbackTimeToServiceStation_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToServiceStation" >FeedbackRemarkToServiceStation=#FeedbackRemarkToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackToOldMan" >FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_Start" >FeedbackTimeToOldMan>=to_date(#FeedbackTimeToOldMan_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackTimeToOldMan_End" >FeedbackTimeToOldMan&lt;=to_date(#FeedbackTimeToOldMan_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FeedbackRemarkToOldMan" >FeedbackRemarkToOldMan=#FeedbackRemarkToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResult" >ServeFinalResult=#ServeFinalResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeFinalResultRemark" >ServeFinalResultRemark=#ServeFinalResultRemark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SpecialFlag" >SpecialFlag=#SpecialFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServeManId" >ServeManId=#ServeManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

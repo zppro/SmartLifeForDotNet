@@ -1,0 +1,609 @@
+﻿
+<script type="text/javascript">
+    var info;
+    streets = [];
+    times = [];
+
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report.css" }
+        ], function () { });
+    });
+
+    //显示控制器
+    function statistics() {
+        $("#dataTable").hide();
+        $("#caption").hide();
+        $("#alltable").hide();
+        $("#container").show();
+        $('#statisticsTable').hide();
+        $("#detailTable").hide();
+    }
+    function tabletu() {
+        $("#dataTable").show();
+        $("#caption").show();
+        $("#alltable").show();
+        $("#container").hide();
+        $('#statisticsTable').show(); 
+    }
+
+    //改变查询日期条件 日期清空
+    function methodChange() {
+        var selMethod = $("#reqMethod").val();
+        startdate();
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var selMethod = $("#reqMethod").val();
+        var CheckInTime = $("#CheckInTime").val();
+        var area = $("#Area").val();
+        params = new Object();
+        params.selMethod = selMethod;
+        params.CheckInTime = CheckInTime;
+        params.area = area;
+        var json = JSON.stringify(params);
+
+        return json;
+    }
+
+    function reset() {
+        $("#Area").val(streetID);
+        $('#AreaSelect').combotree('setValue', "");
+        $("#reqMethod ").get(0).selectedIndex = 0;
+        startdate();
+    }
+
+    //查询方法   查询条件放入隐藏域 
+    function query() {
+        $('#statisticsTable').show(); //显示控制
+        $("#detailTable").hide();
+
+        var CheckInTime = $("#CheckIn").val();
+        $("#CheckInTime").val(CheckInTime);
+
+        var area = $('#AreaSelect').combotree('getValue');
+        if (area != "") {
+            $("#Area").val(area);
+        }
+
+
+        //加载报表
+        getTableDate();
+        lodcontainer();
+    }
+
+    //得到两个日期的间隔天数
+    function getDays(strDateStart, strDateEnd) {
+        var strSeparator = "-"; //日期分隔符
+        var oDate1;
+        var oDate2;
+        var iDays;
+        oDate1 = strDateStart.split(strSeparator);
+        oDate2 = strDateEnd.split(strSeparator);
+        var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+        var strDateE = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+        iDays = parseInt(Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24)//把相差的毫秒数转换为天数 
+        return iDays;
+    }
+    //得到间隔月数
+    function getMonths(strDateStart, strDateEnd) {
+        var yF = strDateStart.getFullYear();
+        var yT = parseInt(strDateEnd.getFullYear());
+        var mF = parseInt(strDateStart.getMonth() + 1);
+        var mT = parseInt(strDateEnd.getMonth() + 1);
+        var iMonth = (yT - yF) * 12 + mT - mF;
+        return iMonth;
+    }
+    //得到month拼接日期
+    function getMonth(year, month, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        else if (m <= 0) {
+            y--;
+            m = 12 + m;
+        }
+
+        if (m <= 9) m = "0" + m;
+        var cdate = y + "-" + m;
+        return cdate;
+    }
+
+    //得到day拼接日期
+    function getDate(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = time.getDate() + day;
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (d > monthday[m - 1]) {
+            m++;
+            d = 1;
+        } else if (d - day <= 0) {
+            m--;
+            if (m <= 0) {
+                y--;
+                m = 12;
+            }
+            d = monthday[m - 1];
+        }
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        if (m <= 9) m = "0" + m;
+        if (d <= 9) d = "0" + d;
+        var cdate = y + "-" + m + "-" + d;
+        return cdate;
+    }
+
+    //-----------------------------------------------------------------创建表格
+    function createTable(data) {
+        var allServiceType = getserve();
+        var single = 130;
+
+        oldManNames = [];
+        oldManIds = [];
+        for (var i = 0, len = data.length; i < len; i++) {//得到不重复的老人姓名
+            !RegExp(data[i].oldManName, "g").test(oldManNames.join(",")) && (oldManNames.push(data[i].oldManName));
+            !RegExp(data[i].OldManId, "g").test(oldManIds.join(",")) && (oldManIds.push(data[i].OldManId));
+        }
+        //初始化表y轴 序号 改
+        var serialNumber = "<table class='t1'><tr height='62'><td width='120'>序号</td><th width='130'>老人姓名</th></tr>";
+        for (var i = 0; i < oldManNames.length; i++) {
+            serialNumber = serialNumber + "<tr style=\"cursor:pointer\" onclick='getDetailTable(" + i + ");'><td width='120'>" + (i + 1) + "</td><td width='130'>" + oldManNames[i] + "</td></tr>";
+        }
+        serialNumber = serialNumber + "<tr ><td width='120'>合计  （元）</td><td width='" + single + "' height='30'></td></tr></table>";
+        $("#serialNumber").html(serialNumber);
+
+
+       
+        // x轴的元数据初始化
+        var tableWidth = 250;
+      
+        var tabStr = "<table id='table' class='t1'>";
+        var bigTabStr = "<tr><th width='" + tableWidth + "' height='30'></th>";
+        var smallTabStr = "<tr><th width='" + tableWidth + "' height='30'></th>";
+
+        smallId = []; //小类的id
+        smallName = []; //小类的name
+        var k = 0;
+
+        for (var i = 0; i < allServiceType.length; i++) {//解析大项
+            var bigType = allServiceType[i];
+            var smallcount = bigType.children.length; //服务一大类下有几个小项
+            var bigTypeWidth = single * smallcount; //表格一个大项有多宽
+            tableWidth = tableWidth + bigTypeWidth; //整个表有多大
+            bigTabStr = bigTabStr + "<th width='" + bigTypeWidth + "' height='30' colspan='" + smallcount + "'>" + bigType.text + "  （元）</th>"; //拼接大类项目
+            for (var j = 0; j < smallcount; j++) {//解析小项
+                smallTabStr = smallTabStr + "<th width='" + single + "' height='30'>" + bigType.children[j].text + "</th>"; //拼接小项目
+                smallId[k] = bigType.children[j].id;
+                smallName[k] = bigType.children[j].text;
+                k++;
+            }
+        }
+
+
+        var tableDate = ""; //表格填入数据 字符串拼接
+        var column = new Array(); //每列合计的和
+        rest = new Array();
+        for (var i = 0; i < oldManNames.length; i++) {
+            reset[i] = new Array();
+            tableDate = tableDate + "<tr style=\"cursor:pointer\" onclick='getDetailTable(" + i + ");'><td width='120' height='30'></td>"
+            var rowcount = 0; //每行小计的和
+            for (var j = 0; j < smallId.length; j++) {
+
+                var flag = true;
+                if (isNaN(column[j])) column[j] = 0;
+                for (var k = 0; k < data.length; k++) {
+                    if (data[k].oldManName == oldManNames[i] && data[k].ServeItemB == smallId[j]) {
+                        tableDate = tableDate + "<td width='" + single + "' height='30'>" + data[k].cost + "</td>"; //拼接小项目费用
+                        rowcount = rowcount + data[k].cost;
+                        column[j] = column[j] + parseInt(data[k].cost);
+                        reset[i][j] = parseInt(data[k].cost);
+                        flag = false;
+                        break;
+                    }
+
+                }
+                if (flag) {
+                    tableDate = tableDate + "<td width='" + single + "' height='30'>" + 0 + "</td>"; //拼接小项目费用
+                    column[j] = column[j] + 0;
+                    reset[i][j] = 0;
+                }
+            }
+            tableDate = tableDate + "<td width='" + single + "' height='30'>" + rowcount + "</td></tr>";
+        }
+        //========================拼接最后一行
+        var sum = 0;
+        tableDate = tableDate + "<tr><td width='120' height='30'></td>";
+        for (var i = 0; i < smallId.length; i++) {
+            if (undefined == column[i]) {
+                column[i] = 0;
+            }
+            tableDate = tableDate + "<td width='" + single + "' height='30'>" + column[i] + "</td>"
+            sum += column[i];
+        }
+        tableDate = tableDate + "<td width='" + single + "' height='30'>" + sum + "</td></tr>";
+        //========================结束拼接最后一行
+        bigTabStr = bigTabStr + "<th width='" + single + "' + rowspan='2'>小计  （元）</th></tr>";  //拼接大类项目结束
+        smallTabStr = smallTabStr + "</tr>"; //拼接小项目结束
+        tabStr = tabStr + bigTabStr + smallTabStr + tableDate + "</table>"; //整合拼接语句 组成表格
+        $("#dataTable").html(tabStr);
+        $("#table").width(tableWidth);
+    }
+
+    //---------------------------------------------------初始化
+    $(function () {
+        $('#statisticsTable').show(); //显示控制
+        $("#detailTable").hide();
+        var winWidth = $(window).width();
+        var winHeight = $(window).height();
+        $("#alltable").height(winHeight - 170 - 40);
+        $("#dataTable").height(winHeight - 170 - 40);
+        $("#serialNumber").height(winHeight - 170 - 40 - 17);
+        $("#container").height(winHeight - 160);
+        $('#detailDataTable').height(winHeight - 170 - 40);
+        // $("#CheckInTimeTo").attr("readonly", true);
+
+        startdate(); //初始化查询日期
+
+        var id = top.appDeployArea.code;
+        //加载地域下拉列表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/AreaQuery', { parms: $.toJSON({ 'AreaId': id }) }, function (ret) {
+
+            var data = eval(ret);
+            streetID = data[0].AreaId;
+            $("#Area").val(streetID);
+            $('#AreaSelect').combotree({
+                data: data,
+                loadFilter: function (data) {
+                    address = convert(data);
+                    return address;
+                }
+            });
+        }, { async: false });
+
+
+        $('#serveType').combotree({
+            data: getserve()
+
+        });
+
+        getTableDate(); //调用获取表数据
+        lodcontainer();
+        $("#container").hide();
+    });
+
+    //---------------------------------------------------获取表格数据
+    function getTableDate() {
+        var sql = sqlstr(); //获取条件
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/staOldCost', { parms: sql }, function (ret) {
+            var info = eval(ret);
+            if (info) {
+                createTable(info);
+            }
+        }, { async: false });
+    }
+
+    //---------------------------------------------------加载树
+    function convert(rows) {
+
+        function exists(rows, ParentId) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].AreaId == ParentId) return true;
+            }
+            return false;
+        }
+
+        var nodes = [];
+
+        // 得到顶层节点  
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (!exists(rows, row.ParentId)) {
+                nodes.push({
+                    id: row.AreaId,
+                    text: row.AreaName
+                });
+            }
+        }
+
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+        while (toDo.length) {
+            var node = toDo.shift();    // 父节点   
+            // 得到子节点   
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.ParentId == node.id) {
+                    var child = { id: row.AreaId, text: row.AreaName };
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                    toDo.push(child);
+                }
+            }
+        }
+        return nodes;
+    }
+
+
+
+    //--------------------------------------------------------------------加载服务类型
+    function getserve() {
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetBigServeType', null, function (ret) {
+            bigtype = eval(ret);
+        }, { async: false });
+
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetSmallServeType', null, function (ret) {
+            smalltype = eval(ret);
+        }, { async: false });
+
+        var nodes = [];
+
+        for (var i = 0; i < bigtype.length; i++) {
+            nodes.push({
+                id: bigtype[i].ItemCode,
+                text: bigtype[i].ItemName,
+                itemID: bigtype[i].ItemId
+            });
+        }
+
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+
+        while (toDo.length) {
+            var node = toDo.shift();
+            var len = node.itemID.length;
+            bigITem = node.itemID.substring(len - 2, len);
+            for (var i = 0; i < smalltype.length; i++) {
+                smallITem = smalltype[i].ItemId.substr(0, 2);
+                if (smallITem == bigITem) {
+                    var child = { id: smalltype[i].ItemCode, text: smalltype[i].ItemName, itemID: smalltype[i].ItemId };
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                }
+            }
+        }
+
+        return nodes;
+    }
+
+    //---------------------------------------------------------------------统计图
+    function lodcontainer() {
+        //动态取值
+        var Name = "老人费用一览表";
+        var das = new Array();
+        for (var i = 0; i < oldManNames.length; i++) {
+            var data = new Array();
+            for (var j = 0; j < smallName.length; j++) {
+                data[j] = reset[i][j];
+            }
+            var da = { 'name': oldManNames[i], 'data': data };
+            das[i] = da;
+        }
+
+        if (oldManNames.length == 0) {
+            alert("时间：" + $("#CheckInTime").val() + "，地点：" + $("#Area").val() + " 没有消费数据");
+        }
+
+        $('#container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: Name
+            },
+            xAxis: {//横轴  
+                categories: smallName,
+                labels: {
+                    rotation: -50
+                }
+
+            },
+            plotOptions: {//点击事件
+                series: {
+                    cursor: 'pointer',
+                    events: {
+                        click: function (event) {
+                            params.oldManId = oldManIds[this.index];
+                            var json = JSON.stringify(params); //条件 组成
+
+                            getTo(baseCMSInvokeUrl + '/Pub/ReportService/getOldManDetail', { parms: json }, function (ret) {
+                                var info = eval(ret);
+                                if (info) {
+                                    detailStat(info);
+                                }
+                            }, { async: false });
+                        }
+                    }
+                }
+            }, series: das
+
+        });
+    }
+
+    //=========================================老人费用明细统计图
+    function detailStat(data) {
+        var detailDas = new Array();
+        var detailTimes = new Array();
+        for(var i = 0; i < data.length; i++){ 
+            !RegExp(data[i].times, "g").test(detailTimes.join(",")) && (detailTimes.push(data[i].times));
+        }
+        for (var i = 0; i < detailTimes.length; i++) {
+            var detailData = new Array();
+
+            for (var j = 0; j < smallId.length; j++) {
+                detailData[j] = 0;
+                ok:
+                for (var k = 0; k < data.length; k++) {
+                    if (detailTimes[i] == data[k].times && smallId[j] == data[k].ServeItemB) {
+                            detailData[j] =  detailData[j] + data[k].cost;
+                    } 
+                }
+            }
+            var da = { 'name': detailTimes[i], 'data': detailData };
+             detailDas[i] = da;
+        }
+
+        
+        $('#container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '老人费用明细统计图'
+            },
+            xAxis: {//横轴  
+                categories: smallName,
+                labels: {
+                    rotation: -50
+                }
+
+            }, series: detailDas
+
+        });
+    }
+    //===============================================================
+    //控制myDate97显示格式
+    function getFormat() {
+        if ($("#reqMethod").val() == "year") {
+            return 'yyyy';
+        } else {
+            return 'yyyy-MM';
+        }
+    }
+
+    function startdate() {
+
+        var today = new Date();
+
+        if ($("#reqMethod").val() == "month") {
+            cdate = getMonth(0, 0, today);
+        } else {
+            cdate = today.getFullYear();
+        }
+        $('#CheckIn').val(cdate);
+        $("#CheckInTime").val(cdate);
+
+    }
+    //----------------------------------------------------------------------老人费用明细表
+    function getDetailTable(id) {
+        $('#statisticsTable').hide();//显示控制
+        $("#detailTable").show();
+
+        
+        params.oldManId = oldManIds[id];
+        var json = JSON.stringify(params);//条件 组成
+
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/getOldManDetail', { parms: json }, function (ret) {
+            var info = eval(ret);
+            if (info) {
+                createDetailTable(info);
+            }
+        }, { async: false });
+
+    }
+
+    function createDetailTable(data) {//创建老人费用明细表
+
+        var dataTable = "<table class='t1'>";
+        var countCost = 0;
+        for (var i = 0; i < data.length; i++) {
+            var projectName = "";
+             for (var j = 0; j < smallId.length; j++) {
+                if (data[i].ServeItemB == smallId[j]) {
+                    projectName = smallName[j];
+                    break;
+                }
+             }
+             dataTable = dataTable + "<tr><td width='100' height='30'>" + (i + 1) + "</td><td width='200'>" + data[i].times + "</td><td width='200'>" + projectName + "</td><td width='200'>" + data[i].ServeStationName + "</td><td width='200'>" + data[i].cost + "</td><td width='103'>" + data[i].cost + "</td></tr>";
+             countCost += data[i].cost;
+        }
+         dataTable = dataTable + "<tr><td width='100' height='30'>合计</td><td width='200'></td><td width='200'></td><td width='200'></td><td width='200'>" + countCost + "</td><td width='103'>" + countCost + "</td></tr></table>";
+        $('#detailDataTable').html(dataTable);
+    }
+
+</script>
+<div>
+    <div>
+    <table style="width: 800px;margin-left:20px;padding-top:20px">
+        <tbody>
+            <tr>
+                 <td width="60"> 查询方式:</td><td width="150"><select id="reqMethod" style="width:140px" onchange="methodChange();" >
+                 <option value="month">按月查询</option>
+                 <option value="year">按年查询</option>
+                 </select>
+                 </td>
+                 <td width="40">
+                  时间：
+                  </td>
+               <td width="150">
+                    <input class="Wdate"  id="CheckIn" style="width:140px" onFocus="WdatePicker({dateFmt:getFormat()})"/>
+                </td>
+                 <td width="60">
+                   &nbsp;&nbsp;&nbsp;区域：
+                </td>
+                 <td> <input id="AreaSelect" class="easyui-combotree" style="width:185px;"/> 
+                </td>
+                 <td width="70"><button  onclick="reset();">重置</button></td>
+                 <td> <button  onclick="query();">查询</button></td>
+            </tr>
+
+           
+        </tbody>
+        
+    </table>
+    <div class="datagrid-tools" style="height: 30px;background-color:#fafafa">
+        <span><img style="margin-left: 30px" src="../../images/report-form/export.jpg" /><a href="javascript:void(0)">导出</a></span>
+        <span><img style="margin-left: 30px" src="../../images/report-form/print.jpg" /><a href="javascript:void(0)">打印</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/statistics.jpg"/><a href="javascript:void(0)" onclick="statistics()">统计</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/table.jpg"/><a href="javascript:void(0)" onclick="tabletu()">表格</a></span>
+    </div>
+    </div>
+
+    <div id="statisticsTable" >
+        <div  id="caption" style="width:99%;text-align: center;line-height:51px" >老人费用一览表</div>
+            <div id="alltable" style="width:99%;margin-right:20px; position :relative;" >
+                <div id="dataTable" style="float:left;width:100%; overflow-x:auto;overflow-y:auto;white-space : nowrap; border:1px solid;position:absolute;" onscroll="document.getElementById('serialNumber').scrollTop = this.scrollTop;"></div>
+                <div id="serialNumber"  style="float:left;width:240px;overflow-y:hidden;background:#ffffff;border:1px solid;border-bottom:none;border-right:none;position:absolute;"></div>
+            </div>
+        </div>
+        <div id="container" style="min-width: 310px; height: 400px; width:99%; margin: 0">
+    </div>
+
+
+    <div id='detailTable'>
+        <div  id="detailTitle" style="width:99%;text-align: center;line-height:51px" ><h2>老人费用明细表</h2></div>
+        <div id="detailallTable" style="width:99%;margin-right:20px; position :relative;" >
+           <div id="thead" style="border:1px solid;width:1020px;margin-right:auto;margin-left:auto;border-bottom:none"><table><tr><th width='100' height='30'>序号</th><th width='200'>发生时间</th><th width='200'>项目</th><th width='200'>服务商家</th><th width='200'>费用  （元）</th><th width='120'>小计  （元）</th></tr></table></div>
+           <div id="detailDataTable"align="center" style="overflow-y:scroll; border:1px solid;border-top:none;width:1020px;margin-right:auto;margin-left:auto;" ></div>
+         </div>
+    </div>
+</div>
+
+ <input type="hidden" id="CheckInTime" />
+ <input type="hidden" id="OperatedOnF" />
+ <input type="hidden" id="OperatedOnT" />
+ <input type="hidden" id="Area" /> 
+
+

@@ -1,0 +1,104 @@
+﻿<style type="text/css">
+ul,li{list-style:none; margin:0; padding:0;}
+.scroll{ width:98%;overflow:hidden; margin:0 auto;}
+.scroll li{ width:100%; height:45px; overflow:hidden;cursor:pointer; margin:3px 0px 0px 0px;}
+.abandoned{cursor:pointer;}
+.field-queuemember{width:146px;height:75%;font-size:12px;display:block; color:White;text-align:left;position:relative;background:#f0f0f0;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; padding:5px;}
+.field-queuemember .arrow-emergency{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #ed1b24;}
+.field-queuemember .arrow-life{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #9bd3ae;}
+.field-queuemember .arrow-family{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #00adef;}
+.field-queuemember .arrow-infotainment{position:absolute;top:8px;right:-16px;width:0;height:0px; border:solid 8px;border-color:#fff #fff #fff #eee685;}
+
+/*
+--尖角
+.field-dialback-red{width:158px;height:84%;font-size:12px;display:block; color:White;text-align:left;position:relative;background:#ed1b24; padding:5px;}
+.field-dialback-red .arrow-red{position:absolute;top:0px;right:-20px;width:0;height:0px; border-style:solid; border-width:32px;border-color:#fff #fff #fff #ed1b24;}*/
+</style>
+<div id="callQueueMember-Panel" style="width: 200px; height: 710px;margin:0 auto; padding:0;">
+    <div id="scroll-c" class="scroll">
+        <ul class="list">
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var repeatTime = 5000; //5秒
+    $(function () {
+
+        autosize("callQueueMember-Panel");
+
+        if (top.gCallCenter) {
+            var areaQueueName = top.gCallCenter.StationId.substr(24, 3);
+
+            var queueNames = [];
+            //获取队列URL
+            var queueUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_queue";
+            postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetRemoteData", $.toJSON({ RemoteUrl: queueUrl, RetType: "json" }), function (result) {
+                var ret = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+                if (ret.data) {
+                    queueNames = _.map(_.filter(ret.data, function (i) {
+                        return i.queue_name.indexOf("@" + areaQueueName) > -1;
+                    }), function (o) {
+                        return o.queue_name.toString();
+                    });
+                }
+            }, { async: false });
+
+
+            var queueMemberUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_queue_member&queuename=";
+            //取数据
+            var emergentAlarmFlag = "";
+            window.external.setEmergentQueueFlag(emergentAlarmFlag);
+            setTimeout(function () {
+                _loadDataForScroll(queueMemberUrl, queueNames, function (rows) {
+                    $('#scroll-c ul').html("");
+                    if (rows.length > 0) {
+                        var htmlstr = _.map(rows, function (o) {
+                            var strbgtype = o.queueName.substr(o.queueName.length - 1);
+                            if (strbgtype == "0") { emergentAlarmFlag = "emergentAlarm"; }
+                            var date = new Date();
+                            date.setTime(o.join_time);
+                            return '<li class="abandoned"><div class="field-queuemember" style="background:' + (strbgtype == "0" ? "#ed1b24" : (strbgtype == "1" ? "#00adef" : (strbgtype == "3" ? "#9bd3ae" : "#eee685"))) + '"><div style="height:18px;">排队号码:' + o.cid_number + '</div><div style="height:18px;">呼入时间:' + date.toLocaleTimeString() + '</div><div class="' + (strbgtype == "0" ? "arrow-emergency" : (strbgtype == "1" ? "arrow-family" : (strbgtype == "3" ? "arrow-life" : "arrow-infotainment"))) + '"></div></div></li>';
+                        }).join("");
+                        $('#scroll-c ul').html(htmlstr);
+                    }
+                    else {
+                        emergentAlarmFlag = ""
+                    }
+
+                    window.external.setEmergentQueueFlag(emergentAlarmFlag);
+                });
+                setTimeout(arguments.callee, repeatTime);
+            }, 0);
+        }
+
+        //滚动
+        setInterval('autoScroll(".scroll")', 5000);
+    });
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-25px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function _loadDataForScroll(queueMemberUrl, queueNames, callback) {
+        postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/QueueMemberList", $.toJSON({ RemoteUrl: queueMemberUrl, QueueNames: queueNames }), function (result) {
+            if (callback) {
+                var ret = "";
+                if (result.ret) {
+                    ret = eval('(' + result.ret + ')');
+                }
+                callback.apply(this, [ret]);
+                //                else {
+                //                    var rows;
+                //                    rows = [{ "queueName": "queue_5@710953", "uuid": "7599B7F4-7352-4969-B6E7-239A4067D40B", "cid_number": "15157133641", "cid_name": "15157133641", "join_time": "1426814594" }
+                //                    , { "queueName": "queue_5@710950", "uuid": "246427E4-0725-4B56-8D61-127DA45F6F85", "cid_number": "18258179983", "cid_name": "18258179983", "join_time": "1426816214" },
+                //                                    { "queueName": "queue_5@710951", "uuid": "AF965310-D15E-4929-BC62-3D579AF6D031", "cid_number": "18668001381", "cid_name": "18668001381", "join_time": "1426820414"}];
+                //                    callback.apply(this, [rows]);
+                //                }
+            }
+        });
+    }
+</script>

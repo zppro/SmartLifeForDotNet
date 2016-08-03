@@ -1,0 +1,215 @@
+﻿<div id="toolbar-LisenceUser">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">
+                作废</a><!--<a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a>--><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-no" plain="true" onclick="stop()">
+                停用</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="restart()">
+                重新启用</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-undo" plain="true" onclick="resetLisenceUserPassword()">
+                重设密码</a>
+</div>
+<table id="dg-LisenceUser"  >
+</table>
+<div id="dlg-LisenceUser" class="easyui-dialog" style="width: 800px; height: 560px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-LisenceUser"  >
+    <div class="ftitle"></div>
+    <form id="fm-LisenceUser" method="post" novalidate>
+    <input type="hidden" name="UserId" id="userid-LisenceUser" />
+    <input type="hidden" name="UserType" id="usertype-LisenceUser" />
+    <div class="fitem">
+        <label>
+            工　　号:</label>
+        <input name="UserCode" class="easyui-validatebox" required="true" missingMessage="工号不能为空"> 
+        <label>
+            姓　　名:</label>
+        <input name="UserName" class="easyui-validatebox" required="true" missingMessage="姓名不能为空">
+    </div>
+    <div class="fitem">
+        <label>所属角色:</label> 
+        <input id="GroupId" name="GroupId" class="easyui-validatebox" />
+    </div> 
+    <div id="UserArea-LisenceUser" style="width: 99%; height:410px;margin: 0 auto; overflow-y: auto;">
+    </div>
+    </form>
+</div>
+<div id="btn-LisenceUser">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        var areaId = currentMenuId.split('--')[1];
+        var areaCode = currentMenuCode.split('--')[1];
+        var connectId = 'SmartLife' + areaCode;
+        models[currentMenuCode] = {
+            unCheckSystem:true,
+            gridId: 'dg-LisenceUser',
+            toolbarId: 'toolbar-LisenceUser',
+            dialogId: 'dlg-LisenceUser',
+            formId: 'fm-LisenceUser',
+            buttonId: 'btn-LisenceUser',
+            pkId: 'userid-LisenceUser',
+            pk: 'UserId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            onAfterDialogOpen: function () {
+                $('#GroupId').combobox('setValues', '');
+                $('input:checkbox[id^="GroupId_"]').prop('checked', false);
+                $('input:checkbox[name="UserArea"]').prop('checked', false).prop('disabled', false);
+                var userId = $('#userid-LisenceUser').val();
+                if (!userId) {
+                    userId = window.contants.guidAutoGenerate;
+                }
+                else {
+                    getAll([ajaxData_InvokeUrl + '/GetGroupsByMember/' + userId, ajaxData_InvokeUrl + '/GetUserArea/' + userId], function (groupsByUser, areasByUser) {
+                        $('#GroupId').combobox('setValues', groupsByUser);
+                        _.each(groupsByUser, function (o) {
+                            $('#GroupId_' + o).prop('checked', true);
+                        });
+
+                        _.each(areasByUser, function (o) {
+                            $('#' + o.toUpperCase()).prop('checked', true);
+                        });
+                    }, null, models[currentMenuCode].headers);
+                }
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                if (!formData.GroupId) {
+                    formData.GroupId = "";
+                }
+                if (!formData.UserArea) {
+                    formData.UserArea = "";
+                }
+                formData["UserType"] = "00099|" + formData.GroupId + "|" + formData.UserArea + "|" + areaId;
+            },
+            headers: { ConnectId: connectId },
+            uiMode: 'list',
+            entityName: '认证用户',
+            baseModelUrl: baseCMSInvokeUrl + '/Auth/LisenceUserService/',
+            defaultModel: { AreaId: areaId, UserType: "00099", Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId);
+
+        loadfiles([
+        { type: "css", url: "../../css/auth-manage/node.css" }
+        ], function () {
+            postTo(baseCMSInvokeUrl + '/Sys/DatabaseConnectService/TestDatabaseConnection/' + connectId).done(function (result) {
+                if (result.Success) {
+
+                    var groups = null;
+                    getTo(ajaxData_InvokeUrl + '/GetGroup', null, function (result) {
+                        groups = result;
+                    }, { async: false }, models[currentMenuCode].headers);
+                    var groupIdStrings = _.map(groups, function (o) {
+                        return o.GroupId;
+                    }).join();
+                    getAll([ajaxData_InvokeUrl + '/GetStreetAndCommunityInArea/' + areaId], function (streetAndCommunities) {
+                        var htmls = [];
+                        var streets = _.filter(streetAndCommunities, function (o) { return o.ParentId == areaId });
+
+                        _.each(streets, function (o1, index) {
+                            htmls.push('<ul class="street-zone">');
+                            htmls.push('<li class="street-name"><label for="' + o1.ItemId + '">' + o1.ItemName + '</label><input  id="' + o1.ItemId + '" pid="' + areaId + '" name="UserArea" type="checkbox" value="' + o1.ItemId + '" /></li>');
+
+                            htmls.push('<li class="community-zone"><ul>');
+                            _.each(_.filter(streetAndCommunities, function (o) { return o.ParentId == o1.ItemId }), function (o3) {
+                                htmls.push('<li class="community-name"><label for="' + o3.ItemId + '">' + o3.ItemName + '</label><input id="' + o3.ItemId + '" pid="' + o1.ItemId + '" name="UserArea" type="checkbox" value="' + o3.ItemId + '" /></li>');
+                            });
+                            htmls.push('</ul></li>');
+
+                            htmls.push('</ul>')
+                        });
+                        $('#UserArea-LisenceUser').html(htmls.join(""));
+
+                        $('input:checkbox[name="UserArea"][pid="' + areaId + '"]').on('click', function () {
+                            var itemId = $(this).attr('id');
+                            $('input:checkbox[name="UserArea"][pid="' + itemId + '"]').prop('checked', $(this).prop('checked')).prop('disabled', $(this).prop('checked'));
+                        });
+
+                        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                            title: "",
+                            pagination: true,
+                            rownumbers: true,
+                            singleSelect: false,
+                            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                            method: 'POST',
+                            toolbar: '#' + models[currentMenuCode].toolbarId,
+                            queryParams: {
+                                sort: 'OperatedOn',
+                                order: 'desc',
+                                instance: {
+                                    Status: models[currentMenuCode].defaultModel.Status,
+                                    UserType: models[currentMenuCode].defaultModel.UserType,
+                                    Area1: areaId
+                                }
+                            },
+                            onDblClickRow: function (idx, row) {
+                                edit(row);
+                            },
+                            columns: [[
+            { field: 'UserId', title: '用户编号', width: 150, hidden: true },
+            { field: 'CK', title: '', checkbox: true },
+            { field: 'UserCode', title: '工号', width: 100, sortable: true },
+            { field: 'UserName', title: '名称', width: 200 },
+            { field: 'StopFlag', title: '停用', width: 50, align: 'center', formatter: easyuigrid_boolFormatter },
+            { field: 'CheckInTime', title: '录入时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" }
+        ]],
+                            loader: easyuiLoader
+                        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                        $('#GroupId').combobox({
+                            width: 680,
+                            panelHeight: 400,
+                            //required: true,
+                            data: groups,
+                            valueField: 'GroupId',
+                            textField: 'GroupName',
+                            editable: false,
+                            multiple: true,
+                            onSelect: function (row) {
+                                $('#GroupId_' + row.GroupId).prop('checked', true);
+                            },
+                            onUnselect: function (row) {
+                                $('#GroupId_' + row.GroupId).prop('checked', false);
+                            },
+                            formatter: function (row) {
+                                var htmls = [];
+                                htmls.push('<input type="checkbox" align="absmiddle" id="GroupId_' + row.GroupId + '" >' + row.GroupName);
+                                return htmls.join("");
+                            }
+                        });
+
+                    });
+                }
+                else {
+                    setTimeout(function () { closeTab(currentMenuTitle) }, 2000);
+                }
+            });
+        }); //loadFiles
+    });
+
+    function resetLisenceUserPassword() {
+        var row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        if (row) {
+            openDialog('reset-lisence-user-password', 'views/dialogs/reset-lisence-user-password.htm', function (callback, dialogData) {
+                putTo(models[currentMenuCode].baseModelUrl + '/ChangePassword/' + row.UserId, $.toJSON(dialogData), null, null, models[currentMenuCode].headers).done(function (result) {
+                    if (result.Success) {
+                        alertInfo('重置成功！');
+                    }
+                    callback();
+                });
+            }, { dialogData: { UserId: row.UserId, UserName: row.UserName }, title: '重置密码对话框', width: 280, height: 200, padding: 5 });
+        }
+        else {
+            alertInfo('请选中要重置密码的帐号！');
+        }
+    }
+    
+</script>

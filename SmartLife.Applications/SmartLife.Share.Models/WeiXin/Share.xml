@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Oca_WorkOrderResponseByServeManParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OpenId" column="OpenId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ButtonTag" column="ButtonTag" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="FeedbackToOldMan" column="FeedbackToOldMan" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_RemindServiceReserveInfoParam" class="StringObjectDictionary">
+      <parameter  property="ReserveInfoItemId" column="ReserveInfoItemId" direction="Input" type="int" dbType="int" /> 
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <select id="GetMapAPIOfInverseAdressParse" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select ItemId, V00001 as ItemValue from Sys_DictionaryItemExtend where DictionaryId='00023' and ExtendCol='InverseAdressParseUrl'
+    </select>
+    <procedure id="SP_Oca_WorkOrderResponseByServeMan" parameterMap="SP_Oca_WorkOrderResponseByServeManParam" resultClass="StringObjectDictionary">
+      SP_Oca_WorkOrderResponseByServeMan
+    </procedure>
+    <procedure id="SP_Oca_RemindServiceReserveInfo" parameterMap="SP_Oca_RemindServiceReserveInfoParam" resultClass="StringObjectDictionary">
+      SP_Oca_RemindServiceReserveInfo
+    </procedure>
+  </statements>
+</sqlMap>

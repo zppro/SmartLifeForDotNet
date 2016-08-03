@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Log" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="DeviceReport_ListByMonitor" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.DeviceId,a.DeviceCode,a.DeviceName,a.DeviceType,a.Monitor,c.DeviceStatus,c.CheckInTime,GETDATE() as LastUpdateOn from Pub_Device a
+      inner join (select ItemId from Sys_DictionaryItemExtend where DictionaryId='00010' and ExtendCol='MonitorFlag' and V00003 = 1) b
+      on a.DeviceType=b.ItemId left join (select x.DeviceId,x.DeviceStatus,x.CheckInTime from Log_DeviceReport x
+      inner join (select DeviceId,MAX(CheckInTime) as CheckInTime
+      from Log_DeviceReport
+      Group By DeviceId)y on x.DeviceId = y.DeviceId and x.CheckInTime = y.CheckInTime
+      where DateDiff(s,x.CheckInTime,GETDATE())&lt;=
+      (select case when COUNT(1) = 1 then SUM(cast(ParameterValue as int)) else 60 end as DeviceReportInterval
+      from Sys_Parameter where ParameterId='Log_DeviceReportInterval')
+      ) c
+      on a.DeviceId=c.DeviceId where a.Status=1 and a.ActiveFlag=1 and a.Monitor=#Monitor#
+      order by a.DeviceCode
+    </select> 
+  </statements>
+</sqlMap>

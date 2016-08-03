@@ -1,0 +1,129 @@
+﻿<style type="text/css">
+    .service-history-title{ width:94%; margin:0 auto; padding-top:5px; font-weight:bold;}
+    #service-history-content{ width:94%;margin:5px auto;height:188px; border:solid 1px #999; overflow-y:scroll;}
+</style>
+<div id="the-history-content" class="easyui-dialog" style="width: 560px; height: 388px;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-history-content">
+    <div class="service-history-title">服务过程记录</div>
+    <div id="service-history-content" style="margin-left:15px;"> </div>
+</div>
+<div id="btn-history-content">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancelHistory()">关闭</a>
+</div>
+
+<div id="history-workorder-block"></div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) {
+            var html = [];
+            getTo(top.baseCMSInvokeUrl + '/Oca/CallService/GetServiceWorkOrderInProcess/' + dialogData.CallServiceId, null, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                _.each(rows, function (o, index) {
+                    html.push(((index > 0 && index % 2 == 0) ? '<br/>' : '') + '<a id="' + o.WorkOrderId + '" style="cursor:pointer; " class="workorder-link" onclick="openWorkOrder(\'' + o.WorkOrderId + '\')">' + o.WorkOrderNo + '' + (o.DoStatus == 9 ? '【作废】' : '') + '</a>');
+                });
+            }, { async: false });
+
+            getTo(serviceTrackLog_InvokeUrl + '/Query?parms=' + $.toJSON(dialogData), null, function (result) {
+                var htmls = [];
+                if (result.rows.length > 0) {
+                    _.each(result.rows, function (row) {
+                        var strLogContent = row.LogContent;
+                        var strLogFileType = row.LogFileType;
+                        var strContent;
+                        if (strLogContent) {
+                            strContent = strLogContent;
+                            if (strContent.indexOf('[') != -1) {
+                                var re = /\[(\d+):(.+):(.+)\]/;
+                                re.test(strContent);
+                                var type = parseInt(RegExp.$1);
+                                if (type == 0) {
+                                    //紧急电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-red-1-small" >$3</a>');
+                                }
+                                else if (type == 1) {
+                                    //社区电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-yellow-1-small" >$3</a>');
+                                }
+                                else if (type == 2) {
+                                    //亲人电话
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-blue-1-small" >$3</a>');
+                                }
+                                else if (type == 11) {
+                                    //生活服务
+                                    strContent = strContent.replace(re, '<a href="javascript:void(0)" class="button-red-2-small" >$3</a>');
+                                }
+                                else if (type == 98 || type == 99) {
+                                    //老人与坐席
+                                    strContent = strContent.replace(re, '$3');
+                                }
+                                //alert(RegExp.$1 + '|' + RegExp.$2 + '|' + RegExp.$3 + '|' + RegExp.$4);
+                            }
+                        }
+                        else {
+
+                        }
+
+                        var fontClass = "";
+                        if (row.LogType == 0) {
+                            //系统
+                            fontClass = "TrackLogRed";
+                        }
+                        else if (row.LogType == 1) {
+                            //座席
+                            fontClass = "TrackLogBlack";
+                        }
+                        else if (row.LogType == 2) {
+                            //亲人
+                            fontClass = "TrackLogBlue";
+                        }
+                        else if (row.LogType == 3) {
+                            //商家
+                            fontClass = "TrackLogGreen";
+                        }
+                        if (strContent.indexOf("派单") > 0 && html.length > 0) strContent += "=>单号【" + html.join("") + "】";
+                        htmls.push("<div class=\"TrackLog " + fontClass + "\">" + ndateFormatter(row.CheckInTime, 'yyyy-MM-dd HH:mm:ss') + "&nbsp;&nbsp;" + strContent + "</div>");
+                    });
+                }
+                if (htmls.length > 0) {
+                    $('#service-history-content').html(htmls.join(""));
+                }
+            });
+        }
+    }
+
+    function openWorkOrder(workOrderId) {
+        var url = "../old-care/";
+        if (window.pageData) {
+            url += right(window.pageData.ServiceQueueNo, 1) == "2" ? "infotainment-aid-workorder.htm" : "life-aid-workorder.htm";
+
+            getHtml(url, function (str) {
+                $("#history-workorder-block").html(str);
+                $.parser.parse('#btn-workorder');
+                $("#the-workorder").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () {
+                        //$('#fm-life-service-dispatch').form('clear');
+                        loadWorkOrderContent(workOrderId);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '工单对话框');
+            });
+        }
+    }
+
+    function doCancelHistory() {
+        $('#the-history-content').dialog('close');
+    }
+
+    function dialogBeforeSubmit() {
+
+    }
+    function dialogClose(dialogId) {
+
+    }
+    </script>

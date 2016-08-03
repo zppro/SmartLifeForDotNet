@@ -1,0 +1,382 @@
+﻿
+<div style=" overflow:auto; " > 
+<div id="queryParam">
+    <table style="width:830px;margin-left: 10px; padding-top: 5px">
+        <tbody>
+            <tr style="height: 30px;">
+                <td width="60">
+                    街道社区：
+                </td>
+                <td colspan='3'>
+                    <input id="tree-AreaId" />
+                    <input id="AreaId" type="hidden" />
+                    <input id="AreaId2" type="hidden" />
+                    <input id="AreaId3" type="hidden" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">医保：</span>
+                </td>
+                <td>
+                    <input id="HealthInsuranceFlag" name="HealthInsuranceFlag" />
+                </td>
+                <td style="width: 80px;">
+                    <span style="float: right">居住情况：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="LivingState" name="LivingState" />
+                </td>
+                <td width="90" rowspan="2" style="text-align: center;">
+                    <button align="right" onclick="_query()">
+                        查询</button>
+                </td>
+                <td style="width: 90px" rowspan="2" style="text-align: center;">
+                    <button onclick="reset();">
+                        重置</button>
+                </td>
+            </tr>
+            <tr style="height: 30px;">
+                <td style="width: 50px;">
+                    <span style="float: right">年 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;龄：</span>
+                </td>
+                <td>
+                    <input id="AgeFrom" name="AgeFrom" style="width: 60px;" />
+                    到
+                    <input id="AgeTo" name="AgeTo" style="width: 60px;" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">性别：</span>
+                </td>
+                <td>
+                    <input id="Gender" name="Gender" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">社保：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="SocialInsuranceFlag" name="SocialInsuranceFlag" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">身份情况：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="OldManIdentity" name="OldManIdentity" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="thead_statistics">
+<input id="sort" value="AreaName" type="hidden"/>
+<input id="order"  value="asc" type="hidden"/>
+    <table>
+        <tr>
+            <th width='120' rowspan="2"   style="border-right: 1px solid;cursor:pointer;" onclick="orderOp('AreaName')" title="点击，按照“行政区划”排序">
+                行政区划
+            </th>
+            <th width='120' colspan="3" style="border-right: 1px solid;">
+                            性别
+                        </th>
+            <th width='120' colspan="3" style="border-right: 1px solid;">
+                医保
+            </th>
+            <th width='120' colspan="3" style="border-right: 1px solid;">
+                社保
+            </th>
+            <th width='120' colspan="6" style="border-right: 1px solid;">
+                年龄</th>
+            <th width='120' colspan="4" style="border-right: 1px solid;">
+                居住情况</th>
+            <th width='120' colspan="3" style="border-right: 1px solid;">
+                身份情况</th> 
+            <th width='90' rowspan="2" style=" border-right:1px solid;cursor:pointer;" onclick="orderOp('Total')" title="点击，按照“总人数”排序">
+                总人数
+            </th>
+        </tr>
+        <tr style="cursor:pointer;">
+            <th width='60' onclick="orderOp('Man')"  title="点击，对“男性”排序"  >
+                                        男</th>
+            <th width='60' onclick="orderOp('Woman')" title="点击，对“女性”排序 ">
+                                        女</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('UnGender')" title="点击，对“未知性别”排序">
+                                        未知</th>
+            <th width='60'  onclick="orderOp('HealthInsurance1')" title="点击，对“有”医保的排序">
+                有</th>
+            <th width='60' onclick="orderOp('HealthInsurance0')" title="点击，对“无”医保的排序">
+                无</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('UnHealthInsurance')" title="点击，对“未知”医保的排序">
+                未知</th>
+            <th width='60'   onclick="orderOp('SocialInsurance1')" title="点击，对“有”社保的排序">
+                有</th>
+            <th width='60' onclick="orderOp('SocialInsurance0')" title="点击，对“无”社保的排序">
+                无</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('UnSocialInsurance')" title="点击，对“未知”社保的排序">
+                未知</th>
+            <th width='60' onclick="orderOp('Age0')" title="点击，对“60岁以下”的人排序">
+                60以下</th>
+            <th width='60' onclick="orderOp('Age1')" title="点击，对“60-70岁”的人排序">
+                60-70岁</th>
+            <th width='60' onclick="orderOp('Age2')" title="点击，对“71-80岁”的人排序">
+                71-80岁</th>
+            <th width='60' onclick="orderOp('Age3')" title="点击，对“81-90岁”的人排序">
+                81-90岁</th>
+            <th width='60' onclick="orderOp('Age4')" title="点击，对“91-100岁”的人排序">
+                91-100岁</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('Age5')" title="点击，对“100岁以上”的人排序">
+                100以上</th>
+            <th width='60' onclick="orderOp('LivingState1')" title="点击，对居住情况是“未知”的排序">
+                未知</th>
+            <th width='60' onclick="orderOp('LivingState2')" title="点击，对居住情况是“独居”的排序">
+                独居</th>
+            <th width='60' onclick="orderOp('LivingState3')" title="点击，对居住情况是“孤寡”的排序">
+                孤寡</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('LivingState4')" title="点击，对居住情况是“空巢”的排序">
+                空巢</th>
+            <th width='60' onclick="orderOp('OldManIdentity0')" title="点击，对身份情况是“未知”的排序">
+                未知</th>
+            <th width='60' onclick="orderOp('OldManIdentity1')" title="点击，对身份情况是“普通”的排序">
+                普通</th>
+            <th width='60' style="border-right: 1px solid;" onclick="orderOp('OldManIdentity2')" title="点击，对身份情况是“老干部”的排序">
+                老干部</th>
+        </tr>
+    </table>
+</div>
+<div id="dataTable_statistics"> 
+</div>
+<div id="total" style="  height:40px;margin-right: auto; margin-left: auto;"> 
+</div>
+</div>
+<script type="text/javascript">
+    var info;
+    var date_len;
+    $(function () {
+        loadfiles([
+                { type: "css", url: "../../css/report/oldman-baseinfo.css" }
+        ], function () {
+            getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11002',
+                    ajaxData_InvokeUrl + '/GetDictionaryItem/11001'], function (oldManIdentity_d, livingState_d) { 
+                        oldManIdentity_dt = _.union(oldManIdentity_d, [{ ItemCode: "03", ItemId: "11111", ItemName: "未知"}]);
+                        livingState_dt = livingState_d;
+
+                        setCombobox("OldManIdentity", oldManIdentity_dt, 65);
+                        setCombobox("LivingState", livingState_dt, 83)
+                        setCombobox('Gender', [{ ItemId: "M", ItemName: "男" }, { ItemId: "F", ItemName: "女" }, { ItemId: "N", ItemName: "未知"}], 65);
+                        setCombobox('HealthInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有" }, { ItemId: "NF", ItemName: "未知"}], 65);
+                        setCombobox('SocialInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有" }, { ItemId: "NF", ItemName: "未知"}], 65);
+
+                        initTree('easyUIComboTree', 'tree-AreaId', {
+                            width: 280,
+                            panelWidth: 280,
+                            panelHeight: 280,
+                            required: false,
+                            editable: false,
+                            onSelect: function (treeNode) {
+                                var treeNodeId = treeNode.id; //当前节点的层次
+                                if (treeNodeId.length > 6) {
+                                    var sub_id = treeNodeId.substring(14, 18);
+                                    if (sub_id == '0000') {
+                                        $("#AreaId2").val(treeNodeId);
+                                        $("#AreaId3").val(null);
+                                        $("#AreaId").val(null);
+                                    }
+                                    else {
+                                        $("#AreaId2").val(treeNode.attributes.PId);
+                                        $("#AreaId3").val(treeNodeId);
+                                        $("#AreaId").val(null);
+                                    }
+                                }
+                                else {
+                                    $("#AreaId2").val(null); //选择的是区级节点 
+                                    $("#AreaId3").val(null); //选择的是区级节点 
+                                    $("#AreaId").val(treeNodeId); //选择的是区级节点 
+                                };
+                            },
+                            onLoadSuccess: function () {
+                                //默认展开一级
+                                var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                                $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                                $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+
+                                var node_Children = $('#tree-AreaId').combotree('tree').tree('getChildren'); //取所有的节点
+                                var rows = [];
+                                _.each(node_Children, function (o) {
+                                    if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+                                        rows.push(o); //取所有的社区
+                                    }
+                                });
+                                if (rows.length > 1) {//社区大于一个  为街道权限，默认设置第一个社区所在的街道
+                                    $('#tree-AreaId').combotree('setValue', rows[0].attributes.PId);
+                                    $("#AreaId2").val(rows[0].attributes.PId);
+                                }
+                                else if (rows.length == 1) {//只有一个社区  为社区权限 ，默认设置社区
+                                    $('#tree-AreaId').combotree('setValue', rows[0].id);
+                                    $('#tree-AreaId').combotree('disable');
+                                    $("#AreaId3").val(rows[0].id);
+                                }
+                                else {
+                                    alert('没有任何权限');
+                                }
+                                query();
+                            }
+                        },
+         function (d) {
+             var res;
+             postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                 res = result;
+             }, { async: false })
+             if (res) {
+                 getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+             } else {
+                 getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+             }
+         });
+                        _autosize();
+                    });
+        });
+    });
+
+    function query() {
+        var sql = sqlstr();
+//                alert($.toJSON(sql));
+        postTo(baseCMSInvokeUrl + "/Pub/ReportService/OldManStatistics", $.toJSON(sql), function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            if (rows) {
+                createTable(rows); 
+                _autosize()
+            };
+        }, null, null);
+
+//        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldManStatistics_T', { params: sql }, function (ret) {
+//            info = ret;
+//            if (info) { 
+//                createTable(info);
+//            };
+//        });
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var sort = $("#sort").val();
+        var order = $("#order").val();
+        var areaId = $("#AreaId").val();
+        var areaId2 = $("#AreaId2").val();
+        var areaId3 = $("#AreaId3").val();
+        var gender = $("#Gender").combobox('getValue');
+        var ageFrom = $("#AgeFrom").val();
+        var ageTo = $("#AgeTo").val();
+        var healthInsuranceFlag = $("#HealthInsuranceFlag").combobox('getValue');
+        var socialInsuranceFlag = $("#SocialInsuranceFlag").combobox('getValue');
+        var oldManIdentity = $("#OldManIdentity").combobox('getValue');
+        var livingState = $("#LivingState").combobox('getValue');
+
+        var params = new Object();
+        params.sort = sort;
+        params.order = order;
+        params.fuzzyFieldOP = ' or ';
+        params.filterFields = [
+                { key: 'Status', value: 1 },
+                { key: 'Gender', value: gender },
+                { key: 'AgeFrom', value: ageFrom },
+                { key: 'AgeTo', value: ageTo },
+                { key: 'HealthInsuranceFlag', value: healthInsuranceFlag },
+                { key: 'SocialInsuranceFlag', value: socialInsuranceFlag },
+                { key: 'OldManIdentity', value: oldManIdentity },
+                { key: 'LivingState', value: livingState },
+                { key: 'AreaId', value: areaId },
+                { key: 'AreaId2', value: areaId2 },
+                { key: 'AreaId3', value: areaId3 }
+                ]; 
+        return params;
+    }
+    function setCombobox(controlsId, data, panelheight) {
+        $('#' + controlsId + '').combobox({
+            width: 80,
+            panelHeight: panelheight,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    } 
+    //-----------------------------------------------------------------创建表格
+    function createTable(data) {
+        var tabStr = "<table class='table_statistics'>";
+        var tabStr_total = "<table class='total_statistics' >";
+        //tabStr += "<tr><th width='42' height='30'>序号</th><th width='80'>姓名</th><th width='170'>身份证</th><th width='40'>性别</th><th width='50'>年龄</th><th width='50'>医保</th><th width='50'>社保</th><th width='110'>座机</th><th width='110'>手机</th><th width='80'>居住情况</th><th width='80'>身份情况</th><th width='100'>家庭住址</th></tr>";
+
+        var dataArray = eval(data);
+        date_len = dataArray.length;
+        if (dataArray.length > 0) {
+            for (var i = 0; i < dataArray.length; i++) {
+                var str = "<tr><td width='120' style='border-right: 1px solid; background: #F5F5F5;'>" + dataArray[i].AreaName
+                + "</td><td width='60'>" + dataArray[i].Man + "</td><td width='60'>" + dataArray[i].Woman + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].UnGender
+                + "</td><td width='60'>" + dataArray[i].HealthInsurance1 + "</td><td width='60'>" + dataArray[i].HealthInsurance0 + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].UnHealthInsurance
+                + "</td><td width='60'>" + dataArray[i].SocialInsurance1 + "</td><td width='60'>" + dataArray[i].SocialInsurance0 + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].UnSocialInsurance
+                + "</td><td width='60'>" + dataArray[i].Age0 + "</td><td width='60'>" + dataArray[i].Age1 + "</td><td width='60'>" + dataArray[i].Age2 + "</td><td width='60'>" + dataArray[i].Age3 + "</td><td width='60'>" + dataArray[i].Age4 + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].Age5
+                + "</td><td width='60'>" + dataArray[i].LivingState1 + "</td><td width='60'>" + dataArray[i].LivingState2 + "</td><td width='60'>" + dataArray[i].LivingState3 + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].LivingState4
+                + "</td><td width='60'>" + dataArray[i].OldManIdentity0 + "</td><td width='60'>" + dataArray[i].OldManIdentity1 + "</td><td width='60' style='border-right: 1px solid;'>" + dataArray[i].OldManIdentity2
+                + "</td><td width='90' style='border-right: 1px solid;text-align: center; background: #F5F5F5; ' >" + dataArray[i].Total + "</td></tr>";
+
+            dataArray[i].AreaName == "合计" ? tabStr_total += str : tabStr += str; 
+            }
+        }
+        tabStr += "</table>";
+        tabStr_total += "</table>";
+        $("#dataTable_statistics").html(tabStr);
+
+        if (date_len > 2) {
+            $("#total").show();
+            $("#total").html(tabStr_total);
+        }
+        else {
+            $("#total").hide();
+        }
+    }
+    //查询按钮
+    function _query() {
+        $("#sort").val("AreaName");
+        $("#order").val("asc");
+        query();
+    }
+
+    function orderOp(s) {
+        var sort = $("#sort").val();
+        var order = $("#order").val();
+        if (sort != s) {
+            $("#sort").val(s);
+            $("#order").val("asc");
+        }
+        else if (order !== "asc") {
+            $("#order").val("asc");
+        }
+        else {
+            $("#order").val("desc");
+        }
+        query();
+    }
+
+    function reset() {
+        $('#AgeFrom').val(null);
+        $('#AgeTo').val(null);
+        $('#Gender').combobox('clear');
+        $('#HealthInsuranceFlag').combobox('clear');
+        $('#SocialInsuranceFlag').combobox('clear');
+        $('#LivingState').combobox('clear');
+        $('#OldManIdentity').combobox('clear');
+        $('#pageNo').val(1);
+    }
+
+    function _autosize() {
+        var delta = $("#thead_statistics").height() + $("#total").height() + $("#queryParam").height() + 40;
+        var h = $("#dataTable_statistics").parent().parent().parent().parent().height() - delta;
+        var dh = (date_len-1) * 31-1;
+        if (dh < h) {
+            $("#dataTable_statistics").height(dh);
+        }
+        else {
+            $("#dataTable_statistics").height(h);
+        }
+    }
+</script>

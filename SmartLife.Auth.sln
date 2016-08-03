@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Models", "SmartLife.Applications\SmartLife.Share.Models\SmartLife.Share.Models.csproj", "{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Behaviors", "SmartLife.Applications\SmartLife.Share.Behaviors\SmartLife.Share.Behaviors.csproj", "{2774C50E-4B9A-4140-9BE9-50F5110BF87E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Auth.ManageServices", "SmartLife.Applications\SmartLife.Auth.ManageServices\SmartLife.Auth.ManageServices.csproj", "{7429C23F-E586-4353-9C49-F74346E29C22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Auth.ManageCMS", "SmartLife.Applications\SmartLife.Auth.ManageCMS\SmartLife.Auth.ManageCMS.csproj", "{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Auth.CertServices", "SmartLife.Applications\SmartLife.Auth.CertServices\SmartLife.Auth.CertServices.csproj", "{D783A97C-67CA-4D71-911B-9ADC9F914D66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.City.ManageServices", "SmartLife.Applications\SmartLife.City.ManageServices\SmartLife.City.ManageServices.csproj", "{7BEB8BC2-3C4E-42E8-A47C-77A809A66FB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.City.ManageCMS", "SmartLife.Applications\SmartLife.City.ManageCMS\SmartLife.City.ManageCMS.csproj", "{88B499FA-74B2-435B-AC49-E23CB386ED83}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SmartLife.Applications\\SmartLife.Share.Models\\SmartLife.Share.Models.csproj
+		SccProjectName1 = SmartLife.Applications/SmartLife.Share.Models
+		SccLocalPath1 = SmartLife.Applications\\SmartLife.Share.Models
+		SccProjectUniqueName2 = SmartLife.Applications\\SmartLife.Share.Behaviors\\SmartLife.Share.Behaviors.csproj
+		SccProjectName2 = SmartLife.Applications/SmartLife.Share.Behaviors
+		SccLocalPath2 = SmartLife.Applications\\SmartLife.Share.Behaviors
+		SccProjectUniqueName3 = SmartLife.Applications\\SmartLife.Auth.ManageServices\\SmartLife.Auth.ManageServices.csproj
+		SccProjectName3 = SmartLife.Applications/SmartLife.Auth.ManageServices
+		SccLocalPath3 = SmartLife.Applications\\SmartLife.Auth.ManageServices
+		SccProjectUniqueName4 = SmartLife.Applications\\SmartLife.Auth.ManageCMS\\SmartLife.Auth.ManageCMS.csproj
+		SccProjectName4 = SmartLife.Applications/SmartLife.Auth.ManageCMS
+		SccLocalPath4 = SmartLife.Applications\\SmartLife.Auth.ManageCMS
+		SccProjectUniqueName5 = SmartLife.Applications\\SmartLife.Auth.CertServices\\SmartLife.Auth.CertServices.csproj
+		SccProjectName5 = SmartLife.Applications/SmartLife.Auth.CertServices
+		SccLocalPath5 = SmartLife.Applications\\SmartLife.Auth.CertServices
+		SccProjectUniqueName6 = SmartLife.Applications\\SmartLife.City.ManageServices\\SmartLife.City.ManageServices.csproj
+		SccProjectName6 = SmartLife.Applications/SmartLife.City.ManageServices
+		SccLocalPath6 = SmartLife.Applications\\SmartLife.City.ManageServices
+		SccProjectUniqueName7 = SmartLife.Applications\\SmartLife.City.ManageCMS\\SmartLife.City.ManageCMS.csproj
+		SccProjectName7 = SmartLife.Applications/SmartLife.City.ManageCMS
+		SccLocalPath7 = SmartLife.Applications\\SmartLife.City.ManageCMS
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7429C23F-E586-4353-9C49-F74346E29C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7429C23F-E586-4353-9C49-F74346E29C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7429C23F-E586-4353-9C49-F74346E29C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7429C23F-E586-4353-9C49-F74346E29C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D783A97C-67CA-4D71-911B-9ADC9F914D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D783A97C-67CA-4D71-911B-9ADC9F914D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D783A97C-67CA-4D71-911B-9ADC9F914D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D783A97C-67CA-4D71-911B-9ADC9F914D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BEB8BC2-3C4E-42E8-A47C-77A809A66FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BEB8BC2-3C4E-42E8-A47C-77A809A66FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BEB8BC2-3C4E-42E8-A47C-77A809A66FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BEB8BC2-3C4E-42E8-A47C-77A809A66FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B499FA-74B2-435B-AC49-E23CB386ED83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B499FA-74B2-435B-AC49-E23CB386ED83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B499FA-74B2-435B-AC49-E23CB386ED83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B499FA-74B2-435B-AC49-E23CB386ED83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

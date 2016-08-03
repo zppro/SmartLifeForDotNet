@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parameterMaps>
+        <parameterMap id="SP_DBA_ImportOldManBaseInfoFromEvaluatedParam" class="StringObjectDictionary">
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+    </parameterMaps>
+  <statements>
+    <procedure id="SP_DBA_ImportOldManBaseInfoFromEvaluated" parameterMap="SP_DBA_ImportOldManBaseInfoFromEvaluatedParam" resultClass="StringObjectDictionary">
+        SP_DBA_ImportOldManBaseInfoFromEvaluated
+    </procedure>
+    <select id="OldManFamilyInfo_By_OldMan_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select a.RelationIdOfOldMan,a.RelationIdOfFamily,b.OldManId,b.OldManName,b.Gender as OldManGender,b.Birthday as OldManBirthday,b.IDNo as OldManIDNo,isnull(b.Tel,b.Mobile) as OldManContactPhone,
+        c.FamilyMemberId,c.FamilyMemberName,c.Gender as FamilyMemberGender,c.IDNo as FamilyMemberIDNo,dbo.FUNC_Tol_IsNullOrEmpty(c.Tel,c.Mobile) as FamilyMemberContactPhone
+        from Oca_OldManFamilyInfo a inner join Oca_OldManBaseInfo b on a.OldManId = b.OldManId
+        inner join Oca_FamilyMember c on a.FamilyMemberId = c.FamilyMemberId
+        where a.Status =1
+        <isPropertyAvailable prepend=" AND " property="OldManId" >b.OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManStatus" >isnull(b.Status,1)=#OldManStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FamilyMemberStatus" >isnull(c.Status,1)=#FamilyMemberStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >b.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManFamilyInfo_By_OldMan_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select (select ItemName from Sys_DictionaryItem where DictionaryId='11003' and ItemId =  a.RelationIdOfOldMan) as RelationNameOfOldMan,
+        b.OldManName,c.FamilyMemberName,dbo.FUNC_Tol_IsNullOrEmpty(c.Tel,c.Mobile) as FamilyMemberContactPhone,a.FamilyMemberId
+        from Oca_OldManFamilyInfo a inner join Oca_OldManBaseInfo b on a.OldManId = b.OldManId
+        inner join Oca_FamilyMember c on a.FamilyMemberId = c.FamilyMemberId
+        where a.Status =1
+        <isPropertyAvailable prepend=" AND " property="OldManId" >b.OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManStatus" >isnull(b.Status,1)=#OldManStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FamilyMemberStatus" >isnull(c.Status,1)=#FamilyMemberStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManConfigInfo_By_OldMan_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select a.*,b.CallNo,b.CallNo2,b.CallNo3,b.LocateFlag,b.FenceRadius,b.GovTurnkeyFlag
+        from Oca_OldManBaseInfo a left join Oca_OldManConfigInfo b
+        on a.OldManId = b.OldManId
+        <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManStatus" >a.Status=#OldManStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GovTurnkeyFlag" >b.GovTurnkeyFlag=#GovTurnkeyFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Count_OldManConfigInfo_By_OldMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse from Oca_OldManBaseInfo a left join Oca_OldManConfigInfo b on a.OldManId = b.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManStatus" >a.Status=#OldManStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >a.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >a.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GovTurnkeyFlag" >b.GovTurnkeyFlag=#GovTurnkeyFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManConfigInfo_By_OldMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.*,b.CallNo,b.CallNo2,b.CallNo3,b.LocateFlag,b.FenceRadius,b.GovTurnkeyFlag
+      from Oca_OldManBaseInfo a left join Oca_OldManConfigInfo b
+      on a.OldManId = b.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManStatus" >a.Status=#OldManStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >a.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >a.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GovTurnkeyFlag" >b.GovTurnkeyFlag=#GovTurnkeyFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="OldManFamilyInfo_GetNames" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      (select ItemName from Sys_DictionaryItem where DictionaryId='11003' and ItemId =  a.RelationIdOfOldMan) as RelationNameOfOldMan,
+      (select ItemName from Sys_DictionaryItem where DictionaryId='11003' and ItemId =  a.RelationIdOfFamily) as RelationNameOfFamily
+      from Oca_OldManFamilyInfo a
+      where a.Status =1 and a.OldManId=#OldManId# and a.FamilyMemberId= #FamilyMemberId#
+    </select>
+    <select id="OldManFamilyMember_Info_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.RelationIdOfFamily,b.RelationIdOfOldMan,b.OldManId,b.Status FamilyInfoStatus,b.Id FamilyInfoId
+      from Oca_FamilyMember a inner join Oca_OldManFamilyInfo b on a.FamilyMemberId=b.FamilyMemberId
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="FamilyMemberId" >a.FamilyMemberId=#FamilyMemberId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FamilyMemberName" >a.FamilyMemberName=#FamilyMemberName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >a.IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RelationIdOfFamily" >b.RelationIdOfFamily=#RelationIdOfFamily#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RelationIdOfOldMan" >b.RelationIdOfOldMan=#RelationIdOfOldMan#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OldManId" >b.OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FamilyInfoStatus" >b.Status=#FamilyInfoStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </dynamic>
+    </select>
+    <select id="OldManBaseInfoList_By_CallServiceId" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select * from Oca_OldManBaseInfo where OldManId in(
+        select distinct OldManId from (select  x.OldManId from Oca_CallService as x,
+        Oca_CallService as Y where x.CallServiceId!=y.CallServiceId and x.Caller=y.Caller
+        and Y.CallServiceId=#CallServiceId# union
+        select a.OldManId from Oca_OldManBaseInfo a inner join Oca_CallService b 
+        on a.Tel=b.Caller or a.Mobile=b.Caller where b.CallServiceId=#CallServiceId# 
+        ) c where OldManId&lt;>'A9999999-0000-0000-0000-000000000000' )
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="OldManStatus" >isnull(Status,1)=#OldManStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+        <dynamic prepend=" ORDER BY ">
+            <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+        </dynamic>
+    </select>
+      <select id="OldManCallNo_RPT" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select base.OldManName,config.CallNo,config.CallNo2,config.CallNo3 
+          from Oca_OldManConfigInfo config,Oca_OldManBaseInfo base 
+          where config.OldManId=base.OldManId
+          <dynamic prepend=" WHERE ">
+              <isPropertyAvailable prepend=" AND " property="OldManStatus" >isnull(base.Status,1)=#OldManStatus#</isPropertyAvailable>
+              <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+          </dynamic>
+          <dynamic prepend=" ORDER BY ">
+              <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+          </dynamic>
+      </select>
+  </statements>
+</sqlMap>

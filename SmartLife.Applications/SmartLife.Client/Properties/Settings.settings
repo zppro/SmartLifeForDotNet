@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartLife.Client.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MessageBoxTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">居家养老</Value>
+    </Setting>
+    <Setting Name="Company" Type="System.String" Scope="User">
+      <Value Profile="(Default)">杭州蓝谷</Value>
+    </Setting>
+    <Setting Name="Company_Phone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">88976666</Value>
+    </Setting>
+    <Setting Name="Company_Site" Type="System.String" Scope="User">
+      <Value Profile="(Default)">www.lifeblue.com.cn</Value>
+    </Setting>
+    <Setting Name="Author" Type="System.String" Scope="User">
+      <Value Profile="(Default)">zppro</Value>
+    </Setting>
+    <Setting Name="ProductName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">智慧生活之居家养老</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

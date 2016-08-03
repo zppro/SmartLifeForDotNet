@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Auth_GovParam" class="StringObjectDictionary">
+      <parameter  property="UserCode" column="UserCode" direction="Input" type="string" dbType="char" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationId" column="ApplicationId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ObjectId" column="ObjectId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="UserId" column="UserId" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="UserName" column="UserName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="CityId" column="CityId" direction="Output" type="string" dbType="char" />
+      <parameter  property="CityCode" column="CityCode" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="CityName" column="CityName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area1" column="Area1" direction="Output" type="string" dbType="char" />
+      <parameter  property="AreaCode1" column="AreaCode1" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName1" column="AreaName1" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area2" column="Area2" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode2" column="AreaCode2" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName2" column="AreaName2" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area3" column="Area3" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode3" column="AreaCode3" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName3" column="AreaName3" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_MerParam" class="StringObjectDictionary">
+      <parameter  property="UserCode" column="UserCode" direction="Input" type="string" dbType="char" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationId" column="ApplicationId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ObjectId" column="ObjectId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="UserId" column="UserId" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="UserName" column="UserName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="CityId" column="CityId" direction="Output" type="string" dbType="char" />
+      <parameter  property="CityCode" column="CityCode" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="CityName" column="CityName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area1" column="Area1" direction="Output" type="string" dbType="char" />
+      <parameter  property="AreaCode1" column="AreaCode1" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName1" column="AreaName1" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area2" column="Area2" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode2" column="AreaCode2" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName2" column="AreaName2" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area3" column="Area3" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode3" column="AreaCode3" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName3" column="AreaName3" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_MemberParam" class="StringObjectDictionary">
+      <parameter  property="IDNo" column="IDNo" direction="Input" type="string" dbType="char" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="MemberId" column="MemberId" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="MemberName" column="MemberName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="NodeInfos" column="NodeInfos" direction="Output" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_SmsParam" class="StringObjectDictionary">
+      <parameter  property="MobileNo" column="MobileNo" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="AccessPoint" column="AccessPoint" direction="Output" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_GetAuthorizedModulesParam" class="StringObjectDictionary">
+      <parameter  property="UserId" column="UserId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ApplicationId" column="ApplicationId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_PensionAgencyParam" class="StringObjectDictionary">
+      <parameter  property="UserCode" column="UserCode" direction="Input" type="string" dbType="char" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationId" column="ApplicationId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ObjectId" column="ObjectId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="UserId" column="UserId" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="UserName" column="UserName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="CityId" column="CityId" direction="Output" type="string" dbType="char" />
+      <parameter  property="CityCode" column="CityCode" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="CityName" column="CityName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area1" column="Area1" direction="Output" type="string" dbType="char" />
+      <parameter  property="AreaCode1" column="AreaCode1" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName1" column="AreaName1" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area2" column="Area2" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode2" column="AreaCode2" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName2" column="AreaName2" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="Area3" column="Area3" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaCode3" column="AreaCode3" direction="Output" type="string" dbType="vachar" />
+      <parameter  property="AreaName3" column="AreaName3" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Auth_Gov" parameterMap="SP_Auth_GovParam" resultClass="StringObjectDictionary">
+      SP_Auth_Gov
+    </procedure>
+    <procedure id="SP_Auth_Mer" parameterMap="SP_Auth_MerParam" resultClass="StringObjectDictionary">
+      SP_Auth_Mer
+    </procedure>
+    <procedure id="SP_Auth_Member" parameterMap="SP_Auth_MemberParam" resultClass="StringObjectDictionary">
+      SP_Auth_Member
+    </procedure>
+    <procedure id="SP_Auth_Sms" parameterMap="SP_Auth_SmsParam" resultClass="StringObjectDictionary">
+      SP_Auth_Sms
+    </procedure>
+    <procedure id="SP_Auth_PensionAgency" parameterMap="SP_Auth_PensionAgencyParam" resultClass="StringObjectDictionary">
+      SP_Auth_PensionAgency
+    </procedure>
+    <procedure id="SP_Auth_GetAuthorizedModules" parameterMap="SP_Auth_GetAuthorizedModulesParam" resultClass="Module">
+      SP_Auth_GetAuthorizedModules
+    </procedure>
+    <select id="GetCityDeployNodesForSms" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.NodeId, 'http://'+a.NodeIP+':'+cast(a.NodePort as varchar)+'/'+b.AccessPoint  as AccessPoint
+      from Cty_Node a inner join dbo.Cty_NodeAccessPoint b on a.NodeId=b.NodeId
+      where ApplicationIdFrom=#ApplicationIdFrom# and ApplicationIdTo='IP006'
+    </select>
+  </statements>
+</sqlMap>

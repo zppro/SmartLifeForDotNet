@@ -1,0 +1,45 @@
+﻿<div id="service-B180499-view" class="1024X768">
+    <div class="oldman-info-panel">&nbsp;</div>
+    <div class="service-middle">
+        <div class="service-process-history-panel" >&nbsp;
+        </div>
+    </div>
+    <div id="life-aid-info-panel" class="right-panel" >
+    </div>
+</div>
+<script type="text/javascript">
+    var urlRoot;
+    var outside = getQueryString('outside');
+    if (outside == "1") {
+        urlRoot = getUrlRootFromOutside('views/');
+    }
+    else {
+        urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+    }
+
+    $(function () {
+        
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize('service-B180499-view');
+            
+            //$('#oldman-info-panel').get('../shared/oldman-info-panel.htm');
+            getHtml(urlRoot + 'shared/oldman-info-panel.htm', function (str) {
+                $('#service-B180499-view .oldman-info-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'shared/service-process-history-panel.htm', function (str) {
+                $('#service-B180499-view .service-process-history-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'old-care/life-aid-info-panel.htm', function (str) {
+                $('#service-B180499-view #life-aid-info-panel').html(str);
+            });
+
+        });
+    });
+
+</script>

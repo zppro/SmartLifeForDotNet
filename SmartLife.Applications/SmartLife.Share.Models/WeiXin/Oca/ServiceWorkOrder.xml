@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="ServiceWorkOrder" type="SmartLife.Share.Models.WeiXin.Oca.ServiceWorkOrder, SmartLife.Share.Models" />
+        <typeAlias alias="ServiceWorkOrderPK" type="SmartLife.Share.Models.WeiXin.Oca.ServiceWorkOrderPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="ServiceWorkOrder_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_ServiceWorkOrder(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="WorkOrderId" >WorkOrderId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WorkOrderContent" >WorkOrderContent</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemA" >ServeItemA</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeStationId" >ServeStationId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManName" >ServeManName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeBeginTime" >ServeBeginTime</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="WorkOrderId" >#WorkOrderId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WorkOrderContent" >#WorkOrderContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemA" >#ServeItemA#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeStationId" >#ServeStationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManName" >#ServeManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeBeginTime" >#ServeBeginTime#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="ServiceWorkOrder_Update" parameterClass="StringObjectDictionary" >
+            update Oca_ServiceWorkOrder
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeBeginTime" >ServeBeginTime=#ServeBeginTime#</isPropertyAvailable>
+            </dynamic>
+            where WorkOrderId=#WorkOrderId#
+        </update>
+        <delete id="ServiceWorkOrder_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_ServiceWorkOrder
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeBeginTime_Start" >ServeBeginTime>=to_date(#ServeBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeBeginTime_End" >ServeBeginTime&lt;=to_date(#ServeBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="ServiceWorkOrder_Load" parameterClass="ServiceWorkOrderPK" resultClass="ServiceWorkOrder" >
+            select WorkOrderId,WorkOrderContent,ServeItemA,ServeItemB,OldManId,CallServiceId,ServeStationId,ServeManName,ServeBeginTime from Oca_ServiceWorkOrder
+            where WorkOrderId=#WorkOrderId#
+        </select>
+        <select id="ServiceWorkOrder_List" parameterClass="StringObjectDictionary" resultClass="ServiceWorkOrder" >
+            select WorkOrderId,WorkOrderContent,ServeItemA,ServeItemB,OldManId,CallServiceId,ServeStationId,ServeManName,ServeBeginTime from Oca_ServiceWorkOrder
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="WorkOrderId" >WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkOrderContent" >WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemA" >ServeItemA=#ServeItemA#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeStationId" >ServeStationId=#ServeStationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManName" >ServeManName=#ServeManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeBeginTime_Start" >ServeBeginTime>=to_date(#ServeBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeBeginTime_End" >ServeBeginTime&lt;=to_date(#ServeBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+    </statements>
+</sqlMap>

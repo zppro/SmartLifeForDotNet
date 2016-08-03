@@ -1,0 +1,159 @@
+﻿<div id="search-sample-B230304" title="查询" style="overflow: auto; padding: 3px;">
+<table width="100%">
+    <tr>
+        <td id="CurrentMerchant-c"  >
+            <input id="CurrentMerchant" />
+        </td>
+        <td style="text-align: left;">
+            关键字：
+            <input name="Keyword" id="Keyword" class="easyui-validatebox" />
+        </td>
+        <td style="text-align: left;">
+            审核状态：
+            <input id="SelectedDoStatus" />
+        </td>
+        <td style="width: 90px;text-align: left;">
+            <a href="javascript:void(0)" name="query_btn" class="easyui-linkbutton" iconcls="icon-ok"
+                onclick="buildPageByMerchant()">查询</a>
+        </td> 
+                        <td style="width: 90px;text-align: left;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="clearKW()">
+                                重置</a>
+                        </td>
+    </tr>
+</table>
+</div>
+<div id="toolbar-B230304">
+     <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="wxAudit(true)" id="edit_pass" operation="bulk">
+            审核通过</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                plain="true" onclick="wxAudit(false)" id="edit_unpass" operation="bulk">审核不通过</a>
+</div>
+<table id="dg-B230304">
+</table>
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    $(function () {
+        //加载商家
+        $('#CurrentMerchant').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingMerchants,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: false,
+            onSelect: function (record) {
+                buildPageByMerchant();
+            }
+        });
+        if (top.gUserInfo.MappingMerchants.length > 0) {
+            $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+
+            if (top.gUserInfo.MappingMerchants.length == 1) {
+                $('#CurrentMerchant-c').hide();
+            }
+        }
+        else {
+            alertInfo('当前帐号没有绑定任何商家');
+            $('#toolbar-Schedule').hide();
+        }
+        $('#SelectedDoStatus').combobox({
+            width: 100,
+            panelWidth: 120,
+            data: [{ ItemId: "0", ItemName: "待认证" }, { "ItemId": "1", ItemName: "已认证" }, { "ItemId": "2", ItemName: "认证不通过" }, { "ItemId": "", ItemName: "全部"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+        $('#SelectedDoStatus').combobox('setValue', "0");
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'id-' + currentMenuCode,
+            pk: 'Id',
+            getPKValueWhenAdd: function () {
+                return window.contants.idAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '服务人员资格审核',
+            baseModelUrl: baseCMSInvokeUrl + '/WeiXin/Pub/WXStationAuthRequestService/'
+        };
+
+        buildPageByMerchant();
+
+
+    });
+    function buildPageByMerchant() {
+       
+        autosize(models[currentMenuCode].gridId, -30);
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridForAudit',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'a.CheckInTime',
+                order: 'desc',
+                filterFields: [{ key: 'StationId', value: $('#CurrentMerchant').combobox('getValue') }, { key: 'DoStatus', value: ($('#SelectedDoStatus').combobox('getValue') == "" ? null : $('#SelectedDoStatus').combobox('getValue'))}],
+                fuzzyFields: [{ key: 'b.NickName', value: $('#Keyword').val()}]
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+        { field: 'Id', title: '序号', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'OpenId', title: 'OpenId', width: 150, hidden: true },
+        { field: 'CheckInTime', title: '申请时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+        { field: 'NickName', title: '昵称', width: 200, sortable: true },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'DoStatus', title: '审核状态', width: 100, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '待审核:0~t审核通过:1~t审核不通过:2' }
+
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        
+    }
+
+    function wxAudit(pass) {
+        var rows = $('#' + models[currentMenuCode].gridId).datagrid('getChecked');
+        if (rows.length == 0) {
+            alertInfo('请选择至少一条记录操作');
+            return;
+        }
+        alertConfirm('您确定要审核所选的记录吗？', function (r) {
+            if (r) {
+                var doStatus = pass ? "1" : "2";
+                postTo(models[currentMenuCode].baseModelUrl + '/AuditSelected/' + doStatus + "," + _.map(rows, function (o) { return o.Id; }).join("|"), null, function (ret) {
+                    if (ret.Success) {
+                        alertInfo('审核完成');
+                        $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                    }
+                }); 
+                if (top.WeiXinFlag == '1') {
+                    //推送微信提醒
+                    
+                    postTo(baseWeiXinOfServiceOnlineInovkeAddress + '/api/v1/ServeManAuthFinishRemind', $.toJSON({ PassFlag: pass ? 1 : 0, MerchantName: $('#CurrentMerchant').combobox('getText'), Items: rows }), function (ret) {
+                        if (ret.Success) {
+                            alertInfo('微信提醒发送完成');
+                        }
+                    });
+                }
+            }
+        }); 
+    }
+
+    function clearKW() {
+        $('#Keyword').val(null);
+        $('#SelectedDoStatus').combobox('setValue', "0");
+    }  
+</script>

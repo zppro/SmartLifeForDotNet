@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartLife.Client.Seat.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MessageBoxTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">消息对话框</Value>
+    </Setting>
+    <Setting Name="ProductName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">智慧民生之呼叫中心坐席处理系统</Value>
+    </Setting>
+    <Setting Name="Copyright_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">浙江蓝谷</Value>
+    </Setting>
+    <Setting Name="Copyright_Phone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0571-88976666</Value>
+    </Setting>
+    <Setting Name="Copyright_WebSite" Type="System.String" Scope="User">
+      <Value Profile="(Default)">www.lifeblue.com.cn</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

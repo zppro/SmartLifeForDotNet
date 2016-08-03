@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="CallService4M" type="SmartLife.Share.Models.Oca.CallService4M, SmartLife.Share.Models" /> 
+  </alias>
+  <statements>
+    <select id="CallServiceListByEmergency" parameterClass="StringObjectDictionary" resultClass="CallService4M" >
+      select
+      (select cast(count(*) as bit) from Oca_ServiceFamilyResponse where CallServiceId = w1.CallServiceId  ) as ResponseFlag,
+      (select OldManName from Oca_OldManBaseInfo where OldManId = w1.OldManId  ) as OldManName,
+      w1.CallServiceId,w1.CheckInTime,w1.AreaId,w1.Content,w1.LongitudeS,w1.LatitudeS,w1.DoStatus,w1.DoResults,w1.OldManId
+      from Oca_CallService w1
+      inner join
+      (select top $PageTo$ row_number() over(Order By x1.CheckInTime desc)n,x1.id from Oca_CallService x1
+      inner join Oca_OldManFamilyInfo x2 on x1.OldManId=x2.OldManId
+      where FamilyMemberId=#FamilyMemberId# and DoStatus>0
+      and ServiceQueueId in (select distinct GroupId from Pub_Group where GroupType='10000' and Status=1)
+      )w2
+      on w1.id=w2.id and w2.n >= $PageFrom$  order by w2.n asc
+    </select>
+  </statements>
+</sqlMap>

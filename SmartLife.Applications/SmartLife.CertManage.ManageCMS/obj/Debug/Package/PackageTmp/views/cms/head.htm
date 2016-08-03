@@ -1,0 +1,58 @@
+﻿<!--<img src="../../images/cms/banner_01226.png"  />-->
+<div class="div_logo"></div>
+<!--<embed src="themes/default/images/topv3.swf" quality="high" wmode="opaque" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="1000" height="222"></embed>-->
+<div class="navDiv">
+    <ul id="jMenu">
+		<li>
+            <a href="index.htm" >首页</a>
+        </li>
+		<li >
+		    <a href="stationList.htm?stype=00002&stype2=00001">养老机构查询</a>
+		</li>
+		<li >
+		    <a href="stationList.htm?stype=00002&stype2=00002">居家养老服务点查询</a>
+		</li>
+		<li >
+			<a href="orgList.htm?stype=00003">养老服务专业组织</a>
+		</li>
+		<li parentId="1"><a href="#">服务指南</a>
+		</li>
+        <li ><a href="videoList.htm">在线培训</a>
+		</li>
+	</ul>
+</div>
+<script type="text/javascript">
+    $(function () {
+        initSonMenu();
+    });
+
+    function initSonMenu() {
+        var areaId = appDeployArea.id;
+        postTo(ServiceUrl + "HomeColumns", $.toJSON({ ShowMode: 2, AreaId: areaId }), function (result) {
+            var html = null;
+            if (result.rows) {
+                html = [];
+                html.push("<ul>");
+                for (var index in result.rows) {
+                    html.push("<li>");
+                    html.push("<a href=\"articleList.htm?cid=" + result.rows[index].ColumnId + "&cname=" + escape(result.rows[index].COL_Name) + "\">" + result.rows[index].COL_Name + "</a>");
+                    html.push("</li>");
+                }
+                html.push("</ul>");
+                html = html.join("");
+                $("#jMenu li[parentId=1]").append(html);
+            }
+        }, { async: false }, { ConnectId: "SmartLife1203" });
+
+        $("#jMenu").jMenu({
+            openClick: false,
+            ulWidth: 'auto',
+            TimeBeforeOpening: 100,
+            TimeBeforeClosing: 11,
+            animatedText: false,
+            paddingLeft: 1,
+            absoluteTop: 43,
+            absoluteLeft: 35
+        });
+    }
+ </script>

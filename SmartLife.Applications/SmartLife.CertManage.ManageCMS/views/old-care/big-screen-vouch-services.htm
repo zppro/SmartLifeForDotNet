@@ -1,0 +1,170 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    <div id="north-c" data-options="region:'north',border:false" style="height: 144px;">
+        <div id="head-block" class="easyui-layout" data-options="fit:true">
+            <div id="head-c1" data-options="region:'north',border:false" style="height: 60px;">
+                <span id="CurrentAreaName"></span>居家养老 今日政府购买服务即时记录 
+            </div>
+            <div  id="head-c2" data-options="region:'center',border:false" style="height: 40px;">
+                <span id="stat-time"></span>
+            </div>
+            <div id="head-c3" data-options="region:'south',border:false" style="height: 36px;">
+                <div id="h-container">
+                    <div id="stat-all">
+                        未受理X条，受理中X条，处置中X条，督办中X条，回访中X条,处理完成X条。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="vouch-c" data-options="region:'center',collapsed:false,border:false,split:false" >
+        <div class="scroll-head">
+            <span class="field-servicecontent">服务内容</span><span class="field-serviceentity">服务实体</span><span
+                class="field-oldmanname">姓名</span><span class="field-areaname2">所属街道</span><span class="field-begintime">开始时间</span><span
+                    class="field-endtime">结束时间</span><span class="field-statusdescription">受理状态</span></div>
+        <div id="vouch-scroll" class="scroll">
+            <ul class="list">
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var di_vouch = '00000';
+    var maxid_vouch = 0;
+    var repeatTime = 20000;
+    var clearTime = 0.5 * 60 * 1000; //30秒
+    $(function () {
+        getTo(ajaxData_InvokeUrl + "/GetAreaName/" + top.appDeployArea.id, null, function (result) {
+            $('#CurrentAreaName').text(result);
+        });
+
+        setTimeout(function () {
+            $('#stat-time').text((new Date()).toString('yyyy-MM-dd HH:mm:ss'));
+            setTimeout(arguments.callee, 1000);
+        }, 0);
+
+        autosize('scroll-block'); 
+        autosize('h-container');
+        autosize('vouch-scroll', -$('#north-c').height() - 40);
+
+        loadfiles([
+            { type: "css", url: "../../css/old-care/big-screen.css" }
+            ], function () {
+                $("#h-container").roll({ containerCss: { height: '36px', "line-height": '36px' }, contentCss: { color: 'yellow', 'font-size': '24px' }, restart: function () {
+                    _statServicesOfVouchForBigScreen();
+                }
+                });
+                //即时服务
+                setTimeout(function () {
+                    _loadServicesOfVouchForScroll(maxid_vouch, function (rows) {
+                        var isAppend = true;
+                        if (maxid_vouch == 0) {
+                            isAppend = false;
+                        }
+                        if (rows.length > 0) {
+                            maxid_vouch = _.max(rows, function (o) {
+                                return o.Id;
+                            }).Id;
+
+                            var htmlstr = _.map(rows, function (o) {
+                                var rowclass = 'row-color-yellow';
+                                /*
+                                if (o.ServiceCatalog == '紧急救助') {
+                                rowclass = "row-color-red";
+                                }
+                                else if (o.ServiceCatalog == '亲人通话') {
+                                rowclass = "row-color-blue";
+                                }
+                                else if (o.ServiceCatalog == '公共服务') {
+                                rowclass = "row-color-yellow";
+                                }
+                                else if (o.ServiceCatalog == '生活服务') {
+                                rowclass = "row-color-green";
+                                }
+                                else if (o.ServiceCatalog == '核定服务') {
+                                rowclass = "row-color-orange";
+                                }
+                                */
+                                if (o.DoStatus == 3) {
+                                    rowclass = "row-color-green";
+                                }
+                                var beginTime = o.BeginTime;
+                                if (beginTime) {
+                                    beginTime = Date.parse(beginTime).toString('HH点mm分ss秒');
+                                }
+                                else {
+                                    beginTime = "&nbsp;";
+                                }
+                                var endTime = o.EndTime;
+                                if (endTime) {
+                                    endTime = Date.parse(endTime).toString('HH点mm分ss秒');
+                                }
+                                else {
+                                    endTime = "&nbsp;";
+                                }
+                                return '<li><a><span class="field-servicecontent ' + rowclass + '" >' + isempty(o.ServiceContent, '&nbsp;') + '</span><span class="field-serviceentity ' + rowclass + '" >' + isempty(o.ServiceEntity, '&nbsp;') + '</span><span class="field-oldmanname ' + rowclass + '" >' + o.OldManName + '</span><span class="field-areaname2 ' + rowclass + '">' + isempty(o.AreaName2, '&nbsp;') + '</span><span class="field-begintime ' + rowclass + '">' + beginTime + '</span><span class="field-endtime ' + rowclass + '" >' + endTime + '</span><span class="field-statusdescription ' + rowclass + '">' + isempty(o.StatusDescription, '&nbsp;') + '</span></a></li>';
+                            }).join("");
+
+                            if (isAppend) {
+                                $('#vouch-scroll ul').append(htmlstr);
+                            }
+                            else {
+                                $('#vouch-scroll ul').html(htmlstr);
+                            }
+                        }
+                    });
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+                //滚动
+                setInterval('autoScroll(".scroll")', 3000);
+
+                //定时将id清零
+                setTimeout(function () {
+                    maxid_vouch = 0;
+                    setTimeout(arguments.callee, clearTime);
+                }, clearTime);
+            });
+    });
+
+
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-50px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function _loadServicesOfVouchForScroll(id, callback) {
+        var selectedDate = (new Date()).toString('yyyy-MM-dd');
+        //selectedDate = '2014-01-20';
+        getTo(top.callservice_InvokeUrl + '/LoadServicesOfVouchForBigScreen/' + selectedDate + ',' + id, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                callback.apply(this, [rows]);
+            }
+        });
+    }
+    function _statServicesOfVouchForBigScreen() {
+        var selectedDate = (new Date()).toString('yyyy-MM-dd');
+        //selectedDate = '2014-01-21';
+        getAll([top.callservice_InvokeUrl + '/StatServicesOfVouchForBigScreen/00000,' + selectedDate], function (result_all) {
+            var rows_all = _.map(result_all.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            var htmls_all = [];
+            _.each(rows_all, function (o) {
+                htmls_all.push(o.StatusDescription + '<a>' + o.Num + '</a>次');
+            });
+            if (htmls_all.length > 0) {
+                $('#stat-all').html(htmls_all.join('； '));
+            }
+            else {
+                //$('#stat-all').html('');
+            }
+        });
+    } 
+</script>

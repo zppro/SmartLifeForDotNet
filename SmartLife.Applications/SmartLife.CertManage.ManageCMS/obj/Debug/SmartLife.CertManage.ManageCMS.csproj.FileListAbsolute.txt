@@ -1,0 +1,5 @@
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.CertManage.ManageCMS\obj\Debug\ResolveAssemblyReference.cache
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.CertManage.ManageCMS\bin\SmartLife.CertManage.ManageCMS.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.CertManage.ManageCMS\bin\SmartLife.CertManage.ManageCMS.pdb
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.CertManage.ManageCMS\obj\Debug\SmartLife.CertManage.ManageCMS.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.CertManage.ManageCMS\obj\Debug\SmartLife.CertManage.ManageCMS.pdb

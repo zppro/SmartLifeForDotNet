@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="DictionaryItem" type="SmartLife.Share.Models.Sys.DictionaryItem, SmartLife.Share.Models" />
+    <typeAlias alias="DictionaryItemPK" type="SmartLife.Share.Models.Sys.DictionaryItemPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="DictionaryItem_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_DictionaryItem(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="DictionaryId" >DictionaryId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemId" >ItemId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >ItemCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >ItemName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >SystemFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="DictionaryId" >#DictionaryId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemId" >#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="DictionaryItem_Update" parameterClass="StringObjectDictionary" >
+      update Sys_DictionaryItem
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      where DictionaryId=#DictionaryId# and ItemId=#ItemId#
+    </update>
+    <delete id="DictionaryItem_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_DictionaryItem
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="DictionaryId" >DictionaryId=#DictionaryId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemId" >ItemId=#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="DictionaryItem_Load" parameterClass="DictionaryItemPK" resultClass="DictionaryItem" >
+      select DictionaryId,ItemId,Id,Status,ItemCode,ItemName,Description,ParentId,Levels,EndFlag,SystemFlag,OrderNo,InputCode1,InputCode2 from Sys_DictionaryItem
+      where DictionaryId=#DictionaryId# and ItemId=#ItemId#
+    </select>
+    <select id="DictionaryItem_List" parameterClass="StringObjectDictionary" resultClass="DictionaryItem" >
+      select DictionaryId,ItemId,Id,Status,ItemCode,ItemName,Description,ParentId,Levels,EndFlag,SystemFlag,OrderNo,InputCode1,InputCode2 from Sys_DictionaryItem
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="DictionaryId" >DictionaryId=#DictionaryId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemId" >ItemId=#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

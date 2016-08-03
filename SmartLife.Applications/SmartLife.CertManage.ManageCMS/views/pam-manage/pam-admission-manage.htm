@@ -1,0 +1,390 @@
+﻿<style type="text/css">
+    .baseinfo tr td {  height: 30px; }
+    
+    .baseinfo .rtd { text-align:right; }
+    .baseinfo .ctd { width:30px; text-align:center; }
+    .baseinfo .ctd a {cursor:pointer;}
+    /*.baseinfo .ctd a:hover{ border:1px solid blue;}*/
+    .baseinfo .ltd { text-align:left; }
+    .baseinfo .ntd { width:80px; }
+    
+</style>
+
+<div id="cc-B130302">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            楼层房间
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B130302"></ul>
+        </div>
+    </div>
+    <div style="float:left;width:84%;">
+        <div id="search-sample-B130302" title="查询" style=" height:33px; ">
+            <form id="fm-search-rough-B130302" method="post">
+            <table width="100%">
+                <tr>
+                    <td style="text-align:right">
+                        关键字：
+                    </td>
+                    <td style="text-align:left">
+                        <input name="KeyWord" class="easyui-validatebox"   placeholder="姓名、身份证、电话、手机"/> 
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">查询</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">清空</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                            onclick="query()">高级查询</a>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div id="toolbar-B130302">
+            <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="agencyObjectNavigation('add')">新增</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="agencyObjectNavigation('edit')">编辑</a>
+        </div>
+        <table id="dg-B130302" >
+        </table>
+    </div>
+</div>
+<div id="dlg-search-B130302" class="easyui-dialog" style="width: 520px; height: 230px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B130302"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B130302" method="post" novalidate>
+    <div class="fitem">
+        <label>老人姓名:</label>
+        <input name="OldManName">
+        <label>身份证号:</label>
+        <input name="IDNo">
+    </div>
+    <div class="fitem">
+        <label>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Tel" />
+        <label>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Mobile"  />
+    </div>
+    <div class="fitem">
+        <label>详细地址:</label>
+        <input name="Address" >
+    </div>
+    </form>
+</div>
+<div id="btn-search-B130302">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm(false)">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+
+<div id="navigation-content"></div>
+
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+
+    //为稍微加快速度，先全部加载出数据
+    var dJDAreaDatas, dSQAreaDatas, dResidentBizIds, dAccountTypes, dEducationLevels, dMarriages, dHousingStatus, dIncomeStatus, dNations;
+    //pamTreeData 树数据
+    var currentStationTreeData;
+
+    $(function () {
+        validateUI();
+
+        //占位符初始化
+        placeholder();
+
+        autosize("cc-" + currentMenuCode, -3);
+
+        //加载机构 
+        $('#CurrentAgencys').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                }
+            },
+            onSelect: function (record) {
+                _loading();
+            }
+        });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['OldManName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '老人基本资料',
+            //baseModelUrl: baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/',//针对旧版本
+            //defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/', //合并版本
+            //ResidentStatus=7 针对机构
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 3,ResidentStatus:9 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var stationId = $('#CurrentAgencys').combobox('getValue');
+                var tmpFilterFields = [];
+                if (treeNode.attributes.PId != "_") {
+                    if (treeNode.attributes.PId == stationId.toUpperCase()) {
+                        tmpFilterFields.push({ key: 'FloorNo', value: treeNode.id });
+                    }
+                    else {
+                        tmpFilterFields.push({ key: 'RoomId', value: treeNode.id });
+                    }
+                }
+
+                var queryParams = $('#dg-B130302').datagrid('options').queryParams;
+                _.each(queryParams.filterFields, function (i) {
+                    if (i.key != "FloorNo" && i.key != "RoomId") {
+                        tmpFilterFields.push(i);
+                    }
+                });
+
+                queryParams.filterFields = tmpFilterFields;
+                queryParams.fuzzyFields = null;
+                _loading(queryParams);
+            },
+            onLoadSuccess: function (node, data) {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+
+                currentStationTreeData = data;
+            }
+        },
+            function (d) {
+                getTreeData('01$01$10', "OrderNo asc", '{"StationId":"' + $('#CurrentAgencys').combobox('getValue').toUpperCase() + '"}', d);
+            },
+            null,
+            function (treeObj) {
+                var stationId = $('#CurrentAgencys').combobox('getValue');
+
+                loadfiles([{ type: "js", url: "../../script/old-care/aid.js"}], function () {
+                    $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                        title: "",
+                        pagination: true,
+                        rownumbers: true,
+                        singleSelect: true,
+                        url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPageByStationId2',
+                        method: 'POST',
+                        toolbar: '#' + models[currentMenuCode].toolbarId,
+                        queryParams: {
+                            sort: 'a.OperatedOn',
+                            order: 'desc',
+                            filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                                           { key: 'ResidentStatus', value: models[currentMenuCode].defaultModel.ResidentStatus },
+                                           { key: 'StationId', value: stationId}]
+                        },
+                        onDblClickRow: function (idx, row) {
+                            agencyObjectNavigation('edit', row);
+                        },
+                        columns: [[
+                            { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                            { field: 'CK', title: '', checkbox: true },
+                            { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                            { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                            { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                            { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                            { field: 'RoomNo', title: '所在房间', width: 60, align: 'center' },
+                            { field: 'SickBedNo', title: '所在床位', width: 60, align: 'center' },
+                            { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                            { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                            { field: 'Tel', title: '座机', width: 100 },
+                            { field: 'Mobile', title: '手机', width: 100 },
+                            { field: 'Address', title: '家庭地址', width: 300 }
+                    ]],
+                        loader: easyuiLoaderForStringObjectDictionary
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                    ////获取街道数据不加权限
+                    dJDAreaDatas = GetStreetAndCommunityInArea(top.appDeployArea.id, "4"),
+                    ////获取社区数据加权限
+                    dSQAreaDatas = GetStreetAndCommunityInArea(top.appDeployArea.id, "5");
+                });
+            }); //end loadTree
+
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/01005',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00016',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00017',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00018',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00020',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00021',
+            ajaxData_InvokeUrl + '/GetDictionaryItem/00022'], function (residentBizId, accountType, educationLevel, marriage, housingStatus, incomeStatus, nation) {
+                dResidentBizIds = residentBizId;
+                dAccountTypes = accountType;
+                dEducationLevels = educationLevel;
+                dMarriages = marriage;
+                dHousingStatus = housingStatus;
+                dIncomeStatus = incomeStatus;
+                dNations = nation;
+            });
+
+        //回车
+        $("#search-sample-B130302 input[name='KeyWord']").keydown(function (e) {
+            if (e.keyCode == 13) {
+                exec(true);
+                e.preventDefault(); //阻止默认行为
+                //return false;--阻止默认行为，事件冒泡和回调
+            }
+        });
+
+    });
+
+
+    function _loading(qParams) {
+        var tmpStationId = $('#CurrentAgencys').combobox('getValue');
+        //变更机构,重新初始化datagrid 形参
+        if (!qParams) {
+            //旧版本
+            //qParams = { sort: 'a.OperatedOn', order: 'desc',
+            //filterFields: [{ key: 'Status', value: 1 },
+            //{ key: 'StationId', value: tmpStationId}]
+            //};
+            qParams = { sort: 'a.OperatedOn', order: 'desc', filterFields: [
+                      { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                      { key: 'ResidentStatus', value: models[currentMenuCode].defaultModel.ResidentStatus},
+                      { key: 'StationId', value: tmpStationId}]
+             };
+
+            //刷新树
+            refreshTree('easyUITree', models[currentMenuCode].treeId, '01$01$10', "OrderNo asc", '{"StationId":"' + tmpStationId.toUpperCase() + '"}');
+        }
+
+        $('#' + models[currentMenuCode].gridId).datagrid('reload', qParams);
+    }
+
+
+    function agencyObjectNavigation(sType, row) {
+        var tmpStationId = $('#CurrentAgencys').combobox('getValue');
+        if (sType == 'edit') {
+            if (!row) {
+                row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+            }
+            if (!row) {
+                alertInfo('请选择一条要编辑的记录!');
+                return;
+            }
+        }
+        
+        //传参
+        var dialogDatas = { "RStatus": models[currentMenuCode].defaultModel.ResidentStatus,
+            "RowData": row, "StationId": tmpStationId, "treeData": currentStationTreeData,
+            "JDAreaDatas": dJDAreaDatas, "SQAreaDatas": dSQAreaDatas, "ResidentBizIds": dResidentBizIds,
+            "AccountTypes": dAccountTypes, "EducationLevels": dEducationLevels, "Marriages": dMarriages,
+            "HousingStatus": dHousingStatus, "IncomeStatus": dIncomeStatus, "Nations": dNations
+        };
+
+        getHtml(baseUrl + '/views/pam-manage/data-update-pam-agencyobject.htm', function (str) {
+            $("#navigation-content").html(str);
+            $.parser.parse('#btn-navigation-block');
+            $("#the-navigation-block").dialog({
+                inline: false,
+                onClose: function () {
+                    if (clearAdmissionContent) {
+                        clearAdmissionContent();
+                    }
+                    /*
+                        存在一个问题，无法销毁内嵌的easyui messager消息提醒机制,
+                        是否用alert替代或者查询整个iframe内的消息提醒机制并销毁掉,
+                        这个问题会导致dom无限制增加,是个风险
+                    */
+                    $(this).panel('destroy');
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                },
+                onBeforeOpen: function () {
+                    loadAdmissionContent(dialogDatas);
+                },
+                modal: true
+            }).dialog('open').dialog('setTitle', '设置入院参数');
+        });
+//        //打开
+//        openDialog('set-pam-agencyobject', 'views/pam-manage/data-update-pam-agencyobject.htm',
+//            function (callback, dialogData) {
+//                $('#' + models[currentMenuCode].gridId).datagrid('reload');
+//                callback();
+//            }
+//            , {
+//                dialogData: dialogDatas,
+//                title: '设置入院参数', width: 930, height: 490, padding: 5,
+//                dialogClear: function () { top.dialogClear(); },
+//                buttons: [{
+//                    text: '上一步',
+//                    iconCls: 'icon-undo',
+//                    handler: function () { top.toggleTreeSelected(false); }
+//                },
+//                {
+//                    text: '下一步',
+//                    iconCls: 'icon-redo',
+//                    handler: function () { top.toggleTreeSelected(true); }
+//                },
+//                {
+//                    id: 'btnHideSave',
+//                    text: '完成',
+//                    iconCls: 'icon-ok',
+//                    handler: function () {
+//                        top.toSaveAdmission((sType == 'edit' ? true : false));
+//                    }
+//                },
+//                {
+//                    text: '取消',
+//                    iconCls: 'icon-cancel',
+//                    handler: function () { $('#' + models[currentMenuCode].gridId).datagrid('reload'); top.dialogClose(); }
+//                }]
+//            });
+    }
+
+
+    //相对高度
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

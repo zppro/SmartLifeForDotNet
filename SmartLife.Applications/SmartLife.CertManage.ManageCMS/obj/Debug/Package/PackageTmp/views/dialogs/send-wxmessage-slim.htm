@@ -1,0 +1,27 @@
+﻿<div class="ftitle"></div>
+<form id="fm-send-wxmessage" method="post" novalidate>
+<div class="fitem">
+    <label>发送昵称:</label>  
+        <input id="NickName"  />
+</div> 
+<div class="fitem">
+    <label>发送内容:</label> 
+    <textarea id="MessageContent" rows="10" style="width: 240px;"></textarea>
+</div> 
+</form>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        $('#NickName').val(dialogData.NickName);
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        return { Content: $('#MessageContent').val() };
+    }
+
+
+</script>

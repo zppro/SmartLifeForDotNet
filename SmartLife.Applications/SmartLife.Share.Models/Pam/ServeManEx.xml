@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements> 
+    <select id="ServiceManListForMapping" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.UserId ,a.UserCode,a.UserName ,a.Gender,b.CallNo
+      from Pub_User a left join Pam_ServeMan b  on a.UserId=b.UserId
+      where a.UserId in (
+      select gm.UserId from Pub_GroupMember gm inner join Pub_PensionAgencyUser pu on gm.UserId=pu.UserId
+      where gm.GroupId=#GroupId# and pu.StationId=#StationId#
+      )and a.UserId
+      <isEqual property="Selected" compareValue="0">
+        not
+      </isEqual>
+      in( select UserId from Pam_OldManMappingServeMan
+      where EndTime>=GETDATE()
+      <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+      )  
+      <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" AND " property="UserType" >a.UserType=#UserType#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" AND " property="SystemFlag" >a.SystemFlag=#SystemFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StopFlag" >a.StopFlag=#StopFlag#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" AND " property="Area1" >a.Area1=#Area1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Area2" >a.Area2=#Area2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      order by UserName asc
+    </select>
+    <select id="GetServiceManConfigInfo" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select c.UserId ,c.UserCode,c.UserName ,c.Gender,d.CallNo From
+        Pub_GroupMember a inner join Pub_PensionAgencyUser b on a.UserId=b.UserId
+        inner join Pub_User c on b.UserId=c.UserId and c.Status=1 inner join Pam_ServeMan d
+        on c.UserId=d.UserId where a.GroupId='00001000-0006-0000-0000-000000000003'
+      <isPropertyAvailable prepend=" AND " property="StopFlag" >c.StopFlag=#StopFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Area1" >c.Area1=#Area1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Area2" >c.Area2=#Area2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >b.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B676D15B-36AE-4244-9DAE-37E65CC19535}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Client.PensionAgency.SelfService</RootNamespace>
+    <AssemblyName>SmartLife.Client.PensionAgency.SelfService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Solution-Bins\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartLife.Client.PensionAgency.Models">
+      <HintPath>..\..\Solution-Bins\SmartLife.Client.PensionAgency.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.core">
+      <HintPath>..\..\Solution-Bins\win.core.dll</HintPath>
+    </Reference>
+    <Reference Include="win.tools">
+      <HintPath>..\..\Solution-Bins\win.tools.dll</HintPath>
+    </Reference>
+    <Reference Include="win.updater">
+      <HintPath>..\..\Solution-Bins\win.updater.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="frmBindingPA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBindingPA.Designer.cs">
+      <DependentUpon>frmBindingPA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplash.Designer.cs">
+      <DependentUpon>frmSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsVar.cs" />
+    <Compile Include="ucAccount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucAccount.Designer.cs">
+      <DependentUpon>ucAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucCourseInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucCourseInfo.Designer.cs">
+      <DependentUpon>ucCourseInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucOldManInfoShow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucOldManInfoShow.Designer.cs">
+      <DependentUpon>ucOldManInfoShow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucOldManInfoSlim.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucOldManInfoSlim.Designer.cs">
+      <DependentUpon>ucOldManInfoSlim.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucOrderInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucOrderInfo.Designer.cs">
+      <DependentUpon>ucOrderInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucPhysicalExamination.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucPhysicalExamination.Designer.cs">
+      <DependentUpon>ucPhysicalExamination.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="frmBindingPA.resx">
+      <DependentUpon>frmBindingPA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplash.resx">
+      <DependentUpon>frmSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ucAccount.resx">
+      <DependentUpon>ucAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucCourseInfo.resx">
+      <DependentUpon>ucCourseInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucOldManInfoShow.resx">
+      <DependentUpon>ucOldManInfoShow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucOldManInfoSlim.resx">
+      <DependentUpon>ucOldManInfoSlim.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucOrderInfo.resx">
+      <DependentUpon>ucOrderInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucPhysicalExamination.resx">
+      <DependentUpon>ucPhysicalExamination.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <EmbeddedResource Include="log4net.config" />
+    <None Include="config.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="config_debug.ini" />
+    <None Include="config_release.ini" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\splash-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\oldman-m.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\oldman-f.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ap_bg.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

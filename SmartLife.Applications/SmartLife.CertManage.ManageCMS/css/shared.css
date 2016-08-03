@@ -1,0 +1,61 @@
+﻿#tabContent{width:100%; height:100%;}
+.1024X768{width:1024px; height:680px;}
+#oldman-portrait{width:128px; height:128px; border:solid 1px #333; padding:0px; margin:20px auto; background:url('../images/public/portrait.png') no-repeat;}
+#oldman-portrait img{width:128px; height:128px;}
+
+#oldman-info{width:180px; height:650px; margin:0px auto;border-right:solid 1px #aaa;}
+#oldman-info table.oldman-base-info{width:100%; height:500px;}
+#oldman-info table.oldman-base-info td{font-size:13px;}
+#oldman-info table.oldman-base-info td.oldman-info-portrait{height:128px;}
+#oldman-info table.oldman-base-info td.oldman-info-key{text-align:right; font-weight:bold;height:20px; line-height:20px;}
+#oldman-info table.oldman-base-info td.oldman-info-btn{height:40px;}
+#oldman-info table.oldman-base-info td.space{height:105px;}
+#oldman-info table.oldman-base-info #oldman-info-idno{font-size:12px; font-family:Arial;}
+
+#service-process-archive-history{ width:94%; margin:0 auto; height:36px; line-height:36px; text-align:center; background-color:#FFF5EE;font-size:16px;}
+.service-process-title{ width:94%; margin:0 auto; padding-top:5px; font-weight:bold;}
+#service-process-content{ width:94%;margin:5px auto;height:164px; border:solid 1px #999; overflow-y:scroll;}
+#service-process-content-life{ width:94%;margin:5px auto;height:144px; border:solid 1px #999; overflow-y:scroll;}
+#service-process-content-history{width:94%;margin:5px auto; height:452px; border:solid 1px #999; overflow-y:scroll;}
+#service-process-content,#service-process-content-life,#service-process-content-history .TrackLog{margin:2px;}
+#do-process-box-c0{width:94%;margin:10px auto;}
+#do-process-box-c1{width:94%;margin:10px auto;}
+#do-process-box-c1-1{clear:both;width:94%;margin:10px auto;padding-top:5px;}
+#workorder-container{float:left; margin-left:5px;padding-top: 5px;}
+#workorder-container a{ cursor:pointer; text-decoration:underline;}
+#do-process-box{width:370px;height:20px; line-height:20px;}
+#do-process-box-c2{clear:both;width:94%;margin:10px auto; padding-top:12px;}
+#do-process-box-c2 .servcietype{float:left; width:30%;}
+#do-process-box-c2 .servcieaidprocess{float:right;width:69%; text-align:right;}
+#do-process-box-info{width:182px;height:20px; line-height:20px;}
+#do-process-box-c3{clear:both;width:90%;margin:10px auto; padding-top:2px;}
+
+.button-red-0{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:68px; height:24px; line-height:24px; background:url('../images/public/bg-button-red-3.png') no-repeat;}
+.button-red-1{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:62px; height:28px; line-height:28px; background:url('../images/public/bg-button-red-1.png') no-repeat;}
+.button-red-2{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:170px;height:36px; line-height:36px;background:url(../images/public/bg-button-red-2.jpg) no-repeat;}
+.button-red-3{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:62px; height:18px; line-height:18px; background:red;}
+.button-blue-0{cursor:pointer; text-decoration:none; text-align:center;color:White;  display:inline-block; margin-left:10px; width:62px; height:28px; line-height:28px; background:url('../images/public/bg-button-blue-3.png') no-repeat;}
+.button-blue-1{cursor:pointer; text-decoration:none; text-align:center;color:White;  display:inline-block; margin-left:10px; width:62px; height:30px; line-height:30px; background:url('../images/public/bg-button-blue-1.png') no-repeat;}
+.button-yellow-1{cursor:pointer; text-decoration:none; text-align:center; display:inline-block; width:74px; height:31px; line-height:31px; background:url('../images/public/bg-button-yellow-1.png') no-repeat;}
+.button-match{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:60px; height:23px; line-height:23px;background:url('../images/public/bg-button-match.png') no-repeat;}
+.button-send{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:142px; height:28px; line-height:28px;background:url('../images/public/bg-button-sendorder.png') no-repeat;}
+.button-red-sendlog{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block;width:63px; height:25px; line-height:25px; background:red;}
+.bg-family-callinfo{width:265px; height:34px; line-height:34px; background:url('../images/public/family-call.png') no-repeat;}
+.family-callinfo{cursor:pointer; text-decoration:none; text-align:center;color:White;  display:inline-block; width:200px; height:22px; line-height:22px;}
+
+.button-red-1-small{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block; margin-left:3px; font-size:10px; width:37px; height:17px; line-height:17px; background:url('../images/public/bg-button-red-1-small.jpg') no-repeat;}
+.button-red-2-small{cursor:pointer; text-decoration:none; text-align:center; color:White; display:inline-block; margin-left:3px; font-size:10px; height:17px; line-height:17px; background:red;}
+.button-blue-1-small{cursor:pointer; text-decoration:none; text-align:center; display:inline-block;margin-left:3px; font-size:10px; width:80px; height:17px; line-height:17px; background:url('../images/public/bg-button-blue-1-small.png') no-repeat;}
+.button-yellow-1-small{cursor:pointer; text-decoration:none; text-align:center; display:inline-block;margin-left:3px; font-size:10px;width:55px; height:17px; line-height:17px; background:url('../images/public/bg-button-yellow-1-small.jpg') no-repeat;}
+
+.oldman-info-panel{ width:180px;height:100%; float:left; padding:0px; margin:0px; }
+.service-middle{width:555px; height:100%; float:left;}
+.location-panel{width:545px;height:306px; margin:5px;}
+.service-process-panel{width:100%;height:50%; }
+.right-panel{width:271px;height:100%; float:left;}
+ 
+#YY-Content ul{ width:240px; margin:0px; padding:0px;}
+#YY-Content li{float:left;}
+#YY-Content li a {float:left; text-decoration:none; color:#333;}
+
+.button-dialback{cursor:pointer; text-decoration:none;width:162px; height:28px; line-height:28px; margin-left:10px; padding-left:34px; color:white; display:inline-block; font-size:14px; background:url('../images/public/callback.png') no-repeat;}

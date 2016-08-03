@@ -1,0 +1,522 @@
+﻿<div id="search-sample-B181201" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B181201" method="post">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字：<input name="KeyWord" class="easyui-validatebox" />
+            </td>
+            <td style="text-align: left">
+                操作开始时间：
+                <input name="OperatedOn_Start" class="Wdate" onfocus="WdatePicker()" />
+                操作结束时间：
+                <input name="OperatedOn_End" class="Wdate" onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="query()">高级查询</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<table id="cc-B181201" style="width: 100%; height: 100%;">
+    <tr>
+        <td valign="top">
+            <div id="toolbar-B181201">
+                <!--  <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="query()">高级查询</a>-->
+                <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="add()">新增</a> <a behaviorcode="02" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+                <a behaviorcode="03" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove"
+                    plain="true" onclick="nullify()">作废</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-upload" plain="true" onclick="nullify()">查看块</a> <a href="javascript:void(0)"
+                            id="mb" class="easyui-menubutton" data-options="menu:'#mm'">其他</a>
+                <div id="mm" style="width: 50px">
+                    <div behaviorcode="05" id="residentUpdate" iconcls="icon-upload" plain="true">
+                        导入</div>
+                </div>
+            </div>
+            <table id="dg-B181201">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B181201" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181201">
+    <div style="width: 100%; height: 100%;">
+        <form id="fm-B181201" method="post" novalidate>
+        <input type="hidden" name="SurveyId" id="surveyId-B181201" />
+        <div class="fitem">
+            <label>
+                标 题:</label>
+            <input name="SurveyTitle" class="easyui-validatebox" required="true" missingmessage="标题不能为空"
+                style="width: 280px" />
+        </div>
+        <div class="fitem">
+            <label>
+                副 标 题 :</label>
+            <input name="SurveySubTitle" class="easyui-validatebox" style="width: 180px" />
+        </div>
+        <div class="fitem">
+            <label>
+                开始时间:</label>
+            <!--<input type="text" name="BeginTime" class="Wdate" onfocus="tb_reset(this);WdatePicker({dateFmt:'yyyy-MM-dd'})" />-->
+            <input id="BeginTime" name="BeginTime" class="easyui-validatebox Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});"
+                required="true" />
+        </div>
+        <div class="fitem">
+            <label>
+                过期时间:</label>
+            <!--<input type="text" name="ExpiredOn" class="Wdate" onfocus="tb_reset(this);WdatePicker({dateFmt:'yyyy-MM-dd'})" />-->
+            <input id="ExpiredOn" name="ExpiredOn" class="easyui-validatebox Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});"
+                required="true" />
+        </div>
+        <div class="fitem">
+            <table id="dg-SurveyIdItems">
+            </table>
+            <div id="toolbar-SurveyIdItems">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="clientAppend()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-remove" plain="true" onclick="clientRemove()">作废</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="clientAccept()">
+                            接受更改</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo"
+                                plain="true" onclick="clientReject()">放弃</a>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="btn-B181201">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="beforeSave()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div>
+<!--surveyItem-->
+<div id="dlg-B181202" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181202">
+</div>
+<div id="btn-B181202">
+    <a href="javascript:void(0)" id="edit_btn2" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="onBeforeSave()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div>
+<!--surveyBlock-->
+<div id="dlg-B181203" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181203">
+</div>
+<div id="btn-B181203">
+    <a href="javascript:void(0)" id="edit_btn3" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="onBeforeSave()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B181201" class="easyui-dialog" style="width: 280px; height: 270px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B181201">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B181201" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            标　题:</label>
+        <input name="SurveyTitle">
+    </div>
+    <div class="fitem">
+        <label>
+            副标题:</label>
+        <input name="SurveySubTitle">
+    </div>
+    </form>
+</div>
+<div id="btn-search-B181201">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+
+    var _surveyItemType; //调查项目类型
+    var _surveyItemTypeRange; //调查项目类型值域
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            gridId2: 'dg-B181202',
+            toolbarId: 'toolbar-' + currentMenuCode,
+            toolbarId2: 'toolbar-B181202',
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'surveyId-' + currentMenuCode,
+            pk: 'SurveyId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                var tmpdate = formData["BeginTime"];
+                var strPackageBeginDate = '\/Date(' + Date.parse(tmpdate).getTime() + '+0800)\/';
+                formData["BeginTime"] = strPackageBeginDate;
+
+                var strPackageEndDate = '\/Date(' + Date.parse(formData["ExpiredOn"]).getTime() + '+0800)\/';
+                formData["ExpiredOn"] = strPackageEndDate;
+
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['SurveyTitle'] = formData['KeyWord'];
+                formData['SurveySubTitle'] = formData['KeyWord'];
+//                formData['InputCode1'] = formData['KeyWord'];
+//                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            actionDone: function (action, sks) {
+                if (action != 'nullify' && sks.SurveyId) {
+                    endEditing();
+                    var rows = $('#dg-SurveyIdItems').datagrid('getRows');
+                    if (rows.length > 0) {
+                        var params = $.toJSON(rows);
+                        postTo(baseCMSInvokeUrl + '/Pub/SurveyService/BatchCreateServeItem/' + sks.SurveyId, params, function (ret) {
+
+                        });
+                    }
+                }
+            },
+            onAfterDialogOpen: function (row) {
+                var str_date = ndateFormatter($("#BeginTime").val(), "yyyy-MM-dd");
+                $("#BeginTime").val(str_date);
+                str_date = ndateFormatter($("#ExpiredOn").val(), "yyyy-MM-dd");
+                $("#ExpiredOn").val(str_date);
+
+                var surveyId = window.contants.guidAutoGenerate;
+
+                if ($('#surveyId-B181201').val()) {
+                    surveyId = $('#surveyId-B181201').val();
+                }
+                else {
+                    surveyId = window.contants.guidAutoGenerate;
+                }
+
+                editIndex = undefined;  //修正直接关闭对话框未清空editIndex
+                $('#dg-SurveyIdItems').datagrid(easyuigrid_settings({
+                    title: "问卷项",
+                    pagination: true,
+                    rownumbers: true,
+                    height: 260,
+                    singleSelect: true,
+                    url: baseCMSInvokeUrl + '/Pub/SurveyService/QuerySurveyForGrid',
+                    method: 'POST',
+                    toolbar: '#toolbar-SurveyIdItems',
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        instance: {
+                            SurveyId: surveyId
+                        }
+                    },
+                    pageSize: 3,
+                    pageList: [3],
+                    onClickRow: onClickRow,
+                    columns: [[
+                    { field: 'SurveyItemName', title: '调查项名称', align: 'left', width: 170, editor: { type: 'validatebox', options: { required: true}} },
+                    { field: 'SurveyItemType', title: '调查项类型', width: 80, align: 'left', formatter: function (value, row) {
+                        var surveyItemType;
+                        var item = _.find(_surveyItemType, function (o) {
+                            if (o.ItemId == value) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (item) {
+                            surveyItemType = item.ItemName;
+                        }
+                        return surveyItemType;
+                    },
+                        editor: {
+                            type: 'combobox',
+                            options: {
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                data: _surveyItemType,
+                                required: true,
+                                editable: false
+                            }
+                        }
+                    },
+                    { field: 'SurveyItemTypeRange', title: '调查项值域', width: 70, align: 'left', formatter: function (value, row) {
+                        var surveyItemTypeRange;
+                        var item = _.find(_surveyItemTypeRange, function (o) {
+                            if (o.ItemId == value) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (item) {
+                            surveyItemTypeRange = item.ItemName;
+                        }
+                        return surveyItemTypeRange;
+                    },
+                        editor: {
+                            type: 'combobox',
+                            options: {
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                data: _surveyItemTypeRange,
+                                required: true,
+                                editable: false
+                            }
+                        }
+                    },
+                    { field: 'SurveyItemTypeRangeValue', title: '调查项值域取值', width: 200, align: 'left', editor: 'text' },
+                    { field: 'OrderNo', title: '排序序号', width: 60, align: 'left', editor: { type: 'numberbox', options: { required: true}} },
+                    { field: 'Status', title: '状态', width: 50, align: 'center', editor: 'lable', formatter: easyuigrid_statusFormatter },
+                    { field: 'SurveyItemId', title: '调查项编号', hidden: true }
+            ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            },
+            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '调查问卷',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/SurveyService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+            //defaultModelWhenAdd: { Gender: 'M' }
+        };
+        //alert(baseInfoNode); return;
+        autosize("cc-B181201",-30);
+
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/00024',
+        ajaxData_InvokeUrl + '/GetDictionaryItem/00025'], function (surveyItemType_d, surveyItemTypeRange_d) {
+            _surveyItemType = surveyItemType_d;
+            _surveyItemTypeRange = surveyItemTypeRange_d;
+        });
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'Id',
+                order: 'desc',
+                instance: {
+                    Status: 1
+                }
+                //                filterFields: [
+                //                    { key: 'Status', value: 0 }
+                //                ]
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+                    { field: 'SurveyId', title: '编号', width: 150, hidden: true },
+                    { field: 'SurveyTitle', title: '标题', width: 150, align: 'left' },
+                    { field: 'SurveySubTitle', title: '副标题', width: 100, align: 'left' },
+                    { field: 'CheckInTime', title: '录入时间', width: 100, align: 'center', formatter: easyuigrid_dateFormatter },
+                    { field: 'BeginTime', title: '生效时间', width: 100, align: 'center', formatter: easyuigrid_dateFormatter },
+                    { field: 'OperatedOn', title: '操作时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                    { field: 'ExpiredOn', title: '过期时间', width: 100, align: 'center', formatter: easyuigrid_dateFormatter },
+                    { field: 'Status', title: '状态', width: 70, align: 'center', formatter: easyuigrid_statusFormatter }
+            ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        //        $('#' + models[currentMenuCode].gridId).datagrid({
+        //            rowStyler: function (index, row) {
+        //                if (row.FlowFrom != "") {
+        //                    if (row.FlowFrom.toString().substring(1, row.FlowFrom.length) != 0) {
+        //                        return 'background-color:#FF6347;';
+        //                    } else {
+        //                        return 'background-color:#63B8FF';
+        //                    }
+        //                }
+        //            }
+        //        });
+    });
+
+    function CreateItemTable(id) {
+        $('#' + models[currentMenuCode].gridId2).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'QuerySurveyItemForGrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId2,
+            queryParams: {
+                sort: 'Id',
+                order: 'desc',
+                instance: {
+                    SurveyId: id
+                }
+                //                filterFields: [
+                //                    { key: 'Status', value: 0 }
+                //                ]
+            },
+            onDblClickRow: function (idx, row) {
+                //edit(row);
+            },
+            columns: [[
+                    { field: 'SurveyItemId', title: '编号', width: 150, hidden: true },
+                    { field: 'SurveyItemName', title: '标题', width: 150, align: 'left' },
+                    { field: 'SurveyItemType', title: '类型', width: 100, align: 'left' },
+                    { field: 'SurveyItemTypeRange', title: '类型值域', width: 100, align: 'center' },
+                    { field: 'CheckInTime', title: '录入时间', width: 100, align: 'center', formatter: easyuigrid_dateFormatter },
+                    { field: 'Status', title: '状态', width: 70, align: 'center', formatter: easyuigrid_statusFormatter },
+                    { field: 'SurveyId', title: '问卷编号', width: 150, hidden: true },
+            ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function beforeSave() {
+        var flag = true;
+        //        $(".Wdate").each(function (i, t) {
+        //            if (t.realValue == null||t.realValue =="") {//点击但不选值为""
+        //                flag = false;
+        //                $(this).css("background-color", "Red");
+        //            }
+        //        });
+        if (flag) save();
+    }
+
+    //    function tb_reset(ojb) {
+    //        $(ojb).css("background-color", "");
+    //        ojb.realValue = null;
+    //    }
+
+    //    function generatePackageComment() {
+    //        var rows = $('#dg-PackageItems').datagrid('getRows');
+    //        var periodType = $('#PeriodType').combobox('getValue');
+    //        var periodName = '';
+    //        if (periodType == '00001') {
+    //            periodName = '年';
+    //        }
+    //        else if (periodType == '00002') {
+    //            periodName = '半年';
+    //        }
+    //        else if (periodType == '00003') {
+    //            periodName = '季';
+    //        }
+    //        else if (periodType == '00004') {
+    //            periodName = '月';
+    //        }
+
+    //        $('#PackageComment').text(_.map(rows, function (o) {
+    //            var unit = '';
+    //            if (o.FeeType == '00001') {
+    //                unit = '次';
+    //            }
+    //            else if (o.FeeType == '00002') {
+    //                unit = '小时';
+    //            }
+    //            return o.ServeItemBName + '(' + o.ChargeNum + unit + '/' + periodName + ')';
+    //        }).join(";"));
+    //    }
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        if ($('#dg-SurveyIdItems').datagrid('validateRow', editIndex)) {
+            var rows = $('#dg-SurveyIdItems').datagrid('getRows');
+
+            var ed1 = $('#dg-SurveyIdItems').datagrid('getEditor', { index: editIndex, field: 'SurveyItemType' });
+            var surveyItemType = $(ed1.target).combobox('getValue');
+            var surveyItemId = $(ed1.target).combobox('getText');
+            rows[editIndex]['SurveyItemType'] = surveyItemType;
+            rows[editIndex]['ServeItemBName'] = surveyItemId;
+
+            var ed2 = $('#dg-SurveyIdItems').datagrid('getEditor', { index: editIndex, field: 'SurveyItemTypeRange' });
+            var feeType = $(ed2.target).combobox('getValue');
+            rows[editIndex]['SurveyItemTypeRange'] = feeType;
+
+            $('#dg-SurveyIdItems').datagrid('endEdit', editIndex);
+
+            editIndex = undefined;
+
+            //生成套餐说明
+            //            generatePackageComment();
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickRow(index) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#dg-SurveyIdItems').datagrid('selectRow', index)
+                            .datagrid('beginEdit', index);
+                editIndex = index;
+            } else {
+                $('#dg-SurveyIdItems').datagrid('selectRow', editIndex);
+            }
+        }
+    }
+    function clientAppend() {
+        if (endEditing()) {
+            $('#dg-SurveyIdItems').datagrid('appendRow', {});
+            editIndex = $('#dg-SurveyIdItems').datagrid('getRows').length - 1;
+            $('#dg-SurveyIdItems').datagrid('selectRow', editIndex)
+                        .datagrid('beginEdit', editIndex);
+
+            var ed = $('#dg-SurveyIdItems').datagrid('getEditor', { index: editIndex, field: 'SurveyItemType' });
+            if (ed) $(ed.target).combobox('loadData', _surveyItemType);
+        }
+    }
+    function clientRemove() {
+        if (editIndex == undefined) { return }
+        //        $('#dg-SurveyIdItems').datagrid('cancelEdit', editIndex)
+        //                    .datagrid('deleteRow', editIndex);
+        var row = $('#dg-SurveyIdItems').datagrid('getSelected');
+        var index = $('#dg-SurveyIdItems').datagrid('getRowIndex', row);
+        row.Status = '0';
+        $('#dg-SurveyIdItems').datagrid('refreshRow', index);
+        editIndex = undefined;
+    }
+    function clientAccept() {
+        if (endEditing()) {
+            $('#dg-SurveyIdItems').datagrid('acceptChanges');
+        }
+    }
+    function clientReject() {
+        $('#dg-SurveyIdItems').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 152,
+            panelHeight: 80,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.ItemId == value; }).ItemName;
+    }
+</script>

@@ -1,0 +1,269 @@
+﻿<style type="text/css">  
+    #workexecute-panel-l{width:34%; float:left;   overflow:auto; background-color:#FAFAD2;-moz-border-top-left-radius:10px;-webkit-border-top-left-radius:10px; -moz-border-bottom-left-radius:10px;-webkit-border-bottom-left-radius:10px; border-top-left-radius:10px; border-bottom-left-radius:10px;}
+    #workexecute-panel-r{width:66%; float:right;text-align:left; color:white;background-color:#006030;-moz-border-top-rigth-radius:10px;-webkit-border-top-rigth-radius:10px; -moz-border-bottom-rigth-radius:10px;-webkit-border-bottom-rigth-radius:10px; border-top-rigth-radius:10px; border-bottom-rigth-radius:10px; }
+    
+    .workexecute-panel-l-title{width:100%; height:45px;margin-bottom:3%; padding-top:5px; text-align:center;  background-color:#66CCFF;-moz-border-top-left-radius:10px;-webkit-border-top-left-radius:10px;border-top-left-radius:10px;}
+    #title_room{font-size:30px; font-weight:bolder; color:#FFD700; }
+    .workexecute-panel-l-body{width:90%; height:80px;margin-bottom:3%; margin-left:auto; margin-right:auto;}
+    
+    .workexecute-panel-l-bed{width:25%; height:80px; float:left;  background-color:#3C87C0; }
+    .workexecute-panel-l-bed-no{width:80px; height:80px; margin-left:auto; margin-right:auto; margin-top:20px; font-size:40px; font-weight:bolder; color:White;}
+    
+    .workexecute-panel-l-info{width:50%; height:80px; float:left;  background-color:#AFEEEE;}
+    .workexecute-panel-l-info-img{width:80px; height:80px;}
+    .workexecute-panel-l-info-ul{margin-left:5px;}
+    .workexecute-panel-l-info-li{height:23px;font-weight:bolder;}
+    .workexecute-panel-l-info-li-label{font-size:15px; font-weight:bolder;}
+    
+    .workexecute-panel-l-alert{width:25%; height:80px; float:left;   background-color:#B0E0E6;}
+    .workexecute-panel-l-alert-head{width:100%; height:20px; text-align:center; color:Red; font-size:14px; font-weight:bolder; padding-top:5px; background-color:#00FF7F;}
+      
+    .workexecute-panel-r-icon{ padding-top:10px; text-align:center;width:100%; height:40px; margin-bottom:10px;  vertical-align:middle; background-color:#66CCFF; }
+
+    .cautionList_tip { color:Red; font-size:15px; font-weight:bolder; text-align:center; margin-top:5px;}
+</style>
+<div id="workexecute-block" >  
+    <div id="workexecute-panel" style="width:99%; margin: 10px auto; border:1px solid #3C87C0;  overflow-y: auto; -moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px; ">
+      <div id='workexecute-panel-l'>          
+       </div> 
+       <div id='workexecute-panel-r'>
+            <div id="workexecute-panel-r-icon" class="workexecute-panel-r-icon"> 
+                <div style=" width:15%; float:left;margin-left:10px;font-size:20px; font-weight:bolder;">图标描述:</div>
+                <div style=" width:15%; float:left;font-size:16px;">
+                    <a href="javascript:void(0)" class="alink nicon-blue nicon-R2C15"></a>&nbsp;&nbsp;待服务
+                </div>
+                <div style=" width:15%; float:left;font-size:16px;">
+                    <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C16"></a>&nbsp;&nbsp;服务中
+                </div>
+                <div style=" width:15%; float:left;font-size:16px;">
+                    <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C14"></a>&nbsp;&nbsp;服务完成
+                </div>
+                <div style=" width:15%; float:left;font-size:16px;">
+                    <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C13"></a>&nbsp;&nbsp;未服务
+                </div>
+                <div style=" width:20%; float:left;font-size:16px;">
+                    <div style=" width:80px; border:2px solid #FFFF00; height:12px; display:inline-block;vertical-align:middle;"></div>&nbsp;&nbsp;服务中
+                </div>
+            </div>
+            <div class='bbody'></div>
+       </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var isCS = false;
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+        isCS = true;
+    }
+    var repeatTime = 10000; //5秒 
+    var listBedNo = [];
+    var timers = [];
+    $(function () {
+        var strId = '';
+        var roomId = '';
+        var stationId = '';
+        var bedNo_roomNo = '';
+        var bedNo = '';
+        var roomName = '';
+        if (isCS) {
+            strId = currentMenuCode;
+            roomId = strId.substring(0, strId.indexOf('$'));
+            stationId = strId.substring(strId.indexOf('$') + 1, strId.indexOf('|'));
+        }
+        else {
+            strId = currentMenuCode;
+            roomId = currentMenuId;
+            stationId = strId.substring(0, strId.indexOf('|')); 
+        }
+        bedNo_roomNo = strId.substring(strId.indexOf('|') + 1, strId.length);
+        bedNo = bedNo_roomNo.substring(0, bedNo_roomNo.indexOf(','));
+        roomName = bedNo_roomNo.substring(bedNo_roomNo.indexOf(',') + 1, bedNo_roomNo.length); 
+        loading(roomId, stationId, bedNo, roomName);
+        autosize('workexecute-block',-10)
+        autosize('workexecute-panel', -12);
+        $('#workexecute-panel-l').height($('#workexecute-panel').height());
+        //        $('#workexecute-panel-c').height($('#workexecute-panel').height() - 30);
+        $('#workexecute-panel-r').height($('#workexecute-panel').height());
+        //获取当前时间下服务监控信息 
+        setTimeout(function () {
+            getWorkExecuteMonitor(stationId, roomId);
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+        //获取当前时间下房间报警信息 
+        setTimeout(function () {
+            var paramData = { 'RoomId': roomId, 'WhereClause2': 'DATEDIFF(MI,c.CheckInTime,GETDATE())<5' };
+            //                     var paramData = { 'RoomId': roomId};
+            getCautionInfo(paramData);
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+    });
+    //获取当前时间下房间报警信息
+    function getCautionInfo(paramData) {
+        getTo(baseCMSInvokeUrl + "/Pam/WorkExecuteService/GetCautionInfoForRoom/Query?parms=" + $.toJSON(paramData), null, function (result) {
+            var title1 = document.getElementById("workexecute-panel-l-title");
+            var title2 = document.getElementById("workexecute-panel-r-icon");
+            var bboy = document.getElementById("workexecute-panel");
+            if (result.Success && result.rows.length > 0) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                if (rows.length > 0) {
+                    _.each(rows, function (o) {
+                        listBedNo.push(o.SickBedNo);
+                    });
+                    listBedNo = _.uniq(listBedNo);
+                }
+                if (listBedNo.length > 0) {
+                    for (var i = 0; i < listBedNo.length; i++) {
+                        var id = document.getElementById("caution" + listBedNo[i]);
+                        refresh(id, true);
+
+                        $('#cautionList' + listBedNo[i]).html('<ul><li class="cautionList_tip"><span >紧急情况，请处理</span></li></ul>');
+                    }
+                    refresh(title1, true);
+                    refresh(title2, true); 
+                    refresh2(bboy, true);
+                }
+            }
+            else {
+                for (var i = 0; i < listBedNo.length; i++) {
+                    var id = document.getElementById("caution" + listBedNo[i]);
+                    refresh(id, false);
+                    id.style.backgroundColor = "#3C87C0";
+                    $('#cautionList' + listBedNo[i]).html('<ul><li class="cautionList_tip"><span ></span></li></ul>');
+                }
+                refresh(title1, false);
+                refresh(title2, false);
+                refresh2(bboy, false);
+                title1.style.backgroundColor = "#3C87C0";
+                title2.style.backgroundColor = "#3C87C0";
+                bboy.style.border = "1px solid #3C87C0";
+            }
+        });
+    }
+
+
+    function loading(roomId, stationId, bedNo,roomName) { 
+        getTo(baseCMSInvokeUrl + "/Pam/WorkExecuteService/GetRoomInfo/" + stationId + "," + roomId, null, function (result) {
+            if (result.Success && result.rows) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var str = '<div id="workexecute-panel-l-title" class="workexecute-panel-l-title"><label style="font-size:30px; font-weight:bolder; color:#fff;">房间：</label><label id="title_room"></label></div>';
+                for (var i = 1; i <= bedNo; i++) {
+                    var f = true;
+                    _.each(rows, function (o) {
+                        if (parseInt(o.SickBedNo) == i) {
+                            str += '<div class="workexecute-panel-l-body"><div  id="caution' + i + '" class="workexecute-panel-l-bed"><div class="workexecute-panel-l-bed-no">' + i + '  床</div></div>';
+                            str += '<div class="workexecute-panel-l-info"> ' +
+                                       '<table><tr><td class="workexecute-panel-l-info-img">' +
+                                       '<img src="../../images/pam/old-photo/' + (o.Gender == 'M' ? 'portrait-m.png' : o.Gender == 'F' ? 'portrait-f.png' : 'portrait.png') + '" />' +
+                                       ' </td> <td> <ul class="workexecute-panel-l-info-ul">' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">姓名：</label>' + o.OldManName + '</li>' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">性别：</label>' + easyuigrid_genderFormatter(o.Gender, null, null) + '</li>' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">年龄：</label>' + easyuigrid_ageFormatter3(null, o, null) + '</li>' +
+                                       ' </ul></tr></table></div>';
+                            str += '<div class="workexecute-panel-l-alert"><div class="workexecute-panel-l-alert-head">警报</div><div id="cautionList' + i + '"></div></div></div>';
+                            f = false;
+                        }
+                    });
+                    if (f) {
+                        str += '<div class="workexecute-panel-l-body"><div id="caution' + i + '" class="workexecute-panel-l-bed"><div class="workexecute-panel-l-bed-no">' + i + ' 床</div></div>';
+                        str += '<div class="workexecute-panel-l-info"> ' +
+                                       '<table><tr><td class="workexecute-panel-l-info-img">' +
+                                       '<img src="../../images/pam/old-photo/portrait.png" />' +
+                                       ' </td> <td> <ul class="workexecute-panel-l-info-ul">' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">姓名：</label></li>' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">性别：</label></li>' +
+                                       '<li class="workexecute-panel-l-info-li"><label class="workexecute-panel-l-info-li-label">年龄：</label></li>' +
+                                       ' </ul></tr></table></div>';
+                        str += '<div class="workexecute-panel-l-alert"><div class="workexecute-panel-l-alert-head">警报</div><div id="cautionList' + i + '"></div></div></div>';
+                    }
+                }
+                $('#workexecute-panel-l').html(str);
+            }
+            else {
+                $("#workexecute-panel-l").html("");
+            }
+            $('#title_room').text(roomName);
+        }); 
+    }
+
+    //获取当前时间下服务监控信息 
+    function getWorkExecuteMonitor(stationId, roomId) {
+        getTo(baseCMSInvokeUrl + "/Pam/WorkExecuteService/GetWorkExecuteMonitor/" + stationId + ",monitor", null, function (ret) {
+            if (ret.Success && ret.rows) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var executes = _.where(rows, { "RoomId": roomId });
+                var htmls = _.map(executes, function (i) {
+                    var tmphtm = [];
+                    var strIcon = "nicon-R2C15", strReminde = "待服务";
+                    if (!i.ServeManArriveTime && i.Reminded == i.RemindMax) {
+                        strIcon = "nicon-R2C13"
+                        strReminde = "未服务";
+                    }
+                    else if (i.ServeManArriveTime && i.ServeManLeaveTime) {
+                        strIcon = "nicon-R2C14";
+                        strReminde = "服务完成";
+                    }
+                    else if (i.ServeManArriveTime && !i.ServeManLeaveTime) {
+                        strIcon = "nicon-R2C16";
+                        strReminde = "服务中"
+                    }
+
+                    var strContent;
+                    var strRemark = isnull(i.Remark, '') == '' ? '' : '  注意事项：' + i.Remark;
+                    var strReminded = isnull(i.Reminded, '') == '' ? '' : '  已经提醒次数：' + i.Reminded;
+                    if (i.SickBedNo) {
+                        strContent = i.SickBedNo + '床 : ' + i.OldManName + ' ' + Date.parse(i.RemindTime).pattern("HH:mm") + '—' + Date.parse(i.PlanEndTime).pattern("HH:mm") + ' 需要 ' + '[' + i.UserName + '] 帮助 ' + i.ItemName + strRemark + strReminded;
+                    }
+                    else {
+                        strContent = '?床 : ' + i.OldManName + ' ' + Date.parse(i.RemindTime).pattern("HH:mm") + '—' + Date.parse(i.PlanEndTime).pattern("HH:mm") + ' 需要 ' + '[' + i.UserName + '] 帮助 ' + i.ItemName + strRemark + strReminded;
+                    }
+                    tmphtm.push('<div id="WorkExcuted-' + i.Id + '" style="white-space:pre-wrap;">');
+                    tmphtm.push('<a title="' + strReminde + '" href="javascript:void(0)" class="alink nicon-blue ' + strIcon + '"></a>');
+                    tmphtm.push('<span style="vertical-align:middle;font-size:15px;' + (strReminde == '服务中' ? 'border:1px #FFFF00 solid;' : '') + '">' + strContent + '</span>');
+                    tmphtm.push('</div>');
+
+                    return tmphtm.join("");
+                }).join("");
+                $(".bbody").html(htmls);
+            }
+        });
+    }
+     
+    //刷新报警
+    function refresh(id, flog) {
+        if (flog) {
+            var timer = null;
+            var i = 0;
+            timers.push(setInterval(function () {
+                id.style.backgroundColor = i++ % 2 ? "#ff0000" : "#3C87C0";
+                i > 8 && (clearInterval(timer));
+            }, 500)); 
+        }
+        else {
+            for (var i = 0; i < timers.length; i++) {
+                clearInterval(timers[i]);
+            }
+        }
+    } 
+    //刷新报警
+    function refresh2(id, flog) {
+        if (flog) {
+            var timer = null;
+            var i = 0;
+            timers.push(setInterval(function () {
+                id.style.border = i++ % 2 ? "1px solid #ff0000" : "1px solid #3C87C0";
+                i > 8 && (clearInterval(timer));
+            }, 500)); 
+        }
+        else {
+            for (var i = 0; i < timers.length; i++) {
+                clearInterval(timers[i]);
+            }
+        }
+    } 
+</script>

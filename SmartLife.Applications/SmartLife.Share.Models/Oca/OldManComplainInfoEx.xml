@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Count_OldManComplainInfos_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select info.OldManId,base.OldManName,base.Gender,base.IDNo,base.AreaId,base.AreaId2,base.AreaId3,
+      base.Address,base.Tel,base.Mobile,info.Times
+      from (select a.OldManId,COUNT(a.OldManId) as Times from Oca_OldManComplainInfo a where a.Status=1 group by a.OldManId)
+      info left join dbo.Oca_OldManBaseInfo base on info.OldManId=base.OldManId
+      <dynamic prepend=" WHERE "> 
+        <isPropertyAvailable prepend=" AND " property="OldManName" >base.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >base.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >base.IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >base.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >base.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >base.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >base.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >base.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >base.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >base.InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >base.InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TimesFrom" >Times>=#TimesFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TimesTo" >Times  &lt;=#TimesTo#</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManComplainInfos_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select info.OldManId,base.OldManName,base.Gender,base.IDNo,base.AreaId,base.AreaId2,base.AreaId3,
+      base.Address,base.Tel,base.Mobile,info.Times
+      from (select a.OldManId,COUNT(a.OldManId) as Times from Oca_OldManComplainInfo a where a.Status=1 group by a.OldManId)
+      info left join dbo.Oca_OldManBaseInfo base on info.OldManId=base.OldManId
+      <dynamic prepend=" WHERE "> 
+        <isPropertyAvailable prepend=" AND " property="OldManName" >base.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >base.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >base.IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >base.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >base.AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >base.AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Address" >base.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >base.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >base.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >base.InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >base.InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TimesFrom" >Times>=#TimesFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TimesTo" >Times  &lt;=#TimesTo#</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select> 
+  </statements>
+</sqlMap>

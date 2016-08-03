@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <update id="DatabaseConnect_Update2" parameterClass="StringObjectDictionary" >
+      update Sys_DatabaseConnect
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ConnectId" >ConnectId=#ConnectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ConnectName" >ConnectName=#ConnectName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Provider" >Provider=#Provider#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserPassword" >UserPassword=#UserPassword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DatabaseName" >DatabaseName=#DatabaseName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IBatisMapId" >IBatisMapId=#IBatisMapId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileRefer" >IbatisConfigFileRefer=#IbatisConfigFileRefer#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileValue" >IbatisConfigFileValue=#IbatisConfigFileValue#</isPropertyAvailable>
+      </dynamic>
+      where ConnectId=#OldConnectId#
+    </update>
+  </statements>
+</sqlMap>

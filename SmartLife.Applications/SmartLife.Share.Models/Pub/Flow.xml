@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Flow" type="SmartLife.Share.Models.Pub.Flow, SmartLife.Share.Models" />
+    <typeAlias alias="FlowPK" type="SmartLife.Share.Models.Pub.FlowPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Flow_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_Flow(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="FlowId" >FlowId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BIZ_ID" >BIZ_ID</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName" >TableName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowFrom" >FlowFrom</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowTo" >FlowTo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessResult" >ProcessResult</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment" >ProcessComment</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment2" >ProcessComment2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessTitle" >ProcessTitle</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowDefineId" >FlowDefineId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="FlowId" >#FlowId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BIZ_ID" >#BIZ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName" >#TableName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowFrom" >#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowTo" >#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessResult" >#ProcessResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment" >#ProcessComment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment2" >#ProcessComment2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessTitle" >#ProcessTitle#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowDefineId" >#FlowDefineId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Flow_Update" parameterClass="StringObjectDictionary" >
+      update Pub_Flow
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BIZ_ID" >BIZ_ID=#BIZ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessResult" >ProcessResult=#ProcessResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment" >ProcessComment=#ProcessComment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessComment2" >ProcessComment2=#ProcessComment2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ProcessTitle" >ProcessTitle=#ProcessTitle#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FlowDefineId" >FlowDefineId=#FlowDefineId#</isPropertyAvailable>
+      </dynamic>
+      where FlowId=#FlowId#
+    </update>
+    <delete id="Flow_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_Flow
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowId" >FlowId=#FlowId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BIZ_ID" >BIZ_ID=#BIZ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessResult" >ProcessResult=#ProcessResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment" >ProcessComment=#ProcessComment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment2" >ProcessComment2=#ProcessComment2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessTitle" >ProcessTitle=#ProcessTitle#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowDefineId" >FlowDefineId=#FlowDefineId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Flow_Load" parameterClass="FlowPK" resultClass="Flow" >
+      select FlowId,Id,Status,CheckInTime,OperatedBy,OperatedOn,BIZ_ID,TableName,FlowFrom,FlowTo,ProcessResult,ProcessComment,ProcessComment2,ProcessTitle,FlowDefineId from Pub_Flow
+      where FlowId=#FlowId#
+    </select>
+    <select id="Flow_List" parameterClass="StringObjectDictionary" resultClass="Flow" >
+      select FlowId,Id,Status,CheckInTime,OperatedBy,OperatedOn,BIZ_ID,TableName,FlowFrom,FlowTo,ProcessResult,ProcessComment,ProcessComment2,ProcessTitle,FlowDefineId from Pub_Flow
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowId" >FlowId=#FlowId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BIZ_ID" >BIZ_ID=#BIZ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessResult" >ProcessResult=#ProcessResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment" >ProcessComment=#ProcessComment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment2" >ProcessComment2=#ProcessComment2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessTitle" >ProcessTitle=#ProcessTitle#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowDefineId" >FlowDefineId=#FlowDefineId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Flow_ListByPage" parameterClass="StringObjectDictionary" resultClass="Flow" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,FlowId,Id,Status,CheckInTime,OperatedBy,OperatedOn,BIZ_ID,TableName,FlowFrom,FlowTo,ProcessResult,ProcessComment,ProcessComment2,ProcessTitle,FlowDefineId from Pub_Flow
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowId" >FlowId=#FlowId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BIZ_ID" >BIZ_ID=#BIZ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessResult" >ProcessResult=#ProcessResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment" >ProcessComment=#ProcessComment#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessComment2" >ProcessComment2=#ProcessComment2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ProcessTitle" >ProcessTitle=#ProcessTitle#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowDefineId" >FlowDefineId=#FlowDefineId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

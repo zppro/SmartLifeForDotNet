@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="WhiteList" type="SmartLife.Share.Models.Sys.WhiteList, SmartLife.Share.Models" />
+    <typeAlias alias="WhiteListPK" type="SmartLife.Share.Models.Sys.WhiteListPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="WhiteList_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_WhiteList(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >IpAddress</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >#IpAddress#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="WhiteList_Update" parameterClass="StringObjectDictionary" >
+      update Sys_WhiteList
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="WhiteList_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_WhiteList
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="WhiteList_Load" parameterClass="WhiteListPK" resultClass="WhiteList" >
+      select Id,ApplicationId,IpAddress from Sys_WhiteList
+      where Id=#Id#
+    </select>
+    <select id="WhiteList_List" parameterClass="StringObjectDictionary" resultClass="WhiteList" >
+      select Id,ApplicationId,IpAddress from Sys_WhiteList
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

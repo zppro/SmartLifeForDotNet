@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"> <!-- 不能放大 -->
+    <title></title>
+</head>
+<body>
+   <div data-role="page" id="search-service">
+
+   <script type="text/javascript">
+           function jsonstr() {
+               var Request = new Object();
+               Request = GetRequest();
+               var openid = Request['openid'];
+               var type = Request['type'];
+               var followToIDNo = Request['FollowToIDNo'];
+               var startTime = $("#startScroller").val();
+               var endTime = $("#endScroller").val();
+               endTime = addDay(endTime, 1);
+               var params = new Object();
+               params.openid = openid;
+               params.type = type;
+               params.startTime = startTime;
+               params.endTime = endTime;
+               params.followToIDNo = followToIDNo;
+               var json = JSON.stringify(params);
+               return json;
+           }
+
+           $(function () {
+               var json = jsonstr();
+               textProgress('c', '获取数据中...');
+               getTo(baseUrl + '/Api/SearchService/searchService', { params: json }, function (ret) {
+                   closeProgress(); //关闭进度条
+
+                   var jsonS = $.parseJSON(ret);
+                   if (jsonS.sum == 0) {
+                       alert("没有购买服务");
+                   }
+                   else {
+                       var rows = _.map(jsonS.rows, function (o) {
+                           return o;
+                       });
+                       var record = "";
+                       for (var i = 0; i < rows.length; i++) {
+                           record += "<div class=\"ui-block-a\">" + rows[i].time + "</div><div class=\"ui-block-b\">" + rows[i].name + "</div>"
+                       }
+                       $("#record").html(record);
+                   }
+
+               });
+           })
+    </script>
+
+       <div data-role="header" data-theme="f">
+         <a href="#" data-role="button" data-rel="back" data-transition="flip" data-iocn="arrow-l">返回</a>
+         <h1>服务记录</h1>
+       </div>
+
+       <div data-role="content">
+         <div class="ui-grid-a">
+            <div class="ui-block-a"><h1>服务时间</h1></div>
+            <div class="ui-block-b"><h1>服务项目</h1></div>
+
+            <div id="record"></div>
+
+         </div>
+       </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Auth_MemberParam" class="StringObjectDictionary">
+      <parameter  property="IDNo" column="IDNo" direction="Input" type="string" dbType="char" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="MemberId" column="MemberId" direction="Output" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="MemberName" column="MemberName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="NodeInfos" column="NodeInfos" direction="Output" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Auth_SmsParam" class="StringObjectDictionary">
+      <parameter  property="MobileNo" column="MobileNo" direction="Input" type="string" dbType="varchar" /> 
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" /> 
+      <parameter  property="AccessPoint" column="AccessPoint" direction="Output" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Auth_Member" parameterMap="SP_Auth_MemberParam" resultClass="StringObjectDictionary">
+      SP_Auth_Member
+    </procedure>
+    <procedure id="SP_Auth_Sms" parameterMap="SP_Auth_SmsParam" resultClass="StringObjectDictionary">
+      SP_Auth_Sms
+    </procedure>
+    <select id="GetCityDeployNodesForSms" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.NodeId, 'http://'+a.NodeIP+':'+cast(a.NodePort as varchar)+'/'+b.AccessPoint  as AccessPoint
+      from Cty_Node a inner join dbo.Cty_NodeAccessPoint b on a.NodeId=b.NodeId
+      where ApplicationIdFrom=#ApplicationIdFrom# and ApplicationIdTo='IP006'
+    </select>
+  </statements>
+</sqlMap>

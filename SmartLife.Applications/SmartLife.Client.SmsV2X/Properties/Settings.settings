@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartLife.Client.SmsV2X.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MessageBoxTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">短信服务</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

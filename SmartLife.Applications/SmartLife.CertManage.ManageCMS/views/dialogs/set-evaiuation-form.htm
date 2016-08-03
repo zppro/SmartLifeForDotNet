@@ -1,0 +1,451 @@
+﻿<div class="easyui-layout" data-options="fit:true">
+    <div id="evaiuation-form" data-options="region:'center',border:false" style="margin: 0 auto; width: 900px; background-color: #999">
+        <form id="fm-set-evaiuation-form" method="post" novalidate>
+        <input type="hidden" name="RequisitionId" id="requisitionid-B140101" />
+        <input type="hidden" name="ResidentId" id="ResidentId" />
+        <input type="hidden" name="Status" id="Status" />
+        <input type="hidden" name="ResidentStatus" id="ResidentStatus" />
+        <input type="hidden" name="ResidentBizId" id="ResidentBizId" />
+        <input type="hidden" name="HousingStatus" id="HousingStatus" />
+        <input type="hidden" name="AreaId" id="AreaId" />
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+        <table cellspacing="1" cellpadding="0" frame="border" class="table_tb" style="width: 850px; table-layout: fixed; margin-left:auto; margin-right:auto;" align="center">
+            <tr>
+                <td colspan="4" class="head_hd">
+                    养老服务补贴申请表
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    申请的服务
+                </td>
+                <td colspan="3" style=" text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input name="ServeItemType" id="ServeItemType" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    姓名
+                </td>
+                <td width="25%">
+                    <input id="NameAndIDNo" type="text" class="txt_01" /> 
+                    <input id="ResidentName" name="ResidentName" type="hidden" class="txt_01" />
+                </td>
+                <td width="25%" class="title_2">
+                    身份证号码
+                </td>
+                <td width="25%">
+                    <input name="IDNo" id="IDNo" class="txt_01" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2" align="center">
+                    性别
+                </td>
+                <td width="25%">
+                    <input name="GenderName" class="txt_02" />
+                    <input type="hidden" name="Gender" />
+                </td>
+                <td width="25%" class="title_2">
+                    年龄
+                </td>
+                <td width="25%">
+                    <input name="Age" id="Age" class="txt_02" /><span class="title_2">周岁</span>
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    民族
+                </td>
+                <td width="25%">
+                    <input name="NationName" id="NationName" class="txt_01" />
+                    <input name="Nation" type="hidden"/>
+                </td>
+                <td width="25%" class="title_2">
+                    家庭人口
+                </td>
+                <td width="25%">
+                    <input name="Familys" id="Familys" class="txt_01" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    文化程度
+                </td>
+                <td width="25%">
+                    <input name="EducationLevelName"  class="txt_02" />
+                    <input type="hidden" name="EducationLevel" id="EducationLevel" />
+                    <span id="EducationLevel_N" class="title_3">学历</span>
+                    <input name="EducationLevelNodes" id="EducationLevelNodes" class="txt_02" />
+                </td>
+                <td width="25%" class="title_2">
+                    籍贯
+                </td>
+                <td width="25%">
+                    <input name="NativePlaceName" class="txt_01" />
+                    <input type="hidden" name="NativePlace" id="NativePlace" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    婚姻状况
+                </td>
+                <td width="25%">
+                    <input name="MarriageName" class="txt_01" />
+                    <input type="hidden" name="Marriage" id="Marriage" />
+                </td>
+                <td width="25%" class="title_2">
+                    居住环境
+                </td>
+                <td width="25%">
+                    <input name="LivingStatusName" class="txt_01" />
+                    <input type="hidden" name="LivingStatus" id="LivingStatus" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    经济条件
+                </td>
+                <td width="75%" colspan="3">
+                    <input name="IncomeStatusName" class="txt_01" />
+                    <input type="hidden" name="IncomeStatus" id="IncomeStatus" />
+                    <span id="IncomeStatus_N" class="title_3">月收入</span>
+                    <input name="IncomeStatusNodes" onblur="IsIncomeStatusNodes()" id="IncomeStatusNodes" class="txt_02" />
+                    <span id="IncomeStatus_N_N" class="title_3">元</span>
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    户籍所在地
+                </td>
+                <td width="75%" colspan="3">
+                    <input name="Household" id="Household" class="txt_03" />
+                    <input name="HouseholdRegister" id="HouseholdRegister" type="hidden" />
+                    <input name="PlaceOfHouseholdRegister" id="PlaceOfHouseholdRegister" type="hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    居住地址
+                </td>
+                <td width="75%" colspan="3">
+                    <input name="Address" id="Address" class="txt_03" />
+                    <input name="ResidentialOfHometown" id="ResidentialOfHometown" type="hidden" />
+                    <input name="ResidentialAddress" id="ResidentialAddress" type="hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    手机号码
+                </td>
+                <td width="25%">
+                    <input name="Mobile" id="Mobile" class="txt_01" />
+                </td>
+                <td width="25%" class="title_2">
+                    住宅电话
+                </td>
+                <td width="25%">
+                    <input name="Tel" id="Tel" class="txt_01" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    邮编
+                </td>
+                <td width="25%">
+                    <input name="PostCode" id="PostCode" class="txt_01" />
+                </td>
+                <td colspan="2">
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    代理人姓名
+                </td>
+                <td width="25%">
+                    <input name="ProxyName" id="ProxyName" class="txt_01" />
+                </td>
+                <td width="25%" class="title_2">
+                    与老人关系
+                </td>
+                <td width="25%">
+                    <input name="RelationshipOfResident" id="RelationshipOfResident" class="txt_01" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    代理人地址
+                </td>
+                <td width="75%" colspan="3">
+                    <input name="ProxyAddress" id="ProxyAddress" class="txt_03" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    手机号码
+                </td>
+                <td width="25%" class="title_2">
+                    <input name="ProxyMobile" id="ProxyMobile" class="txt_01" />
+                </td>
+                <td width="25%" class="title_2">
+                    住宅电话
+                </td>
+                <td width="25%">
+                    <input name="ProxyTel" id="ProxyTel" class="txt_01" />
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" class="title_2">
+                    邮编
+                </td>
+                <td colspan="3" style=" text-align:left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input name="ProxyPostCode" id="ProxyPostCode" class="txt_01" onblur="IsPostCode()" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="title_4">
+                    <div class="isHide" style="width: 100%; text-align: left; margin-left: 35px;">
+                        申请人（代理人签字）:
+                        <input id="ProxyName_C" class="txt_02" />
+                    </div>
+                </td>
+            </tr>
+            <tr id="dateTime">
+                <td colspan="4" class="title_3">
+                    <div class="isHide" style="width: 100%; text-align: right;">
+                        <input id="OperatedOn_Y" class="txt_02" />年<input id="OperatedOn_M" class="txt_02" />月
+                        <input id="OperatedOn_D" class="txt_02" />日
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var serveItemType;
+
+        //养老服务内容
+        $('#ServeItemType').combobox({
+            width: 150,
+            panelHeight: 40,
+            method: 'get',
+            url: ajaxData_InvokeUrl + '/GetDictionaryItem/12002',
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+
+        if (dialogData) {
+            //编辑
+            $('#fm-set-evaiuation-form').form('clear');
+            $('#fm-set-evaiuation-form').form('load', dialogData);
+            //服务形式
+            $('#ServeItemType').combobox('setValue',dialogData.ServeItemType);
+            $('#NameAndIDNo').prop("readonly", 'readonly');
+            if ($("#ResidentName").val()) {
+                $("#NameAndIDNo").val($("#ResidentName").val());
+            }
+            getAgeBirthday(); //从身份证中获取年龄 
+            $("#Household").val(isnull(dialogData.HouseholdRegisterName, '') + isnull(dialogData.PlaceOfHouseholdRegister, ''));
+            $("#Address").val(isnull(dialogData.ResidentialOfHometownName, '') + isnull(dialogData.ResidentialAddress, ''));
+            //如果是文盲  就不显示学历
+            if (dialogData.EducationLevelName != "文盲") {
+                $("#EducationLevel_N").show();
+                $("#EducationLevelNodes").show();
+            }
+            else {
+                $("#EducationLevel_N").hide();
+                $("#EducationLevelNodes").hide();
+            }
+            //如果是其他收入方式，就填写月收入多少
+            if (dialogData.IncomeStatusName != "其他") {
+                $("#IncomeStatus_N").show();
+                $("#IncomeStatusNodes").show();
+                $("#IncomeStatus_N_N").show();
+            }
+            else {
+                $("#IncomeStatus_N").hide();
+                $("#IncomeStatusNodes").hide();
+                $("#IncomeStatus_N_N").hide();
+            }
+            //签名
+            if (!dialogData.ProxyName) {
+                $("#ProxyName_C").val(dialogData.ResidentName);
+            }
+            else {
+                $("#ProxyName_C").val(dialogData.ProxyName);            
+            }
+            $("#dateTime").hide(); //编辑的时候不显示签字日期
+        }
+        else {
+            //新增
+            //输入姓名 匹配身份证号  选择老人  获得老人的基本信息
+            $('#NameAndIDNo').combogrid({
+                delay: 500,
+                width: 150,
+                panelWidth: 230,
+                panelHeight: 240,
+                mode: 'local',
+                data: null,
+                idField: 'IDNo',
+                textField: 'ResidentName',
+                //过滤
+                onChange: function (newValue, oldValue) {
+                    var queryParams = {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        page: '1',
+                        rows: '20',
+                        fuzzyFieldOP: 'or',
+                        instance: {
+                            Status: "1",
+                            AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id)
+                        },
+                        fuzzyFields: [
+                        { key: 'ResidentName', value: $.trim(newValue) },
+                        { key: 'IDNo', value: $.trim(newValue) },
+                        { key: 'InputCode1', value: $.trim(newValue) },
+                        { key: 'InputCode2', value: $.trim(newValue)}]
+                    };
+
+                    if ($.trim(newValue) && ($.trim(newValue) == $('#NameAndIDNo').combobox("getText"))) {
+                        postTo(baseCMSInvokeUrl + '/Eva/EvaluatedBaseInfoService/ListForEasyUIgridPage_V', $.toJSON(queryParams), function (ret) {
+                            $('#NameAndIDNo').combogrid("grid").datagrid("loadData", ret);
+                        }, null, { ConnectId: baseInfoNode });
+                    }
+                },
+                filter: function (q, row) {
+                    return row["ResidentName"].indexOf(q) != -1 || row["IDNo"].indexOf(q) != -1;
+                },
+                columns: [[
+                    { field: 'ResidentName', title: '姓名', width: 50, sortable: true },
+                    { field: 'Gender', title: '性别', width: 30, sortable: true, formatter: easyuigrid_genderFormatter },
+                    { field: 'IDNo', title: '身份证号', width: 145, sortable: true }
+                ]],
+                onHidePanel: function () {
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    if (!$('#NameAndIDNo').combo('getText')) {
+                        $('#fm-set-evaiuation-form').form('clear');
+                    }
+                },
+                onCheck: function (index, record) {
+                    //选择一个老人之后   把老人的基本信息都填入表单
+                    $('#fm-set-evaiuation-form').form('clear');
+                    $('#fm-set-evaiuation-form').form('load', record);
+                    $("#requisitionid-B140101").val(window.contants.guidAutoGenerate);
+                    getAgeBirthday();   //获取年龄 
+                    $("#Household").val(record.HouseholdRegisterName + record.PlaceOfHouseholdRegister);
+                    $("#Address").val(record.ResidentialOfHometownName + record.ResidentialAddress);
+                    //如果是文盲  就不显示学历
+                    if (record.EducationLevelName != "文盲") {
+                        $("#EducationLevel_N").show();
+                        $("#EducationLevelNodes").show();
+                    }
+                    else {
+                        $("#EducationLevel_N").hide();
+                        $("#EducationLevelNodes").hide();
+                    }
+                    //如果是其他收入方式，就填写月收入多少
+                    if (record.IncomeStatusName != "其他") {
+                        $("#IncomeStatus_N").show();
+                        $("#IncomeStatusNodes").show();
+                        $("#IncomeStatus_N_N").show();
+                    }
+                    else {
+                        $("#IncomeStatus_N").hide();
+                        $("#IncomeStatusNodes").hide();
+                        $("#IncomeStatus_N_N").hide();
+                    }
+                }
+            });
+            //签字处默认填写日期
+            var d = new Date();
+            $("#OperatedOn_Y").val(d.getFullYear()); 
+            $("#OperatedOn_M").val(d.getMonth() + 1);
+            $("#OperatedOn_D").val(d.getDate());
+        }
+        
+    }
+
+    function getAgeBirthday() {
+        //获取年龄 
+        var iIdNo = $("#IDNo").val();
+        var myDate = new Date();
+        var month = myDate.getMonth() + 1;
+        var day = myDate.getDate();
+        var age = myDate.getFullYear() - iIdNo.substring(6, 10) - 1;
+        if (iIdNo.substring(10, 12) < month || iIdNo.substring(10, 12) == month && iIdNo.substring(12, 14) <= day) {
+            age++;
+        }
+        if (iIdNo) {
+            $("#Age").val(++age);
+        }
+        else {
+            $("#Age").val("");
+        }
+    }
+    function IsPostCode() {
+        //验证邮政编码
+        var ProxyPostCode_t = $.trim($("#ProxyPostCode").val());
+        var ppc = ProxyPostCode_t.search(/^[1-9]\d{5}$/);
+        if (ProxyPostCode_t.length != 0) {
+            if (ProxyPostCode_t.length != 6) {
+                alert("邮政编码长度有误！");
+            }
+            else {
+                if (ppc == -1) {
+                    alert("邮政编码填写有误！");
+                }
+            }
+        }
+        $("#ProxyPostCode").val($.trim($("#ProxyPostCode").val()));
+    }
+    function IsIncomeStatusNodes() {
+        //验证月收入
+        var isn = $("#IncomeStatusNodes").val().search(/^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/);
+        if ($("#IncomeStatusNodes").val().length != 0) {
+            if (isn == -1) {
+                alert("月收入输入有误！请保留两位小数！");
+            }
+        }
+    } 
+
+    var formData;
+    function dialogBeforeSubmit() {
+        var result = false;
+        formData = $('#fm-set-evaiuation-form').serializeObject();
+        formData.OperatedOn = null;
+        //验证不允许为空的字段
+        if ($("#Familys").val() == "") {
+            formData.Familys = 0;
+        }
+        if ($("#IncomeStatusNodes").val() == "") {
+            formData.IncomeStatusNodes = 0;
+        }
+        if ($("#IDNo").val()) {
+            result = true;
+        }
+        else {
+            alert("没有申请人信息");
+        }
+        return result;
+    }
+
+
+    function dialogClose(dialogId) {
+        //判断是新增还是编辑
+        var isCreate = formData.RequisitionId == window.contants.guidAutoGenerate;
+        if (isCreate) {
+            _.extend(formData, { PK: window.contants.guidAutoGenerate });
+        } else {
+            _.extend(formData, { PK: formData.RequisitionId });
+        }
+        _.extend(formData, { isCreate: isCreate }); 
+        //                var submitData = _.omit(formData, ["Familys", "IncomeStatusNodes", "OperatedOn"]);
+        return formData;
+    }
+</script>

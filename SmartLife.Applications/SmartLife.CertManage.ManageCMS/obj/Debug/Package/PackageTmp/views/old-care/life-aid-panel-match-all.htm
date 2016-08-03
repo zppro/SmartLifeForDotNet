@@ -1,0 +1,236 @@
+﻿<table align="center">
+    <tr style="height: 32px;">
+        <td>
+            <div class="life-service-title">
+                匹配结果</div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <div id="merchant-station" style="height: 513px; overflow-y: auto;">
+            </div>
+        </td>
+    </tr>
+    <tr style="height: 28px;">
+        <td style="text-align: center;">
+            <a id="btnDispatch" onclick="javascript:void(0)" class="button-send" style="margin-top:7px;"></a>
+        </td>
+    </tr>
+</table>
+<div id="dlg-life-service-dispatch" class="easyui-dialog" style="width: 550px; height: 360px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-life-service-dispatch"  >
+    <div class="ftitle"></div>
+    <form id="fm-life-service-dispatch" method="post" novalidate>
+    <input type="hidden" id="DispatchedStationIds" name="DispatchedStationIds" />
+    <input type="hidden" id="CallServiceId" name="CallServiceId" />
+    <input type="hidden" id="ServeItemA" name="ServeItemA" />
+    <input type="hidden" id="ServeItemB" name="ServeItemB" />
+    <input type="hidden" id="ServeMode" name="ServeMode" />
+    <input type="hidden" id="ServeRadius" name="ServeRadius" />
+    <input type="hidden" id="ServeKeyword" name="ServeKeyword" />
+    <div class="fitem seathelpflag">
+        <label >服务人员:</label>
+        <input id="ServeManName" name="ServeManName" />
+    </div>
+    <div class="fitem">
+        <label> 派单内容:</label>
+        <textarea id="WorkOrderContent" name="WorkOrderContent" style="width:430px;"  rows="6" /> 
+    </div>
+    <div class="fitem">
+        <label>
+            服务类别:</label>
+        <div id="ServeTypeContainer" > 
+        </div> 
+        <div style="float:right; margin-right:10px; " class="non-gov">
+        <input id="SpecialFlag" name="SpecialFlag" value="1" type="checkbox" /><label for="SpecialFlag">特殊标志</label>
+        </div>
+    </div>
+    <div class="fitem">
+        <label>
+            服务时间:</label>
+        <!--<input id="ServiceTimeRequired" name="ServiceTimeRequired"  class="easyui-datebox easyui-validatebox" required="true" missingMessage="督办时间不能为空"  />-->
+        <input id="ServiceTimeRequired" name="ServiceTimeRequired" class="easyui-datetimebox"   data-options="required:true,showSeconds:false"  style="width:120px">
+        <label>
+            督办时间:</label> 
+        <input id="SuperviseTime" name="SuperviseTime" class="easyui-datetimebox"   data-options="required:true,showSeconds:false"   style="width:120px">
+    </div> 
+    <div class="fitem non-gov">
+        <label >
+            备　　注:</label>
+        <textarea name="RemarkRequired" style="width:430px;" rows=3  /> 
+    </div>
+    </form>
+</div>
+<div id="btn-life-service-dispatch">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doSubmitDispatch()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="doCancel()">取消</a>
+</div> 
+<script type="text/javascript">
+    var strSeatHelpInputServeFlag;
+    $(function () {
+        getTo(window.ajaxData_InvokeUrl + '/GetDictionaryItem/11018', null, function (di_11018) {
+            $('#ServeTypeContainer').html(_.map(di_11018, function (o) {
+                return '<span><input type="radio" name="ServeType"  id="ST_' + o.ItemId + '" value="' + o.ItemId + '" /><label for="ST_' + o.ItemId + '">' + o.ItemName + '</label></span>';
+            }).join(""));
+            _.each($('input[type="radio"][name="ServeType"]'), function (o, i) {
+                if (i == 0 || i == 1) {
+                    $(o).unbind().bind('click', function () {
+                        $('#ServiceTimeRequired').datetimebox('setValue', (new Date()).toString('yyyy-MM-dd HH:mm'));
+                    });
+                }
+            });
+        });
+        $('#ServiceTimeRequired').datetimebox({
+            onChange: function (newValue, oldValue) {
+                var d = Date.parse(newValue);
+                var d2 = d.addDays(1);
+                $('#SuperviseTime').datetimebox('setValue', d2.toString('yyyy-MM-dd HH:mm'));
+            }
+        });
+        //alert("oldManId:" + oldManId + " serviceItemA:" + serviceItemA + " serviceItemB:" + serviceItemB + " serviceRadius:" + serviceRadius);
+        //alert(top.baseCMSInvokeUrl + '/Oca/CallService/GetResultForMatchServiceStation/' + oldManId + ',' + serviceItemA + ',' + serviceItemB + ',' + serviceMode + ',' + serviceRadius);
+
+        getTo(top.baseCMSInvokeUrl + '/Oca/CallService/GetResultForMatchServiceStation/' + oldManId + ',' + serviceItemA + ',' + serviceItemB + ',' + serviceMode + ',' + serviceRadius, null, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+
+            var arrPoints = [];
+            var htmls = [];
+            _.each(rows, function (o) {
+                htmls.push('<div class="merchant-station-chk"><input id="' + o.StationId + '"   type="checkbox" class="checks"  />&nbsp;<img src="../../images/map/' + o.SN + '.png" alt=""><label style="cursor:pointer" for="' + o.StationId + '">' + o.StationName + '</label></div><div class="merchant-station-info">服务项目：' + o.ServiceItems + '<br />服务记录：' + o.ServiceRecordFlag + '<br />满意度：' + o.Satisfaction + '<br />费用：' + o.ServeFee + '元<br />距离：' + o.DistanceDescription + '<br/>联系电话：' + (o.StationPhone ? '<a class="button-red-3"  href="javascript:void(0)" title="呼叫" onclick="openTel(11,\'' + o.StationPhone + '\',\'' + o.StationName + '\')">' + o.StationPhone + '</a>' : '--') + '</div>');
+                var thePoint = new BMap.Point(o.LongitudeS, o.LatitudeS);
+                //加入到地图上
+                addCustomMarker(thePoint, o.SN);
+                arrPoints.push(thePoint);
+            });
+
+            if (htmls.length > 0) {
+                $('#merchant-station').html(htmls.join("<br/>"));
+                //加入老人点
+                arrPoints.push(window.map.getCenter());
+                setViewport(arrPoints);
+                if (rows.length == 1) {
+                    $('#' + rows[0].StationId).prop('checked', true);
+                }
+            }
+            else {
+                $('#merchant-station').html("暂无结果");
+            }
+
+        });
+
+        $('#btnDispatch').unbind('click').bind('click', function () {
+            var haveWorkOrders = $('#workorder-container').find('a').size() > 0;
+
+            if (strSeatHelpInputServeFlag == "1") {
+                $('#ServeManName').validatebox({ required: $("#gov-ServiceCatalog").val() == "00002" });
+            }
+            if (haveWorkOrders) {
+                alertConfirm('当前服务已存在工单，如果重新派单，原来的工单将作废,确定要提交吗？', function (ret) {
+                    if (ret == true) {
+                        openDispatchDialog();
+                    }
+                });
+            }
+            else {
+                openDispatchDialog();
+            }
+        });
+
+        //座席帮助商家输入服务人员
+        getTo(parameterData_InvokeUrl + "/Oca_SeatHelpInputServeFlag", null, function (result) {
+            strSeatHelpInputServeFlag = result.ret.Value;
+        }, { async: false });
+
+    });
+
+    function openDispatchDialog() {
+        var arrSelectedStation = [];
+        _.each($('#merchant-station .checks:checked'), function (o) {
+            arrSelectedStation.push($(o).attr('id'));
+        });
+
+        if (arrSelectedStation.length == 0) {
+            alertInfo('请选择至少一家服务商进行派单！');
+        }
+        else if (arrSelectedStation.length > 0 && strSeatHelpInputServeFlag != 0) {
+            alertInfo('请选择至多一家服务商进行派单！');
+        }
+        else {
+            $('#dlg-life-service-dispatch').dialog({
+                inline: false,
+                onClose: function () {
+
+                },
+                onBeforeOpen: function () {
+                    $('#fm-life-service-dispatch').form('clear');
+                    $('#DispatchedStationIds').val(arrSelectedStation.join());
+                    $('#CallServiceId').val(pageData.CallServiceId);
+                    $('#ServeItemA').val(serviceItemA);
+                    $('#ServeItemB').val(serviceItemB);
+                    $('#ServeMode').val(serviceMode);
+                    $('#ServeRadius').val(serviceRadiusId);
+                    $('#ServeKeyword').val("");
+                    if (serviceItemA == "00001") {
+                        //政府购买服务
+                        $("#WorkOrderContent").val(txtServiceItemB).attr("readOnly", true);
+                        $("input[type=radio][name='ServeType'][value='00001']").prop("checked", true);
+                        $("input[name='ServeType']", "#ServeTypeContainer").attr("disabled", "disabled");
+                        $('#ServiceTimeRequired').datetimebox('setValue', (new Date()).toString('yyyy-MM-dd HH:mm'));
+
+                        $(".non-gov").hide();
+                        $(".seathelpflag").hide();
+                    }
+                    else if (strSeatHelpInputServeFlag == "1") {
+                        if ($("#WorkOrderContent").attr("readOnly")) $("#WorkOrderContent").removeAttr("readonly");
+                        $("input[name='ServeType']", "#ServeTypeContainer").removeAttr("disabled");
+                        $(".seathelpflag").show();
+                    }
+                    else {
+                        if ($("#WorkOrderContent").attr("readOnly")) $("#WorkOrderContent").removeAttr("readonly");
+                        $("input[name='ServeType']", "#ServeTypeContainer").removeAttr("disabled");
+                        $(".non-gov").show();
+                        $(".seathelpflag").hide();
+                    }
+                },
+                modal: true
+            }).dialog('open').dialog('setTitle', '派单对话框');
+        }
+    }
+
+    function doSubmitDispatch() {
+        //规则检测
+
+        var serveType = $('input[name=ServeType]:checked', '#ServeTypeContainer').val();
+        if (!serveType) {
+            alertInfo('请选择服务类别！');
+            return;
+        }
+
+        if ($('#fm-life-service-dispatch').form('validate')) {
+            var formData = $('#fm-life-service-dispatch').serializeObject();
+            if ($("#gov-ServiceCatalog").val() == "00002") {
+                formData = _.extend(formData, { DoStatus: 1 }); 
+            }
+
+            postTo(top.baseCMSInvokeUrl + '/Oca/CallService/DispatchWorkOrder', $.toJSON(formData)).done(function (result) {
+                $('#dlg-life-service-dispatch').dialog('close');
+                if (result.ret.OnlyOneStationFlag == 0) {
+                    getWorkOrders('workorder-container', 'workorder-block', pageData.CallServiceId, urlRoot + 'old-care/life-aid-workorder.htm');
+                }
+                else {
+                    if (top.execMode == "CS" || top.execMode == "ForSeat") {
+                        window.external.CloseWin(true);
+                    }
+                }
+            });
+        }
+        
+    }
+
+    function doCancel() {
+        $('#dlg-life-service-dispatch').dialog('close');
+    }
+</script>

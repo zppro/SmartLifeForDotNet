@@ -1,0 +1,257 @@
+﻿<div id="cc-B140106">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            所属街道社区
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B140106"></ul>
+            <input type="hidden"  id="_AreaId2" />
+            <input type="hidden"  id="_AreaId3" />
+        </div>
+    </div>
+    <div style=" float:left;width:84%;">
+        <div id="toolbar-B140106">
+            <a behaviorCode="1" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="add_dialog()">新增</a> 
+            <a behaviorCode="2" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit_dialog()">编辑</a> 
+            <a behaviorCode="3" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">删除</a>
+        </div>
+        <div id="search-sample-B140103" title="查询" style="overflow: auto; padding: 3px;">
+            <form id="fm-search-rough-B140106" method="post">
+            <table width="100%">
+                <tr>
+                    <td style="text-align: left; width:50px; padding-left:10px;">
+                        <label for="KeyWord">关键字：</label> 
+                    </td>
+                    <td style="text-align: left">
+                        <input name="KeyWord" class="easyui-validatebox "    placeholder="姓名、身份证、电话、手机"/>
+                    </td>
+                    <td style="text-align: right">
+                            提交状态： 
+                    </td>
+                    <td style="text-align: left"> 
+                                <input id="CC-FlowTo" name="FlowTo_Start" class="combobox" />
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                            查询</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                            清空</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                            plain="true" onclick="query()">高级查询</a>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <table id="dg-B140106" >
+        </table>
+    </div>
+</div>
+
+<div id="dlg-search-B140106" class="easyui-dialog" style="width: 420px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B140106"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B140106" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            申请人姓名:</label>
+        <input name="EvaluatedName"  >
+    </div>
+    <!--<div class="fitem">
+        <label>
+            　身份证:</label>
+        <input name="IDNo" >
+    </div>-->
+    </form>
+</div>
+<div id="btn-search-B140106">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        var areas;
+        var serveItemA;
+        var serveItemB;
+        var assessLevel;
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'reportid-' + currentMenuCode,
+            pk: 'ReportId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            onAfterDialogOpen: function () {
+            },
+            actionDone: function (action, pks) {
+                if (action == 'update' && pks) {
+                    var ichecked = $('input:radio[name="CommunityCheck"]:checked').val();
+                    if (ichecked > 0) {
+                        postTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/CreateEvaluatedReport', $.toJSON({ LastReportId: pks.ReportId }));
+                    }
+                }
+            },
+            uiMode: 'list',
+            entityName: '评估对象',
+            baseModelUrl: baseCMSInvokeUrl + '/Eva/EvaluatedRequisitionService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        //        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12001', null, function (result) {
+        //            serveItemA = result;
+        //        }, { async: false });
+        //        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12002', null, function (result) {
+        //            serveItemB = result;
+        //        }, { async: false });
+        //        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12008', null, function (result) {
+        //            assessLevel = result;
+        //        }, { async: false });
+
+        autosize("cc-" + currentMenuCode, -3);
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                //查询参数
+                var QueryParams = {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                        ]
+                };
+                //获取节点
+                var treeNodeId = treeNode.id; //当前节点
+                if (treeNodeId.length > 6) {
+                    var tmpAreaId = treeNodeId.substring(14, 18);
+                    if (tmpAreaId == '0000') {//街道
+                        QueryParams.filterFields.push({ key: "AreaId2", value: treeNodeId });
+                    }
+                    else {//社区
+                        //getFlowStep(treeNodeId); //取流转名称
+                        QueryParams.filterFields.push({ key: "AreaId2", value: treeNode.attributes.PId });
+                        QueryParams.filterFields.push({ key: "AreaId3", value: treeNodeId });
+                    }
+                }
+
+                $('#' + models[currentMenuCode].gridId).datagrid('load', QueryParams);
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                        ]
+                    },
+                    onLoadSuccess: function (data) {
+                        $('.iconPG').linkbutton({ plain: true, iconCls: 'icon-tip' }).unbind('click').bind('click', function () {
+                            var reportId = $(this).attr('ReportId');
+                            var requisitionId = $(this).attr('RequisitionId');
+                            var doStatus = $(this).attr('DoStatus');
+                            estimate(reportId, requisitionId, doStatus);
+                        });
+                        $('.iconGZS').linkbutton({ plain: true, iconCls: 'icon-print' }).unbind('click').bind('click', function () {
+                            var currentData = $(this).attr("rowData");
+                            if (currentData) {
+                                var rowData = eval('(' + currentData + ')');
+                                showGZS(rowData);
+                            }
+                        });
+                    },
+                    onDblClickRow: function (idx, row) {
+                        //edit(row);
+                    },
+                    columns: [[
+                    { field: 'RequisitionId', title: '评估Id', width: 150, hidden: true },
+                    { field: 'ResidentName', title: '姓名', width: 100, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 160, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'GenderName', title: '性别', width: 60, align: 'center'},
+                    { field: 'ServeItemTypeName', title: '申请服务类型', width: 80, align: 'center'},
+                    { field: 'AreaId2Name', title: '街道', align: 'center', width: 150},
+                    { field: 'AreaId3Name', title: '社区', align: 'center', width: 150}
+                    //{ field: 'PG', title: '评估记录', width: 500, align: 'left', formatter: easyuigrid_linkFormatter, fn: setReportAndGZS }
+                    ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+
+    });
+
+    function setReportAndGZS(row) {
+        var htm = '';
+        if (row) {
+            var queryParams = { RequisitionId: row.RequisitionId, OrderByClause: 'CheckInTime desc' };
+            var dostatus = $("#CC-DoStatus").combobox('getValue');
+            if (dostatus) _.extend(queryParams, { DoStatus: dostatus });
+
+            getTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {
+                htm = _.map(ret.rows, function (o) {
+                    return '<a  class="iconPG" ReportId ="' + o.ReportId + '" RequisitionId="' + row.RequisitionId + '" DoStatus="' + o.DoStatus + '" title="' + o.ReportCode + '" >' + right(o.ReportCode, 10) + '<' + retDoStatusResult(o.DoStatus) + '>' + '</a>' + (o.DoStatus == '4' ? '|<a class="iconGZS"  rowData =' + $.toJSON(o) + ' >告知书</a>' : '');
+                }).join(";")
+            }, { async: false });
+        }
+        return htm;
+    }
+
+    //回车事件
+    $(function () {
+        document.onkeydown = function (e) {
+            var ev = document.all ? window.event : e;
+            if (ev.keyCode == 13) {
+                exec(true)
+            }
+        }
+    });
+
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

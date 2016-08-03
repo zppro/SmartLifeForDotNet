@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Auth_ImportGroupModuleSettingParam" class="StringObjectDictionary">
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="vachar" />
+      <parameter  property="GroupId" column="GroupId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Auth_ImportGroupModuleSetting" parameterMap="SP_Auth_ImportGroupModuleSettingParam" resultClass="StringObjectDictionary">
+      SP_Auth_ImportGroupModuleSetting
+    </procedure>
+    <select id="GetGroupModuleSetting" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.ModuleId,a.ApplicationId,a.ModuleCode,isnull(c.AliasName, a.AliasName) as AliasName, isnull(c.Position, a.Position) as Position,isnull(c.Location, a.Location ) as Location
+      ,isnull(c.Size, a.Size ) as Size,isnull(c.ForeColor, a.ForeColor ) as ForeColor,isnull(c.BackColor, a.BackColor ) as BackColor
+      from Auth_Module a inner join Auth_GroupModule b on a.ModuleId =b.ModuleId left join Auth_GroupModuleSetting c on b.AreaId=c.AreaId and b.GroupId=c.GroupId and b.ModuleId=c.ModuleId
+      where a.Status=1 and b.AreaId=#AreaId# and b.GroupId=#GroupId#
+      <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+      Order by a.ApplicationId, isnull(c.AliasName, a.AliasName ) asc
+    </select>
+  </statements>
+</sqlMap>

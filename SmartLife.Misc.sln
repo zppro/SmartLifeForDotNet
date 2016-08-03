@@ -1,0 +1,131 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallCenterAPI", "SmartLife.Applications\CallCenterAPI\CallCenterAPI.csproj", "{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.CertManage.MerchantServices", "SmartLife.Applications\SmartLife.CertManage.MerchantServices\SmartLife.CertManage.MerchantServices.csproj", "{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.CertManage.MobileServices", "SmartLife.Applications\SmartLife.CertManage.MobileServices\SmartLife.CertManage.MobileServices.csproj", "{EBB3FCC8-1095-418B-B38E-87128E0D4705}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.CertManage.SmsServices", "SmartLife.Applications\SmartLife.CertManage.SmsServices\SmartLife.CertManage.SmsServices.csproj", "{D9FA6433-48D3-4965-90DC-A47C01CFF458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Client.Sms", "SmartLife.Applications\SmartLife.Client.Sms\SmartLife.Client.Sms.csproj", "{8C969B84-139A-4BB7-AC29-E225EC04F156}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Client.SmsTelecom", "SmartLife.Applications\SmartLife.Client.SmsTelecom\SmartLife.Client.SmsTelecom.csproj", "{39F7E753-9531-47CD-9076-A14F8D95831C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Client.SmsV2X", "SmartLife.Applications\SmartLife.Client.SmsV2X\SmartLife.Client.SmsV2X.csproj", "{9DB2439C-5693-4B7B-8033-CE56A7120DB3}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SmartLife.Applications\\CallCenterAPI\\CallCenterAPI.csproj
+		SccProjectName1 = SmartLife.Applications/CallCenterAPI
+		SccLocalPath1 = SmartLife.Applications\\CallCenterAPI
+		SccProjectUniqueName2 = SmartLife.Applications\\SmartLife.CertManage.MerchantServices\\SmartLife.CertManage.MerchantServices.csproj
+		SccProjectName2 = SmartLife.Applications/SmartLife.CertManage.MerchantServices
+		SccLocalPath2 = SmartLife.Applications\\SmartLife.CertManage.MerchantServices
+		SccProjectUniqueName3 = SmartLife.Applications\\SmartLife.CertManage.MobileServices\\SmartLife.CertManage.MobileServices.csproj
+		SccProjectName3 = SmartLife.Applications/SmartLife.CertManage.MobileServices
+		SccLocalPath3 = SmartLife.Applications\\SmartLife.CertManage.MobileServices
+		SccProjectUniqueName4 = SmartLife.Applications\\SmartLife.CertManage.SmsServices\\SmartLife.CertManage.SmsServices.csproj
+		SccProjectName4 = SmartLife.Applications/SmartLife.CertManage.SmsServices
+		SccLocalPath4 = SmartLife.Applications\\SmartLife.CertManage.SmsServices
+		SccProjectUniqueName5 = SmartLife.Applications\\SmartLife.Client.Sms\\SmartLife.Client.Sms.csproj
+		SccProjectName5 = SmartLife.Applications/SmartLife.Client.Sms
+		SccLocalPath5 = SmartLife.Applications\\SmartLife.Client.Sms
+		SccProjectUniqueName6 = SmartLife.Applications\\SmartLife.Client.SmsTelecom\\SmartLife.Client.SmsTelecom.csproj
+		SccProjectName6 = SmartLife.Applications/SmartLife.Client.SmsTelecom
+		SccLocalPath6 = SmartLife.Applications\\SmartLife.Client.SmsTelecom
+		SccProjectUniqueName7 = SmartLife.Applications\\SmartLife.Client.SmsV2X\\SmartLife.Client.SmsV2X.csproj
+		SccProjectName7 = SmartLife.Applications/SmartLife.Client.SmsV2X
+		SccLocalPath7 = SmartLife.Applications\\SmartLife.Client.SmsV2X
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{455CEEA5-8E74-4FE8-AB65-590E8D653DE9}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D7AB4091-6521-4612-AF9F-8A84FBFB68A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EBB3FCC8-1095-418B-B38E-87128E0D4705}.Release|x86.ActiveCfg = Release|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D9FA6433-48D3-4965-90DC-A47C01CFF458}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|x86.ActiveCfg = Debug|x86
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Debug|x86.Build.0 = Debug|x86
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|x86.ActiveCfg = Release|x86
+		{8C969B84-139A-4BB7-AC29-E225EC04F156}.Release|x86.Build.0 = Release|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Debug|x86.ActiveCfg = Debug|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Debug|x86.Build.0 = Debug|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Release|Any CPU.ActiveCfg = Release|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Release|x86.ActiveCfg = Release|x86
+		{39F7E753-9531-47CD-9076-A14F8D95831C}.Release|x86.Build.0 = Release|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Debug|x86.ActiveCfg = Debug|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Debug|x86.Build.0 = Debug|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Release|Any CPU.ActiveCfg = Release|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Release|x86.ActiveCfg = Release|x86
+		{9DB2439C-5693-4B7B-8033-CE56A7120DB3}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

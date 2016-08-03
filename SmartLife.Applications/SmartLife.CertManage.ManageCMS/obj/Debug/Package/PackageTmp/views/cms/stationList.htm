@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浙江蓝谷智慧养老</title>
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/icon.css" />
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easyui-1.3.3.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/locale/easyui-1.3.3-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../script/xml2json-v1.1.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script>  
+    <script type="text/javascript" src="../../script/cms.js"></script> 
+    <script type="text/javascript">
+        var pageTo;
+        $(function () {
+            loadfiles([
+                { type: "css", url: "../../css/cms/" + appDeployArea.id + ".css" }
+                ], function () { }
+            );
+
+            loadHeadFoot();
+
+            var stationName;
+            var stationType;
+            var stationType2;
+
+            //            $(".contain_stationListL_div_Item0_content").delegate("input[name='streetRdio']", "click", function (event) {
+            //                query_station();
+            //            });
+
+            $(".contain_stationListL_div_Item0_content").delegate("a", "click", function (event) {
+                if ($(this).attr("isChecked") == 1) {//已选
+                    //$(this).attr("isChecked", 0);
+                } else {
+                    $(".contain_stationListL_div_Item0_content li").css({ "background-color": "#488FD1" });
+                    $(".contain_stationListL_div_Item0_content li a").attr("isChecked", 0);
+                    $(this).parent().css({ "background-color": "Red" });
+                    $(this).attr("isChecked", 1);
+                }
+                query_station();
+            });
+
+            stationType = getQueryString("stype");
+            stationType2 = getQueryString("stype2");
+            //stationName = getQueryString("sname");
+            //alert(stationType + ":" + stationType2+ ":" + stationName);
+
+            if (stationType && stationType2) {
+                if (stationType2 == "00002") {
+                    stationName = "居家养老服务点";
+                    pageTo = "station_daycare";
+                } else if (stationType2 == "00001") {
+                    stationName = "养老机构";
+                    pageTo = "station_oldmancare";
+                }
+                $(".contain_stationListTitle").text(stationName); //目前手动写
+
+                CreateStreet(appDeployArea.id, 4);
+
+                var pageParam = {
+                    page: 1,
+                    rows: 10,
+                    pageList: [10, 15],
+                    sort: 'CheckInTime',
+                    order: 'desc',
+                    total: 0,
+                    instance: {
+                        AreaId: appDeployArea.id,
+                        Status: 1,
+                        StationType: stationType,
+                        StationType2: stationType2
+                    }
+                };
+                createStationGrid(pageParam);
+            }
+        });
+
+        function createStationListHtml(stationList) { 
+            var _html = "";
+            if (stationList.length > 0) {
+                _html = [];
+                _html.push("<ul>");
+                for (var index in stationList) {
+
+                    _html.push("<li>");
+                    _html.push("<a href=\"" + pageTo + ".htm?sid=" + stationList[index].StationId + "\" target=\"_blank\" >" + stationList[index].StationName + "</a>");
+                    _html.push("</li>");
+                }
+                _html.push("</ul>");
+                _html = _html.join("");
+            }
+            $("#contain_stationListR_content").html(_html);
+        }
+
+        function createStationGrid(pagination) {
+            postTo(ServiceUrl + "ServiceStationListForGrid", $.toJSON(pagination), function (result) {
+                if (result.rows) {
+                    var stationData = $.map(result.rows, function (item) {
+                        return xml2json.parser(item, 'StringObjectDictionary');
+                    });
+                    createStationListHtml(stationData);
+                    pagination.total = result.total;
+                    createPaginationDiv(pagination);
+                }
+            }, { async: false }, { ConnectId: "SmartLife1203" });
+        }
+
+        function createPaginationDiv(pageParam) {
+            $('#paginationDiv').pagination({
+                total: pageParam.total,
+                pageSize: pageParam.rows,
+                pageList: pageParam.pageList,
+                showPageList:false,
+                onSelectPage: function (pageNumber, pageSize) {
+                    $(this).pagination('loading');
+                    var pageParam = getPageParam();
+                    if (pageParam) {
+                        reloadStationGrid(pageNumber, pageSize, pageParam);
+                    }    
+                    $(this).pagination('loaded');
+                }
+            });
+        }
+
+        function reloadStationGrid(pageNo, pageSize, pageParam) {
+            if (pageParam) {
+                pageParam.page = pageNo,
+                pageParam.rows = pageSize,
+                postTo(ServiceUrl + "ServiceStationListForGrid", $.toJSON(pageParam), function (result) {
+                    if (result.rows) {
+                        var stationData = $.map(result.rows, function (item) {
+                            return xml2json.parser(item, 'StringObjectDictionary');
+                        });
+                        createStationListHtml(stationData);
+                    }
+                }, { async: false }, { ConnectId: "SmartLife1203" });
+            }
+        }
+
+        function getPageParam() {
+            var _streetId, _keyword;
+            //_streetId = $("input[name='streetRdio']:checked").val();//街道
+            $(".contain_stationListL_div_Item0_content li a").each(function (index, item) {
+                if ($(item).attr("isChecked") == "1") {
+                    _streetId = $(item).attr("areaId");
+                }
+            });
+            //alert(_streetId);
+            _keyword=$("#keyword").val();
+            _keyword=$.trim(_keyword);
+
+            var stationType,stationType2;
+            stationType = getQueryString("stype");
+            stationType2 = getQueryString("stype2");
+            if (!stationType || !stationType2) return null;
+            
+            var pageParam = {
+                page: 1,
+                rows: 10,
+                pageList: [10, 15],
+                total: 0,
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    AreaId: appDeployArea.id,
+                    AreaId2:_streetId,
+                    Status: 1,
+                    StationType: stationType,
+                    StationType2: stationType2
+                },
+                fuzzyFields: [
+                    { key: "StationName", value: _keyword}
+                ]
+            }
+            return pageParam;
+        }
+
+        function query_station() {
+            var pageParam = getPageParam();
+            if (pageParam) {
+                createStationGrid(pageParam);
+            } else {
+                alert("参数错误,查询失败!");
+            }
+        }
+
+        //获取街道和社区信息
+        function CreateStreet(parentId, levels) {
+            var _data = null;
+            if (parentId) {
+                getTo(ServiceUrl + "GetStreetAndCommunityInArea/" + parentId, null, function (result) {
+                    //根据levels选择不同层的数据
+                    if (levels) {
+                        _data = $.grep(result, function (n, i) {
+                            return n.Levels == levels;
+                        });
+                    } else {
+                        _data = result;
+                    }
+                    createStreetHtml(_data);
+                }, { async: false }, { ConnectId: "SmartLife1203" });
+            }
+        }
+
+        function createStreetHtml(streetList) {
+            var _html = "";
+            if (streetList.length > 0) {
+                _html = [];
+                _html.push("<ul>");
+                _html.push("<li>");
+                _html.push("<a isChecked=\"0\" >全部</a>");
+                _html.push("</li>");
+                for (var index in streetList) {
+                    _html.push("<li>");
+                    //_html.push("<input type=\"radio\" name=\"streetRdio\" value=\"" + streetList[index].ItemId + "\" />" + streetList[index].ItemName);
+                    _html.push("<a areaId=\"" + streetList[index].ItemId + "\" isChecked=\"0\" >" + streetList[index].ItemName + "</a>");
+                    _html.push("</li>");
+                }
+                _html.push("</ul>");
+                _html = _html.join("");
+            }
+            $(".contain_stationListL_div_Item0_content").html(_html);
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="header"></div>
+<!--body-->
+<div class="contain">
+  <div class="contain_stationList">
+    <div class="contain_stationListHead">
+        <div class="contain_stationListTitle"></div>
+        <div class="contain_stationListQuery">
+            <label>关键字:</label><input name="keyword" id="keyword" type="text" />
+             <a href="javascript:void(0)" name="query_btn" class="easyui-linkbutton" onclick="query_station()">查询</a>
+        </div>
+        <div style=" clear:both"></div>
+    </div>
+    <div class="contain_stationListL">
+        <div class="contain_stationListL_div">
+             <div class="contain_stationListL_div_Item0">
+                <div class="contain_stationListL_div_Item0_title"></div>
+                <div class="contain_stationListL_div_Item0_content"></div>
+            </div>
+        </div>
+    </div>
+    <div class="contain_stationListR">
+        <div id="contain_stationListR_content"></div>
+        <div id="paginationDiv" ></div>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+</div>
+<!--foot-->
+<div class="footer"></div>
+</body>
+</html>

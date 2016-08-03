@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pam_DeviceBindingParam" class="StringObjectDictionary">
+      <parameter  property="PACode" column="PACode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="DeviceType" column="DeviceType" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="MachineKey" column="MachineKey" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Action" column="Action" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Pam_DeviceBinding" parameterMap="SP_Pam_DeviceBindingParam" resultClass="StringObjectDictionary">
+      SP_Pam_DeviceBinding
+    </procedure> 
+  </statements>
+</sqlMap>

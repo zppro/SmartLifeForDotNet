@@ -1,0 +1,226 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    
+    <div id="stat-c" data-options="region:'north',border:false" style="height: 120px">
+        <input id="stat-day" type="text" class="Wdate easyui-validatebox" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" />
+        <a id="btnChangeStatDay" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="changeStatDay()">切换</a>
+        <div id="stat-block" class="easyui-panel" style="height: 90px; padding: 4px;">
+            <div><span class="stat-title">即时类：</span><span id="stat-realtime" class="stat-info">--</span></div>
+            <div><span class="stat-title">核定类：</span><span id="stat-vouch" class="stat-info">--</span></div>
+        </div>
+    </div>
+    <div id="realtime-c" data-options="region:'west',collapsed:false,border:false,split:false"
+        style="padding: 0px;">
+        <div id="realtime-block" class="easyui-panel" data-options="fit:true" title='即时类服务'>
+            <div class="scroll-head"><span class="field-oldmanname">服务对象</span><span class="field-checkintime">呼入时间</span><span class="field-servicedescription">服务描述</span><span class="field-statusdescription">状态</span><span class="field-workorderno">工单</span><span class="field-serverdescription">服务方</span></div>
+            <div id="realtime-scroll" class="scroll">
+                <ul class="list"> 
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="vouch-c" data-options="region:'east',collapsed:false,border:false,split:false">
+        <div id="vouch-block" class="easyui-panel" data-options="fit:true" title='核定类服务'>
+            <div class="scroll-head"><span class="field-oldmanname">服务对象</span><span class="field-checkintime">呼入时间</span><span class="field-servicedescription">服务描述</span><span class="field-statusdescription">状态</span><span class="field-workorderno">工单</span><span class="field-serverdescription">服务方</span></div>
+            <div id="vouch-scroll" class="scroll">
+                <ul class="list"> 
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"> 
+    
+    var di_realtime = '00001';
+    var di_vouch = '00002';
+    var maxid_realtime = 0;
+    var maxid_vouch = 0;
+    var repeatTime = 20000;
+    var clearTime = 5 * 60 * 1000; //5分钟
+    var selectedDate = getQueryString('stat-date');
+    $(function () {
+        $('#stat-day').val(selectedDate);
+        $('#stat-c').width(getTabWidth());
+        $('#realtime-c').width(getTabWidth() / 2);
+        $('#vouch-c').width(getTabWidth() / 2);
+
+        autosize('scroll-block');
+        autosize('realtime-block', -$('#stat-c').height());
+        autosize('vouch-block', -$('#stat-c').height());
+        autosize('realtime-scroll', -$('#stat-c').height() - 75);
+        autosize('vouch-scroll', -$('#stat-c').height() - 75);
+        loadfiles([
+            { type: "css", url: "../../css/old-care/scroll.css" }
+            ], function () {
+
+                $('#stat-block').panel({ title: selectedDate + ' 统计信息' });
+                //统计区 
+                setTimeout(function () {
+                    _statServicesForScroll();
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+                //即时服务
+                setTimeout(function () {
+                    _loadServicesForScroll(di_realtime, maxid_realtime, function (rows) {
+                        var isAppend = true;
+                        if (maxid_realtime == 0) {
+                            isAppend = false;
+                        }
+                        if (rows.length > 0) {
+                            maxid_realtime = _.max(rows, function (o) {
+                                return o.Id;
+                            }).Id;
+                            var htmlstr = _.map(rows, function (o) {
+                                var rowclass;
+                                /*
+                                if (o.ServiceDoStatus == 0) {
+                                rowclass = "row-color-red";
+                                }
+                                else if (o.ServiceDoStatus == 1) {
+                                rowclass = "row-color-orange";
+                                }
+                                else {
+                                rowclass = "row-color-blue";
+                                }
+                                */
+                                var type = ('' + o.ServiceQueueNo).substr(5);
+                                if (type == '0') {
+                                    //紧急服务
+                                    rowclass = "row-color-red";
+                                }
+                                else {
+                                    rowclass = "row-color-blue";
+                                }
+                                return '<li><a><span class="field-oldmanname ' + rowclass + '" >' + o.OldManName + '</span>&nbsp;<span class="field-checkintime ' + rowclass + '">' + Date.parse(o.CheckInTime).toString('HH点mm分ss秒') + '</span><span class="field-servicedescription ' + rowclass + '" title="' + isempty(o.ServiceDescription, '') + '">' + isempty(o.ServiceDescription, '&nbsp;') + '</span><span class="field-statusdescription ' + rowclass + '">' + isempty(o.StatusDescription, '&nbsp;') + '</span><span class="field-workorderno ' + rowclass + '">' + o.WorkOrderNo + '</span><span title="' + o.ServerDescription + '" class="field-server ' + rowclass + '">' + o.ServerDescription + '</span></a></li>';
+                            }).join("");
+
+                            if (isAppend) {
+                                $('#realtime-scroll ul').append(htmlstr);
+                            }
+                            else {
+                                $('#realtime-scroll ul').html(htmlstr);
+                            }
+                        }
+                    });
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+                //核定服务
+                setTimeout(function () {
+                    _loadServicesForScroll(di_vouch, maxid_vouch, function (rows) {
+                        var isAppend = true;
+                        if (maxid_vouch == 0) {
+                            isAppend = false;
+                        }
+                        if (rows.length > 0) {
+                            maxid_vouch = _.max(rows, function (o) {
+                                return o.Id;
+                            }).Id;
+                            var htmlstr = _.map(rows, function (o) {
+                                var rowclass;
+                                if (o.ServiceDoStatus == 0) {
+                                    rowclass = "row-color-red";
+                                }
+                                else if (o.ServiceDoStatus == 1) {
+                                    rowclass = "row-color-orange";
+                                }
+                                else {
+                                    rowclass = "row-color-blue";
+                                }
+                                return '<li><a><span class="field-oldmanname ' + rowclass + '" >' + o.OldManName + '</span>&nbsp;<span class="field-checkintime ' + rowclass + '">' + Date.parse(o.CheckInTime).toString('HH点mm分ss秒') + '</span><span class="field-servicedescription ' + rowclass + '" title="' + isempty(o.ServiceDescription, '') + '">' + isempty(o.ServiceDescription, '&nbsp;') + '</span><span class="field-statusdescription ' + rowclass + '">' + isempty(o.StatusDescription, '&nbsp;') + '</span><span class="field-workorderno ' + rowclass + '">' + o.WorkOrderNo + '</span><span title="' + o.ServerDescription + '" class="field-server ' + rowclass + '">' + o.ServerDescription + '</span></a></li>';
+                            }).join("");
+
+                            if (isAppend) {
+                                $('#vouch-scroll ul').append(htmlstr);
+                            }
+                            else {
+                                $('#vouch-scroll ul').html(htmlstr);
+                            }
+
+                        }
+                    });
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+                //滚动
+                setInterval('autoScroll(".scroll")', 3000);
+
+                //定时将id清零
+                setTimeout(function () {
+                    maxid_realtime = 0;
+                    maxid_vouch = 0;
+                    setTimeout(arguments.callee, clearTime);
+                }, clearTime);
+            });
+    });
+
+    
+    
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-25px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function _loadServicesForScroll(serviceCatalog, id, callback) {
+        getTo(top.callservice_InvokeUrl + '/LoadServicesForScroll/' + serviceCatalog + ',' + selectedDate + ',' + id, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                callback.apply(this, [rows]);
+            }
+        });
+    }
+
+    function _statServicesForScroll() { 
+        getAll([top.callservice_InvokeUrl + '/StatServicesForScroll/' + di_realtime + ',' + selectedDate, top.callservice_InvokeUrl + '/StatServicesForScroll/' + di_vouch + ',' + selectedDate], function (result_realtime, result_vouch) {
+            var rows_realtime = _.map(result_realtime.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            var rows_vouch = _.map(result_vouch.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+
+            var o_group_by_realtime = _.groupBy(rows_realtime, 'ServiceDescription');
+            var htmls_realtime = [];
+            for (var key in o_group_by_realtime) {
+                htmls_realtime.push('<span>' + key + '（' + _.map(o_group_by_realtime[key], function (o) {
+                    return o.StatusDescription + '<a>' + o.Num + '</a>次';
+                }).join(",") + '）</span>');
+            }
+            if (htmls_realtime.length > 0) {
+                $('#stat-realtime').html(htmls_realtime.join('； '));
+            }
+            else {
+                $('#stat-realtime').html('--');
+            }
+
+            var o_group_by_vouch = _.groupBy(rows_vouch, 'ServiceDescription');
+            var htmls_vouch = [];
+            for (var key in o_group_by_vouch) {
+                htmls_vouch.push('<span>' + key + '（' + _.map(o_group_by_vouch[key], function (o) {
+                    return o.StatusDescription + '<a>' + o.Num + '</a>次';
+                }).join(",") + '）</span>');
+            }
+            if (htmls_vouch.length > 0) {
+                $('#stat-vouch').html(htmls_vouch.join('； '));
+            }
+            else {
+                $('#stat-vouch').html('--');
+            }
+        });
+    }
+
+    function changeStatDay() {
+        var canFullScreen = getQueryString('menuCode');
+        var newUrl = '../../views/shared/tabContainer.htm?pageUrl=views/old-care/scroll.htm&stat-date=' + $('#stat-day').val() + '&menuCode=' + getQueryString('menuCode');
+        if (canFullScreen) {
+            newUrl += '&canFullScreen=' + canFullScreen;
+        }
+        window.location.href = newUrl;
+    }
+
+</script>

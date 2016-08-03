@@ -1,0 +1,773 @@
+﻿<div >
+    <table width="100%;"  height="30px">
+        <tr>
+            <td id="CurrentAgencys-cc" style="text-align: left; width: 370px; border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div> 
+                <input id="SelectedRoom" />
+                <input id="RoomId" type="hidden" />
+                <input id="FloorNo" type="hidden" />
+            </td>
+            <td style="text-align: left;">
+            <table>
+                <tr> 
+                <td style=" border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                从<input id="PlanDate_Start" name="PlanDate_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input id="PlanDate_End" name="PlanDate_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="queryLastWeek()">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="queryNextWeek()">
+                            下周</a></td>
+                    <td style=" padding-left:10px; padding-right:5px;"><input id="oldManName" style=" width:80px;" placeholder="老人姓名"/></td>
+                    <td >
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="queryData()">查询</a> </td>
+                </tr>
+            </table>
+                   
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="toolbar-B130401">
+    <table>        
+        <tr>
+            <td style="text-align: left; width:250px;">
+                <input id="ServeMan" />
+                <!--<input name="ServeManList" />-->
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="selectServeMan()">
+                            批量选择</a>
+            </td>
+            <td>
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="addServeInfo(true)">
+                            保存</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="queryData()">刷新</a>  
+            </td>
+            <td style="text-align:right; width:180px;">
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" plain="true" onclick="copyServeInfo()">
+                            复制计划</a> 
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="dg-B130401" class="main-area">
+</table>
+<div id="dlg-B130401" class="easyui-dialog" style="width: 320px; height: 500px; padding: 10px;"
+    closed="true"  cache="false" buttons="#btn-B130401" > 
+        <table id="dg-ServeManList" >
+        </table>    
+</div>
+<div id="btn-B130401">
+      <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancelEx('dlg-B130401')">关闭</a>
+</div>
+<div id="dlg-copyPlan" class="easyui-dialog" style="width: 450px; height: 400px; padding: 10px;"
+    closed="true"  cache="false" buttons="#btn-copyPlan" >  
+    <div style=" font-size:18px; text-align:center;  width:100%;">选择老人</div>
+    <div style="height:25px; padding-left:10px;"><input type="checkbox" id="checkAll" onclick="checkAll()"/><label for="checkAll">全选</label></div>
+    <div style=" width:100%; height:200px; overflow:auto;">
+        <table id="copyOldManList" style=" margin-left:10px;" >  
+        </table>    
+    </div>
+        <div style=" margin-top:20px;">
+           <a> 原 时 间 段 ：</a>
+           从<input disabled="disabled" id="CopyFrom_Start" name="CopyFrom_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;"   />
+                至<input disabled="disabled" id="CopyFrom_End" name="CopyFrom_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="copyLastWeek('CopyFrom')">上周</a> <a href="javascript:void(0)"
+                           id='copyNextWeek' class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="copyNextWeek('CopyFrom')">
+                            下周</a>
+        </div>
+        <div >
+           <a>目标时间段：</a>
+           从<input disabled="disabled" id="CopyTo_Start" name="CopyTo_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input disabled="disabled" id="CopyTo_End" name="CopyTo_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                       id='copyLastWeek' iconcls="icon-prev"   plain="true" onclick="copyLastWeek('CopyTo')">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="copyNextWeek('CopyTo')">
+                            下周</a>
+        </div>
+         
+</div>
+<div id="btn-copyPlan">
+            <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" onclick="copyOK()">
+                            仅保存</a> 
+            <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" onclick="copyOKEx()">
+                            保存并关闭</a> 
+      <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancelEx('dlg-copyPlan')">关闭</a>
+</div>
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    var allServeManList;
+    var allWorkItemList;
+    var strOldManId = '';
+    var arrAssessmentResults;
+    var mouseClickDown = false;
+    var templateOfServerInfoForView = '<li class="serve-info-item-save" planId="[PlanId]" oldManId="[OldManId]" userId="[UserId]"  userIdIsNull="[UserIdIsNull]" workItem="[WorkItem]"  workItemName="[WorkItemName]" planDate="[PlanDate]" workSchedule="[WorkSchedule]" workload="[Workload]"   checkDescription="[CheckDescription]"  ><a style="display:[DisplayStyleOfRemoveServeInfoItem]" title="删除服务人员" onclick="removeServeInfoItem(this)" class="removeServeInfoItem actionServeInfoItem nicon-blue nicon-R2C13"></a><span title="服务内容：[[WorkSchedule]] [[WorkItemName]][ [Workload]分钟]" class="serve-info-item-serveman[Color]" >[[WorkSchedule]]&nbsp;</span><span onclick="[ItemClickFunc]"  title="服务内容：[[WorkSchedule]] [[WorkItemName]][ [Workload]分钟]" class="serve-info-item-serveitem[Color] server-name">[[UserName]]</span><span  title="服务内容：[[WorkSchedule]] [[WorkItemName]][ [Workload]分钟]" class="serve-info-item-serveitem[Color]" >&nbsp;[[Workload]分钟]</span><span  title="服务内容：[[WorkSchedule]] [[WorkItemName]][ [Workload]分钟]" class="serve-info-item-fromto[Color]" >&nbsp;[[WorkItemName]]</span></li>';
+//    {                                                                OldManId: strOldManId, WorkItem: strWorkItem, WorkSchedule: strWorkSchedule, Workload: strWorkload, RemindFlag: strRemindFlag, RemindRepeats: strRemindRepeats, CheckDescription: strCheckDescription
+//                            });
+    var daysBeforehand = -1; //今天之前的不能修改
+    placeholder(); //占位符初始化
+    $(function () {
+        loadfiles([
+            { type: "css", url: "../../css/pam/set-workplan.css" }
+            ], function () {
+                //加载商家
+                var fristload = true;
+                $('#CurrentAgencys').combobox({
+                    width: 180,
+                    panelWidth: 300,
+                    data: top.gUserInfo.MappingAgencys,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onLoadSuccess: function () { 
+                        if (top.gUserInfo.MappingAgencys.length > 0) {
+                            $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                            if (fristload) {
+                                buildPageByAgency();
+                                fristload = false;
+                            }
+
+                            if (top.gUserInfo.MappingAgencys.length == 1) {
+                                $('#CurrentAgencys-c').hide();
+                                $('#CurrentAgencys-cc').width(190);
+                            }
+                        }
+                        else {
+                            alertInfo('当前帐号没有绑定任何机构');
+                            $('#toolbar-Schedule').hide();
+                        }
+                    },
+                    onSelect: function (record) {
+                        $('#oldManName').val(null); 
+                        buildPageByAgency();
+                    }
+                });
+            });
+    });
+
+        function buildPageByAgency() { 
+    //加载楼层房间
+            initTree('easyUIComboTree', 'SelectedRoom', {
+                width: 180,
+                panelWidth: 300,
+                panelHeight: 260,
+                editable: false,
+                onSelect: function (node) {
+                    var id = node.id;
+                    var pId = node.attributes.PId;
+                    if (pId == '_') {
+                        $('#RoomId').val(null);
+                        $('#FloorNo').val(id);
+                    }
+                    else {
+                        $('#RoomId').val(id);
+                        $('#FloorNo').val(null);
+                    }
+                },
+                onLoadSuccess: function () { 
+                    $('#SelectedRoom').combotree('tree').tree("expandAll"); 
+                }
+            }, function (d) {
+                getTreeData('01$02$09', "OrderNo ", '{"StationId":"' + $('#CurrentAgencys').combobox('getValue') + '", "UserId":"' + top.gUserId + '"}', d);
+            }, null, function () {
+                var autoSetNode = findTreeNode($('#SelectedRoom').combotree('tree'), 2, 0);
+                if (autoSetNode) {
+                    $('#SelectedRoom').combotree('setValue', autoSetNode.id);
+                }
+
+                getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/13001',
+                       baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeManForAgency/' + $('#CurrentAgencys').combobox('getValue') + ',00004,' + window.contants.GuidAsGroup_PensionAgencyServeMan], function (workItemList, serveManList) {
+                           allWorkItemList = workItemList;
+                           allServeManList = serveManList.rows;
+                           $('#ServeMan').combobox({
+                               width: 100,
+                               panelWidth: 120,
+                               data: serveManList.rows,
+                               valueField: 'UserId',
+                               textField: 'UserName',
+                               editable: false 
+                           });
+                           if (serveManList.rows.length > 0) {
+                               $('#ServeMan').combobox('setValue', serveManList.rows[0].UserId);
+                           }
+
+                           autosize('dg-' + currentMenuCode, -34);
+                           //createGrid(); 
+                           var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+                           var sunday = Date.today().moveToDayOfWeek(0);
+                           queryFromTo(monday, sunday);
+                       });
+
+
+            });
+    }
+
+    function queryFromTo(beginDate, endDate) {
+        $('#PlanDate_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#PlanDate_End').val(endDate.toString('yyyy-MM-dd'));
+        queryData();
+    }
+
+    function queryData() {
+        strOldManId = '';
+        var unSave = checkUnSave();
+        if (unSave) {
+            alertConfirm('当前还有未保存的信息，确定要继续吗？', function (r) {
+                if (r) {
+                    _queryData();
+                }
+            });
+        }
+        else {
+            _queryData();
+        }
+    }
+
+    function _queryData() {
+        var beginDateStr = $('#PlanDate_Start').val();
+        if (!beginDateStr) {
+            alertInfo('请选择一个开始日期');
+            return;
+        }
+        var endDateStr = $('#PlanDate_End').val();
+        if (!endDateStr) {
+            alertInfo('请选择一个结束日期');
+            return;
+        }
+        var isRefresh = false; //是否是刷新
+        var d = new Date();
+        var today = d.toString('yyyy-MM-dd');
+        if (beginDateStr <= today && today <= endDateStr) {
+            isRefresh = true;
+        } 
+        var RoomId = $('#RoomId').val();
+        var FloorNo=$('#FloorNo').val(); 
+        var currentDate = Date.parse(beginDateStr);
+        var days = DateDiff('d', currentDate, Date.parse(endDateStr));
+        var frozenColumns = [[
+                    { field: 'OldManId', title: '对象编号', width: 150, hidden: true },
+                    { field: 'OldManName', title: '老人姓名', align: 'center', width: 100, styler: function () { return 'background-color:#098AD2;color:#fff'; } }
+            ]];
+        var columns = [[]];
+        for (var i = 0; i <= days; i++) {
+            var spanDays = DateDiff('d', Date.today(), currentDate);
+            var changeFlag = true;
+            if (spanDays <= daysBeforehand) {
+                changeFlag = false;
+            }
+            var theColumn = { changeFlag: changeFlag, field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 300, formatter: serveInfoFormatter, styler: cellStyler };
+            columns[0].push(theColumn);
+            currentDate = currentDate.addDays(1);
+        }
+        //columns[0].push({ field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 300, formatter: serveInfoFormatter, styler: cellStyler });
+        var serveManId = $('#ServeMan').combobox('getValue');
+        if (!serveManId || serveManId == '') {
+            serveManId = '00000000-0000-0000-0000-000000000000';
+        }
+
+        var queryParams={
+                instance: { StationId: $('#CurrentAgencys').combobox('getValue'), ServeManId: serveManId,  BeginDateStr: beginDateStr, EndDateStr: endDateStr, OldManName: $('#oldManName').val() }
+            }
+            if (RoomId != '') { queryParams.instance.RoomId = RoomId; }
+            if (FloorNo != '') { queryParams.instance.FloorNo = FloorNo; }
+
+        $('#dg-' + currentMenuCode).datagrid({
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListWorkPlan',
+            rownumbers: true,
+            singleSelect: false,
+            toolbar: '#toolbar-B130401',
+            method: 'POST',
+            autoRowHeight: false,
+            queryParams: queryParams,
+            loader: easyuiLoaderForStringObjectDictionary,
+            frozenColumns: frozenColumns,
+            columns: columns,
+            onLoadSuccess: function (data) {
+                //设置标题可以点击  选中当列
+                var $headerCell = $('.datagrid-header-row td');
+                _.each($headerCell, function ($cell) {
+                    $cell.setAttribute('onclick','selectColumn(this)');
+                });
+                //自动移到当天
+                if (isRefresh) {
+                var int = d.getDay() - 1;
+                var i = int >= 0 ? int : 6;
+                $('.datagrid-view2 .datagrid-body').attr('id', 'scroll-body');
+                $('#scroll-body ').scrollLeft(300 * i);
+            }
+            }
+        }).datagrid('freezeRow', 1).datagrid('attachCellSelect', {
+            onmousedown: function (e) {
+                if (e.button == 0 || e.button == 1) {
+                    if (!e.ctrlKey) {
+                        if ($('.selectedCell').size() > 0) {
+                            $('.selectedCell').removeClass('selectedCell');
+                        }
+                    }
+                    mouseClickDown = true;
+                    var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+
+                    }
+                }
+            },
+            onmouseup: function (e) {
+                var userSelection;
+                if (window.getSelection) { //现代浏览器
+                    userSelection = window.getSelection();
+                } else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面
+                    userSelection = document.selection.createRange();
+                }
+                mouseClickDown = false;
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        try {
+                            window.getSelection().removeAllRanges();
+                        }
+                        catch (e) { }
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            },
+            onmouseover: function (e) {
+                if (mouseClickDown) {
+                    var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption && columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+                    }
+                }
+            }, 
+            onbodyclick: function (e) {
+                if (e.target.className == 'datagrid-body') {
+                    if ($('.selectedCell').size() > 0) {
+                        $('.selectedCell').removeClass('selectedCell');
+                    }
+                }
+            }
+        }); 
+    }
+
+    function selectColumn(obj) {
+        var strField = obj.getAttribute('field');
+        var $datagridRow = $('.datagrid-view2 .datagrid-btable td');
+        _.each($datagridRow, function ($row) {
+            var row_field = $row.getAttribute('field');
+            var row_class = $row.getAttribute('class');
+            if (strField == row_field && row_class != 'cantchangeday') {
+                $row.setAttribute('class', 'selectedCell');
+            }
+        });
+    }
+    function serveInfoFormatter(value, row, index) {
+        var formallis = '';
+        var isNullify = false;
+        var reserveDate = this.title.substr(0,10);
+        var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', this.field);
+        if (value == '') { 
+            if (strOldManId != row.OldManId) {
+                getTo(baseCMSInvokeUrl + '/Pam/AssessmentResultService/Query?parms=' + $.toJSON({ "OldManId": row.OldManId, "Status": 1, "CheckFlag": 1, "OrderByClause": " WorkSchedule asc" }), null, function (result) {
+                    if (result.Success) {
+                        arrAssessmentResults = result.rows;
+
+                        formallis = _.map(arrAssessmentResults, function (o) {
+                            var strPlanId = window.contants.guidAutoGenerate;
+                            var strOldManId = o.OldManId;
+                            var strWorkItem = o.WorkItem;
+                            var strUserId = '';
+                            var strUserName = '  ____  ';
+                            var strUserIdIsNull = 1;
+                            var strPlanDate = reserveDate + ' ' + o.WorkSchedule;
+                            var strWorkItemName = GetItemName(allWorkItemList, o.WorkItem);
+                            var strWorkSchedule = o.WorkSchedule;
+                            var strWorkload = o.Workload; 
+                            var strCheckDescription = o.CheckDescription; 
+                            return replaceWithKeys(templateOfServerInfoForView, { DisplayStyleOfRemoveServeInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindServeInfoItemByWX: columnOption.changeFlag ? 'inline-block' : 'none', ItemClickFunc: 'editserveInfoItem(this,' + columnOption.changeFlag + ')', PlanId: strPlanId, OldManId: strOldManId, UserId: strUserId, UserName: strUserName, UserIdIsNull: strUserIdIsNull, PlanDate: strPlanDate, WorkItem: strWorkItem, WorkItemName: strWorkItemName, WorkSchedule: strWorkSchedule, Workload: strWorkload, CheckDescription: strCheckDescription
+                            });
+                        }).join("");
+                    }
+                }, { async: false });
+                strOldManId = row.OldManId;
+            }
+            else {
+                formallis = _.map(arrAssessmentResults, function (o) {
+                    var strPlanId = window.contants.guidAutoGenerate;
+                    var strOldManId = o.OldManId;
+                    var strUserId = '';
+                    var strUserName = '  ____  ';
+                    var strUserIdIsNull = 1;
+                    var strWorkItem = o.WorkItem;
+                    var strPlanDate = reserveDate + ' ' + o.WorkSchedule + ':00';
+                    var strWorkItemName = GetItemName(allWorkItemList, o.WorkItem);
+                    var strWorkSchedule = o.WorkSchedule;
+                    var strWorkload = o.Workload; 
+                    var strCheckDescription = o.CheckDescription;
+
+                    return replaceWithKeys(templateOfServerInfoForView, { DisplayStyleOfRemoveServeInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindServeInfoItemByWX: columnOption.changeFlag ? 'inline-block' : 'none', ItemClickFunc: 'editserveInfoItem(this,' + columnOption.changeFlag + ')', PlanId: strPlanId, OldManId: strOldManId, UserId: strUserId, UserName: strUserName, UserIdIsNull: strUserIdIsNull, PlanDate: strPlanDate, WorkItem: strWorkItem, WorkItemName: strWorkItemName, WorkSchedule: strWorkSchedule, Workload: strWorkload, CheckDescription: strCheckDescription
+                    });
+                }).join("");
+            } 
+        }
+        else {
+            var arrServeInfos = [];
+            _.each(value.split(','), function (o) {
+                var arrServeInfo = o.split('|'); 
+                arrServeInfos.push({
+                    PlanId: arrServeInfo[0],
+                    OldManId: row.OldManId,
+                    WorkItem: arrServeInfo[1],
+                    WorkItemName: GetItemName(allWorkItemList, arrServeInfo[1]), //去掉
+                    UserId: arrServeInfo[2],
+                    UserName: arrServeInfo[3],
+                    UserIdIsNull: 0,
+                    PlanDate: reserveDate + ' ' + arrServeInfo[4] + ':00',
+                    WorkSchedule: arrServeInfo[4],
+                    Workload: arrServeInfo[5],
+                    CheckDescription: ''
+                });
+            });
+            arrServeInfos = _.sortBy(arrServeInfos, 'WorkSchedule');
+            formallis = _.map(arrServeInfos, function (o) { 
+                return replaceWithKeys(templateOfServerInfoForView, { DisplayStyleOfRemoveServeInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindServeInfoItemByWX: columnOption.changeFlag ? 'inline-block' : 'none', ItemClickFunc: 'editserveInfoItem(this,' + columnOption.changeFlag + ')', PlanId: o.PlanId, OldManId: o.OldManId, UserId: o.UserId, UserName: o.UserName, UserIdIsNull: o.UserIdIsNull, PlanDate: o.PlanDate, WorkItem: o.WorkItem, WorkItemName: o.WorkItemName, WorkSchedule: o.WorkSchedule, Workload: o.Workload,CheckDescription: o.CheckDescription
+                });
+            }).join(""); 
+            isNullify = true;
+        }
+        var htmls = [];
+        htmls.push('<div class="serveInfo"><ul class="formal">' + formallis + '</ul></div>');
+
+        if (columnOption.changeFlag) {
+              htmls.push('<a title="点击保存" onclick="addServeInfo()" class="addServeInfo nicon-blue nicon-R6C4"></a>');
+            if (isNullify) {
+                htmls.push('<a title="作废当天所以计划" onclick="nullifyWorkPlan()" class="nullifyWorkPlan nicon-blue nicon-R6C13"></a>');
+                //nicon-R6C15
+            } 
+        }
+        return htmls.join('');
+    }
+
+    function addServeInfo(v) { 
+        var isNull = [];//是否有未分配服务人员的工作项
+        var $lisToAdd = $('.selectedCell ul li');
+        //        alert($lisToAdd.length);
+        var agencysWorkPlan_add = [];
+        var agencysWorkPlan_edit = [];
+        _.map($lisToAdd, function (li) {
+
+            var planId = $(li).attr('planId');
+            var planDate = $(li).attr('planDate');
+            var oldManId = $(li).attr('oldManId');
+            var workItem = $(li).attr('workItem');
+            var userId = $(li).attr('userId');
+            if (userId == '') {
+                var workItemName = $(li).attr('workItemName');
+                isNull.push('[' + workItemName + ']');
+            }
+            var remark = $(li).attr('checkDescription'); 
+            if (planId == window.contants.guidAutoGenerate) {
+                agencysWorkPlan_add.push({ PlanId: planId, OldManId: oldManId, PlanDate: toJsonDate(Date.parse(planDate, 'yyyyMMdd hh:mm;ss')), WorkItem: workItem, UserId: userId, Remark: remark });
+            }
+            else {
+                agencysWorkPlan_edit.push({ PlanId: planId, UserId: userId, OldManId: oldManId });
+            }
+        });
+        if (agencysWorkPlan_add.length == 0 && agencysWorkPlan_edit.length == 0) {
+            alert('请选择需要保存的内容');
+            return;
+        }
+        if (isNull.length < 1) {
+            alertConfirm('确定要将选中的信息保存吗？', function (r) {
+                if (r) {
+                    var isOk = 0;
+                    var errorMessage = '';
+                    if (agencysWorkPlan_add.length > 0) {
+                        postTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/CreateAll', $.toJSON(agencysWorkPlan_add), function (ret) {
+                            if (!ret.Success) {
+                                isOk++;
+                                errorMessage = ret.ErrorMessage;
+                            }
+                        }, { async: false });
+                    }
+                    if (agencysWorkPlan_edit.length > 0) {
+                        putTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/UpdateAll', $.toJSON(agencysWorkPlan_edit), function (ret) {
+                            if (!ret.Success) {
+                                isOk++;
+                                errorMessage = ret.ErrorMessage;
+                            }
+                        }, { async: false });
+                    }
+
+                    if (isOk == 0) {
+                        alertInfo('保存成功');
+                        _.each($lisToAdd, function (li) {
+                            $(li).attr('class', 'serve-info-item-save');
+                        });
+                        if (v) { _queryData(); }
+                    }
+                    else {
+                        alert(errorMessage);
+                    }
+                }
+            });
+        }
+        else {
+            alert('服务项目：' + isNull.join(',') + '  未分配服务人员');         
+        }
+    }
+
+    function nullifyWorkPlan() {
+        var workPlans=[];
+        var $lisToAdd = $('.selectedCell ul li');
+        _.each($lisToAdd, function (li) {
+            var planId = $(li).attr('planId');
+            if (planId != window.contants.guidAutoGenerate) {
+                workPlans.push({ PlanId: planId,Status:0 });
+            }
+        });
+        if (workPlans.length >=0) {
+            alertConfirm('确定要将选中的信息作废吗？', function (r) {
+                if (r) {
+                    putTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/NullifySelected', $.toJSON(workPlans), function (ret) {
+                        if (ret.Success) {
+                            alert('作废成功');
+                            _queryData();
+                        }
+                    }, { async: false });
+                }
+            });
+        }
+        else {
+            alert('没有工作计划可以作废');           
+        }
+    }
+
+    function selectServeMan() {
+        var serveManId = $('#ServeMan').combobox('getValue');
+        var serveManName = $('#ServeMan').combobox('getText');
+        if (!serveManId) {
+            alertInfo('请选择一个服务人员');
+            return;
+        }
+        $('.selectedCell .serveInfo li').attr("class", 'serve-info-item-unsave');
+        $('.selectedCell .serveInfo li').attr("UserId", serveManId);
+        $('.selectedCell .serveInfo .server-name').html('['+serveManName+']');  
+         
+    }
+
+    function editserveInfoItem(obj, changeFlag) {
+        if (changeFlag) {
+            $('#dlg-' + currentMenuCode).dialog(_.extend({
+                onBeforeOpen: function () {
+                    $('#dg-ServeManList').datagrid(easyuigrid_settings({
+                        title: "",
+                        height: 410,
+                        rownumbers: true,
+                        singleSelect: true,
+                        data: allServeManList,
+                        method: 'local',
+                        onSelect: function (index, row) { 
+                            $(obj).closest("li").attr("class", 'serve-info-item-unsave');
+                            $(obj).closest("li").attr("UserId", row.UserId);
+                            $(obj).closest("li").find('.server-name').html('[' + row.UserName + ']');
+                            $('#dlg-' + currentMenuCode).dialog('close');
+                        },
+                        columns: [[
+                    { field: 'UserId', title: '用户编码', width: 150, hidden: true },
+                    { field: 'UserCode', title: '工号', width: 120, align: 'center' },
+                    { field: 'UserName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter }
+                ]],
+                        loader: easyuiLoader
+                    }));
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '选择服务人员');
+
+        }
+    } 
+    function checkOne() { 
+        if ($('input:checked[name="copyOldMan"]').size() == $('input[name="copyOldMan"]').size()) {
+            $('#checkAll').prop('checked', true);
+        }
+        else {
+            $('#checkAll').prop('checked', false);
+        } 
+    }
+    function checkAll() { 
+        if ($('#checkAll').prop("checked")) {
+            $('#copyOldManList .copyOldMan').prop('checked', true); 
+        }
+        else {
+            $('#copyOldManList .copyOldMan').prop('checked', false); 
+         }
+    }
+
+    function copyServeInfo() {
+        var rows = $('#dg-' + currentMenuCode).datagrid('getRows');
+        var oldMans = [];
+        _.each(rows, function (o) { 
+            oldMans.push({ 'OldManId': o.OldManId, 'OldManName': o.OldManName });
+        }); 
+       if (oldMans.length > 0 ) {
+           $('#dlg-copyPlan').dialog(_.extend({
+               onBeforeOpen: function () {
+                   var htmls = [];
+                   var i = 1; 
+                   _.each(oldMans, function (o) {
+                       if (i == 1) { htmls.push('<tr style="height:30px;">'); }
+                       htmls.push('<td style=" text-align:center;  width:20px;"><input type="checkbox" class="copyOldMan"  name="copyOldMan" id="' + o.OldManId + '"  onclick="checkOne()"/> </td><td style="  text-align:left; width:80px;"><label for="' + o.OldManId + '" onclick="checkOne()">' + o.OldManName + '</label></td>');
+                       if (i == 4) { htmls.push('</tr>'); i = 0; }
+                       i++;
+                   });
+                   $('#copyOldManList').html(htmls.join(''));
+
+                   var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+                   var sunday = Date.today().moveToDayOfWeek(0);
+                   copyTime(monday, sunday, 'CopyFrom');
+                   copyTime(monday, sunday, 'CopyTo');
+                   copyNextWeek('CopyTo');
+                   //                    $('#copyNextWeek').attr("disabled", true);
+                   //                    $('#copyLastWeek').attr("disabled", true);
+               },
+               modal: true
+           }, null)).dialog('open').dialog('setTitle', '复制工作计划');
+        }
+        else {
+            alert('当前没有可做复制工作计划的老人');
+        }
+    }
+
+    function copyOKEx() {
+        copyOK();
+        cancelEx('dlg-copyPlan');
+    }
+    function copyOK() {
+        var $allCopyMan = $('#copyOldManList .copyOldMan');
+        var arrOldManIds = [];
+         _.each($allCopyMan, function (check) { 
+            if ($(check).prop("checked")) {
+                arrOldManIds.push( $(check).attr('Id'));
+            }
+        });
+        if (arrOldManIds.length > 0) {
+            var param = {
+                OldManIds: arrOldManIds.join('|'),
+                CopyFrom_Start: $('#CopyFrom_Start').val() + ' 00:00',
+                CopyFrom_End: $('#CopyFrom_End').val() + ' 23:59',
+                CopyTo_Start: $('#CopyTo_Start').val() + ' 00:00',
+                CopyTo_End: $('#CopyTo_End').val() + ' 23:59'
+            };
+            postTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/CopyWorkPlan', $.toJSON(param), function (ret) {
+                if (ret.Success) {
+                    alert('复制成功');
+                    queryFromTo($('#CopyTo_Start').val(), $('#CopyTo_End').val());
+                }
+            });
+        }
+        else {
+            alert('请选择复制对象');
+        }
+    } 
+
+    function copyTime(beginDate, endDate, id) {
+        $('#' + id + '_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#' + id + '_End').val(endDate.toString('yyyy-MM-dd'));
+    }
+     
+    function copyNextWeek(id) {
+        var beginDate = Date.parse($('#' + id + '_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#' + id + '_End').val()).moveToDayOfWeek(0, 1);
+        copyTime(beginDate, endDate, id);
+    }
+    function copyLastWeek(id) {
+        var isalert = false;
+        if (id == 'CopyTo') {
+            var copyTo_Start = Date.parse($('#CopyTo_Start').val()).toString('yyyy-MM-dd');
+            var monday = (Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, 1)).moveToDayOfWeek(1, 1).toString('yyyy-MM-dd');
+             if (copyTo_Start <= monday) {
+                isalert = true;
+            } 
+        }
+        if (!isalert) {
+            var beginDate = Date.parse($('#' + id + '_Start').val()).moveToDayOfWeek(1, -1);
+            var endDate = Date.parse($('#' + id + '_End').val()).moveToDayOfWeek(0, -1);
+            copyTime(beginDate, endDate, id);
+        }
+        else {
+            alert('目标时间段从下周一开始');
+        }
+    }
+
+    function queryLastWeek() {
+        var beginDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(1, -1);
+        var endDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(0, -1);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryNextWeek() {
+        var beginDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(0, 1).addDays(7);
+        queryFromTo(beginDate, endDate);
+    }
+
+
+    function removeServeInfoItem(obj) {
+        var userIdIsNull = $(obj).closest("li").attr("UserIdIsNull"); 
+        if (userIdIsNull == 1) {
+            $(obj).closest("li").attr("class", 'serve-info-item-save');
+            $(obj).closest("li").attr("UserId", '');
+            $(obj).closest("li").find('.server-name').html('[  ____  ]');    
+        }
+        else {
+            alert('服务人员不能设置为空');
+        }
+    } 
+    function cellStyler(value, row, index) {
+
+        if (this.title.indexOf('六') != -1 || this.title.indexOf('日') != -1) {
+            return { "class": 'restday' };
+        }
+        else if (!this.changeFlag) {
+            return { "class": 'cantchangeday' };
+        }
+    }
+
+    function checkUnSave() {
+        var ret = false;
+        var i = 0;
+        _.each($('.serveInfo ul li'), function (li) {
+            if ($(li).attr('class') == 'serve-info-item-unsave') {
+                i++;
+            }
+        });
+        if (i > 0) { ret = true; }
+        return ret;
+    }
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.ItemId == value; }).ItemName;
+    }
+    function cancelEx(id) {
+        $('#' + id).dialog('close');
+    }
+</script>
+    

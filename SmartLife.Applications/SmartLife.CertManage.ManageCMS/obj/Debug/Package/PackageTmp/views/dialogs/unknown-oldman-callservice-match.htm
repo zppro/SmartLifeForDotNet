@@ -1,0 +1,124 @@
+﻿<div id="the-infotainment-of-oldman" class="easyui-dialog" style="width: 1024px; height: 588px; background-color:gray;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-infotainment-of-oldman">
+    <table id="dg-infotainment-of-callservice-for-oldman" >
+    </table>
+</div>
+<div id="btn-infotainment-of-oldman">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="SwitchingOldMan()">切换</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancelMatchMan()">关闭</a>-->
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var areas;
+        if (!dialogData) return false;
+        var strCallServiceId = dialogData.CallServiceId;
+        
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        $("#dg-infotainment-of-callservice-for-oldman").height($("#dg-infotainment-of-callservice-for-oldman").parent().height());
+        $('#dg-infotainment-of-callservice-for-oldman').datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/MatchUnknownOldManList',
+            method: 'POST',
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    Status: 1
+                },
+                fuzzyFields: [
+                    { key: 'CallServiceId', value: strCallServiceId }
+                ]
+            },
+            pageSize: 17,
+            pageList: [17],
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Birthday', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId"},
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+//        postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/MatchUnknownOldManList', $.toJSON({
+//            sort: 'CheckInTime',
+//            order: 'desc',
+//            page: 1,
+//            rows: 17,
+//            instance: {
+//                //AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),
+//                Status: 1
+//            },
+//            fuzzyFields: [
+//                    { key: 'CallServiceId', value: strCallServiceId }
+//                ]
+//        }), function (ret) {
+//            if (ret.Success) {
+//                if (ret.total == 1) {
+//                    var serviceData = { Content: ret.rows[0].OldManName + "需要公共服务", OldManId: ret.rows[0].OldManId };
+//                    var url = window.location.href;
+//                    putTo(baseCMSInvokeUrl + '/Oca/CallService/' + strCallServiceId, $.toJSON(serviceData), function (result) {
+//                        if (result.Success) {
+//                            doCancelMatchMan();
+//                            OpenNewWinAsCallService(url.substring(url.indexOf("/views/")), strCallServiceId);
+//                        }
+//                    });
+//                }
+//                else {
+//                    $('#dg-infotainment-of-callservice-for-oldman').datagrid('loadData', ret);
+//                }
+//            }
+//        });
+    }
+
+    function doCancelMatchMan() {
+        $('#the-infotainment-of-oldman').dialog('close');
+    }
+
+    function SwitchingOldMan() {
+        var row;
+        if (!row) {
+            row = $('#dg-infotainment-of-callservice-for-oldman').datagrid('getSelected');
+        }
+
+        if (row && pageData.CallServiceId) {
+            var serviceData = { Content: row.OldManName + "需要公共服务", OldManId: row.OldManId, AreaId3: row.AreaId3, AreaId2: row.AreaId2, LatitudeS: row.LatitudeS, LongitudeS: row.LongitudeS  };
+            alertConfirm('确定要切换成当前所选择的老人？', function (ret) {
+                if (ret == true) {
+                    var url = window.location.href;
+                    putTo(baseCMSInvokeUrl + '/Oca/CallService/' + pageData.CallServiceId, $.toJSON(serviceData), function (ret) {
+                        if (ret.Success) {
+                            doCancelMatchMan();
+                            OpenNewWinAsCallService(url.substring(url.indexOf("/views/")), pageData.CallServiceId);
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            alertInfo('请选中要一条要切换的记录！');
+        }
+    }
+    function dialogBeforeSubmit() {
+
+    }
+    function dialogClose(dialogId) {
+
+    }
+</script>

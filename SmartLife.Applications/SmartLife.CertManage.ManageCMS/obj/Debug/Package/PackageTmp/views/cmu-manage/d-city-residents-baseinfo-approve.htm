@@ -1,0 +1,576 @@
+﻿<style type="text/css">
+    .baseinfo tr td
+    {
+        height: 30px;
+    }
+</style>
+<table id="cc-B170103" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd;  border-right: solid 1px #ddd;background-color: #fafafa;">
+                所属街道社区
+            </div>
+        <div id="div_tree" style="border: solid 1px #ddd; width: 100%; float: left; overflow: auto;">
+            <ul id="tree-B170103">
+            </ul>
+                        <input type="hidden"  id="_AreaId2" />
+                        <input type="hidden"  id="_AreaId3" />
+        </div>
+        </td>
+        <td valign="top">
+            <div id="search-sample-B170103" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B170103" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="姓名、身份证、电话、手机"/>
+                        </td>
+                        <td style="text-align: right">
+                            审核状态：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="CC-FlowTo" name="FlowTo_Start" class="combobox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" name="query_btn" class="easyui-linkbutton" iconcls="icon-ok"
+                                onclick="exec(true)">查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <div id="toolbar-B170103">
+                <a href="javascript:void(0)"  id="openApprovalDialog" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                    onclick="approve()">审批</a> 
+                        <a href="javascript:void(0)"  id="unOpenApprovalDialog" class="easyui-linkbutton"
+                        iconcls="icon-undo" plain="true" onclick="approve()">撤销审核</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                        id="edit_pass" iconcls="icon-redo" plain="true" onclick="rowsApprove(true)" operation="bulk">
+                        批量审批通过</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo"
+                            plain="true" operation="bulk" id="edit_unpass" onclick="rowsApprove()">批量审批不通过</a>
+            </div>
+            <table id="dg-B170103">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-search-B170103" class="easyui-dialog" style="width: 480px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B170103">
+    <div class="ftitle">
+        <form id="fm-search-B170103" method="post" novalidate>
+        <div class="fitem">
+            <table class="baseinfo">
+                <tr>
+                    <td style="text-align: right">
+                        姓 名:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="ResidentName">
+                    </td>
+                    <td style="text-align: right">
+                        性 别:
+                    </td>
+                    <td style="text-align: left">
+                        <input id="CC-Gender" name="Gender_Start" class="combobox" />
+                        <!--<input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+                        <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>-->
+                        <!-- <input id="Gender" type="radio" /><label for="Gender-F">全部</label>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        身份证:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="IDNo">
+                    </td>
+                    <td style="text-align: right">
+                        座机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Tel" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        手机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Mobile" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="btn-search-B170103">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload"
+            onclick="resetfm()">清空</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+                onclick="quit()">关闭</a>
+</div>
+<script type="text/javascript">
+    var flowName; //流转名称
+    var flowSetp; //流转名称中取出需要几步审核
+
+    placeholder(); //占位符初始化
+    var areas;
+    $(function () {
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js" }
+            ], function () {
+            });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'residentId-' + currentMenuCode,
+            pk: 'ResidentId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['ResidentName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            headers: { ConnectId: '' },
+//            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '审批结果',
+            baseModelUrl: baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 2 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+        validateUI();
+        autosize("cc-" + currentMenuCode, -32);
+        autosize("div_tree", -34);
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点
+                        $("#_AreaId2").val(treeNodeId);
+                        $("#_AreaId3").val(null);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点
+                        getFlowStep(treeNodeId); //取流转名称
+                        $("#_AreaId2").val(null);
+                        $("#_AreaId3").val(treeNodeId);
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点
+                    $("#_AreaId2").val(null);
+                    $("#_AreaId3").val(null);
+                };
+
+                //                $("#CC-FlowTo").combobox("setValue", '30'); //点击左边的树时，设置默认的状态为 “待审批”
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'FlowTo_Start', value: $("#CC-FlowTo").combobox("getValue") }
+                            ],
+                    fuzzyFields: [{ key: 'AreaId', value: areaId}]
+                });
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                //                selectTreeNode(null, true);
+                loadDataGrid(''); //加载DataGrid
+            }
+        }, function (d) {
+            var res;
+            postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                res = result;
+            }, { async: false })
+            if (res) {
+                getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+            } else {
+                getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+            }
+        }, null, function (treeObj) {
+
+        }); //end loadTreeGender
+
+        $('#CC-FlowTo').combobox({
+            width: 140,
+            panelHeight: 40,
+            data: [{ ItemId: '30', ItemName: '待审批' },
+                   { ItemId: '030', ItemName: '已审批'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 30
+        });
+        $('#CC-Gender').combobox({
+            width: 140,
+            panelHeight: 60,
+            data: [{ ItemId: 'N', ItemName: '全部' },
+                   { ItemId: 'M', ItemName: '男' },
+                   { ItemId: 'F', ItemName: '女'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 'N'
+        });
+    });
+
+    //    function selectTreeNode(areaId, isload) {
+    //        var node_Children = $('#' + models[currentMenuCode].treeId).tree('getChildren'); //取所有的节点
+    //        var rows = [];
+    //        _.each(node_Children, function (o) {
+    //            if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+    //                rows.push(o); //取所有的社区
+    //            }
+    //        });
+    //        if (rows.length > 0) {//社区大于0个  有权限，默认设置选中第一个社区 
+
+    //            var node = $('#' + models[currentMenuCode].treeId).tree('find', rows[0].id);
+    //            $('#' + models[currentMenuCode].treeId).tree('select', node.target);
+    //            $("#_AreaId2").val(rows[0].attributes.PId); //街道的ID
+    //            $("#_AreaId3").val(rows[0].id); //社区的ID
+
+    //            var areaId = $("#_AreaId3").val();
+    //            getFlowStep(areaId); //取流转名称
+    //            loadDataGrid(areaId); //加载DataGrid
+    //        }
+    //        else {
+    //            alert('没有任何社区的权限');
+    //        }
+    //    }
+
+    //取流转名称
+    function getFlowStep(_areaId3) {
+        getTo(baseCMSInvokeUrl + '/Pub/FlowDefineMappingService/Query?parms=' + $.toJSON({ "MappingType": "ResidentBaseInfo", "MappingId": _areaId3, "MappingColumn": "AreaId3" }), null, function (result) {
+            if (result.Success) {
+                if (result.rows.length > 0) {
+                    flowName = result.rows[0].FlowName; //流转名称 
+                }
+                else {
+                    flowName = "ResidentId_FlowStep_1"; //流转名称 (查不到，默认一步审核)
+                }
+                flowSetp = flowName.substring(flowName.length - 1); //流转名称中取出需要几步审核（最后一位是1、2、3） 
+            }
+        }, { async: false }, null);
+    }
+
+    function loadDataGrid(areaId) {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'ResidentBaseInfo33',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                        { key: 'FlowTo_Start', value: 30 }
+                        ],
+                fuzzyFields: [{ key: 'AreaId', value: areaId}]
+            },
+            onDblClickRow: function (idx, row) {
+                approve(row);
+            },
+            onLoadSuccess: function () {
+                if ($('#CC-FlowTo').combobox('getValue') == "030") {//选择“已审核”时，隐藏“批量审批通过”和“批量审批不通过”
+                    $('#edit_pass').hide();
+                    $('#edit_unpass').hide();
+                    $('#unOpenApprovalDialog').show();
+                    $('#openApprovalDialog').hide();
+                }
+                else {
+                    $('#edit_pass').show();
+                    $('#edit_unpass').show();
+                    $('#unOpenApprovalDialog').hide();
+                    $('#openApprovalDialog').show();
+                }
+            },
+            columns: [[
+                { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'ActionName', title: '审核状态', width: 70, align: 'center' },
+                { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 50, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'Tel', title: '座机', align: 'center', width: 100 },
+                { field: 'Mobile', title: '手机', align: 'center', width: 100 },
+                { field: 'AreaId2', title: '街道', align: 'center', width: 120, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', align: 'center', width: 115, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'ResidentialOfHometownName', title: '现居地', align: 'center', width: 150 }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+    //批量审批
+    function rowsApprove(isNext) {
+        var treeNode = $('#' + models[currentMenuCode].treeId).tree('getSelected');
+        if (treeNode && treeNode.id.length > 6) {
+            var treeNodeId = treeNode.id;   //当前节点的层次 
+            var sub_id = treeNodeId.substring(14, 18);
+            if (sub_id != '0000') {//选择的是社区节点
+                var bizids;
+                var message;
+                var processAction;
+                var mappingId = treeNode.id;
+                //判断是审核通过还是不通过
+                if (!isNext) {
+                    processAction = 2;
+                    message = '不通过';
+                }
+                else {
+                    processAction = 1;
+                    message = '通过';
+                }
+
+                var selectedRows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections'); //取选中的多个记录
+                if (selectedRows && selectedRows.length > 0) {//把多个主键拼接
+                    bizids = _.map(selectedRows, function (o) {
+                        return o.ResidentId;
+                    }).join("|");
+                    alertConfirm("确定要批量审批“" + message + "”选择项吗？", function (r) {
+                        if (r) {
+                            execFlowAction(bizids, mappingId, 30, processAction);
+                        }
+                    });
+                }
+                else {
+                    bizids = '';
+                    alertConfirm("确定要批量审批“" + message + "”所有项吗？", function (r) {
+                        if (r) {
+                            execFlowAction(bizids, mappingId, 30, processAction);
+                        }
+                    });
+                }
+            }
+            else {
+                alert("批量审批时，必须以社区为单位，请选择一个社区！");
+            }
+        }
+        else {
+            alert("批量审批时，必须以社区为单位，请选择一个社区！");
+        }
+
+    }
+
+    function execFlowAction(bizids, mappingId, processState, processAction) {
+        var flowAction = {
+            "FlowName": flowName,
+            "TableName": 'Bas_ResidentBaseInfo',
+            "TableColumn": 'ResidentId',
+            "BIZ_IDs": bizids,
+            "MappingType": 'ResidentBaseInfo',
+            "MappingId": mappingId,
+            "MappingColumn": 'AreaId3',
+            "ProcessState": processState,
+            "ProcessAction": processAction,  //处理动作 
+            "WhereClause": ' a.Status=2 '
+        }
+        postTo(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo", $.toJSON(flowAction), function (ret) {
+            if (ret.Success) {
+                alertInfo("操作成功！");
+                $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                if (ret.ErrorMessage == 'true') {//判断流程是否结束 
+                    synBaseInfo(bizids, flowAction);
+                }
+            }
+        }, null, models[currentMenuCode].headers);
+    }
+
+
+    function synBaseInfo(ids, flowAction) {//如果是流程走完，同步业务数据
+        var url;
+        var param;
+        if (ids != '' && ids) {
+            url = models[currentMenuCode].baseModelUrl + 'UpdateBaseResidents/1,' + ids;
+            param = null;
+        }
+        else {
+            url = models[currentMenuCode].baseModelUrl + 'UpdateBaseResidentsAll';
+            param = $.toJSON(flowAction);
+        }
+        putTo(url, param, function (ret) {
+            if (ret.Success) {
+//                var Phase = 2;
+//                postTo(models[currentMenuCode].baseModelUrl + "SynBaseInfo/" + Phase, null, function (ret) {
+
+//                }, null, models[currentMenuCode].headers);
+            }
+        }, null, models[currentMenuCode].headers);
+    }
+
+
+    function GetAreaName(param, value) {
+        return _.find(param, function (o) { return o.AreaId == value; }).AreaName;
+    }
+    function SetControlsValue(Controls, ItemId) {
+        if ($.trim(ItemId) != "") {
+            getTo(ajaxData_InvokeUrl + '/GetAreaFullName/' + ItemId, null, function (ret) {
+                $("#" + Controls).val(ret);
+            });
+        }
+    }
+
+    function approve(row) {
+        if (!row) {
+            row = $('#dg-B170103').datagrid('getSelected');
+        }
+        if (row) {
+            if (row.AreaId3 && row.AreaId3 != '') {
+                var flowModels = {
+                    dialogId: "approval-process-frame",
+                    dialogPage: 'views/shared/approval-process-frame.htm',
+                    formId: "fm-B12010101",
+                    formData: row,
+                    processLevel: row.FlowTo, //当前流转状态
+                    title: '审批',
+                    formUrl: "views/cmu-manage/d-city-residents-base-info-form.htm",
+                    OrderByClause: "CheckInTime desc",
+                    headers: models[currentMenuCode].headers,
+                    bizid: row.ResidentId, //主键
+                    flowName: flowName, //流转名称
+                    tableName: "Bas_ResidentBaseInfo", //表名
+                    primaryKey: "ResidentId", //表的主键 
+                    mappingType: "ResidentBaseInfo", //映射类型
+                    mappingId: row.AreaId3, //映射类型Id
+                    mappingColumn: "AreaId3", //映射列名
+                    processState: row.FlowTo, //当前流转状态
+                    beforeFlowDialogClose: function (callback, dialogData) {
+                        $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                        callback();
+                    },
+                    actionDone: function (ret) {
+                        if (ret == 'true') {//判断流程是否结束 
+                            synBaseInfo(row.ResidentId, null);
+                        }
+                    }
+                };
+                //取历史记录
+                flowModels.flowData = getCirculationHistory(flowModels);
+                //生成按钮
+                var _buttons = createButtons(flowModels);
+
+                openFlowDialog(flowModels, _buttons);
+            }
+            else {
+                alert("未知社区，无法进入审批流程！");
+            }
+        } else {
+            alertError('请选中要审批的记录');
+        }
+    }
+
+    function createButtons(flowModels) {
+        var _buttons = [];
+        var flowAction = {
+            "FlowName": flowModels.flowName,
+            "TableName": flowModels.tableName,
+            "TableColumn": flowModels.primaryKey,
+            "BIZ_IDs": flowModels.bizid,
+            "MappingType": flowModels.mappingType,
+            "MappingId": flowModels.mappingId,
+            "ProcessState": flowModels.processState,
+            "MappingColumn": flowModels.mappingColumn,
+            "WhereClause": ' a.Status=2 '//当前操作的业务数据的状态
+        }
+        if (flowModels) {
+            var latestFlowData = flowModels.flowData[0];
+            if (latestFlowData.FlowTo == 30) {
+                _buttons.push({
+                    text: '审批通过',
+                    iconCls: 'icon-ok',
+                    handler: function () {
+                        flowAction["ProcessAction"] = 1; //处理动作
+                        top.flowAction(flowAction, flowModels.headers, flowModels.actionDone);
+                        if (flowModels.beforeFlowDialogClose) {
+                            flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                        }
+                    }
+                });
+                _buttons.push({
+                    text: '审批不通过',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        flowAction["ProcessAction"] = 2; //处理动作
+                        top.flowAction(flowAction, flowModels.headers, flowModels.actionDone);
+                        if (flowModels.beforeFlowDialogClose) {
+                            flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                        }
+                    }
+                });
+            }
+        } else if (latestFlowData.FlowTo == 30) {
+            _buttons.push({
+                text: '撤销审核',
+                iconCls: 'icon-redo',
+                handler: function () {
+                    flowAction["ProcessAction"] = 0; //处理动作
+                    top.flowAction(flowAction, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+        }
+        _buttons.push({
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () {
+                top.Closed(flowModels.dialogId); //直接无法调用要加top
+            }
+        });
+        return _buttons;
+    }
+</script>

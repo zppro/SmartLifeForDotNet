@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pub_InsertPubLocationParam" class="StringObjectDictionary">
+      <parameter  property="SourceTable" column="SourceTable" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SourceId" column="SourceId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="LocateType" column="LocateType" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Longitude" column="Longitude" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Latitude" column="Latitude" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+    <statements>
+      <select id="LatestLocation_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select a.*,b.UserName From Pub_Location a inner join (select MAX(x.Id) Id From Pub_Location x inner join (
+          select dbo.FUNC_Oca_GetOpenIdByUserId(rtrim(ltrim(Item))) as openId from dbo.FUNC_Tol_String2Table($SourceIds$,$SplitChar$)) y
+          on x.SourceId=y.openId where x.SourceTable='$SourceTable$' and x.LocateType='$LocateType$'
+          and DATEDIFF(D,x.CheckInTime,GETDATE())=0 group  by x.SourceId) d
+          on a.Id=d.Id left join Pub_User b on b.UserId=dbo.FUNC_Oca_GetUserIdByOpenId(a.SourceId,'$StationId$')
+      </select>
+      <select id="Top26Location_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select top 26 char(64+row_number() over(order by CheckInTime desc)) as SN,* From Pub_Location
+          where SourceTable='$SourceTable$' and LocateType='$LocateType$' and DATEDIFF(D,CheckInTime,GETDATE())=0
+          and SourceId=dbo.FUNC_Oca_GetOpenIdByUserId('$SourceId$')
+      </select>
+      <procedure id="SP_Pub_InsertPubLocation" parameterMap="SP_Pub_InsertPubLocationParam" resultClass="StringObjectDictionary">
+        SP_Pub_InsertPubLocation
+      </procedure>
+    </statements>
+</sqlMap>

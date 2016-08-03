@@ -1,0 +1,228 @@
+﻿<div id="server-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+</div>
+<script type="text/javascript">
+    var nodeUrl = getQueryString("nodeUrl"); //紧跟页面的为getQueryStringInTab
+    var codePrefix = getQueryString("codePrefix"); //其他用getQueryString
+    var repeatTime = 15000; //15秒
+    var namePrefix = ''; //因为js中文的问题无法用querystring,只能在各自方法里赋值
+    $(function () {
+        if (window.execMode == 'ForGov' || window.execMode == 'ForMer') {
+            currentMenuCode = queryParams.currentMenuCode;
+            nodeUrl = queryParams.nodeUrl;
+            codePrefix = queryParams.codePrefix;
+        }
+        if (!nodeUrl) {
+            nodeUrl = "views/auth-manage/job-manage-node.htm";
+        }
+        if (!codePrefix) {
+            codePrefix = "Job";
+        }
+
+        loadfiles([
+        { type: "css", url: "../../css/auth-manage/console.css" }
+        ], function () {
+            autosize('server-panel', -10);
+
+            if (codePrefix == "Mot-SmartLife") {
+                setTimeout(function () {
+                    loadMotServersOfSmartLifeForDemo();
+                    //loadMotServersOfSmartLife();
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+            }
+            else if (codePrefix == "Sum") {
+                loadSumServers();
+            }
+            else {
+                loadJobServers();
+            }
+
+        });
+    });
+
+    function loadMotServersOfSmartLifeForDemo() {
+        namePrefix = '智慧养老监控';
+        getAll([ajaxData_InvokeUrl + '/Servers'], function (servers) {
+            var htmls = [];
+            var urls = [];
+            var clearClass = '';
+            htmls.push('<div class="server-name-c"><ul>');
+            var filterServers = _.filter(servers, function (o) {
+                return o.ServerId.indexOf(codePrefix) == 0;
+            });
+            _.each(filterServers, function (o, i) {
+                if (i % 5 == 0) {
+                    //clearClass = 'server-name-mot-clear';
+                    clearClass = '';
+                }
+                else {
+                    clearClass = '';
+                }
+                htmls.push('<li id="node-' + o.ServerId + '" class="server-name-mot ' + clearClass + '"><div class="server-name-mot-head"><span id="lastUpdateOn-' + o.ServerId + '"></span></div><div id="status-' + o.ServerId + '" class="server-name-mot-body">' + o.ServerName + '</div><div class="server-name-mot-foot">设备：<span id="deviceNum-Run-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span>/<span id="deviceNum-All-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span>&nbsp;&nbsp;座席：<span id="seatNum-Run-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span>/<span id="seatNum-All-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span><a href="javascript:void(0);" onclick=motNodeClick({menuCode:"' + currentMenuCode + '",serverId:"' + o.ServerId + '",serverCode:"' + o.ServerCode + '",namePrefix:"' + namePrefix + '",serverName:"' + o.ServerName + '",nodeUrl:"' + nodeUrl + '"}) >+</a></div></li>');
+            });
+            htmls.push('</ul></div>');
+            $('#server-panel').html(htmls.join(""));
+
+            setTimeout(function () {
+                _.each(filterServers, function (o) {
+                    var arrServerCode = o.ServerCode.split('-');
+                    var deviceNum_run = 0;
+                    var deviceNum_all = 0;
+                    var seatNum_run = 0;
+                    var seatNum_all = 0;
+                    if (arrServerCode.length >= 8) {
+                        deviceNum_run = arrServerCode[4];
+                        deviceNum_all = arrServerCode[5];
+                        seatNum_run = arrServerCode[6];
+                        seatNum_all = arrServerCode[7];
+                    }
+                    $('#status-' + o.ServerId).removeClass().addClass("server-name-mot-body server-name-mot-body-ok");
+                    $('#lastUpdateOn-' + o.ServerId).text(Date.now().toString('HH:mm:ss'));
+                    $('#deviceNum-Run-' + o.ServerId).text(deviceNum_run);
+                    $('#deviceNum-All-' + o.ServerId).text(deviceNum_all);
+                    $('#seatNum-Run-' + o.ServerId).text(seatNum_run);
+                    $('#seatNum-All-' + o.ServerId).text(seatNum_all);
+
+                });
+            }, 3000);
+        });
+    }
+
+    function loadMotServersOfSmartLife() {
+        namePrefix = '智慧养老监控';
+        getAll([ajaxData_InvokeUrl + '/Servers'], function (servers) {
+            var htmls = [];
+            var urls = [];
+            var clearClass = '';
+            htmls.push('<ul>');
+            _.each(_.filter(servers, function (o) {
+                return o.ServerId.indexOf(codePrefix) == 0;
+            }), function (o, i) {
+                urls.push(log_InvokeUrl + "/GetDeviceReport/" + o.ServerId);
+                if (i % 5 == 0) {
+                    clearClass = 'server-name-mot-clear';
+                }
+                else {
+                    clearClass = '';
+                }
+                //htmls.push('<li id="node-' + o.ServerId + '" class="server-name-mot"><div class="server-name-mot-head"><span id="lastUpdateOn-' + o.ServerId + '"></span></div><div id="status-' + o.ServerId + '" class="server-name-mot-body">' + o.ServerName + '</div><div class="server-name-mot-foot">设备数：<span id="deviceNum-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span> <a href="javascript:void(0);" onclick="top.openTab(\'' + currentMenuCode + '--' + o.ServerId + '\', \'' + currentMenuCode + '--' + o.ServerCode + '\', \'' + namePrefix + '(' + o.ServerName + ')\', \'' + nodeUrl + '\', null,null,true, true, false, false);">+</a></div></li>');
+                htmls.push('<li id="node-' + o.ServerId + '" class="server-name-mot ' + clearClass + '"><div class="server-name-mot-head"><span id="lastUpdateOn-' + o.ServerId + '"></span></div><div id="status-' + o.ServerId + '" class="server-name-mot-body">' + o.ServerName + '</div><div class="server-name-mot-foot">设备：<span id="deviceNum-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span>&nbsp;&nbsp;座席：<span id="seatNum-' + o.ServerId + '"><img align="bottom" width="16" height="16" src="../../images/public/loading16.gif" /></span><a href="javascript:void(0);" onclick=motNodeClick({menuCode:"' + currentMenuCode + '",serverId:"' + o.ServerId + '",serverCode:"' + o.ServerCode + '",namePrefix:"' + namePrefix + '",serverName:"' + o.ServerName + '",nodeUrl:"' + nodeUrl + '"}) >+</a></div></li>');
+            });
+
+            htmls.push('</ul>');
+            $('#server-panel').html(htmls.join(""));
+
+            if (urls.length > 0) {
+                getAll(urls, function () {
+                    _.each(arguments, function (r) {
+                        var theOne = _.find(servers, function (o) { return r.ret.ServerId == o.ServerId });
+                        var arrServerCode = theOne.ServerCode.split('-');
+                        var seatNum = 0;
+                        var deviceNum = 0;
+                        if (arrServerCode.length == 5) {
+                            seatNum = arrServerCode[3];
+                            deviceNum = arrServerCode[4];
+                        }
+                        var rows = r.ret.rows;
+                        if (rows && rows.length > 0) {
+                            rows = _.map(rows, function (o) {
+                                return xml2json.parser(o, 'StringObjectDictionary');
+                            });
+                            //$('#deviceNum-' + r.ret.ServerId).text(rows.length);
+                            $('#deviceNum-' + r.ret.ServerId).text(deviceNum);
+                            $('#seatNum-' + r.ret.ServerId).text(seatNum);
+                            $('#lastUpdateOn-' + r.ret.ServerId).text(Date.parse(rows[0].LastUpdateOn).toString('HH:mm:ss'));
+                            if (_.every(rows, function (o) {
+                                return o.DeviceStatus === 0;
+                            })) {
+                                //每个设备状态都OK
+                                $('#status-' + r.ret.ServerId).removeClass().addClass("server-name-mot-body server-name-mot-body-ok");
+                            }
+                            else if (_.every(rows, function (o) {
+                                return o.DeviceStatus !== 0;
+                            })) {
+                                //每个设备状态都OK
+                                $('#status-' + r.ret.ServerId).removeClass().addClass("server-name-mot-body server-name-mot-body-error");
+                            }
+                            else {
+                                $('#status-' + r.ret.ServerId).removeClass().addClass("server-name-mot-body server-name-mot-body-warning");
+                            }
+                        }
+                        else {
+                            if (r.ret.ServerId == "Mot-120303-01" || r.ret.ServerId == "Mot-120307-01" || r.ret.ServerId == "Mot-120311-01" || r.ret.ServerId == "Mot-120309-01"
+                            || r.ret.ServerId == "Mot-120300-02" || r.ret.ServerId == "Mot-120300-03" || r.ret.ServerId == "Mot-120300-04"
+                            ) {
+                                //模拟
+                                $('#status-' + r.ret.ServerId).removeClass().addClass("server-name-mot-body server-name-mot-body-ok");
+                                $('#lastUpdateOn-' + r.ret.ServerId).text(Date.now().toString('HH:mm:ss'));
+                                $('#deviceNum-' + r.ret.ServerId).text(deviceNum);
+                                $('#seatNum-' + r.ret.ServerId).text(seatNum);
+                            }
+                            else {
+                                $('#deviceNum-' + r.ret.ServerId).text(deviceNum);
+                                $('#seatNum-' + r.ret.ServerId).text(seatNum);
+                            }
+                        }
+
+                    });
+                });
+            }
+        });
+    }
+
+    function loadJobServers() {
+        namePrefix = '作业';
+        getAll([ajaxData_InvokeUrl + '/Servers'], function (servers) {
+            var htmls = [];
+            var urls = [];
+            htmls.push('<ul>');
+            _.each(_.filter(servers, function (o) {
+                return o.ServerId.indexOf(codePrefix) == 0;
+            }), function (o) {
+                htmls.push('<li class="server-name"><a href="javascript:void(0);" onclick="top.openTab(\'' + currentMenuCode + '--' + o.ServerId + '\', \'' + currentMenuCode + '--' + o.ServerCode + '\', \'' + namePrefix + '(' + o.ServerName + ')\', \'' + nodeUrl + '\', null,null,true, true, false, false);">' + o.ServerName + '</a></li>');
+            });
+            htmls.push('</ul>');
+            $('#server-panel').html(htmls.join(""));
+
+        });
+    }
+
+    function loadSumServers() {
+        namePrefix = currentMenuTitle;
+        getAll([ajaxData_InvokeUrl + '/Servers'], function (servers) {
+            var htmls = [];
+            var urls = [];
+            htmls.push('<ul>');
+            _.each(_.filter(servers, function (o) {
+                return o.ServerId.indexOf(codePrefix) == 0;
+            }), function (o) {
+                htmls.push('<li class="server-name-sum"><a href="javascript:void(0);"  onclick="top.openTab(\'' + currentMenuCode + '--' + o.ServerId + '\', \'' + currentMenuCode + '--' + o.ServerCode + '\', \'' + namePrefix + '(' + o.ServerName + ')\', \'' + nodeUrl + '\', \'icon-max1\',null,true, true, false, true);">' + o.ServerName + '</a></li>');
+            });
+            htmls.push('</ul>');
+            $('#server-panel').html(htmls.join(""));
+
+        });
+    }
+
+    function motNodeClick(nodeInfo) {
+        return;
+        if (!top.isFullScreen) {
+            top.openTab(nodeInfo.menuCode + '--' + nodeInfo.serverId, nodeInfo.menuCode + '--' + nodeInfo.serverCode, nodeInfo.namePrefix + '(' + nodeInfo.serverName + ')', nodeInfo.nodeUrl, null, null, true, true, false, false);
+        }
+        else {
+            var dialogId = nodeInfo.menuCode + '--' + nodeInfo.serverId;
+            $('<div id="' + dialogId + '" style="width: 800px; height: 500px;padding:5px;"></div>').appendTo('#server-panel')
+            .dialog({
+                onClose: function () {
+                    $(this).dialog('destroy');
+                },
+                onLoad: function () {
+                    dialogOpen(dialogId, { ServerId: nodeInfo.serverId });
+                },
+                title: nodeInfo.namePrefix + '(' + nodeInfo.serverName + ')',
+                modal: true,
+                href: '../../' + nodeInfo.nodeUrl
+            }).dialog('open');
+        }
+    }
+</script>

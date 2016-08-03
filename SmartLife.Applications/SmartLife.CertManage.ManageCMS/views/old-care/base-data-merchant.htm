@@ -1,0 +1,89 @@
+﻿<div id="toolbar-B181006">
+    <!--<a id="uploadBaseDataOfMerchant" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true" >上传商家机构资料</a>-->
+</div>
+<table id="dg-B181006" >
+</table>
+<div id="dlg-B181006" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B181006"  >
+    <div class="ftitle"></div>
+    <form id="fm-B181006" method="post" novalidate>   
+    <div class="fitem">
+        <label>
+            导出模板:</label>
+        <a  target="_blank" id="aTemplate"  class="easyui-linkbutton"  >点击下载excel模板</a> 
+    </div> 
+    <div class="fitem">
+            <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-B181006">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'stationid-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '商家机构资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, StationType: '00003' }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId,
+                        StationType: models[currentMenuCode].defaultModel.StationType
+                    }
+                },
+                columns: [[
+                { field: 'StationId', title: '服务站编号', width: 150, hidden: true },
+                { field: 'StationName', title: '机构名称', width: 80, align: 'center' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Fax', title: '传真', width: 100 },
+                { field: 'Email', title: '电邮', width: 100 },
+                { field: 'PostCode', title: '邮编', width: 60 },
+                { field: 'LinkMan', title: '联系人', width: 60 },
+                { field: 'LinkManMobile', title: '联系人手机', width: 100 },
+                { field: 'Address', title: '地址', width: 300 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#uploadBaseDataOfMerchant').bind('click', function () {
+                uploadBaseData(models[currentMenuCode].entityName, models[currentMenuCode].defaultModel)
+            });
+        }); 
+
+    }); 
+</script>

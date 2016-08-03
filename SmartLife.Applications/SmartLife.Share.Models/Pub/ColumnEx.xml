@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pub_GetDBColumn_Map" class="StringObjectDictionary">
+      <parameter  property="TableName" column="TableName" direction="Input" type="string" dbType="varchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pub_InsertColumn_Map" class="StringObjectDictionary">
+      <parameter  property="ColumnString" column="ColumnString" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Pub_GetDBColumn" parameterMap="SP_Pub_GetDBColumn_Map" resultClass="Column">
+      SP_Tol_GetColumnNameAndComment
+    </procedure>
+    <procedure id="SP_Pub_InsertColumn" parameterMap="SP_Pub_InsertColumn_Map">
+      SP_Tol_InsertColumnDefinition
+    </procedure>
+  </statements>
+</sqlMap>

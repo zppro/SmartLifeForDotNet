@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<report autoload="false" showtoolbar="true">
+	<datasourse>
+		<ds id="ds1" name="www">
+			select base.OldManName,config.CallNo,config.CallNo2,config.CallNo3 from Oca_OldManConfigInfo config,Oca_OldManBaseInfo base where config.OldManId=base.OldManId and Status='1'
+		</ds>
+	</datasourse>
+	<params>
+		
+	</params>
+	<page>
+		<pagehead>
+			
+		</pagehead>
+		<pagebody>
+			<panel>
+				<panelhead>
+					<h2>
+						<span id="currentDate" style="font-size: 24px;"></span>老人呼叫号码统计表
+					</h2>
+				</panelhead>
+				<paneltitle>
+					<table>
+						<tr>
+							<th width='120' height='30'>姓名</th>
+							<th width='140' height='30'>呼叫号码1</th>
+							<th width='140' height='30'>呼叫号码2</th>
+							<th width='140'>呼叫号码3</th>
+							<th width='88'></th>
+						</tr>
+					</table>
+				</paneltitle>
+				<panelbody>
+					
+				</panelbody>
+				<panelfoot>
+					<span style="float: right;">制表时间：2014年5月5日</span>
+				</panelfoot>
+
+			</panel>
+		</pagebody>
+		<pagefoot>
+		</pagefoot>
+	</page>
+</report>

@@ -1,0 +1,29 @@
+﻿#scroll-block{ background:#000;}
+#head-c1{font-size:50px; color:#fff; text-align:center; background:#000;} 
+#CurrentAgencys-c{position:absolute; left:40px; color:#ffffff; }
+#head-c1 #CurrentAgencysName{font-size:50px;}
+#stat-time{font-size:30px; position:absolute; right:5px; bottom:5px; }
+#head-c2{color:#fff; background:#000; position:relative;}
+#head-c3{color:#fff; background:#000;}
+#stat-all a{font-size:20px; color:Red; margin: 0 5px;}
+#all-c{padding: 0px; background:#000;} 
+.row-color-red{ color:Red;}  
+.row-color-yellow{ color:Yellow;}
+.row-color-green{ color:Green;}
+.scroll-head{width:96%;margin:0 auto;}
+.scroll-head span{ font-size:30px; font-weight:bold;color:#fff;}
+#all-c .field-oldmanname{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-servicecontent{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-servemanname{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-roomno{width:10%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-servemanarrivetime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-servemanleavetime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-remindtime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis} 
+ 
+ul,li{list-style:none; margin:0; padding:0;}
+.scroll{ width:96%;overflow:hidden; margin:0 auto;}
+.scroll li{ width:100%; height:50px; line-height:50px; overflow:hidden;}
+.scroll li a{ font-size:25px;color:#333; text-decoration:none;}
+.scroll li a:hover{text-decoration:none;}
+.scroll li a span{font-size:25px;}
+ 

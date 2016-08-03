@@ -1,0 +1,161 @@
+﻿html
+{
+    margin:0px;
+    padding:0px;
+}
+body
+{  
+    margin:0px;
+    padding:0px; 
+    background-color:#ffffff; 
+    position:relative; 
+    background-image:url(../images/login_wasu/login_bg.png);
+    background-position:center center; 
+    background-repeat:repeat-x; 
+}
+#MiddleBanner
+{
+    width:100%;  
+    height:204px;
+    background-image:url(../images/login_wasu/Middle-Banner.png);
+    background-position:center center; 
+    background-repeat:repeat-x; 
+    position:absolute;
+    top:432px;
+}
+
+#Container
+{  
+    margin-left:auto;
+    margin-right:auto; 
+    padding-top:132px; 
+    width:1024px;  
+    height:605px; 
+    position:relative;  
+}
+#Logo
+{
+    position:absolute;
+    top:50px;
+    left:50px;
+    width:198px;
+    height:60px;    
+}
+#SystemName
+{
+    width:474px;
+    height:44px;
+    top:310px;
+    left:50px; 
+    position:absolute;
+}
+#Login_96345
+{
+    width:161px;  
+    height:62px;
+    background-image:url(../images/login_wasu/Login_96345.png);
+    background-position:center center; 
+    background-repeat:repeat-x; 
+    position:absolute;
+    top:10px;
+    right:0px;
+}
+#Main
+{  
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;    
+    position:relative;
+}
+#MainLogin
+{ 
+    margin-left:auto;
+    margin-right:auto;
+    width:499px;
+    height:419px;
+    background-image:url(../images/login_wasu/Login_box.png);
+    background-position:center top; 
+    background-repeat:no-repeat; 
+} 
+
+#MainLogin table
+{
+    margin-left:auto;
+    margin-right:auto; 
+}
+#MainLogin td.login-field-head
+{
+    height:100px; 
+    width:366px;
+}
+#MainLogin td.login-field-label
+{
+    width:240px;
+    font-size:14px;
+    color:black;
+    text-align:right;
+}
+
+#MainLogin td.login-field-username
+{
+    width:188px;
+    height:45px; 
+    padding-left:20px;
+    padding-top:0px; 
+}
+#MainLogin td.login-field-password
+{
+    width:188px;
+    height:45px;  
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td.login-field-ext
+{
+    width:188px;
+    height:45px;   
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td input
+{
+    width:150px;
+    border:none;
+    height:25px;
+    line-height:25px;
+}  
+
+#RememberUserCodeDiv
+{
+    width:100%;
+}
+#LoginButton
+{
+    margin-left:320px; 
+    background-image:url(../images/login_wasu/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:64px;
+    height:25px; 
+    margin-bottom:6px;
+}
+
+#Foot
+{
+    width:100%;
+    height:30px; 
+    line-height:30px;
+    bottom:300px;  
+    position:absolute;
+    text-align:center; 
+    clear:both;
+    z-index:99;  
+}
+.copyright
+{
+    color:#555; 
+}
+.copyright a
+{
+    color:#555;
+}

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="TreeItem" type="SmartLife.Share.Models.Sys.TreeItem, SmartLife.Share.Models" />
+    <typeAlias alias="TreeItemPK" type="SmartLife.Share.Models.Sys.TreeItemPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="TreeItem_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_TreeItem(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TreeId" >TreeId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemId" >ItemId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >ItemCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >ItemName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateMode" >GenerateMode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateContent" >GenerateContent</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PrefixId" >PrefixId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TreeId" >#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemId" >#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateMode" >#GenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateContent" >#GenerateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PrefixId" >#PrefixId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="TreeItem_Update" parameterClass="StringObjectDictionary" >
+      update Sys_TreeItem
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateMode" >GenerateMode=#GenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="GenerateContent" >GenerateContent=#GenerateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PrefixId" >PrefixId=#PrefixId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      where TreeId=#TreeId# and ItemId=#ItemId#
+    </update>
+    <delete id="TreeItem_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_TreeItem
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TreeId" >TreeId=#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemId" >ItemId=#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GenerateMode" >GenerateMode=#GenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GenerateContent" >GenerateContent=#GenerateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PrefixId" >PrefixId=#PrefixId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="TreeItem_Load" parameterClass="TreeItemPK" resultClass="TreeItem" >
+      select TreeId,ItemId,Id,Status,ItemCode,ItemName,GenerateMode,GenerateContent,PrefixId,Description,OrderNo from Sys_TreeItem
+      where TreeId=#TreeId# and ItemId=#ItemId#
+    </select>
+    <select id="TreeItem_List" parameterClass="StringObjectDictionary" resultClass="TreeItem" >
+      select TreeId,ItemId,Id,Status,ItemCode,ItemName,GenerateMode,GenerateContent,PrefixId,Description,OrderNo from Sys_TreeItem
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TreeId" >TreeId=#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemId" >ItemId=#ItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemCode" >ItemCode=#ItemCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ItemName" >ItemName=#ItemName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GenerateMode" >GenerateMode=#GenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="GenerateContent" >GenerateContent=#GenerateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PrefixId" >PrefixId=#PrefixId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

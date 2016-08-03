@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="TableJoin" type="SmartLife.Share.Models.Pub.TableJoin, SmartLife.Share.Models" />
+    <typeAlias alias="TableJoinPK" type="SmartLife.Share.Models.Pub.TableJoinPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="TableJoin_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_TableJoin(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName1" >TableName1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName1" >TableAliasName1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName1" >ColumnName1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName2" >TableName2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName2" >TableAliasName2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName2" >ColumnName2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="JoinType" >JoinType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Condition" >Condition</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName1" >#TableName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName1" >#TableAliasName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName1" >#ColumnName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName2" >#TableName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName2" >#TableAliasName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName2" >#ColumnName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="JoinType" >#JoinType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Condition" >#Condition#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="TableJoin_Update" parameterClass="StringObjectDictionary" >
+      update Pub_TableJoin
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName1" >TableName1=#TableName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName1" >TableAliasName1=#TableAliasName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName1" >ColumnName1=#ColumnName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableName2" >TableName2=#TableName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TableAliasName2" >TableAliasName2=#TableAliasName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnName2" >ColumnName2=#ColumnName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="JoinType" >JoinType=#JoinType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Condition" >Condition=#Condition#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="TableJoin_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_TableJoin
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName1" >TableName1=#TableName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName1" >TableAliasName1=#TableAliasName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName1" >ColumnName1=#ColumnName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName2" >TableName2=#TableName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName2" >TableAliasName2=#TableAliasName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName2" >ColumnName2=#ColumnName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="JoinType" >JoinType=#JoinType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Condition" >Condition=#Condition#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="TableJoin_Load" parameterClass="TableJoinPK" resultClass="TableJoin" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,TableName1,TableAliasName1,ColumnName1,TableName2,TableAliasName2,ColumnName2,JoinType,Condition,OrderNo from Pub_TableJoin
+      where Id=#Id#
+    </select>
+    <select id="TableJoin_List" parameterClass="StringObjectDictionary" resultClass="TableJoin" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,TableName1,TableAliasName1,ColumnName1,TableName2,TableAliasName2,ColumnName2,JoinType,Condition,OrderNo from Pub_TableJoin
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName1" >TableName1=#TableName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName1" >TableAliasName1=#TableAliasName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName1" >ColumnName1=#ColumnName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName2" >TableName2=#TableName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName2" >TableAliasName2=#TableAliasName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName2" >ColumnName2=#ColumnName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="JoinType" >JoinType=#JoinType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Condition" >Condition=#Condition#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="TableJoin_ListByPage" parameterClass="StringObjectDictionary" resultClass="TableJoin" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,TableName1,TableAliasName1,ColumnName1,TableName2,TableAliasName2,ColumnName2,JoinType,Condition,OrderNo from Pub_TableJoin
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName1" >TableName1=#TableName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName1" >TableAliasName1=#TableAliasName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName1" >ColumnName1=#ColumnName1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableName2" >TableName2=#TableName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TableAliasName2" >TableAliasName2=#TableAliasName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnName2" >ColumnName2=#ColumnName2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="JoinType" >JoinType=#JoinType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Condition" >Condition=#Condition#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

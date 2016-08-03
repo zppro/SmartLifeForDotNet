@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE8E813E-EC82-420E-9566-B8AC2FAE8D47}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Auth.ManageCMS</RootNamespace>
+    <AssemblyName>SmartLife.Auth.ManageCMS</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="404.htm" />
+    <Content Include="css\auth-manage\console.css" />
+    <Content Include="css\auth-manage\node.css" />
+    <Content Include="css\client\gov.css" />
+    <Content Include="css\client\mer.css" />
+    <Content Include="css\icon.css" />
+    <Content Include="css\index.css" />
+    <Content Include="css\list.css" />
+    <Content Include="css\login.css" />
+    <Content Include="css\shared.css" />
+    <Content Include="css\site.css" />
+    <Content Include="images\client\gov\systemName.png" />
+    <Content Include="images\client\gov\welcomeBG.png" />
+    <Content Include="images\client\mer\systemName.png" />
+    <Content Include="images\client\mer\welcomeBG.png" />
+    <Content Include="images\client\pam\systemName.png" />
+    <Content Include="images\client\pam\welcomeBG.png" />
+    <Content Include="images\login\Login_bg.png" />
+    <Content Include="images\login\Login_box_Admin.png" />
+    <Content Include="images\login\Login_box_User.png" />
+    <Content Include="images\login\Login_button.png" />
+    <Content Include="images\login\Login_SystemName.png" />
+    <Content Include="images\login\logo.png" />
+    <Content Include="images\login\lou.png" />
+    <Content Include="images\login\xian.png" />
+    <Content Include="images\map\map_zj.jpg" />
+    <Content Include="images\public\loading.gif" />
+    <Content Include="images\public\loading16.gif" />
+    <Content Include="images\public\logined-icon-exit.png" />
+    <Content Include="images\public\logined-icon-settings.png" />
+    <Content Include="images\public\logo.png" />
+    <Content Include="images\public\menu78-bg-blue.png" />
+    <Content Include="images\public\menu78-hr-blue-on.jpg" />
+    <Content Include="images\public\menu78-hr-blue.jpg" />
+    <Content Include="images\public\menu78-sys-blue-on.jpg" />
+    <Content Include="images\public\menu78-sys-blue.jpg" />
+    <Content Include="images\public\navigation-head-bg-blue.jpg" />
+    <Content Include="index.htm" />
+    <Content Include="login.htm" />
+    <Content Include="script\behavior.js" />
+    <Content Include="script\client\gov-index.js" />
+    <Content Include="script\client\gov.js" />
+    <Content Include="script\client\mer-index.js" />
+    <Content Include="script\client\mer.js" />
+    <Content Include="script\client\pam-index.js" />
+    <Content Include="script\client\pam.js" />
+    <Content Include="script\flash4ajax\AJAX.swf" />
+    <Content Include="script\flash4ajax\ajaxf.js" />
+    <Content Include="script\globalParam.js" />
+    <Content Include="script\globalVar.js" />
+    <Content Include="script\index.js" />
+    <Content Include="script\My97DatePicker\calendar.js" />
+    <Content Include="script\My97DatePicker\config.js" />
+    <Content Include="script\My97DatePicker\lang\en.js" />
+    <Content Include="script\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="script\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="script\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="script\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="script\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="script\My97DatePicker\skin\default\img.gif" />
+    <Content Include="script\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="script\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="script\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="script\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="script\My97DatePicker\WdatePicker.js" />
+    <Content Include="script\site.js" />
+    <Content Include="script\switchVar.js" />
+    <Content Include="script\tabContainer.js" />
+    <Content Include="sso.htm" />
+    <Content Include="views\auth-manage\area-open-module.htm" />
+    <Content Include="views\auth-manage\group-open-module.htm" />
+    <Content Include="views\auth-manage\manage-console-server-map.htm" />
+    <Content Include="views\auth-manage\module-manage.htm" />
+    <Content Include="views\auth-manage\mot-manage-node.htm" />
+    <Content Include="views\gov-client\auto-login.htm" />
+    <Content Include="views\gov-client\index.htm" />
+    <Content Include="views\gov-client\welcome.htm" />
+    <Content Include="views\dialogs\export-script.htm" />
+    <Content Include="views\auth-manage\group-manage-node.htm" />
+    <Content Include="views\auth-manage\job-manage-node.htm" />
+    <Content Include="views\auth-manage\lisenceUser-manage-node.htm" />
+    <Content Include="views\auth-manage\manage-console-area.htm" />
+    <Content Include="views\auth-manage\manage-console-server.htm" />
+    <Content Include="views\dialogs\change-user-password.htm" />
+    <Content Include="views\dialogs\processing-job.htm" />
+    <Content Include="views\dialogs\reset-lisence-user-password.htm" />
+    <Content Include="views\dialogs\set-user-group.htm" />
+    <Content Include="views\dialogs\update-job.htm" />
+    <Content Include="views\mer-client\auto-login.htm" />
+    <Content Include="views\mer-client\index.htm" />
+    <Content Include="views\mer-client\welcome.htm" />
+    <Content Include="views\pam-client\auto-login.htm" />
+    <Content Include="views\pam-client\index.htm" />
+    <Content Include="views\pam-client\welcome.htm" />
+    <Content Include="views\sys-manage\application-access-manage.htm" />
+    <Content Include="views\sys-manage\area-manage.htm" />
+    <Content Include="views\sys-manage\databaseconnect-manage.htm" />
+    <Content Include="views\sys-manage\device-log-manage.htm" />
+    <Content Include="views\sys-manage\device-manage.htm" />
+    <Content Include="views\sys-manage\device-permission-manage.htm" />
+    <Content Include="views\sys-manage\dictionary-manage.htm" />
+    <Content Include="views\sys-manage\menu-manage.htm" />
+    <Content Include="views\sys-manage\parameter-manage.htm" />
+    <Content Include="views\sys-manage\permission-manage.htm" />
+    <Content Include="views\sys-manage\redirect-manage.htm" />
+    <Content Include="views\sys-manage\server-manage.htm" />
+    <Content Include="views\sys-manage\super-admin-manage.htm" />
+    <Content Include="views\sys-manage\sys-admin-manage.htm" />
+    <Content Include="views\sys-manage\sys-group-manage.htm" />
+    <Content Include="views\sys-manage\sys-oper-manage.htm" />
+    <Content Include="views\sys-manage\tree-manage.htm" />
+    <Content Include="views\sys-manage\user-account-manage.htm" />
+    <Content Include="views\sys-manage\whiteList-manage.htm" />
+    <Content Include="views\shared\empty.htm" />
+    <Content Include="views\shared\tabContainer.htm" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>31062</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/SmartLife.Auth.ManageCMS</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,99 @@
+﻿
+<div style="padding: 10px;">
+    <div class="ftitle">
+    </div>
+    <form id="fm-B12040101" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            机构编码:</label> 
+        <input name="StationCode" />
+        <label>
+            机构名称:</label>
+        <input name="StationName" class="easyui-validatebox" required="true" missingMessage="机构名称不能为空" /> 
+        <!--<label>机构类型:</label>
+        <input id="StationType2" name="StationType2" />-->
+    </div>
+    <div class="fitem">
+        <label>
+            街道社区:</label> 
+        <input id="AreaOfStreetAndCommunity"   />
+    </div>
+    <div class="fitem">
+        <label>
+        座　　机:</label> 
+        <input name="Tel" />
+        <label>
+        传　　真:</label> 
+        <input name="Fax"  />
+        <label>电子邮件:</label> 
+        <input name="Email" />
+            
+    </div>
+    <div class="fitem">
+        <label>邮　　编:</label> 
+        <input name="PostCode" maxlength="6" />
+        <label>
+        联系人:</label> 
+        <input name="LinkMan" />
+        <label>
+        联系人手机:</label> 
+        <input name="LinkManMobile"  />  
+    </div>
+    <div class="fitem">
+        <label>
+            地　　址:</label>
+            <textarea name="Address" style="width: 580px;" maxlength="200"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+        经　　度:</label> 
+        <input name="LongitudeS" maxlength="20"/>
+        <label>
+        纬　　度:</label> 
+        <input name="LatitudeS"  maxlength="20"/>  
+    </div>
+    <div class="fitem">
+        <label>
+            简　　介:</label>
+            <textarea name="Intro" style="width: 580px;" maxlength="400"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            备　　注:</label>
+            <textarea name="Remark" style="width: 580px;" maxlength="400"></textarea>
+    </div>
+    </form>
+</div>
+        
+
+<script type="text/javascript">
+    $(function () {
+        var stationId = $('#BizId').val();
+        var areas;
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        if (stationId != window.contants.guidAutoGenerate) {
+
+            getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, null, function (ret) {
+                $('#fm-B12040101').form('clear');
+                $('#fm-B12040101').form('load', ret.instance);
+                if (ret.instance.AreaId3 != "" && ret.instance.AreaId3 != null) {
+                    $('#AreaOfStreetAndCommunity').val(GetItemName(areas, ret.instance.AreaId3.toLowerCase()));
+                } else if (ret.instance.AreaId2 != "" && ret.instance.AreaId2 != null) {
+                    $('#AreaOfStreetAndCommunity').val(GetItemName(areas, ret.instance.AreaId2.toLowerCase()));
+                }
+            }, null, { ConnectId: baseInfoNode });
+        }
+    });
+
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.AreaId == value; }).AreaName;
+    }
+</script>
+<style type="text/css">
+<!-- 
+input {border: none ;padding: 5px} 
+--> 
+</style>

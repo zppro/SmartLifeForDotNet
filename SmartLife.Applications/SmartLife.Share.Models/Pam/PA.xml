@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pam_MakeCardParam" class="StringObjectDictionary">
+      <parameter  property="PACode" column="PACode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ICNo" column="ICNo" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pam_FetchBookMealParam" class="StringObjectDictionary">
+      <parameter  property="PACode" column="PACode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="MealType" column="MealType" direction="Input" type="string" dbType="char" />
+      <parameter  property="SetMealId" column="SetMealId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Pam_ReuseBookMealParam" class="StringObjectDictionary">
+      <parameter  property="PACode" column="PACode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="MealType" column="MealType" direction="Input" type="string" dbType="char" />
+      <parameter  property="SetMealId" column="SetMealId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Pam_MakeCard" parameterMap="SP_Pam_MakeCardParam" resultClass="StringObjectDictionary">
+      SP_Pam_MakeCard
+    </procedure>
+    <procedure id="SP_Pam_FetchBookMeal" parameterMap="SP_Pam_FetchBookMealParam" resultClass="StringObjectDictionary">
+      SP_Pam_FetchBookMeal
+    </procedure>
+    <procedure id="SP_Pam_ReuseBookMeal" parameterMap="SP_Pam_ReuseBookMealParam" resultClass="StringObjectDictionary">
+      SP_Pam_ReuseBookMeal
+    </procedure>
+    <select id="GetPAStationInfo" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select StationName from Pub_ServiceStation
+      where Status=1 and StationCode='$StationCode$'
+    </select>
+    <select id="GetOldManInfoForStationByStationCode" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select o.OldManId,o.OldManName,dbo.FUNC_Tol_GetGenderName(o.Gender) GenderName,dbo.FUNC_Tol_GetRealAge(o.IDNo) Age,o.IDNo,ac.ICNo,o.Address,o.InputCode1
+      from Oca_OldManBaseInfo o left join
+      Pub_ServiceStation s on o.StationId=s.StationId left join Pam_AgencyObjectConfigInfo ac on o.OldManId=ac.OldManId and s.StationId=ac.StationId
+      where o.Status=3
+      and s.Status=1 and s.StationCode='$StationCode$'
+    </select>
+    <select id="GetOldManBookMealForTodayByOldManId" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select   o.OldManId ,o.OldManName
+      ,bm.BookDate,bm.MealType ,dbo.FUNC_Tol_GetDictionaryItemName('13003',bm.MealType) MealTypeName,sm.SetMealId,sm.SetMealName
+      ,sm.SetMealContent,bm.FetchFlag ,case bm.FetchFlag when 0 then '未取' else   '已取' end  FetchFlagName
+      from Pam_BookMeal bm left join Pam_SetMeal sm on bm.SetMealId=sm.SetMealId
+      left join Oca_OldManBaseInfo o on bm.OldManId=o.OldManId left join Pub_ServiceStation s on o.StationId=s.StationId and bm.StationId=s.StationId
+      where bm.Status=1 and sm.Status=1 and DATEDIFF(D,bm.BookDate,GETDATE())=0
+      and s.StationCode=#StationCode#
+      order by o.OldManName asc
+    </select>
+    <select id="CourseListByStationCode" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select d.DeviceName,b.CourseName,substring(CONVERT(varchar,b.BeginTime,108),1,5)  as BeginTime,case when substring(CONVERT(varchar,b.BeginTime,108),1,2)&lt;12 then  'AM' else 'PM' end as AMPM ,b.CourseDuration,
+      SUBSTRING(b.CourseInfo,CHARINDEX('|',b.CourseInfo,1)+1,CHARINDEX('|',b.CourseInfo,CHARINDEX('|',b.CourseInfo,1)+1)-CHARINDEX('|',b.CourseInfo,1)-1) CourseImg from  Pub_ServiceStation a inner join Pam_CourseSchedule b
+      on a.StationId=b.StationId and b.Status=1 inner join Pam_Device c on b.DeviceId=c.DeviceId and c.Status=1
+      inner join Pub_Device d on c.DeviceId=d.DeviceId and d.Status=1 and d.DeviceType='00012' and datediff(d,b.BeginTime,getdate())=0
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="StationCode" >a.StationCode=#StationCode#</isPropertyAvailable>
+      </dynamic>
+      order by b.DeviceId,b.BeginTime desc
+    </select>
+  </statements>
+</sqlMap>

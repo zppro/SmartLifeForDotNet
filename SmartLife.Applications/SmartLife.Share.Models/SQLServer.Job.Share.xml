@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="MsdbJob" type="SmartLife.Share.Models.SQLServer.MsdbJob, SmartLife.Share.Models" />
+    <typeAlias alias="MsdbJobPK" type="SmartLife.Share.Models.SQLServer.MsdbJobPK, SmartLife.Share.Models" />
+    <typeAlias alias="MsdbJobSchedule" type="SmartLife.Share.Models.SQLServer.MsdbJobSchedule, SmartLife.Share.Models" />
+    <typeAlias alias="MsdbJobSchedulePK" type="SmartLife.Share.Models.SQLServer.MsdbJobSchedulePK, SmartLife.Share.Models" />
+  </alias>
+  <parameterMaps>
+    <parameterMap id="SP_Tol_GetJobsParam" class="StringObjectDictionary">
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="job_aspect" column="job_aspect" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="job_type" column="job_type" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="owner_login_name" column="owner_login_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="subsystem" column="subsystem" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="category_name" column="category_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="enabled" column="enabled" direction="Input" type="byte" dbType="tinyint" />
+      <parameter  property="execution_status" column="execution_status" direction="Input" type="int" dbType="int" />
+      <parameter  property="date_comparator" column="date_comparator" direction="Input" type="string" dbType="char" />
+      <parameter  property="date_created" column="date_created" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="date_last_modified" column="date_last_modified" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="description" column="description" direction="Input" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_GetJobSchedulesParam" class="StringObjectDictionary">
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="schedule_name" column="schedule_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="schedule_id" column="schedule_id" direction="Input" type="int" dbType="int" />
+      <parameter  property="include_description" column="include_description" direction="Input" type="bool" dbType="bit" /> 
+    </parameterMap>
+    <parameterMap id="SP_Tol_UpdateJobParam" class="StringObjectDictionary">
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="new_name" column="new_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="enabled" column="enabled" direction="Input" type="byte" dbType="tinyint" /> 
+      <parameter  property="description" column="description" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="start_step_id" column="start_step_id" direction="Input" type="int" dbType="int" />
+      <parameter  property="category_name" column="category_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="owner_login_name" column="owner_login_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="notify_level_eventlog" column="notify_level_eventlog" direction="Input" type="int" dbType="int" />
+      <parameter  property="notify_level_email" column="notify_level_email" direction="Input" type="int" dbType="int" />
+      <parameter  property="notify_level_netsend" column="notify_level_netsend" direction="Input" type="int" dbType="int" />
+      <parameter  property="notify_level_page" column="notify_level_page" direction="Input" type="int" dbType="int" />
+      <parameter  property="notify_email_operator_name" column="notify_email_operator_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="notify_netsend_operator_name" column="notify_netsend_operator_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="notify_page_operator_name" column="notify_page_operator_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="delete_level" column="delete_level" direction="Input" type="int" dbType="int" />
+      <parameter  property="automatic_post" column="automatic_post" direction="Input" type="bool" dbType="bit" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_UpdateJobScheduleParam" class="StringObjectDictionary">
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="name" column="name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="new_name" column="new_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="enabled" column="enabled" direction="Input" type="byte" dbType="tinyint" />
+      <parameter  property="freq_type" column="freq_type" direction="Input" type="int" dbType="int" />
+      <parameter  property="freq_interval" column="freq_interval" direction="Input" type="int" dbType="int" />
+      <parameter  property="freq_subday_type" column="freq_subday_type" direction="Input" type="int" dbType="int" />
+      <parameter  property="freq_subday_interval" column="freq_subday_interval" direction="Input" type="int" dbType="int" />
+      <parameter  property="freq_relative_interval" column="freq_relative_interval" direction="Input" type="int" dbType="int" />
+      <parameter  property="freq_recurrence_factor" column="freq_recurrence_factor" direction="Input" type="int" dbType="int" />
+      <parameter  property="active_start_date" column="active_start_date" direction="Input" type="int" dbType="int" />
+      <parameter  property="active_end_date" column="active_end_date" direction="Input" type="int" dbType="int" />
+      <parameter  property="active_start_time" column="active_start_time" direction="Input" type="int" dbType="int" />
+      <parameter  property="active_end_time" column="active_end_time" direction="Input" type="int" dbType="int" /> 
+      <parameter  property="automatic_post" column="automatic_post" direction="Input" type="bool" dbType="bit" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_StartJobParam" class="StringObjectDictionary">
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="error_flag" column="error_flag" direction="Input" type="int" dbType="int" />
+      <parameter  property="server_name" column="server_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="step_name" column="step_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="output_flag" column="output_flag" direction="Input" type="int" dbType="int" />
+    </parameterMap>
+    <parameterMap id="SP_Tol_StopJobParam" class="StringObjectDictionary">
+      <parameter  property="job_name" column="job_name" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="job_id" column="job_id" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="originating_server" column="originating_server" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="server_name" column="server_name" direction="Input" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Tol_GetJobs" parameterMap="SP_Tol_GetJobsParam" resultClass="MsdbJob">
+      SP_Help_Job
+    </procedure>
+    <procedure id="SP_Tol_GetJobSchedules" parameterMap="SP_Tol_GetJobSchedulesParam" resultClass="MsdbJobSchedule">
+      SP_Help_JobSchedule
+    </procedure>
+    <procedure id="SP_Tol_UpdateJob" parameterMap="SP_Tol_UpdateJobParam" resultClass="StringObjectDictionary">
+      SP_Update_Job
+    </procedure>
+    <procedure id="SP_Tol_UpdateJobSchedule" parameterMap="SP_Tol_UpdateJobScheduleParam" resultClass="StringObjectDictionary">
+      SP_Update_JobSchedule
+    </procedure>
+    <procedure id="SP_Tol_StartJob" parameterMap="SP_Tol_StartJobParam" resultClass="StringObjectDictionary">
+      SP_Start_Job
+    </procedure>
+    <procedure id="SP_Tol_StopJob" parameterMap="SP_Tol_StopJobParam" resultClass="StringObjectDictionary">
+      SP_Stop_Job
+    </procedure>
+  </statements>
+</sqlMap>

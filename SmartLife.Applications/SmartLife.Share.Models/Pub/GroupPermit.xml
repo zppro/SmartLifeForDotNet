@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="GroupPermit" type="SmartLife.Share.Models.Pub.GroupPermit, SmartLife.Share.Models" />
+    <typeAlias alias="GroupPermitPK" type="SmartLife.Share.Models.Pub.GroupPermitPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="GroupPermit_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_GroupPermit(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="GroupId" >GroupId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResourceId" >ResourceId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="GroupId" >#GroupId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResourceId" >#ResourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="GroupPermit_Update" parameterClass="StringObjectDictionary" >
+      update Pub_GroupPermit
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      where GroupId=#GroupId# and ResourceId=#ResourceId#
+    </update>
+    <delete id="GroupPermit_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_GroupPermit
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="GroupId" >GroupId=#GroupId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResourceId" >ResourceId=#ResourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="GroupPermit_Load" parameterClass="GroupPermitPK" resultClass="GroupPermit" >
+      select GroupId,ResourceId,Id,CheckInTime,OperatedBy,OperatedOn from Pub_GroupPermit
+      where GroupId=#GroupId# and ResourceId=#ResourceId#
+    </select>
+    <select id="GroupPermit_List" parameterClass="StringObjectDictionary" resultClass="GroupPermit" >
+      select GroupId,ResourceId,Id,CheckInTime,OperatedBy,OperatedOn from Pub_GroupPermit
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="GroupId" >GroupId=#GroupId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResourceId" >ResourceId=#ResourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

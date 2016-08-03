@@ -1,0 +1,31 @@
+﻿<div class="footer_blank"></div>
+<div class="footer_1">
+    <ul>
+	    <li><a href="#">网站地图 </a></li>
+	    <li><a href="#" target="_blank">版权申明</a></li>
+	    <li><a href="#" target="_blank">免责声明</a></li>
+	    <li><a href="#" target="_blank">联系我们</a></li>
+	    <li><a href="mailto:@">管理站邮箱</a></li>
+    </ul>
+</div>
+<div class="footer_2">
+    <ul>
+	    <li>版权所有：<label id="lb_right"></label></li>
+	    <li>主办单位：<label id="lb_uint"></label></li>
+	    <li>联系地址：<label id="lb_addr"></label> 邮编<label id="lb_zip"></label></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(function () {
+        setSiteInfo(Cms_UserCode);
+    });
+
+    function setSiteInfo(info) {
+        if (info) {
+            $("#lb_right").text(info.right);
+            $("#lb_uint").text(info.right);
+            $("#lb_addr").text(info.addr);
+            $("#lb_zip").text(info.zip);
+        } 
+    }
+ </script>

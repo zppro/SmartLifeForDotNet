@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>浙江蓝谷智慧养老</title>
+    <link rel="stylesheet" type="text/css" href="http://api.map.baidu.com/res/15/bmap.css" />
+    <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/changeMore.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script>
+    <script type="text/javascript" src="../../script/cms.js"></script>
+    <style type="text/css">
+    .lb_serveItemBName 
+    {
+        font-size:12px;
+    color:#488FD1;
+    letter-spacing:2px; 
+     white-space:nowrap;
+     font-weight:bold;
+      width:100px;
+       text-align:center;}
+    .lb_serveFeeRemarks{ 
+   font-size:12px;
+     width:70px;
+     text-align:center;}
+    </style>
+    <script type="text/javascript">
+        var serveItemBs;
+        $(function () {
+            loadfiles([
+            { type: "css", url: "../../css/cms/" + appDeployArea.id + ".css" }
+            ], function () { }
+        );
+
+            loadHeadFoot();
+            autosize("location-panel");
+
+            var stationId;
+            stationId = getQueryString("sid");
+
+            getTo(top.baseCMSInvokeUrl + '/Share/AjaxData/GetDictionaryItem/11013', null, function (ret) {//如果报错，是因为这个服务未初始化，可以先打开商家管理页面，设置服务项目之后，这里就可以打开了！
+                serveItemBs = ret;
+                if (stationId) {
+                    getTo(ServiceUrl + "LoadServiceStation/" + stationId, null, function (result) {
+                        setStationInfo(result.instance);
+                    }, null, { ConnectId: "SmartLife1203" });
+
+                    getTo(ServiceUrl + 'GetServeItems/' + stationId, null, function (result) {
+                        setServeItemInfo(result);
+                    });
+                }
+
+            });
+        });
+
+        function setStationInfo(station) {
+            //名称
+            $(".stationTitleDiv").html(_isnull(station.StationName, "--"));
+            //地址
+            $("#lb_address").text( _isnull(station.Address, "--")); 
+            //电话、热点
+            $("#lb_tel").text( _isnull(station.Tel, "--"));
+            $("#lb_hotline").text( _isnull(station.Hotline, "--"));
+            //信箱、邮编
+            $("#lb_email").text( _isnull(station.Email, "--"));
+            $("#lb_postcode").text( _isnull(station.PostCode, "--"));
+            //联系人、联系人电话
+            $("#lb_linkman").text( _isnull(station.LinkMan, "--"));
+            $("#lb_linkmanmobile").text( _isnull(station.LinkManMobile, "--"));
+            //简介
+            $("#lb_intro").text( _isnull(station.Intro, "--"));
+
+            initMap("location-panel", station.LongitudeS, station.LatitudeS);
+        }
+
+        function setServeItemInfo(rows) { 
+            var htmls = [];
+            var i = 0; 
+            if (rows.length > 0) {
+                _.each(rows, function (o) {
+                    if (i % 3 == 0) {
+                        htmls.push('<tr>');
+                    }
+                    htmls.push('<td class="lb_serveItemBName">' + GetItemName(serveItemBs, o.ServeItemB) + '</td><td  class="lb_serveFeeRemarks">' + _isnull(o.ServeFeeRemarks, "--") + '</td>');
+                    if (i % 3 == 2) {
+                        htmls.push('</tr>');
+                    }
+                    i++;
+                });
+            }
+            else {
+                htmls.push('<tr><td class="lb_serveItemBName">未设置服务项目</td></tr>');
+            }
+            var html = '<table  class="Tale_stationBaseInfo">' + htmls.join('') + '</table>'; 
+            $('#serveItemInfo').html(html);
+        }
+
+        function _isnull(s, d) {
+            if (s == null||s=='') {
+                return d;
+            }
+            return s;
+        }
+
+        function GetItemName(param, value) {
+            var itemName = _.find(param, function (o) { return o.ItemId == value; }).ItemName;
+            if (itemName.length > 12) {
+                itemName = itemName.substring(0, 4) + "</br>" + itemName.substring(4, 8) + "</br>" + itemName.substring(8,12) + "</br>" + itemName.substring(12);
+            }
+            else if (itemName.length > 8) { 
+                itemName = itemName.substring(0, 4) + "</br>" + itemName.substring(4,8) + "</br>" + itemName.substring(8);
+            }
+           else if (itemName.length > 4) {
+                itemName = itemName.substring(0, 4) + "</br>" + itemName.substring(4);
+            }
+            return itemName
+        } 
+
+    </script>
+</head>
+<body>
+    <div class="header">
+    </div>
+    <!--body-->
+    <div class="contain">
+        <div class="contain_station">
+            <div class="stationDiv">
+                <div class="stationTitleDiv">
+                </div>
+                <div class="stationInfoDiv">
+                    <table class="Tale_stationContain">
+                        <colgroup>
+                            <col style="width: 500px" />
+                            <col style="width: 400px" />
+                        </colgroup>
+                        <tr>
+                            <td style="height: 465px;">
+                                <table class="Tale_stationBaseInfo">
+                                    <colgroup>
+                                        <col style="width: 80px;" />
+                                        <col style="width: 168px;" />
+                                        <col style="width: 80px;" />
+                                        <col style="width: 168px;" />
+                                    </colgroup>
+                                    <tr>
+                                        <td>
+                                            <label class="lb_title">
+                                                地址:</label>
+                                        </td>
+                                        <td colspan="3">
+                                            <label class="lb_content" id="lb_address">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="lb_title">
+                                                座机:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_tel">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_title">
+                                                热线:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_hotline">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="lb_title">
+                                                信箱:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_email">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_title">
+                                                邮编:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_postcode">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="lb_title">
+                                                联系人:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_linkman">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_title">
+                                                联系电话:</label>
+                                        </td>
+                                        <td>
+                                            <label class="lb_content" id="lb_linkmanmobile">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="lb_title">
+                                                简介:</label>
+                                        </td>
+                                        <td colspan="3">
+                                            <label class="lb_content" id="lb_intro">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div  style="height: 18px; color: Blue; font-size: 16px; padding: 10px;
+                                    font-weight: bold">
+                                    服务信息:</div>
+                                    <table id="serveItemInfo"></table> 
+                            </td>
+                            <td valign="top">
+                                <div id="location-panel">
+                                    地图载入中...</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--foot-->
+    <div class="footer">
+    </div>
+</body>
+</html>

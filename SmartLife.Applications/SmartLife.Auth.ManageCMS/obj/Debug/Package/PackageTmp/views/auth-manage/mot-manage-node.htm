@@ -1,0 +1,59 @@
+﻿<div id="node-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+</div>
+<script type="text/javascript">
+    
+    var repeatTime = 5000; //5秒
+    var serverId = currentMenuId.split('--')[1];
+     
+    function dialogOpen(dialogId, dialogData) {
+        serverId = dialogData.ServerId;
+        preparePage();
+    } 
+
+    $(function () {
+        if (serverId) {
+            preparePage();
+        }
+    });
+
+    function preparePage() { 
+        loadfiles([
+            { type: "css", url: "../../css/auth-manage/console.css" }
+            ], function () {
+                autosize('node-panel', -10); 
+                setTimeout(function () {
+                    loadMotDevices();
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+            });
+    }
+
+    function loadMotDevices() {
+        getAll([log_InvokeUrl + "/GetDeviceReport/" + serverId], function (r) {
+            var rows = r.ret.rows;
+            if (rows && rows.length > 0) {
+                rows = _.map(rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                }); 
+                var htmls = [];
+                var urls = [];
+                htmls.push('<ul>');
+                _.each(rows, function (o) {
+                    var statusClass = "server-name-mot-body";
+                    if (o.DeviceStatus === 0) {
+                        statusClass += " server-name-mot-body-ok";
+                    }
+                    else {
+                        statusClass += " server-name-mot-body-error";
+                    }
+
+                    htmls.push('<li id="node-' + o.DeviceId + '" class="device-name-mot"><div class="device-name-mot-head"><span>' + Date.parse(o.LastUpdateOn).toString('HH:mm:ss') + '</span></div><a href="javascript:void(0);" ><div class="' + statusClass + '">' + o.DeviceName + '</div></a><div class="device-name-mot-foot"><span>' + o.DeviceCode + '</span></div></li>');
+                });
+
+                htmls.push('</ul>');
+                $('#node-panel').html(htmls.join(""));
+            }
+        });
+    } 
+</script>

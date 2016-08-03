@@ -1,0 +1,144 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>--</title>  
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/icon.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/kwicks/kwicks.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/ztree/zTreeStyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/uploadify/uploadify-3.2.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/site.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/list.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/icon.css" />  
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/my97.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/shared.css" />
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery-ui-1.8.23.custom.min.js"></script> 
+    <script type="text/javascript" src="../../script/uploadify/jquery.uploadify-3.2.min.js"></script>
+    <script type="text/javascript" src="../../script/ztree/jquery.ztree.all-3.4.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easyui-1.3.3.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/locale/easyui-1.3.3-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="../../script/jquery/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easyui.leblue.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.kwicks-1.5.1.pack.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.linkagesel-min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.roll.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.blockUI-2.66.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.5.0-min.js"></script>
+    <script type="text/javascript" src="../../script/flash4ajax/ajaxf.js"></script>
+    <script type="text/javascript" src="../../script/my97datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easyui.my97.js"></script>
+    <script type="text/javascript" src="../../script/date/date.js"></script>
+    <script type="text/javascript" src="../../script/xml2json-v1.1.js"></script> 
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/globalVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script> 
+    <script type="text/javascript" src="../../script/tabContainer.js"></script>
+    <script type="text/javascript" src="../../script/client/seat.js"></script>
+    <script type="text/javascript" src="../../script/old-care/interact-callservice.js"></script>
+    <script type="text/javascript" src="../../script/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="../../script/jquery/exporting.js" ></script>
+    <script type="text/javascript" src="../../script/sms.js" ></script>
+</head>
+<body> 
+<div id="news">
+</div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    $(function () {
+        articleColumn();
+    });
+    function articleColumn() {
+        var articleColumn;
+        var queryParams = {
+            'OrderByClause': 'OrderNo asc',
+            'Status': 1,
+            'AreaId': '99999',
+            'PermitType': 1
+        };
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleColumnService/Query2', { parms: $.toJSON(queryParams) }, function (result) {
+            articleColumn = result.rows;
+            var html = [];
+            if (articleColumn) {
+                for (var i = 0; i < articleColumn.length; i++) {
+                    html.push('<div class="article_Column">' + articleColumn[i].COL_Name + '</div>');
+
+                    queryParams = {
+                        sort: 'PublishDate',
+                        order: 'desc',
+                        page: '1',
+                        rows: '10',
+                        instance: { 'Status': 1,
+                            'AreaId': '99999',
+                            'ColumnId': articleColumn[i].ColumnId
+                        }
+                    };
+
+                    var article;
+                    postTo(baseCMSInvokeUrl + '/Pub/ArticleService/ListForEasyUIgrid/' + baseInfoNode, $.toJSON(queryParams), function (result) {
+                        article = result.rows;
+                    }, { async: false });
+
+                    for (var j = 0; j < article.length; j++) {
+                        html.push('<div class="article"><a href="#" onclick="newsDetails(\'' + article[j].ArticleId + '\')">' + article[j].Title + '</a><lable>发布时间：' + ndateFormatter(article[j].PublishDate, 'yyyy-MM-dd') + '<lable></div>');
+                    }
+                }
+                $('#news').html(html.join(""));
+            } else {
+                $('#news').html("欢迎使用 政府监管平台 决策支持版");
+            }
+        }, null, { ConnectId: baseInfoNode });
+    }
+
+    function newsDetails(articleId) {
+        var article;
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleService/' + articleId, null, function (result) {
+            article = result.instance;
+        }, { async: false }, { ConnectId: baseInfoNode });
+        var content, author, source, creatorId = "";
+        article.Content == null ? content = "" : content = article.Content;
+        article.Author == null ? author = "" : author = article.Author;
+        article.Source == null ? source = "" : source = article.Source;
+        article.CreatorId == null ? creatorId = "" : creatorId = article.CreatorId;
+        var html = [];
+        html.push('<br><div class="title">' + article.Title + '</div><br>');
+        html.push('<div class="date">' + ndateFormatter(article.PublishDate, 'yyyy-MM-dd HH:mm:ss') + '</div><br>');
+        html.push('<div class="content">' + content + '</div><br>');
+        html.push('<div class="footer">来源：' + source + '&nbsp;&nbsp;&nbsp;作者：' + author + '&nbsp;&nbsp;&nbsp;编辑：' + creatorId + '</div><br>');
+        html.push('<div style="text-align:center;"><a href="#" onclick="articleColumn()" style="font-size:15px;">返回栏目</a></div>');
+        html.join("");
+        $('#news').html(html);
+    }
+</script>
+
+<style type="text/css">
+<!-- 
+#news{ height:670px; width:inherit; overflow-y:auto;padding: 0px;}
+div{font-size:12px; padding: 5px;}
+.article_Column {background-color:Gray;font-size:30px;} 
+.article{background-color:Yellow;}
+.article lable{font-size:10px;}
+
+.title 
+{
+    font-weight:bold;
+    text-align:center;
+    height:25px; 
+    line-height:25px;
+    font-size:20px;
+} 
+.date{font-size:12px;text-align:center;}
+.content{font-size:12px;}
+.footer{font-size:12px; font-weight:bold;text-align:right;}
+
+--> 
+</style>

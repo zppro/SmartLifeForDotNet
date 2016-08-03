@@ -1,0 +1,591 @@
+﻿@charset "utf-8";
+
+[class^="nicon-"],
+[class*=" nicon-"] {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  vertical-align: text-top;
+  background-image: url("../images/public/opa-icons-color16.png");
+  background-position: 16px 16px;
+  background-repeat: no-repeat;
+  *margin-right: .3em;
+}
+[class^="nicon-"]:last-child,
+[class*=" nicon-"]:last-child {
+  *margin-left: 0;
+}
+
+.nicon-black {
+  background-image: url("../images/public/opa-icons-black16.png");
+}
+.nicon-blue {
+  background-image: url("../images/public/opa-icons-blue16.png");
+}
+/*
+R1C1 为
+Row1 Column1 第一行第一列
+*/
+/*R1CX*/
+.nicon-R1C1 {
+  background-position: -1px 0;
+}
+.nicon-R1C2 {
+  background-position: -16px 0;
+}
+.nicon-R1C3 {
+  background-position: -32px 0;
+}
+.nicon-R1C4 {
+  background-position: -49px 0;
+}
+.nicon-R1C5 {
+  background-position: -65px 0;
+}
+.nicon-R1C6 {
+  background-position: -80px 0;
+}
+.nicon-R1C7 {
+  background-position: -96px 0;
+}
+.nicon-R1C8 {
+  background-position: -112px 0;
+}
+.nicon-R1C9 {
+  background-position: -128px 0;
+}
+.nicon-R1C10 {
+  background-position: -145px 0;
+}
+.nicon-R1C11 {
+  background-position: -160px 0;
+}
+.nicon-R1C12 {
+  background-position: -176px 0;
+}
+.nicon-R1C13{
+  background-position: -192px 0;
+}
+.nicon-R1C14{
+  background-position: -209px 0;
+}
+.nicon-R1C15 {
+  background-position: -225px 0;
+}
+.nicon-R1C16 {
+  background-position: -240px 0;
+}
+/*R2CX*/
+.nicon-R2C1 {
+  background-position: -1px -16px;
+}
+.nicon-R2C2 {
+  background-position: -16px -16px;
+}
+.nicon-R2C3 {
+  background-position: -32px -16px;
+}
+.nicon-R2C4 {
+  background-position: -49px -16px;
+}
+.nicon-R2C5 {
+  background-position: -65px -16px;
+}
+.nicon-R2C6 {
+  background-position: -80px -16px;
+}
+.nicon-R2C7 {
+  background-position: -96px -16px;
+}
+.nicon-R2C8 {
+  background-position: -112px -16px;
+}
+.nicon-R2C9 {
+  background-position: -128px -16px;
+}
+.nicon-R2C10 {
+  background-position: -145px -16px;
+}
+.nicon-R2C11 {
+  background-position: -160px -16px;
+}
+.nicon-R2C12 {
+  background-position: -176px -16px;
+}
+.nicon-R2C13{
+  background-position: -192px -16px;
+}
+.nicon-R2C14{
+  background-position: -209px -16px;
+}
+.nicon-R2C15 {
+  background-position: -225px -16px;
+}
+.nicon-R2C16 {
+  background-position: -240px -16px;
+}
+/*R3CX*/
+.nicon-R3C1 {
+  background-position: -1px -32px;
+}
+.nicon-R3C2 {
+  background-position: -16px -32px;
+}
+.nicon-R3C3 {
+  background-position: -32px -32px;
+}
+.nicon-R3C4 {
+  background-position: -49px -32px;
+}
+.nicon-R3C5 {
+  background-position: -65px -32px;
+}
+.nicon-R3C6 {
+  background-position: -80px -32px;
+}
+.nicon-R3C7 {
+  background-position: -96px -32px;
+}
+.nicon-R3C8 {
+  background-position: -112px -32px;
+}
+.nicon-R3C9 {
+  background-position: -128px -32px;
+}
+.nicon-R3C10 {
+  background-position: -145px -32px;
+}
+.nicon-R3C11 {
+  background-position: -160px -32px;
+}
+.nicon-R3C12 {
+  background-position: -176px -32px;
+}
+.nicon-R3C13{
+  background-position: -192px -32px;
+}
+.nicon-R3C14{
+  background-position: -209px -32px;
+}
+.nicon-R3C15 {
+  background-position: -225px -32px;
+}
+.nicon-R3C16 {
+  background-position: -240px -32px;
+}
+/*R4CX*/
+.nicon-R4C1 {
+  background-position: -1px -48px;
+}
+.nicon-R4C2 {
+  background-position: -16px -48px;
+}
+.nicon-R4C3 {
+  background-position: -32px -48px;
+}
+.nicon-R4C4 {
+  background-position: -49px -48px;
+}
+.nicon-R4C5 {
+  background-position: -65px -48px;
+}
+.nicon-R4C6 {
+  background-position: -80px -48px;
+}
+.nicon-R4C7 {
+  background-position: -96px -48px;
+}
+.nicon-R4C8 {
+  background-position: -112px -48px;
+}
+.nicon-R4C9 {
+  background-position: -128px -48px;
+}
+.nicon-R4C10 {
+  background-position: -145px -48px;
+}
+.nicon-R4C11 {
+  background-position: -160px -48px;
+}
+.nicon-R4C12 {
+  background-position: -176px -48px;
+}
+.nicon-R4C13{
+  background-position: -192px -48px;
+}
+.nicon-R4C14{
+  background-position: -209px -48px;
+}
+.nicon-R4C15 {
+  background-position: -225px -48px;
+}
+.nicon-R4C16 {
+  background-position: -240px -48px;
+}
+/*R5CX*/
+.nicon-R5C1 {
+  background-position: -1px -64px;
+}
+.nicon-R5C2 {
+  background-position: -16px -64px;
+}
+.nicon-R5C3 {
+  background-position: -32px -64px;
+}
+.nicon-R5C4 {
+  background-position: -49px -64px;
+}
+.nicon-R5C5 {
+  background-position: -65px -64px;
+}
+.nicon-R5C6 {
+  background-position: -80px -64px;
+}
+.nicon-R5C7 {
+  background-position: -96px -64px;
+}
+.nicon-R5C8 {
+  background-position: -112px -64px;
+}
+.nicon-R5C9 {
+  background-position: -128px -64px;
+}
+.nicon-R5C10 {
+  background-position: -145px -64px;
+}
+.nicon-R5C11 {
+  background-position: -160px -64px;
+}
+.nicon-R5C12 {
+  background-position: -176px -64px;
+}
+.nicon-R5C13{
+  background-position: -192px -64px;
+}
+.nicon-R5C14{
+  background-position: -209px -64px;
+}
+.nicon-R5C15 {
+  background-position: -225px -64px;
+}
+.nicon-R5C16 {
+  background-position: -240px -64px;
+}
+/*R6CX*/
+.nicon-R6C1 {
+  background-position: -1px -80px;
+}
+.nicon-R6C2 {
+  background-position: -16px -80px;
+}
+.nicon-R6C3 {
+  background-position: -32px -80px;
+}
+.nicon-R6C4 {
+  background-position: -49px -80px;
+}
+.nicon-R6C5 {
+  background-position: -65px -80px;
+}
+.nicon-R6C6 {
+  background-position: -80px -80px;
+}
+.nicon-R6C7 {
+  background-position: -96px -80px;
+}
+.nicon-R6C8 {
+  background-position: -112px -80px;
+}
+.nicon-R6C9 {
+  background-position: -128px -80px;
+}
+.nicon-R6C10 {
+  background-position: -145px -80px;
+}
+.nicon-R6C11 {
+  background-position: -160px -80px;
+}
+.nicon-R6C12 {
+  background-position: -176px -80px;
+}
+.nicon-R6C13{
+  background-position: -192px -80px;
+}
+.nicon-R6C14{
+  background-position: -209px -80px;
+}
+.nicon-R6C15 {
+  background-position: -225px -80px;
+}
+.nicon-R6C16 {
+  background-position: -240px -80px;
+}
+/*R7CX*/
+.nicon-R7C1 {
+  background-position: -1px -96px;
+}
+.nicon-R7C2 {
+  background-position: -16px -96px;
+}
+.nicon-R7C3 {
+  background-position: -32px -96px;
+}
+.nicon-R7C4 {
+  background-position: -49px -96px;
+}
+.nicon-R7C5 {
+  background-position: -65px -96px;
+}
+.nicon-R7C6 {
+  background-position: -80px -96px;
+}
+.nicon-R7C7 {
+  background-position: -96px -96px;
+}
+.nicon-R7C8 {
+  background-position: -112px -96px;
+}
+.nicon-R7C9 {
+  background-position: -128px -96px;
+}
+.nicon-R7C10 {
+  background-position: -145px -96px;
+}
+.nicon-R7C11 {
+  background-position: -160px -96px;
+}
+.nicon-R7C12 {
+  background-position: -176px -96px;
+}
+.nicon-R7C13{
+  background-position: -192px -96px;
+}
+.nicon-R7C14{
+  background-position: -209px -96px;
+}
+.nicon-R7C15 {
+  background-position: -225px -96px;
+}
+.nicon-R7C16 {
+  background-position: -240px -96px;
+}
+/*R8CX*/
+.nicon-R8C1 {
+  background-position: -1px -112px;
+}
+.nicon-R8C2 {
+  background-position: -16px -112px;
+}
+.nicon-R8C3 {
+  background-position: -32px -112px;
+}
+.nicon-R8C4 {
+  background-position: -49px -112px;
+}
+.nicon-R8C5 {
+  background-position: -65px -112px;
+}
+.nicon-R8C6 {
+  background-position: -80px -112px;
+}
+.nicon-R8C7 {
+  background-position: -96px -112px;
+}
+.nicon-R8C8 {
+  background-position: -112px -112px;
+}
+.nicon-R8C9 {
+  background-position: -128px -112px;
+}
+.nicon-R8C10 {
+  background-position: -145px -112px;
+}
+.nicon-R8C11 {
+  background-position: -160px -112px;
+}
+.nicon-R8C12 {
+  background-position: -176px -112px;
+}
+.nicon-R8C13{
+  background-position: -192px -112px;
+}
+.nicon-R8C14{
+  background-position: -209px -112px;
+}
+.nicon-R8C15 {
+  background-position: -225px -112px;
+}
+.nicon-R8C16 {
+  background-position: -240px -112px;
+}
+/*R9CX*/
+.nicon-R9C1 {
+  background-position: -1px -128px;
+}
+.nicon-R9C2 {
+  background-position: -16px -128px;
+}
+.nicon-R9C3 {
+  background-position: -32px -128px;
+}
+.nicon-R9C4 {
+  background-position: -49px -128px;
+}
+.nicon-R9C5 {
+  background-position: -65px -128px;
+}
+.nicon-R9C6 {
+  background-position: -80px -128px;
+}
+.nicon-R9C7 {
+  background-position: -96px -128px;
+}
+.nicon-R9C8 {
+  background-position: -112px -128px;
+}
+.nicon-R9C9 {
+  background-position: -128px -128px;
+}
+.nicon-R9C10 {
+  background-position: -145px -128px;
+}
+.nicon-R9C11 {
+  background-position: -160px -128px;
+}
+.nicon-R9C12 {
+  background-position: -176px -128px;
+}
+.nicon-R9C13{
+  background-position: -192px -128px;
+}
+.nicon-R9C14{
+  background-position: -209px -128px;
+}
+.nicon-R9C15 {
+  background-position: -225px -128px;
+}
+.nicon-R9C16 {
+  background-position: -240px -128px;
+}
+/*R10CX*/
+.nicon-R10C1 {
+  background-position: -1px -144px;
+}
+.nicon-R10C2 {
+  background-position: -16px -144px;
+}
+.nicon-R10C3 {
+  background-position: -32px -144px;
+}
+.nicon-R10C4 {
+  background-position: -49px -144px;
+}
+.nicon-R10C5 {
+  background-position: -65px -144px;
+}
+.nicon-R10C6 {
+  background-position: -80px -144px;
+}
+.nicon-R10C7 {
+  background-position: -96px -144px;
+}
+.nicon-R10C8 {
+  background-position: -112px -144px;
+}
+
+/*****other*****/
+.icon
+{
+    display: inline-block;overflow: hidden; background-repeat: no-repeat;
+    width: 16px; height: 16px; background-image: url('../images/public/icons-files.png')
+} 
+.ui-jqgrid-view .icon{ margin-top:3px;}
+.icon-file-docx{background-position: 0 0;}
+.icon-file-doc{background-position: 0 -32px;}
+.icon-file-xlsx{ background-position: 0 -64px; }
+.icon-file-xls{ background-position:  0 -96px; }
+.icon-file-unknow{ background-position:  0 -128px; }
+.icon-file-txt{ background-position: 0 -160px ; }
+.icon-file-rar{ background-position: 0 -192px; }
+.icon-file-zip{ background-position: 0 -192px; }
+.icon-file-pptx{ background-position: 0 -224px; }
+.icon-file-ppt{ background-position: 0 -256px; }
+.icon-file-png{ background-position: 0 -288px; }
+.icon-file-jpg{ background-position: 0 -320px; }
+.icon-file-gif{ background-position: 0 -352px; }
+.icon-file-flv{ background-position: 0 -384px; }
+.icon-file-bmp{ background-position: 0 -416px; }
+.icon-file-ie{ background-position: 0 -448px; }
+.icon-file-xml{background-position: 0 -480px;} 
+.icon-file-pdf{background-position: 0 -512px;} 
+.icon-file-mp4{ background-position:  0 -544px; }
+.icon-file-mp3{ background-position:  0 -576px; }
+
+.icon-upload{display: inline-block; background-repeat: no-repeat; background-image: url('../images/public/icon-upload.gif')}
+
+.menu48-mobile{ display:block; width:48px;height:48px;background:url('../images/public/menu48-mobile.png') no-repeat center center;}
+.menu48-tv{display:block;width:48px;height:48px;background:url('../images/public/menu48-tv.png') no-repeat center center;}
+.menu48-callcenter{display:block;width:48px;height:48px;background:url('../images/public/menu48-callcenter.png') no-repeat center center;}
+.menu48-certmanage{display:block;width:48px;height:48px;background:url('../images/public/menu48-certmanage.png') no-repeat center center;}
+.menu48-eldercare{display:block;width:48px;height:48px;background:url('../images/public/menu48-eldercare.png') no-repeat center center;}
+.menu48-stream{display:block;width:48px;height:48px;background:url('../images/public/menu48-stream.png') no-repeat center center;}
+.menu48-voice{display:block;width:48px;height:48px;background:url('../images/public/menu48-voice.png') no-repeat center center;}
+.menu48-warenet{display:block;width:48px;height:48px;background:url('../images/public/menu48-warenet.png') no-repeat center center;}
+
+.menu78-智慧养老{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧养老.jpg') no-repeat center center;}
+.menu78-智慧养老-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧养老-on.jpg') no-repeat center center;}
+.menu78-社区办公{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区办公.jpg') no-repeat center center;}
+.menu78-社区办公-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区办公-on.jpg') no-repeat center center;}
+.menu78-亲情语音{ display:block; width:78px;height:65px;background:url('../images/public/menu78-亲情语音.jpg') no-repeat center center;}
+.menu78-亲情语音-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-亲情语音-on.jpg') no-repeat center center;}
+.menu78-远程视频{ display:block; width:78px;height:65px;background:url('../images/public/menu78-远程视频.jpg') no-repeat center center;}
+.menu78-远程视频-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-远程视频-on.jpg') no-repeat center center;}
+.menu78-智慧电视{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧电视.jpg') no-repeat center center;}
+.menu78-智慧电视-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧电视-on.jpg') no-repeat center center;}
+.menu78-智能控制{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智能控制.jpg') no-repeat center center;}
+.menu78-智能控制-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智能控制-on.jpg') no-repeat center center;}
+.menu78-客服中心{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心.jpg') no-repeat center center;}
+.menu78-客服中心-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心-on.jpg') no-repeat center center;}
+.menu78-96345{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心.jpg') no-repeat center center;}
+.menu78-96345-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心-on.jpg') no-repeat center center;}
+.menu78-认证管理{ display:block; width:78px;height:65px;background:url('../images/public/menu78-认证管理.jpg') no-repeat center center;}
+.menu78-认证管理-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-认证管理-on.jpg') no-repeat center center;}
+
+.menu78-智慧养老-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧养老-blue.jpg') no-repeat center center;}
+.menu78-智慧养老-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧养老-blue-on.jpg') no-repeat center center;}
+.menu78-社区办公-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区办公-blue.jpg') no-repeat center center;}
+.menu78-社区办公-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区办公-blue-on.jpg') no-repeat center center;}
+.menu78-亲情语音-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-亲情语音-blue.jpg') no-repeat center center;}
+.menu78-亲情语音-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-亲情语音-blue-on.jpg') no-repeat center center;}
+.menu78-远程视频-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-远程视频-blue.jpg') no-repeat center center;}
+.menu78-远程视频-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-远程视频-blue-on.jpg') no-repeat center center;}
+.menu78-智慧电视-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧电视-blue.jpg') no-repeat center center;}
+.menu78-智慧电视-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智慧电视-blue-on.jpg') no-repeat center center;}
+.menu78-智能控制-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智能控制-blue.jpg') no-repeat center center;}
+.menu78-智能控制-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-智能控制-blue-on.jpg') no-repeat center center;}
+.menu78-客服中心-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心-blue.jpg') no-repeat center center;}
+.menu78-客服中心-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-客服中心-blue-on.jpg') no-repeat center center;}
+.menu78-96345-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-96345-blue.jpg') no-repeat center center;}
+.menu78-96345-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-96345-blue-on.jpg') no-repeat center center;}
+.menu78-认证管理-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-认证管理-blue.jpg') no-repeat center center;}
+.menu78-认证管理-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-认证管理-blue-on.jpg') no-repeat center center;}
+
+.menu78-基本信息-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-基本信息-blue.jpg') no-repeat center center;}
+.menu78-基本信息-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-基本信息-blue-on.jpg') no-repeat center center;}
+.menu78-评估管理-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-评估管理-blue.jpg') no-repeat center center;}
+.menu78-评估管理-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-评估管理-blue-on.jpg') no-repeat center center;}
+.menu78-居家养老-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-居家养老-blue.jpg') no-repeat center center;}
+.menu78-居家养老-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-居家养老-blue-on.jpg') no-repeat center center;}
+.menu78-机构养老-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-机构养老-blue.jpg') no-repeat center center;}
+.menu78-机构养老-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-机构养老-blue-on.jpg') no-repeat center center;}
+.menu78-公共服务-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-公共服务-blue.jpg') no-repeat center center;}
+.menu78-公共服务-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-公共服务-blue-on.jpg') no-repeat center center;}
+.menu78-社区管理-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区管理-blue.jpg') no-repeat center center;}
+.menu78-社区管理-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-社区管理-blue-on.jpg') no-repeat center center;}
+.menu78-文化娱乐-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-文化娱乐-blue.jpg') no-repeat center center;}
+.menu78-文化娱乐-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-文化娱乐-blue-on.jpg') no-repeat center center;}
+.menu78-系统管理-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-系统管理-blue.jpg') no-repeat center center;}
+.menu78-系统管理-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-系统管理-blue-on.jpg') no-repeat center center;}
+.menu78-日照中心-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-日照中心-blue.jpg') no-repeat center center;}
+.menu78-日照中心-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-日照中心-blue-on.jpg') no-repeat center center;}

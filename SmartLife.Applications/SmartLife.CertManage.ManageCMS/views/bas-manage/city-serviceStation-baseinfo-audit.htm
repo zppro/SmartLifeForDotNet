@@ -1,0 +1,346 @@
+﻿<table id="cc-B19030205" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B19030205">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="search-sample-B19030205" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B19030205" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td style="text-align: right">
+                            审核状态：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="CC-FlowTo" name="FlowTo_Start" class="combobox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" name="query_btn" class="easyui-linkbutton" iconcls="icon-ok"
+                                onclick="exec(true)">查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <div id="toolbar-B19030205">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                    onclick="openApprovalDialog()">审核</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-edit" plain="true" onclick="rowsAudit(true)" id="edit_pass" operation="bulk">
+                        批量审核通过</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                            plain="true" onclick="rowsAudit()" id="edit_unpass" operation="bulk">批量审核不通过</a>
+            </div>
+            <table id="dg-B19030205">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-search-B19030205" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B19030205">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B19030205" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            机构名称:</label>
+        <input name="StationName" />
+    </div>
+    <div class="fitem">
+        <label>
+            所属街道:</label>
+        <input name="AreaId2" />
+    </div>
+    <div class="fitem">
+        <label>
+            所属社区:</label>
+        <input name="AreaId3" />
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var areas;
+
+    $(function () {
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'stationId-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['StationName'] = formData['KeyWord'];
+                formData['StationCode'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '审核结果',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 2, StationType: '00002', StationType2: '00002' }
+        };
+
+        validateUI();
+        autosize("cc-B19030205");
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        //autosize(models[currentMenuCode].gridId, -65);
+
+
+        //创建树
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaCode = left(treeNode.attributes.Code, 3 + treeNode.attributes.Levels * 2);
+                $("#CC-FlowTo").combobox("setValue", '20');
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'CheckInTime',
+                    order: 'asc',
+                    filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'StationType', value: models[currentMenuCode].defaultModel.StationType },
+                            { key: 'StationType2', value: models[currentMenuCode].defaultModel.StationType2 },
+                            { key: 'FlowTo_Start', value: 20 }
+                    ],
+                    fuzzyFields: [{ key: 'AreaCode', value: areaCode}]
+                });
+            },
+            onLoadSuccess: function () {
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+        function (d) {
+            var res;
+            postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                res = result;
+            }, { async: false })
+            if (res) {
+                getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+            } else {
+                getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+            }
+        },
+        null,
+        function (treeObj) {
+        }); //end loadTree
+
+        createGrid();
+
+        $('#CC-FlowTo').combobox({
+            width: 140,
+            panelHeight: 40,
+            data: [{ ItemId: '20', ItemName: '待审核' },
+                   { ItemId: '020', ItemName: '已审核'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 20
+        });
+    });
+
+    function createGrid() {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'FlowListForEasyUIgrid/' + models[currentMenuCode].headers.ConnectId,
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                filterFields: [
+                        { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                        { key: 'StationType', value: models[currentMenuCode].defaultModel.StationType },
+                        { key: 'StationType2', value: models[currentMenuCode].defaultModel.StationType2 },
+                        { key: 'FlowTo_Start', value: 20 }
+                ]
+            },
+            onDblClickRow: function (idx, row) {
+                openApprovalDialog(row);
+            },
+            onLoadSuccess: function () {
+                if ($('#CC-FlowTo').combobox('getValue') == "020") {
+                    $('#edit_pass').hide();
+                    $('#edit_unpass').hide();
+                }
+                else {
+                    $('#edit_pass').show();
+                    $('#edit_unpass').show();
+                }
+            },
+            columns: [[
+               { field: 'StationId', title: '服务站编号', width: 150, hidden: true },
+                        { field: 'CK', title: '', checkbox: true },
+                        { field: 'FlowFromName', title: '审核状态', width: 70, align: 'center' },
+                        { field: 'StationCode', title: '机构编码', width: 80, align: 'center' },
+                        { field: 'StationName', title: '机构名称', width: 120, align: 'center' },
+                        { field: 'StationType2', title: '机构类型', width: 150, align: 'center', formatter: easyuigrid_ajaxFormatter, url: function () {
+                            var url = window.ajaxData_InvokeUrl + '/GetDictionaryItem/01003';
+                            var results = null;
+                            getTo(url, null, function (result) {
+                                results = result;
+                            }, { async: false });
+                            return results;
+                        }
+                    },
+                        { field: 'Hotline', title: '服务热线', width: 100 },
+                        { field: 'Tel', title: '座机', width: 100 },
+                        { field: 'Fax', title: '传真', width: 100 },
+                        { field: 'LinkMan', title: '联系人', width: 60 },
+                        { field: 'LinkManMobile', title: '联系人手机', width: 100 },
+                        { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId", caseSensitive: false },
+                        { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId", caseSensitive: false },
+                        { field: 'Address', title: '地址', width: 200 }
+            ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    //批量审核
+    function rowsAudit(isNext) {
+        var selectedRows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+        if (selectedRows && selectedRows.length > 0) {
+            var ids = _.map(selectedRows, function (o) {
+                return o.StationId;
+            }).join("|");
+
+            var auditUrl = 'NextFlow/';
+            if (!isNext) {
+                auditUrl = 'PrevFlow/';
+            }
+
+            postTo(baseCMSInvokeUrl + '/Share/Circulation/' + auditUrl + ids + ', ,Pub_ServiceStation', null, function (ret) {
+                if (ret.Success) {
+                    alertInfo("保存成功！");
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+            }, null, models[currentMenuCode].headers);
+        }
+        else {
+            alertError('请选中要审核的记录');
+        }
+    }
+
+    //var flowLevel = getQueryStringInTab("FlowLevel");
+
+    function openApprovalDialog(row) {
+        if (!row) {
+            row = $('#dg-B19030205').datagrid('getSelected');
+        }
+        if (row) {
+            var flowModels = {
+                dialogId: "dg-flow-process",
+                dialogPage: 'views/shared/approval-process-frame.htm',
+                formId: "fm-B19030101",
+                processLevel: 20,
+                formUrl: "views/bas-manage/city-serviceSite-base-info-form.htm",
+                headers: models[currentMenuCode].headers,
+                bizid: row.StationId,
+                tableName: "Pub_ServiceStation",
+                OrderByClause: "CheckInTime desc",
+                title: "审核",
+                beforeFlowDialogClose: function (callback, dialogData) {
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                    callback();
+                }
+            };
+            //取历史记录
+            flowModels.flowData = getCirculationHistory(flowModels);
+            //生成按钮 
+            var _buttons = createButtons(flowModels);
+
+            openFlowDialog(flowModels, _buttons);
+        }
+        else {
+            alertError('请选中要审核的记录');
+        }
+    }
+
+    function createButtons(flowModels) {
+        var latestFlowData = flowModels.flowData[0];
+        var _buttons = [];
+        if (latestFlowData.FlowTo == 20) {
+            _buttons.push({
+                text: '审核通过',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    top.nextFlow(flowModels.bizid, flowModels.tableName, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+            _buttons.push({
+                text: '审核不通过',
+                iconCls: 'icon-redo',
+                handler: function () {
+                    top.prevFlow(flowModels.bizid, flowModels.tableName, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+        } else if (latestFlowData.FlowTo == 30) {
+            _buttons.push({
+                text: '撤销审核',
+                iconCls: 'icon-redo',
+                handler: function () {
+                    top.CancleSubmitFlow(flowModels.bizid, flowModels.tableName, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+        }
+        _buttons.push({
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () {
+                top.Closed(flowModels.dialogId); //直接无法调用要加top
+            }
+        });
+        return _buttons;
+    }
+   
+</script>

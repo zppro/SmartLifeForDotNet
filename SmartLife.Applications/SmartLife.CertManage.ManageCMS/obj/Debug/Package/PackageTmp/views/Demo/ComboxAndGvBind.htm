@@ -1,0 +1,112 @@
+﻿
+<table id="dg-B110704">
+    <label>
+        街道社区:</label>
+    <input id="AreaOfStreetAndCommunity" />
+    <input type="hidden" name="AreaId2" id="AreaId2" />
+    <input type="hidden" name="AreaId3" id="AreaId3" />
+</table>
+//实现代码如下：
+<pre class="prettyprint  linenums" style=" height:395px; overflow:scroll; padding: 2px; border: 1px solid #000">
+<xmp>
+<table id="dg-B110704">
+    <label>
+        街道社区:</label>
+    <input id="AreaOfStreetAndCommunity" /><!--根据ID来调用脚本-->
+    <input type="hidden" name="AreaId2" id="AreaId2" />
+    <input type="hidden" name="AreaId3" id="AreaId3" />
+</table>
+<script type="text/javascript">
+    $(function () {
+        validateUI(); 
+        var areas;
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+            $('#AreaOfStreetAndCommunity').combogrid({
+                delay: 500,
+                width: 370,
+                panelWidth: 600,
+                panelHeight: 240,
+                mode: 'local',
+                data: areas,
+                idField: 'AreaId',
+                textField: 'AreaName',
+                filter: function (q, row) {
+                    return row["AreaName"].indexOf(q) != -1 || row["AreaCode"].indexOf(q) != -1 || (row["InputCode1"] && row["InputCode1"].indexOf(q) != -1);
+                },
+                columns: [[
+                { field: 'AreaCode', title: '编码', width: 120, sortable: true },
+                { field: 'AreaName', title: '名称', width: 400, sortable: true }
+            ]],
+                onHidePanel: function () {
+                    if ($('#AreaOfStreetAndCommunity').combo('getText') == "") {
+                        $('#AreaId2').val("");
+                        $('#AreaId3').val("");
+                    }
+                },
+                onSelect: function (index, record) {
+                    if (record.ParentId.length == 5) {
+                        //选择街道
+                        $('#AreaId2').val(record.AreaId.toUpperCase());
+                        $('#AreaId3').val("");
+                    }
+                    else {
+                        //选择社区
+                        $('#AreaId2').val(record.ParentId.toUpperCase());
+                        $('#AreaId3').val(record.AreaId.toUpperCase());
+                    }
+                }
+            });
+        }, { async: false });
+    })
+
+</script>
+
+</xmp>
+</pre>
+<script type="text/javascript">
+    $(function () {
+        validateUI(); 
+        var areas;       
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+            $('#AreaOfStreetAndCommunity').combogrid({
+                delay: 500,
+                width: 370,
+                panelWidth: 600,
+                panelHeight: 240,
+                mode: 'local',
+                data: areas,
+                idField: 'AreaId',
+                textField: 'AreaName',
+                filter: function (q, row) {
+                    return row["AreaName"].indexOf(q) != -1 || row["AreaCode"].indexOf(q) != -1 || (row["InputCode1"] && row["InputCode1"].indexOf(q) != -1);
+
+                },
+                columns: [[
+                { field: 'AreaCode', title: '编码', width: 120, sortable: true },
+                { field: 'AreaName', title: '名称', width: 400, sortable: true }
+            ]],
+                onHidePanel: function () {
+                    if ($('#AreaOfStreetAndCommunity').combo('getText') == "") {
+                        $('#AreaId2').val("");
+                        $('#AreaId3').val("");
+                    }
+                },
+                onSelect: function (index, record) {
+                    if (record.ParentId.length == 5) {
+                        //选择街道
+                        $('#AreaId2').val(record.AreaId.toUpperCase());
+                        $('#AreaId3').val("");
+                    }
+                    else {
+                        //选择社区
+                        $('#AreaId2').val(record.ParentId.toUpperCase());
+                        $('#AreaId3').val(record.AreaId.toUpperCase());
+                    }
+                }
+            });
+        }, { async: false });
+})
+
+</script>

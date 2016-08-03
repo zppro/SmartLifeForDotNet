@@ -1,0 +1,385 @@
+﻿<div style="width:500px;margin:1px auto; text-align:center;">
+<a  href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="RefreshAll()">全部刷新</a>&nbsp;&nbsp;
+<a  href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="ExpandAll()">全部展开</a>&nbsp;&nbsp;
+<a  href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="CollapseAll()" >全部收缩</a>
+<!--<a id="btnNormalize" href="javascript:void(0);" class="easyui-linkbutton" style="display:none;" data-options="iconCls:'icon-max1',plain:true" onclick="top.normalizeTab()" ></a>-->
+</div>
+<div id="index-block">
+    <div id="emergency-service-block">
+        <div class="block-type">
+            紧急服务</div> 
+        <div id="pn-emergency-not-process" class="easyui-panel block-content" title='未受理 ( <a id="num-emergency-not-process" class="block-num" href="javascript:void(0);">0</a> )' style="height: 84px; padding: 0px;"
+                data-options="tools:'#tool-emergency-not-process'"> 
+                <table id="dg-emergency-not-process" class="block-grid-service" >
+                </table>
+            </div>
+            <div id="tool-emergency-not-process">
+                <a  act="emergency-not-process" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="84"> 
+                </a>
+                <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadEmergencyNotProcess();"> 
+                </a>
+            </div> 
+        <div id="pn-emergency-processing" class="easyui-panel block-content"  title='处理中 ( <a id="num-emergency-processing" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 0px;"
+            data-options="tools:'#tool-emergency-processing'"> 
+                <table id="dg-emergency-processing" class="block-grid-service">
+                </table>
+        </div>
+        <div id="tool-emergency-processing">
+            <a act="emergency-processing" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadEmergencyProcessing();"> 
+            </a>
+        </div> 
+         <div id="pn-emergency-workorder" class="easyui-panel block-content" title='派单中 ( <a id="num-emergency-workorder-dispatch" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> ) &nbsp;&nbsp;处置中 ( <a id="num-emergency-workorder-disposal" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 0px;"
+            data-options="tools:'#tool-emergency-workorder'"> 
+                <table id="dg-emergency-workorder" class="block-grid-workorder">
+                </table>
+        </div>
+        <div id="tool-emergency-workorder">
+            <a act="emergency-workorder" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadEmergencyWorkorder();"> 
+            </a>
+        </div> 
+        <div id="pn-emergency-supervise" class="easyui-panel block-content" title='督办中 ( <a id="num-emergency-supervise" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 00px;"
+            data-options="tools:'#tool-emergency-supervise'"> 
+            <table id="dg-emergency-supervise" class="block-grid-workorder">
+            </table>
+        </div>
+        <div id="tool-emergency-supervise">
+            <a act="emergency-supervise" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadEmergencySupervise();"> 
+            </a>
+        </div> 
+        <div id="pn-emergency-return-visit" class="easyui-panel block-content" title='待回访 ( <a id="num-emergency-return-visit" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 00px;"
+            data-options="tools:'#tool-emergency-return-visit'"> 
+            <table id="dg-emergency-return-visit" class="block-grid-workorder">
+            </table>
+        </div>
+        <div id="tool-emergency-return-visit">
+            <a act="emergency-return-visit" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadEmergencyReturnVisit();"> 
+            </a>
+        </div>
+    </div>
+    <div id="life-service-block">
+        <div class="block-type">
+            生活服务</div>
+        <div id="pn-life-not-process" class="easyui-panel block-content" title='未处理 ( <a id="num-life-not-process" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 84px; padding: 0px;"
+                data-options="tools:'#tool-life-not-process',onResize:panelResize"> 
+                <table id="dg-life-not-process" class="block-grid-service">
+                </table>
+            </div>
+            <div id="tool-life-not-process">
+                <a act="life-not-process" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="84"> 
+                </a>
+                <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadLifeNotProcess();"> 
+                </a>
+            </div> 
+        <div id="pn-life-processing" class="easyui-panel block-content" title='受理中 ( <a id="num-life-processing" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 0px;"
+            data-options="tools:'#tool-life-processing'"> 
+                <table id="dg-life-processing" class="block-grid-service">
+                </table>
+        </div>
+        <div id="tool-life-processing">
+            <a act="life-processing" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadLifeProcessing();"> 
+            </a>
+        </div> 
+        <div id="pn-life-workorder" class="easyui-panel block-content" title='派单中 ( <a id="num-life-workorder-dispatch" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> ) &nbsp;&nbsp;处置中 ( <a id="num-life-workorder-disposal" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 0px;"
+            data-options="tools:'#tool-life-workorder'"> 
+                <table id="dg-life-workorder" class="block-grid-workorder">
+                </table>
+        </div>
+        <div id="tool-life-workorder">
+            <a act="life-workorder" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadLifeWorkorder();"> 
+            </a>
+        </div> 
+        <div id="pn-life-supervise" class="easyui-panel block-content" title='督办中 ( <a id="num-life-supervise" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 00px;"
+            data-options="tools:'#tool-life-supervise'"> 
+            <table id="dg-life-supervise" class="block-grid-workorder">
+            </table>
+        </div>
+        <div id="tool-life-supervise">
+            <a act="life-supervise" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadLifeSupervise();"> 
+            </a>
+        </div> 
+        <div id="pn-life-return-visit" class="easyui-panel block-content" title='待回访 ( <a id="num-life-return-visit" class="block-num" href="javascript:void(0);"><img src="../../images/public/loading16.gif"></a> )' style="height: 105px; padding: 0px;"
+            data-options="tools:'#tool-life-return-visit'"> 
+                <table id="dg-life-return-visit" class="block-grid-workorder">
+                </table>
+        </div>
+        <div id="tool-life-return-visit">
+            <a act="life-return-visit" href="javascript:void(0);" class="panel-tool-expand" onclick="javascript:doToggleHeight(this);" panel-height="105"> 
+            </a>
+            <a href="javascript:void(0);" class="icon-reload" onclick="javascript:loadLifeReturnVisit();"> 
+            </a>
+        </div>
+    </div>
+</div>
+<div id="workorder-block" ></div>
+<script type="text/javascript">
+    $(function () {
+        $('#emergency-service-block').width($('#index-block').width() / 2 - 25);
+        $('#life-service-block').width($('#index-block').width() / 2 - 25);
+        $('.block-content').width($('#index-block').width() / 2 - 45);
+        loadfiles([
+        { type: "css", url: "../../css/old-care/index.css" }
+        ], function () {
+
+            autosize('index-block');
+            autosize('emergency-service-block');
+            autosize('life-service-block');
+
+            createGrid();
+            RefreshAll();
+        });
+    });
+
+    function RefreshAll() {
+        loadEmergencyNotProcess();
+        loadEmergencyProcessing();
+        loadEmergencyWorkorder();
+        loadEmergencySupervise();
+        loadEmergencyReturnVisit();
+        loadLifeNotProcess();
+        loadLifeProcessing();
+        loadLifeWorkorder();
+        loadLifeSupervise();
+        loadLifeReturnVisit();
+    }
+
+    function doToggleHeight(o) {
+        var act = $(o).attr('act');
+        var $a = $(o);
+        var panelHeight = $a.data('panel-height'); 
+        if (!panelHeight) {
+            panelHeight = parseInt($a.attr('panel-height'));
+        } 
+        if (panelHeight == 105 || panelHeight == 84) {
+            panelHeight += 270;
+            $a.removeClass('panel-tool-expand').addClass('panel-tool-collapse');
+        }
+        else {
+            panelHeight -= 270;
+            $a.removeClass('panel-tool-collapse').addClass('panel-tool-expand');
+        }
+        $a.data('panel-height', panelHeight);
+        $('#pn-' + act).panel('resize', { height: panelHeight }); 
+    }
+
+    function ExpandAll() {
+        _.each($('.panel-tool-expand'), function (o) {
+            doToggleHeight(o);
+        });
+    }
+
+    function CollapseAll() {
+        _.each($('.panel-tool-collapse'), function (o) {
+            doToggleHeight(o);
+        });
+    }
+
+    function panelResize(width, height) {
+        var gridId = $(this).attr('id').replace('pn', 'dg');
+        $('#' + gridId).datagrid('resize', { width: width - 5, height: height - 32 });
+    }
+
+    function createGrid() {
+        var di_serviceCatalogs;
+        getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/11005', null, function (serviceCatalogs) {
+            di_serviceCatalogs = serviceCatalogs;
+        }, { async: false });
+
+        var r1 = new RegExp("需要紧急救助", "g");
+        var r2 = new RegExp("需要生活服务", "g");
+        $('.block-grid-service').datagrid({
+            singleSelect: true,
+            width: '100%',
+            onDblClickRow: function (idx, row) {
+                if (top.execMode == "CS") {
+                    var groupType = row.ServiceQueueId.substring(0, 5);
+                    var url;
+                    if (groupType == "10000") {
+                        if (row.DoStatus > 0) {
+                            url = '/views/shared/tabContainer.htm?pageUrl=views/old-care/emergency-aid-info.htm';
+                            OpenNewWinAsCallService(url, row.CallServiceId, 'info');
+                        }
+                        else {
+                            //紧急服务永远不会发生回拨
+
+                        }
+
+                    }
+                    else if (groupType == "10003") {
+                        if (row.DoStatus == 0) {
+                            //主动回拨
+                            alert('需要主动回拨');
+                        }
+                        else if (row.DoStatus == 1) {
+                            url = '/views/shared/tabContainer.htm?pageUrl=views/old-care/life-aid.htm';
+                            Call_OpenNewWinAsCallServiceFromIndex(url, row.CallServiceId);
+                        }
+                    }
+                }
+                else {
+                    alert("请用客户端打开并处理");
+                }
+            },
+            columns: [[
+                { field: 'CallServiceId', title: '呼叫服务编号', width: 150, hidden: true },
+                { field: 'Content', title: '呼叫人', width: 80, formatter: function (val, row, idx) { if (val) { return val.replace(r1, "").replace(r2, ""); } } },
+                { field: 'CheckInTime', title: '呼入时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'OperatedOn', title: '最后响应时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'ServiceCatalog', title: '服务类别', width: 80, align: 'center', formatter: easyuigrid_diFormatter, vals:di_serviceCatalogs}
+        ]],
+            loader: easyuiLoader
+        });
+
+        $('.block-grid-workorder').datagrid({
+            singleSelect: true,
+            width: '100%',
+            onDblClickRow: function (idx, row) {
+
+                if (top.execMode == "CS") {
+
+                    var url = '/views/shared/tabContainer.htm?pageUrl=views/old-care/life-aid-workorder-csw.htm&fromWhere=index';
+                    Call_OpenNewWinAsWorkOrderFromIndex(url, row.WorkOrderId);
+                }
+                else {
+                    alert("请用客户端打开并处理");
+                }
+            },
+            columns: [[
+                { field: 'WorkOrderId', title: '服务工单序号', width: 150, hidden: true },
+                { field: 'Content', title: '呼叫人', width: 80, formatter: function (val, row, idx) { if (val) { return val.replace(r1, "").replace(r2, ""); } } },
+                { field: 'WorkOrderNo', title: '服务工单编号', width: 165 },
+                { field: 'ServiceCatalog', title: '服务类别', width: 80, align: 'center', formatter: easyuigrid_diFormatter, vals: di_serviceCatalogs },
+                { field: 'CheckInTime', title: '工单创建时间', width: 110, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+            //  { field: 'OperatedOn', title: '最后响应时间', width: 110, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                {field: 'DoStatus', title: '处理状态', width: 60, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '派单中:0~t处置中:1~t督办中:2~t回访中:3~t回访完成:4' }
+        ]],
+            loader: easyuiLoader
+        });
+    }
+
+    function loadEmergencyNotProcess() {
+        
+    }
+
+    function loadEmergencyProcessing() {
+        $("#num-emergency-processing").html('<img src="../../images/public/loading16.gif">');
+        _loadServices('10000', 2, function (rows) {
+            $("#num-emergency-processing").html(rows.length);
+            $('#dg-emergency-processing').datagrid('loadData', rows);
+        });
+    }
+
+    function loadEmergencyWorkorder() {
+        $("#num-emergency-workorder").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10000', 2, "0-1", function (rows) {
+             
+            $("#num-emergency-workorder-dispatch").html(_.filter(rows, function (o) {
+                return o.DoStatus == 0;
+            }).length);
+            $("#num-emergency-workorder-disposal").html(_.filter(rows, function (o) {
+                return o.DoStatus == 1;
+            }).length);
+            $('#dg-emergency-workorder').datagrid('loadData', rows);
+
+        });
+    }
+
+    function loadEmergencySupervise() {
+        $("#num-emergency-workorder-supervise").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10000', 2, "2", function (rows) {
+            $("#num-emergency-supervise").html(rows.length);
+            $('#dg-emergency-supervise').datagrid('loadData', rows);
+        });
+    }
+      
+    function loadEmergencyReturnVisit() {
+        $("#num-emergency-return-visit").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10000', 2, "3", function (rows) {
+            $("#num-emergency-return-visit").html(rows.length);
+            $('#dg-emergency-return-visit').datagrid('loadData', rows);
+        });
+    }
+
+    function loadLifeNotProcess() {
+        $("#num-life-not-process").html('<img src="../../images/public/loading16.gif">');
+        _loadServices('10003', 0, function (rows) {
+            $("#num-life-not-process").html(rows.length);
+            $('#dg-life-not-process').datagrid('loadData', rows);
+        });
+    }
+
+    function loadLifeProcessing() {
+        $("#num-life-processing").html('<img src="../../images/public/loading16.gif">');
+        _loadServices('10003', 1, function (rows) {
+            $("#num-life-processing").html(rows.length);
+            $('#dg-life-processing').datagrid('loadData', rows);
+        });
+    }
+
+    function loadLifeWorkorder() {
+        $("#num-life-workorder").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10003', 2, "0-1", function (rows) {
+            $("#num-life-workorder-dispatch").html(_.filter(rows, function (o) {
+                return o.DoStatus == 0;
+            }).length);
+            $("#num-life-workorder-disposal").html(_.filter(rows, function (o) {
+                return o.DoStatus == 1;
+            }).length); 
+            $('#dg-life-workorder').datagrid('loadData', rows);
+        });
+    }
+
+    function loadLifeSupervise() {
+        $("#num-life-supervise").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10003', 2, "2", function (rows) {
+            $("#num-life-supervise").html(rows.length);
+            $('#dg-life-supervise').datagrid('loadData', rows);
+        });
+    }
+
+    function loadLifeReturnVisit() {
+        $("#num-life-return-visit").html('<img src="../../images/public/loading16.gif">');
+        _loadServiceWorkOrders('10003', 2, "3", function (rows) {
+            $("#num-life-return-visit").html(rows.length);
+            $('#dg-life-return-visit').datagrid('loadData', rows);
+        });
+    }
+
+    function _loadServices(groupType, doStatus, callback) {
+
+        getTo(top.callservice_InvokeUrl + '/LoadServices/' + groupType + "," + doStatus, null, function (result) {
+            if (callback) {
+                setTimeout(function () {
+                    callback.apply(this, [result.rows]);
+                }, 500);
+            }
+        });
+    }
+
+    function _loadServiceWorkOrders(groupType, doStatus, workorderStatuses, callback) {
+        getTo(top.callservice_InvokeUrl + '/LoadServiceWorkOrders/' + groupType + "," + doStatus + ',' + workorderStatuses, null, function (result) {
+            result.rows = _.map(result.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            if (callback) {
+                setTimeout(function () {
+                    callback.apply(this, [result.rows]);
+                }, 500);
+            }
+        });
+    }
+    
+</script>

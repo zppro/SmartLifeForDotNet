@@ -1,0 +1,46 @@
+﻿<div>
+    <div id="processing-box" class="ajax_loader_c" style="width: 100%; height: 120px;">
+    </div>
+    <div  style="margin:0 auto;width:80px;"><a id="btnCancelMsdbJob" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-redo" 
+    plain="true">取消执行</a></div>
+</div>
+
+<script type="text/javascript">
+    var job_id;
+    var pBox;
+    function dialogOpen(dialogId, dialogData) {
+        job_id = dialogData.job_id;
+        pBox = new ajaxLoader($('#processing-box'), { classOveride: 'blue-loader' });
+        $.parser.parse('#processing-box');
+        //开始作业
+        postTo(msdbJob_InvokeUrl + '/Start/' + job_id, null, function (result) {
+            if (result.Success) {
+                if (pBox) pBox.remove();
+                alertInfo('执行成功！');
+                $('#' + dialogId).dialog('close');
+            }
+        }, null, dialogData.headers);
+
+        $('#btnCancelMsdbJob').unbind('click').bind('click', function () {
+            postTo(msdbJob_InvokeUrl + '/Stop/' + job_id, null, function (result) {
+                if (result.Success) {
+                    if (pBox) pBox.remove();
+                    alertInfo('取消执行成功！'); 
+                }
+            }, null, dialogData.headers);
+        });
+    }
+
+    function dialogBeforeSubmit(dialogId) {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        if (pBox) pBox.remove();
+        return job_id;
+    }
+
+    function cancelMsdbJob() {
+
+    }
+</script>

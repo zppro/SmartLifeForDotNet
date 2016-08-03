@@ -1,0 +1,161 @@
+﻿<table id="cc-B181203" style="width: 100%; height: 100%;">
+    <tr>
+        <td valign="top">
+           <div id="toolbar-B181203">
+                <!--<a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="query()">高级查询</a>
+                <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" 
+                    plain="true" onclick="add()">新增</a>
+                <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                    plain="true" onclick="edit()">编辑</a>
+                <a behaviorcode="03" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" 
+                    plain="true" onclick="nullify()">作废</a>
+                <a href="javascript:void(0)" id="mb" class="easyui-menubutton" data-options="menu:'#mm'">其他</a>
+                <div id="mm" style="width: 50px">
+                    <div behaviorcode="05" id="residentUpdate" iconcls="icon-upload" plain="true">
+                        导入</div>
+                </div>-->
+            </div>
+            <table id="dg-B181203">
+            </table>
+        </td>
+    </tr>
+</table>
+<!--<div id="dlg-B181203" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181203"> 
+    <div style="width:100%; height:100%;">
+        <form id="fm-B181203" method="post" novalidate>
+            <input type="hidden" name="SurveyResultId" id="surveyResultId-B181203" />
+            <div class="fitem">
+                <label>标题:</label>
+                <input name="SurveyTitle" class="easyui-validatebox" required="true" missingmessage="标题不能为空" style=" width:280px" />
+            </div>
+            <div class="fitem">
+                <label>副标题:</label>
+                <input name="SurveySubTitle" class="easyui-validatebox" style=" width:180px"/>
+            </div>
+            <div class="fitem">
+                <label>开始时间:</label>
+                <input id="BeginTime" name="BeginTime" class="easyui-validatebox"
+                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" required="true" />
+            </div>
+            <div class="fitem">
+            <label>过期时间:</label>
+            
+                <input id="ExpiredOn" name="ExpiredOn" class="easyui-validatebox"
+                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" required="true" />
+             </div>
+        </form>
+    </div>
+</div>-->
+<!--<div id="btn-B181203">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok" onclick="beforeSave()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>-->
+<!--surveyItem-->
+<!--<div id="dlg-B181203" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181203"></div>
+<div id="btn-B181203">
+    <a href="javascript:void(0)" id="edit_btn2" class="easyui-linkbutton" iconcls="icon-ok" onclick="onBeforeSave()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<!--surveyBlock-->
+<div id="dlg-B181203" class="easyui-dialog" style="width: 700px; height: 496px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B181203"></div>
+<div id="btn-B181203">
+    <a href="javascript:void(0)" id="edit_btn3" class="easyui-linkbutton" iconcls="icon-ok" onclick="onBeforeSave()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'surveyResultId-' + currentMenuCode,
+            pk: 'SurveyResultId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+//                var strPackageBeginDate = '/Date(' + Date.parse(formData["BeginTime"]).getTime() + ')/';
+//                formData["BeginTime"] = strPackageBeginDate;
+//                var strPackageEndDate = '/Date(' + Date.parse(formData["ExpiredOn"]).getTime() + ')/';
+//                formData["ExpiredOn"] = strPackageEndDate;
+            },
+            onAfterDialogOpen: function (row) {
+//                var str_date = ndateFormatter($("#BeginTime").val(), "yyyy-MM-dd");
+//                $("#BeginTime").val(str_date);
+//                str_date = ndateFormatter($("#ExpiredOn").val(), "yyyy-MM-dd");
+//                $("#ExpiredOn").val(str_date);
+            },
+            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '调查问卷',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/SurveyServiceResult/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+            //defaultModelWhenAdd: { Gender: 'M' }
+        };
+        //alert(baseInfoNode); return;
+        autosize("cc-B181203");
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'QuerySurveyResultsForGrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'a.CheckInTime',
+                order: 'desc',
+                filterFields: [
+                    { key: 'Status', value: 1 }
+                ]
+            },
+            onDblClickRow: function (idx, row) {
+                //edit(row);
+            },
+            columns: [[
+                { field: 'SurveyResultId', title: '问卷结果编号', width: 150, hidden: true },
+                { field: 'SurveyId', title: '问卷编号', width: 150, hidden: true },
+                { field: 'SurveyItemId', title: '调查项编号', width: 150, hidden: true },
+                { field: 'SurveyItemName', title: '调查项', width: 150},
+                { field: 'SurveyItemValue', title: '调查结果', width: 150 },
+                { field: 'SurveyTitle', title: '所属问卷', width: 150 },
+                { field: 'CheckInTime', title: '录入时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter },
+                { field: 'Status', title: '状态', width: 70, align: 'center', formatter: easyuigrid_statusFormatter },
+                { field: 'SurveyTargetId', title: '调查对象', width: 150, hidden: true }
+            ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    });
+
+    function beforeSave() {
+        var flag = true;
+        //        $(".Wdate").each(function (i, t) {
+        //            if (t.realValue == null||t.realValue =="") {//点击但不选值为""
+        //                flag = false;
+        //                $(this).css("background-color", "Red");
+        //            }
+        //        });
+        if (flag) save();
+    }
+</script>

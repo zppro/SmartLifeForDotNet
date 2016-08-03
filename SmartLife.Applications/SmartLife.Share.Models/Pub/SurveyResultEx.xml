@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Count_SurveyResultMixed_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from Pub_SurveyResult a
+      inner join Pub_SurveyItem c on a.SurveyItemId=c.SurveyItemId
+      left join Pub_Survey b on a.SurveyId=b.SurveyId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="SurveyResultId" >SurveyResultId=#SurveyResultId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyId" >a.SurveyId=#SurveyId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyItemId" >SurveyItemId=#SurveyItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyItemValue" >SurveyItemValue=#SurveyItemValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyTargetId" >SurveyTargetId=#SurveyTargetId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="SurveyResultMixed_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,SurveyResultId,a.Id,a.CheckInTime,a.Status,a.OperatedBy,a.OperatedOn,a.SurveyId,a.SurveyItemId,SurveyItemValue,SurveyTargetId,SurveyTitle,SurveySubTitle,SurveyItemName
+      from Pub_SurveyResult a
+      inner join Pub_SurveyItem c on a.SurveyItemId=c.SurveyItemId
+      left join Pub_Survey b on a.SurveyId=b.SurveyId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="SurveyResultId" >SurveyResultId=#SurveyResultId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyId" >a.SurveyId=#SurveyId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyItemId" >a.SurveyItemId=#SurveyItemId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyItemValue" >SurveyItemValue=#SurveyItemValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SurveyTargetId" >SurveyTargetId=#SurveyTargetId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

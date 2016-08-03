@@ -1,0 +1,61 @@
+﻿<div id="service-B180198" class="1024X768">
+    <div class="oldman-info-panel">&nbsp;</div>
+    <div class="service-middle">
+        <div id="location-panel" class="location-panel">地图载入中...</div>
+        <div class="service-process-panel" >&nbsp;
+        </div>
+    </div>
+    <div class="right-panel" >
+        <div id="life-aid-panel"></div>
+        <div id="do-process-box-c1-1" style=" margin-top:580px;">
+            <div style="float: left; padding-top: 5px; height: 20px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;已生成工单:</div>
+            <div id="workorder-container" style="height: 20px; overflow: auto;">
+            </div>
+            <div id="workorder-block">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize('service-B180198');
+            var urlRoot;
+            var outside = getQueryString('outside');
+            if (outside == "1") {
+                urlRoot = getUrlRootFromOutside('views/');
+            }
+            else {
+                urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+            }
+            getHtml(urlRoot + 'shared/oldman-info-panel.htm', function (str) {
+                $('#service-B180198 .oldman-info-panel').html(str);
+            });
+
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            if (pageData) {
+                if (pageData.LongitudeS) {
+                    longitude = pageData.LongitudeS;
+                }
+                if (pageData.LatitudeS) {
+                    latitude = pageData.LatitudeS;
+                }
+            }
+
+            initMap("location-panel", longitude, latitude);
+
+            getHtml(urlRoot + 'old-care/life-aid-process-panel.htm', function (str) {
+                $('#service-B180198 .service-process-panel').html(str);
+            });
+
+
+        });
+    });
+</script>

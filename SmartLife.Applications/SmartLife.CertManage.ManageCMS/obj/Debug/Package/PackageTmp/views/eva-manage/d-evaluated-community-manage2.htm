@@ -1,0 +1,488 @@
+﻿<!--象山专用-->
+<style type="text/css">
+.title_4 { font-size:16px; font-weight:bold; }
+.txt_bg_02 {width: 90%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.xs_txt_03 { width:120px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:16px;}
+
+.txt_bg_03 {width: 60%;height: 30px;line-height: 30px;border: none;border:none;text-align:center; font-size: 16px; margin-left:5px;}
+</style>
+<div id="cc-B170203">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            所属街道社区
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B170203"></ul>
+            <input type="hidden"  id="_AreaId2" />
+            <input type="hidden"  id="_AreaId3" />
+        </div>
+    </div>
+    <div id="toolbar-B170203">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" id="edit_pass" onclick="edit()">评估</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo" plain="true" id="edit_unpass" onclick="reEva()">撤销评估</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-redo" plain="true" id="doPass" onclick="doPass(true)">批量通过</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo" plain="true" id="doUnPass" onclick="doPass()">批量不通过</a>
+    </div>
+    <div id="search-sample-B170203" title="查询" style="overflow:auto;padding:3px;">
+        <form id="fm-search-rough-B170203" method="post" >
+            <table width="100%">
+                <tr>
+                    <td style=" text-align:right">关键字：</td>
+                    <td style=" text-align:left"><input name="KeyWord" class="easyui-validatebox"  placeholder="评估报告编号、申请人姓名"/></td> 
+                    <td style=" text-align:right">审核状态：</td>
+                    <td style=" text-align:left"><input id="CC-FlowTo"  name="FlowTo_Start" class="combobox" /></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  onclick="exec(true)">查询</a></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">清空</a></td> 
+                </tr>
+            </table>
+        </form>
+    </div>
+    <table id="dg-B170203" >
+    </table>
+</div>
+<div id="dlg-B170203" class="easyui-dialog" style="width: 900px; height: 550px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B170203"  >
+    <div class="ftitle"></div>
+    <form id="fm-B170203" method="post" novalidate>
+        <input type="hidden" name="ReportId" id="reportid-B170203" /> 
+        <table cellpadding='0' class="table">
+            <tr>
+                <td height="60" colspan="4" style='background-color:#CCCCCC' class="title_4">评估报告</td>
+            </tr>
+            <tr>
+                <td height="70" class="title_4">  
+                 评估表编号   
+                </td>
+                <td height="70" colspan="3" style='text-align:center' class="title_4">
+                    <input name='ReportCode' class='txt_bg_01' style=" width:250px; text-align:center;" disabled="disabled"/>
+                </td>
+            </tr> 
+            <tr>
+                <td   class="title_5">评估对象姓名</td>
+                <td class="title_5">
+                    <input name="EvaluatedName" disabled="disabled" class="txt_bg_03"/>
+                </td>
+                <td class="title_5">家庭经济状况</td>
+                <td class="title_5">
+                    <input name="IncomeStatusName" disabled="disabled" class="txt_bg_03"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:left;">
+                    <div style="font-size:16px; height:120px; line-height:50px;text-align:left;">
+                         &nbsp;&nbsp;&nbsp;&nbsp;根据评估结果，<input name="EvaluatedName" disabled="disabled" class="xs_txt_03"/>家庭经济状况为
+                        <input name="IncomeStatusName" disabled="disabled" class="xs_txt_03"/>，其生活能力为
+                        <input name="text-LifeSkillsResult" disabled="disabled" class="xs_txt_03"/>，其认知能力为
+                        <input name="text-CognitiveSkillsResult" disabled="disabled" class="xs_txt_03"/>，综合评估结论为
+                        <input disabled="disabled" class="xs_txt_03" id="txtReportResult-12005"/>。
+                    </div>
+                </td> 
+            </tr>
+            <tr >
+                <td  class="title_4" style=" width:120px;" > 
+                    村(社区)意见 
+                </td>
+                <td colspan="3" class="title_5" >
+                    <div class="txt_check_top">
+                        <input name="CommunityCheck" type="radio" value="0" /><label id="lb_CommunityCheck_0" style="font-size:16px; ">符合评估标准</label> &nbsp;&nbsp;&nbsp;
+                        <input name="CommunityCheck" type="radio" value="1" /><label id="lb_CommunityCheck_1" style="font-size:16px; ">要求再次评估</label>
+                        <br />
+                        <textarea name="CommunityRemark" id="CommunityRemark" cols="40"  rows="2" class="text"/>
+                    </div>
+                    <div class="txt_date_bottom">
+                        确认人:<input name="CommunityChecker" class="txt_bg_01 g_checker" style="width:150px;" readonly="readonly"/><br />
+                        <input name="CommunityTime_Show" class="Wdate txt_bg_01" onfocus="WdatePicker({dateFmt:'yyyy年MM月dd日',vel:'CommunityTime'})" style="width:150px;"/>
+                        <input type="hidden" name="CommunityTime" id="CommunityTime"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="btn-B170203">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a> 
+</div>  
+
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        var areas;
+        var mappingId;
+        placeholder(); //占位符初始化
+
+        $('#edit_unpass').hide();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            treeId: 'tree-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'reportid-' + currentMenuCode,
+            pk: 'ReportId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['EvaluatedName'] = formData['KeyWord'];
+                formData['ReportCode'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+
+                //传入状态
+                var ichecked = $('input:radio[name="CommunityCheck"]:checked').val();
+                var doStatus = ichecked > 0 ? 5 : 3;
+                _.extend(formData, { DoStatus: doStatus });
+
+                _.each($('.Wdate'), function (o) {
+                    var w_obj = $(o).next();
+                    if (formData.hasOwnProperty($(w_obj).attr("name")) && w_obj) {
+                        if ($(o).val()) formData[$(w_obj).attr("name")] = '\/Date(' + Date.parse($(w_obj).val()).getTime() + '+0800)\/';
+                    }
+                });
+                _.each($('.g_checker'), function (o) {
+                    if (formData.hasOwnProperty($(o).attr("name"))) formData[$(o).attr("name")] = window.contants.guidAutoGenerate;
+                });
+            },
+            onAfterDialogOpen: function (row) {
+                mappingId = row.AreaId3;
+                $("input[name='CommunityCheck']").eq(0).prop("checked", "checked");
+                _.each($('.Wdate'), function (o) {
+                    if ($(o).next().length == 0) {
+                        $(o).val(ndateFormatter($(o).val(), 'yyyy年MM月dd日'));
+                    }
+                    else {
+                        var tmpDate = $(o).next().val();
+                        if (tmpDate) {
+                            $(o).val(ndateFormatter(tmpDate, 'yyyy年MM月dd日'));
+                            $(o).next().val(ndateFormatter(tmpDate, 'yyyy-MM-dd'));
+                        }
+                        else {
+                            $(o).val((new Date()).toLocaleDateString());
+                            $(o).next().val((new Date()).pattern('yyyy-MM-dd'));
+                        }
+                    }
+                });
+                _.each($('.g_checker'), function (o) {
+                    if ($(o).val()) {
+                        var url = baseCMSInvokeUrl + '/Pub/UserService/' + $(o).val();
+                        getTo(url, null, function (result) {
+                            $(o).val(result.instance.UserName)
+                        });
+                    }
+                });
+
+                getTo(baseCMSInvokeUrl + '/Eva/EvaluatedRequisitionService/Query?parms=' + $.toJSON({ RequisitionId: row.RequisitionId }), null, function (ret) {
+                    if (ret.Success && ret.rows.length > 0) {
+                        $('input[name="IncomeStatusName"]').val(ret.rows[0].IncomeStatusName);
+                    }
+                }, null, models[currentMenuCode].headers);
+                getTo(top.baseCMSInvokeUrl + '/Eva/EvaluationInfoService/Query?parms=' + $.toJSON({ "ReportId": row.ReportId, "RequisitionId": row.RequisitionId }), null, function (EvaluationInfo) {
+
+                    if (EvaluationInfo.Success & EvaluationInfo.rows.length > 0) {
+                        getResult(EvaluationInfo.rows[0]);
+                    }
+                }, null,null);
+            },
+            actionDone: function (action, pks) {
+                if (action == 'update' && pks) {
+                    var ichecked = $('input:radio[name="CommunityCheck"]:checked').val();
+                    if (ichecked > 0) {
+                        postTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/CreateEvaluatedReport', $.toJSON({ LastReportId: pks.ReportId }));
+                    }
+                    var action = 1;
+                    if (ichecked == 1) { action = 2; }
+                    execFlowAction2(pks.ReportId, mappingId, 20, action, $('#CommunityRemark').val());
+                }
+            },
+            uiMode: 'list',
+            headers: { ConnectId: '' },
+//            headers: { ConnectId: baseInfoNode },
+            entityName: '申请报告信息',
+            baseModelUrl: baseCMSInvokeUrl + '/Eva/EvaluatedReportService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 2 }
+            //defaultModelWhenAdd: { Gender: 'M' }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        autosize("cc-" + currentMenuCode, -3);
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+        loadfiles([
+        { type: "css", url: "../../css/eva/eva-form.css" }
+        ], function () {
+            initTree('easyUITree', models[currentMenuCode].treeId, {
+                onClick: function (treeNode) {
+                    //查询参数
+                    var FilterFields = [];
+                    //获取节点
+                    var treeNodeId = treeNode.id; //当前节点
+                    if (treeNodeId.length > 6) {
+                        var tmpAreaId = treeNodeId.substring(14, 18);
+                        if (tmpAreaId == '0000') {//街道
+                            FilterFields.push({ key: "AreaId2", value: treeNodeId });
+                        }
+                        else {//社区
+                            FilterFields.push({ key: "AreaId2", value: treeNode.attributes.PId });
+                            FilterFields.push({ key: "AreaId3", value: treeNodeId });
+                        }
+                    }
+
+                    FilterFields.push({ key: 'Status', value: models[currentMenuCode].defaultModel.Status });
+                    FilterFields.push({ key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId });
+                    FilterFields.push({ key: 'FlowTo_Start', value: $("#CC-FlowTo").combobox("getValue") });
+                    var QueryParams = $('#' + models[currentMenuCode].gridId).datagrid('options').queryParams;
+                    QueryParams = _.extend(QueryParams, { filterFields: FilterFields });
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', QueryParams);
+                },
+                onLoadSuccess: function () {
+                    //左边的树，默认展开一级
+                    var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                    $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                    $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                }
+            },
+            function (d) {
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: false,
+                    url: models[currentMenuCode].baseModelUrl + 'EvaluatedReportInfo2',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                                { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                                { key: 'FlowTo_Start', value: 20 }
+                                ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    onLoadSuccess: function () {
+                        if ($('#CC-FlowTo').combobox('getValue') == "020") {//选择“已审核”时，隐藏“批量审批通过”和“批量审批不通过”
+                            $('#edit_pass').hide();
+                            $('#edit_unpass').show();
+                            $('#doPass').hide();
+                            $('#doUnPass').hide();
+                        }
+                        else {
+                            $('#edit_pass').show();
+                            $('#edit_unpass').hide();
+                            $('#doPass').show();
+                            $('#doUnPass').show();
+                        }
+                    },
+                    frozenColumns: [[
+                    { field: 'ReportId', title: '评估报告', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'ReportCode', title: '评估报告编号', width: 200, align: 'center' },
+                    { field: 'ActionName', title: '审核状态', width: 70, align: 'center' },
+                    { field: 'EvaluatedName', title: '申请人姓名', width: 80, align: 'center' }
+
+                    ]],
+                    columns: [[
+                    { field: 'AssessTypeName', title: '评估类别', width: 100, align: 'center' },
+                    { field: 'AssessmentScores', title: '评估分值', width: 80, align: 'center' },
+                    { field: 'AssessmentResult', title: '评估结果', width: 80, align: 'center' },
+                    { field: 'OcaResult', title: '居家养老结果', width: 80, align: 'center' },
+                    { field: 'PamResult', title: '机构养老结果', width: 80, align: 'center' },
+                    { field: 'DccResult', title: '日照中心结果', width: 80, align: 'center' },
+                    { field: 'ServeItemTypeName', title: '建议服务类型', width: 100, align: 'center' },
+                    { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+                ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+        });
+
+        $('#CC-FlowTo').combobox({
+            width: 140,
+            panelHeight: 43,
+            data: [{ ItemId: '20', ItemName: '待评估' },
+                   { ItemId: '020', ItemName: '已评估'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 20
+        });
+    });
+
+    function getResult(row) {
+        if (row) {
+            //正常(0分)、轻度失能(0＜X≤10分)、中度失能(10＜X≤50分)、重度失能(50＜X≤100分)
+            //CognitiveSkills:正常(0分)、轻度缺失(0＜X≤5分)、中度缺失(5＜X≤10分)、重度缺失(10＜X≤20分)
+
+            var lifeSkillsName = '';
+            var cognitiveSkillsName = '';
+            var txtReportResult = '';
+            var lifeSkill = parseInt(row.LifeSkillsResult);
+            if (lifeSkill == 0) { lifeSkillsName = '正常'; }
+            if (lifeSkill > 0 && lifeSkill <= 10) { lifeSkillsName = '轻度失能'; }
+            if (lifeSkill > 10 && lifeSkill <= 50) { lifeSkillsName = '中度失能'; }
+            if (lifeSkill > 50 && lifeSkill <= 100) { lifeSkillsName = '重度失能'; }
+
+            var cognitiveSkill = row.CognitiveSkillsResult;
+            if (cognitiveSkill == 0) { lifeSkillsName = '正常'; }
+            if (cognitiveSkill > 0 && cognitiveSkill <= 5) { cognitiveSkillsName = '轻度缺失'; }
+            if (cognitiveSkill > 5 && cognitiveSkill <= 10) { cognitiveSkillsName = '中度缺失'; }
+            if (cognitiveSkill > 10 && cognitiveSkill <= 20) { cognitiveSkillsName = '重度缺失'; }
+
+            $('input[name="text-LifeSkillsResult"]').val(lifeSkillsName);
+            $('input[name="text-CognitiveSkillsResult"]').val(cognitiveSkillsName);
+
+            txtReportResult = lifeSkillsName + cognitiveSkillsName;
+            if (txtReportResult) {
+                var ret = '';
+                if (txtReportResult.indexOf("重度") > -1) {
+                    ret = "重度依赖"
+                }
+                else if (txtReportResult.indexOf("中度") > -1) {
+                    ret = "中度依赖";
+                }
+                else if (txtReportResult.indexOf("轻度") > -1) {
+                    ret = "轻度依赖";
+                }
+                else {
+                    ret = "正常";
+                }
+                $('#txtReportResult-12005').val(ret);
+            }
+        }
+    }
+
+    function reEva() {
+        var row;
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            if (row.FlowTo == 30) {
+                alertConfirm("确定撤销</br>" + row.ReportCode + "(" + row.EvaluatedName + ")</br>的评估？", function (ret) {
+                    if (ret == true) {
+                        var result = execFlowAction2(row.ReportId, row.AreaId3, 30, 0, '撤销评估');
+                        if (result) { $('#' + models[currentMenuCode].gridId).datagrid('reload'); }
+                    }
+                });
+            }
+            else {
+                alert('请选择已评估的评估报告');
+            }
+        }
+        else {
+            alert('请选择需要撤销的评估报告');
+        }
+    }
+
+    //批量评估
+    function doPass(isNext) {
+        var treeNode = $('#' + models[currentMenuCode].treeId).tree('getSelected');
+        if (treeNode && treeNode.id.length > 6) {
+            var treeNodeId = treeNode.id;   //当前节点的层次 
+            var sub_id = treeNodeId.substring(14, 18);
+            if (sub_id != '0000') {//选择的是社区节点
+                var bizids;
+                var message;
+                var processAction;
+                var mappingId = treeNode.id;
+                //判断是审核通过还是不通过
+                if (!isNext) {
+                    processAction = 2;
+                    message = '不通过';
+                }
+                else {
+                    processAction = 1;
+                    message = '通过';
+                }
+                var selectedRows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections'); //取选中的多个记录
+                if (selectedRows && selectedRows.length > 0) {//把多个主键拼接 
+                    bizids = _.map(selectedRows, function (o) {
+                        return o.ReportId;
+                    }).join("|");
+                    alertConfirm("确定要批量“" + message + "”已选项吗？", function (r) {
+                        if (r) {
+                            var result = execFlowAction2(bizids, mappingId, 20, processAction, '批量操作所以选择项' + message);
+                            if (result) { $('#' + models[currentMenuCode].gridId).datagrid('reload'); }
+                        }
+                    });
+                }
+                else {
+                    bizids = '';
+                    alertConfirm("未选择操作对象，会批量“" + message + "”所有对象吗？此操作存在一定风险 ！确定继续执行此操作？", function (r) {
+                        if (r) {
+                            var result = execFlowAction2(bizids, mappingId, 20, processAction, '批量操作所以未选项' + message);
+                            if (result) {
+                                alert('批量操作完成');
+                                $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                alert("批量操作，必须以社区为单位，请选择一个社区！");
+            }
+        }
+        else {
+            alert("批量操作，必须以社区为单位，请选择一个社区！");
+        }
+    }
+    function execFlowAction2(bizids, mappingId, processState, processAction, processComment) {
+        var result = false;
+        var flowAction = {
+            "BIZ_IDs": bizids,
+            "TableName": 'Eva_EvaluatedReport', //表名
+            "TableColumn": 'ReportId', //表主键
+            "StatusColumn": 'Status', //流程结束时变更字段
+            "StatusValuse": 1, //流程结束时变更字段值
+            "ServiceType": '00004', //服务类别
+            "MappingType": 'EvaluatedReport', //映射类型
+            "MappingId": mappingId, //映射类型Id
+            "ProcessState": processState, //操作前的流程状态
+            "ProcessAction": processAction, //处理动作 
+            "ProcessComment": processComment, //处理动作 
+            "WhereClause": " Eva_EvaluatedReport.Status=2 and Eva_EvaluatedReport.AreaId3='" + mappingId + "'" //没有选择对象时，批量操作  必须是状态为2 并且在当前的社区下
+        }
+        postTo(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo2", $.toJSON(flowAction), function (ret) {
+            if (ret.Success && ret.ErrorCode != 0) {
+                alert(ret.ErrorMessage);
+            }
+            else {
+                result = true;
+            }
+        }, { async: false }, null);
+        return result;
+    }
+
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

@@ -1,0 +1,156 @@
+﻿<div id="search-sample-B180714" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B180714" method="post">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字：<input name="KeyWord" class="easyui-validatebox" />
+            </td>
+            <td style="text-align: left" >
+                街道社区:
+                <input id="StreetAndCommunity" class="easyui-validatebox" />
+                <input type="hidden" name="AreaId2_Start" id="AreaId2_Start" />
+                <input type="hidden" name="AreaId3_Start" id="AreaId3_Start" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="query()">高级查询</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div id="toolbar-B180714">
+    
+</div>
+<table id="dg-B180714" >
+</table>
+<div id="dlg-search-B180714" class="easyui-dialog" style="width: 420px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B180714"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B180714" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            老人姓名:</label>
+        <input name="OldManName"  >
+    </div>
+    <div class="fitem">
+        <label>
+            　身份证:</label>
+        <input name="IDNo" >
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180714">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        var areas;
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            uiMode: 'list',
+            entityName: '政府购买服务消费记录',
+
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/EPay_RechargeRecordService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),ServeItemA:'00001' ,Status:1,DoStatus:4 },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['a.OldManName'] = formData['KeyWord'];
+                formData['a.WorkOrderContent'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            }
+        };
+        autosize(models[currentMenuCode].gridId,-30);
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'EPaySpendingListPage',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'isnull(a.ServeManArriveTime,a.OperatedOn)',
+                order: 'desc',
+                filterFields: [
+                    { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                    { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                    { key: 'DoStatus', value: models[currentMenuCode].defaultModel.DoStatus },
+                    { key: 'ServeItemA', value: models[currentMenuCode].defaultModel.ServeItemA }
+                ]
+            },
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'WorkOrderContent', title: '服务内容', width: 150, align: 'center' },
+                { field: 'ServeManArriveTime', title: '服务开始时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'ServeManLeaveTime', title: '服务结束时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'tResult', title: '计费/计时', width: 150,formatter: function retGPSFlag(val, row, index) { if (row.FeeType=="00001") { return val + '次'; } else if(row.FeeType=="00002") { return val + '小时'; } }}
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                initTree('easyUIComboTree', 'StreetAndCommunity', {
+            width: 152,
+            panelWidth: 250,
+            panelHeight: 150,
+            editable: false,
+            onLoadSuccess: function () {
+                var node = $('#StreetAndCommunity').combotree('tree').tree('getRoot');
+                $('#StreetAndCommunity').combotree('tree').tree("collapseAll");
+                $('#StreetAndCommunity').combotree('tree').tree('expand', node.target);
+            },
+            onClick: function (treeNode) {
+                $('#AreaId2_Start').val(null);
+                $('#AreaId3_Start').val(null);
+                var areaId = treeNode.id; //选中节点id
+                var areaLevels = treeNode.attributes.Levels; //当前节点的层次
+                if (areaLevels == 3) {
+                    $('#AreaId2_Start').val(areaId);
+                }
+                else if (areaLevels == 4) {
+                    $('#AreaId3_Start').val(areaId);
+                }
+            }
+        }, function (d) {
+            getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+        });
+
+    });
+
+    function resetexec() {
+        $('#StreetAndCommunity').combotree('clear');
+        $('#AreaId2_Start').val(null);
+        $('#AreaId3_Start').val(null);
+        resetfm(true);
+    }
+</script>
+

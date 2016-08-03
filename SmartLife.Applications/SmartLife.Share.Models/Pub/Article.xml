@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Article" type="SmartLife.Share.Models.Pub.Article, SmartLife.Share.Models" />
+        <typeAlias alias="ArticlePK" type="SmartLife.Share.Models.Pub.ArticlePK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="Article_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_Article(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ArticleId" >ArticleId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Title" >Title</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SubTitle" >SubTitle</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnId" >ColumnId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PublishDate" >PublishDate</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExpiredDate" >ExpiredDate</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Tags" >Tags</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Author" >Author</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Source" >Source</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CreatorId" >CreatorId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Abstract" >Abstract</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Content" >Content</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Attachments" >Attachments</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PreviewMode" >PreviewMode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Category" >Category</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >ShowMode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeShowFlag" >HomeShowFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PicFlag" >PicFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VideoFlag" >VideoFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NewsFlag" >NewsFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AnonCommentsFlag" >AnonCommentsFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VoteFlag" >VoteFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Anonymous_Vote_FLAG" >Anonymous_Vote_FLAG</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopFlag" >TopFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopDays" >TopDays</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ArticleId" >#ArticleId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Title" >#Title#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SubTitle" >#SubTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnId" >#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PublishDate" >#PublishDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExpiredDate" >#ExpiredDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Tags" >#Tags#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Author" >#Author#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Source" >#Source#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CreatorId" >#CreatorId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Abstract" >#Abstract#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Content" >#Content#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Attachments" >#Attachments#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PreviewMode" >#PreviewMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Category" >#Category#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeShowFlag" >#HomeShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PicFlag" >#PicFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VideoFlag" >#VideoFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NewsFlag" >#NewsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AnonCommentsFlag" >#AnonCommentsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VoteFlag" >#VoteFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Anonymous_Vote_FLAG" >#Anonymous_Vote_FLAG#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopFlag" >#TopFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopDays" >#TopDays#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="Article_Update" parameterClass="StringObjectDictionary" >
+            update Pub_Article
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Title" >Title=#Title#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SubTitle" >SubTitle=#SubTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PublishDate" >PublishDate=#PublishDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExpiredDate" >ExpiredDate=#ExpiredDate#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Tags" >Tags=#Tags#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Author" >Author=#Author#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Source" >Source=#Source#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CreatorId" >CreatorId=#CreatorId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Abstract" >Abstract=#Abstract#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Content" >Content=#Content#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Attachments" >Attachments=#Attachments#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PreviewMode" >PreviewMode=#PreviewMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Category" >Category=#Category#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeShowFlag" >HomeShowFlag=#HomeShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PicFlag" >PicFlag=#PicFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VideoFlag" >VideoFlag=#VideoFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="NewsFlag" >NewsFlag=#NewsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AnonCommentsFlag" >AnonCommentsFlag=#AnonCommentsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="VoteFlag" >VoteFlag=#VoteFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Anonymous_Vote_FLAG" >Anonymous_Vote_FLAG=#Anonymous_Vote_FLAG#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopFlag" >TopFlag=#TopFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="TopDays" >TopDays=#TopDays#</isPropertyAvailable>
+            </dynamic>
+            where ArticleId=#ArticleId#
+        </update>
+        <delete id="Article_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_Article
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ArticleId" >ArticleId=#ArticleId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Title" >Title=#Title#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SubTitle" >SubTitle=#SubTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_Start" >PublishDate>=to_date(#PublishDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_End" >PublishDate&lt;=to_date(#PublishDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_Start" >ExpiredDate>=to_date(#ExpiredDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_End" >ExpiredDate&lt;=to_date(#ExpiredDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tags" >Tags=#Tags#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Author" >Author=#Author#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Source" >Source=#Source#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CreatorId" >CreatorId=#CreatorId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Abstract" >Abstract=#Abstract#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Attachments" >Attachments=#Attachments#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PreviewMode" >PreviewMode=#PreviewMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeShowFlag" >HomeShowFlag=#HomeShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PicFlag" >PicFlag=#PicFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VideoFlag" >VideoFlag=#VideoFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NewsFlag" >NewsFlag=#NewsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AnonCommentsFlag" >AnonCommentsFlag=#AnonCommentsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VoteFlag" >VoteFlag=#VoteFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Anonymous_Vote_FLAG" >Anonymous_Vote_FLAG=#Anonymous_Vote_FLAG#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopFlag" >TopFlag=#TopFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopDays" >TopDays=#TopDays#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="Article_Load" parameterClass="ArticlePK" resultClass="Article" >
+          select ArticleId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Title,SubTitle,ColumnId,PublishDate,ExpiredDate,Tags,Author,Source,CreatorId,Abstract,Content,Attachments,PreviewMode,Category,AreaId,AreaId2,AreaId3,ShowMode,HomeShowFlag,PicFlag,VideoFlag,NewsFlag,AnonCommentsFlag,VoteFlag,Anonymous_Vote_FLAG,TopFlag,TopDays from Pub_Article
+          where ArticleId=#ArticleId#
+        </select>
+        <select id="Article_List" parameterClass="StringObjectDictionary" resultClass="Article" >
+          select ArticleId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Title,SubTitle,ColumnId,PublishDate,ExpiredDate,Tags,Author,Source,CreatorId,Abstract,Content,Attachments,PreviewMode,Category,AreaId,AreaId2,AreaId3,ShowMode,HomeShowFlag,PicFlag,VideoFlag,NewsFlag,AnonCommentsFlag,VoteFlag,Anonymous_Vote_FLAG,TopFlag,TopDays from Pub_Article
+          <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ArticleId" >ArticleId=#ArticleId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Title" >Title=#Title#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SubTitle" >SubTitle=#SubTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_Start" >PublishDate>=to_date(#PublishDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_End" >PublishDate&lt;=to_date(#PublishDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_Start" >ExpiredDate>=to_date(#ExpiredDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_End" >ExpiredDate&lt;=to_date(#ExpiredDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tags" >Tags=#Tags#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Author" >Author=#Author#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Source" >Source=#Source#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CreatorId" >CreatorId=#CreatorId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Abstract" >Abstract=#Abstract#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Attachments" >Attachments=#Attachments#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PreviewMode" >PreviewMode=#PreviewMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeShowFlag" >HomeShowFlag=#HomeShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PicFlag" >PicFlag=#PicFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VideoFlag" >VideoFlag=#VideoFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NewsFlag" >NewsFlag=#NewsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AnonCommentsFlag" >AnonCommentsFlag=#AnonCommentsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VoteFlag" >VoteFlag=#VoteFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Anonymous_Vote_FLAG" >Anonymous_Vote_FLAG=#Anonymous_Vote_FLAG#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopFlag" >TopFlag=#TopFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopDays" >TopDays=#TopDays#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="Article_ListByPage" parameterClass="StringObjectDictionary" resultClass="Article" >
+          select x.* from (
+          select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ArticleId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Title,SubTitle,ColumnId,PublishDate,ExpiredDate,Tags,Author,Source,CreatorId,Abstract,Content,Attachments,PreviewMode,Category,AreaId,AreaId2,AreaId3,ShowMode,HomeShowFlag,PicFlag,VideoFlag,NewsFlag,AnonCommentsFlag,VoteFlag,Anonymous_Vote_FLAG,TopFlag,TopDays from Pub_Article
+          <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ArticleId" >ArticleId=#ArticleId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Title" >Title=#Title#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SubTitle" >SubTitle=#SubTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_Start" >PublishDate>=to_date(#PublishDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PublishDate_End" >PublishDate&lt;=to_date(#PublishDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_Start" >ExpiredDate>=to_date(#ExpiredDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExpiredDate_End" >ExpiredDate&lt;=to_date(#ExpiredDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tags" >Tags=#Tags#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Author" >Author=#Author#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Source" >Source=#Source#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CreatorId" >CreatorId=#CreatorId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Abstract" >Abstract=#Abstract#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Attachments" >Attachments=#Attachments#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PreviewMode" >PreviewMode=#PreviewMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeShowFlag" >HomeShowFlag=#HomeShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PicFlag" >PicFlag=#PicFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VideoFlag" >VideoFlag=#VideoFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NewsFlag" >NewsFlag=#NewsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AnonCommentsFlag" >AnonCommentsFlag=#AnonCommentsFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="VoteFlag" >VoteFlag=#VoteFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Anonymous_Vote_FLAG" >Anonymous_Vote_FLAG=#Anonymous_Vote_FLAG#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopFlag" >TopFlag=#TopFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TopDays" >TopDays=#TopDays#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

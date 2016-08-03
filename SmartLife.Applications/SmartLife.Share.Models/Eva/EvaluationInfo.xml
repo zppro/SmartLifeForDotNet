@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Eva" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="EvaluationInfo" type="SmartLife.Share.Models.Eva.EvaluationInfo, SmartLife.Share.Models" />
+        <typeAlias alias="EvaluationInfoPK" type="SmartLife.Share.Models.Eva.EvaluationInfoPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="EvaluationInfo_Create" parameterClass="StringObjectDictionary" >
+            insert into Eva_EvaluationInfo(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >RequisitionId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportId" >ReportId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkills" >LifeSkills</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkillsResult" >LifeSkillsResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoCondition" >EcoCondition</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoConditionResult" >EcoConditionResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironment" >LiveEnvironment</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironmentResult" >LiveEnvironmentResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCase" >AgeCase</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCaseResult" >AgeCaseResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContribution" >SContribution</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContributionResult" >SContributionResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RecommendedserviceType" >RecommendedserviceType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkills" >CognitiveSkills</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkillsResult" >CognitiveSkillsResult</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportId" >#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkills" >#LifeSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkillsResult" >#LifeSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoCondition" >#EcoCondition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoConditionResult" >#EcoConditionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironment" >#LiveEnvironment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironmentResult" >#LiveEnvironmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCase" >#AgeCase#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCaseResult" >#AgeCaseResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContribution" >#SContribution#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContributionResult" >#SContributionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RecommendedserviceType" >#RecommendedserviceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkills" >#CognitiveSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkillsResult" >#CognitiveSkillsResult#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="EvaluationInfo_Update" parameterClass="StringObjectDictionary" >
+            update Eva_EvaluationInfo
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkills" >LifeSkills=#LifeSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LifeSkillsResult" >LifeSkillsResult=#LifeSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoCondition" >EcoCondition=#EcoCondition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EcoConditionResult" >EcoConditionResult=#EcoConditionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironment" >LiveEnvironment=#LiveEnvironment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LiveEnvironmentResult" >LiveEnvironmentResult=#LiveEnvironmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCase" >AgeCase=#AgeCase#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AgeCaseResult" >AgeCaseResult=#AgeCaseResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContribution" >SContribution=#SContribution#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SContributionResult" >SContributionResult=#SContributionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RecommendedserviceType" >RecommendedserviceType=#RecommendedserviceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkills" >CognitiveSkills=#CognitiveSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CognitiveSkillsResult" >CognitiveSkillsResult=#CognitiveSkillsResult#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="EvaluationInfo_Delete" parameterClass="StringObjectDictionary" >
+            delete Eva_EvaluationInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkills" >LifeSkills=#LifeSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkillsResult" >LifeSkillsResult=#LifeSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoCondition" >EcoCondition=#EcoCondition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoConditionResult" >EcoConditionResult=#EcoConditionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironment" >LiveEnvironment=#LiveEnvironment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironmentResult" >LiveEnvironmentResult=#LiveEnvironmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCase" >AgeCase=#AgeCase#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCaseResult" >AgeCaseResult=#AgeCaseResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContribution" >SContribution=#SContribution#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContributionResult" >SContributionResult=#SContributionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RecommendedserviceType" >RecommendedserviceType=#RecommendedserviceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkills" >CognitiveSkills=#CognitiveSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkillsResult" >CognitiveSkillsResult=#CognitiveSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="EvaluationInfo_Load" parameterClass="EvaluationInfoPK" resultClass="EvaluationInfo" >
+            select Id,CheckInTime,Status,OperatedBy,OperatedOn,RequisitionId,ReportId,LifeSkills,LifeSkillsResult,EcoCondition,EcoConditionResult,LiveEnvironment,LiveEnvironmentResult,AgeCase,AgeCaseResult,SContribution,SContributionResult,RecommendedserviceType,CognitiveSkills,CognitiveSkillsResult from Eva_EvaluationInfo
+            where Id=#Id#
+        </select>
+        <select id="EvaluationInfo_List" parameterClass="StringObjectDictionary" resultClass="EvaluationInfo" >
+            select Id,CheckInTime,Status,OperatedBy,OperatedOn,RequisitionId,ReportId,LifeSkills,LifeSkillsResult,EcoCondition,EcoConditionResult,LiveEnvironment,LiveEnvironmentResult,AgeCase,AgeCaseResult,SContribution,SContributionResult,RecommendedserviceType,CognitiveSkills,CognitiveSkillsResult from Eva_EvaluationInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkills" >LifeSkills=#LifeSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkillsResult" >LifeSkillsResult=#LifeSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoCondition" >EcoCondition=#EcoCondition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoConditionResult" >EcoConditionResult=#EcoConditionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironment" >LiveEnvironment=#LiveEnvironment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironmentResult" >LiveEnvironmentResult=#LiveEnvironmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCase" >AgeCase=#AgeCase#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCaseResult" >AgeCaseResult=#AgeCaseResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContribution" >SContribution=#SContribution#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContributionResult" >SContributionResult=#SContributionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RecommendedserviceType" >RecommendedserviceType=#RecommendedserviceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkills" >CognitiveSkills=#CognitiveSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkillsResult" >CognitiveSkillsResult=#CognitiveSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="EvaluationInfo_ListByPage" parameterClass="StringObjectDictionary" resultClass="EvaluationInfo" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,RequisitionId,ReportId,LifeSkills,LifeSkillsResult,EcoCondition,EcoConditionResult,LiveEnvironment,LiveEnvironmentResult,AgeCase,AgeCaseResult,SContribution,SContributionResult,RecommendedserviceType,CognitiveSkills,CognitiveSkillsResult from Eva_EvaluationInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkills" >LifeSkills=#LifeSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LifeSkillsResult" >LifeSkillsResult=#LifeSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoCondition" >EcoCondition=#EcoCondition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EcoConditionResult" >EcoConditionResult=#EcoConditionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironment" >LiveEnvironment=#LiveEnvironment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LiveEnvironmentResult" >LiveEnvironmentResult=#LiveEnvironmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCase" >AgeCase=#AgeCase#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AgeCaseResult" >AgeCaseResult=#AgeCaseResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContribution" >SContribution=#SContribution#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SContributionResult" >SContributionResult=#SContributionResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RecommendedserviceType" >RecommendedserviceType=#RecommendedserviceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkills" >CognitiveSkills=#CognitiveSkills#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CognitiveSkillsResult" >CognitiveSkillsResult=#CognitiveSkillsResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

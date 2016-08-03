@@ -1,0 +1,148 @@
+﻿<div id="div_frame" style=" width:100%; height:100%; overflow:hidden;">
+<table style="width:100%; height:100%;">
+    <tr>
+        <td style=" width:80%; height:100%;">
+            <div id="div_info" style="overflow:auto; height:100%; width:100%;"></div>
+            <input type="hidden" id="BizId" />
+        </td>  
+        <td style=" height:100%;">
+            <div id="div_process_history" style="width:100%; height:85%; overflow-y:auto;background-color:#DCDCDC">
+            </div>
+             <div id="div_approval_area" style="height:14%; width:100%; padding:5px;background-color:#DCDCDC">
+                <span>
+                    <label id="lb_approval1">意见栏：</label>
+                    <textarea id="txt_approval1" cols="20" rows="3"  readonly="readonly" ></textarea>
+                </span>
+            </div>
+        </td>
+    </tr>
+</table>
+    
+</div>
+
+ <script type="text/javascript">
+
+     function dialogOpen(dialogId, dialogData) {
+         if (dialogData) {
+             $('#BizId').val(dialogData.bizid);
+             if (dialogData.processLevel >10) {
+                 $("#txt_approval1").prop("readonly", false);
+             }
+
+              //填充历史记录
+             var htmls = [];
+             if (dialogData.flowData) {
+                 $.each(dialogData.flowData, function (i, o) {
+                     htmls.push("<span class=\"processHistory_span\">");
+                     getTo(top.baseCMSInvokeUrl + '/Pub/UserService/' + o.OperatedBy, null, function (result) {
+                         htmls.push("<label>操作员：" + result.instance.UserCode + "</label><br/>");
+                     }, { async: false });
+                     //内容
+                     htmls.push("<label>" + o.ProcessTitle + "：" + o.ProcessActionName + "</label><br/>");
+                     //处理时间
+                     htmls.push("<label>" + ndateFormatter(o.CheckInTime, 'yyyy-MM-dd hh:mm:ss') + "</label ><br/>");
+                     //意见
+                     if (o.ProcessComment != null) {
+                         htmls.push("<label>" + o.ProcessComment + "</label ><br/>");
+                     }
+                     if (o.ProcessComment2 != null) {
+                         htmls.push("<label>" + o.ProcessComment2 + "</label ><br/>");
+                     }
+                     htmls.push("</span>");
+                 });
+
+                 $("#div_process_history").html(htmls.join(""));
+             }
+
+             //填充页面
+             getHtml(dialogData.formUrl, function (result) {
+                 $("#div_info").html(result);
+                 $("#div_info").width($("#div_frame").width() * 0.8); //宽度设100%时,加载的页面会撑开(暂用此法解决)
+                 if (dialogData.formData) {
+                     $('#' + dialogData.formId).form('clear');
+                     $('#' + dialogData.formId).form('load', dialogData.formData);
+                 }
+             });
+         }
+     }
+
+     function dialogBeforeSubmit() {
+         return true;
+     }
+
+
+     function dialogClose(dialogId) {
+         return "";
+
+     }
+     /*********************************改造后的新方法********************************************/
+     //向后流转
+//     function flow_Next(bIZID, tableName, primaryKey, flowName,mappingType,mappingId,flowType,processState, connectId, actionDone) {
+//         
+//         var strComment = $("#txt_approval1").val();
+//         if (!strComment) strComment = " ";
+//         var flowAction;
+//         flowAction = {
+//                 "FlowName":flowName,
+//                 "TableName": tableName,
+//                 "TableColumn": primaryKey,
+//                 "BIZ_IDs": bIZID,
+//                 "MappingType":mappingType,
+//                 "MappingId":mappingId,
+//                 "ProcessState": processState,
+//                 "ProcessAction":1, 
+//                 "Status":2 
+//         }
+
+//             flowAction(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo", parms, connectId, actionDone);
+//     }
+
+     function flowAction(flowAction, connectId, actionDone) { 
+         var strComment = $("#txt_approval1").val();
+         if (!strComment) strComment = " ";
+         flowAction["ProcessComment"] = strComment;
+         postTo(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo", $.toJSON(flowAction), function (ret) { 
+             if (ret.Success) { 
+                 if (actionDone) {
+                     actionDone.apply(this, [ret.ErrorMessage]);
+                 }
+             }
+         }, null, connectId);  
+     }
+
+     /*********************************改造后的新方法********************************************/
+
+     /*********************************改造前的老方法********************************************/
+     function nextFlow(bIZID, tableName, primaryKey, flowName, connectId, actionDone) {
+         var strComment = $("#txt_approval1").val();
+         if (!strComment) strComment = " ";
+         submitFlow(baseCMSInvokeUrl + "/Share/Circulation/NextFlow/" + bIZID + "," + strComment + "," + tableName + ","+ primaryKey + "," + flowName, connectId, actionDone);
+     }
+
+     function prevFlow(bIZID, tableName,primaryKey,flowName, connectId, actionDone) {
+         var strComment = $("#txt_approval1").val();
+         if (!strComment) strComment = " ";
+         submitFlow(baseCMSInvokeUrl + "/Share/Circulation/PrevFlow/" + bIZID + "," + strComment + "," + tableName + ","+ primaryKey + "," + flowName, connectId, actionDone);
+     }
+
+     function CancleSubmitFlow(bIZID, tableName, flowName, connectId, actionDone) {
+         submitFlow(baseCMSInvokeUrl + "/Share/Circulation/CancleFlow/" + bIZID + "," + tableName + "," + flowName, connectId, actionDone);
+     }
+
+     function submitFlow(url, connectId, actionDone) {
+         postTo(url, null, function (ret) {
+             if (ret.Success) {
+                 if (actionDone) {
+                     actionDone.apply(this, [ret]);
+                 }
+             }
+         }, null, connectId);
+     }
+
+     /*********************************改造前的老方法********************************************/
+
+     function Closed(dialogId) {
+         $("#" + dialogId).dialog('close');
+     }
+
+</script>

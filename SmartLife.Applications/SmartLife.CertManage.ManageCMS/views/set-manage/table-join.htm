@@ -1,0 +1,303 @@
+﻿<table id="cc-B11040602" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B11040602">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B11040602">
+                <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search"
+                    plain="true" onclick="query()">高级查询</a> <a behaviorcode="01" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="add()">新增</a>
+                <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                    plain="true" onclick="edit()">编辑</a> <a behaviorcode="03" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                        删除</a>
+            </div>
+            <table id="dg-B11040602">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B11040602" class="easyui-dialog" style="width: 550px; height: 300px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B11040602">
+    <input type="hidden" id="TableName" />
+    <form id="fm-B11040602" method="post" novalidate>
+            <input type="hidden" name="Id" id="id-B11040602" />
+            <div class="fitem">
+                <label>
+                    表名　1:</label>
+                <input name="TableName1" id="TableName1" class="easyui-validatebox" missingmessage="表名1不能为空"/>
+                <label>
+                    表别名1:</label>
+                <input name="TableAliasName1" class="easyui-validatebox" required="true"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    列名　1:</label>
+                <input name="ColumnName1" id="ColumnName1" class="easyui-validatebox" />
+            </div>
+            <div class="fitem">
+                <label>
+                    表名　2:</label>
+                <input name="TableName2" id="TableName2" class="easyui-validatebox" />
+                <label>
+                    表别名2:</label>
+                <input name="TableAliasName2" class="easyui-validatebox" required="true"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    列名　2:</label>
+                <input name="ColumnName2" id="ColumnName2" class="easyui-validatebox" />
+                
+            </div>
+            <div class="fitem">
+                <label>
+                    排序序号:</label>
+                <input name="OrderNo" class="easyui-validatebox" />
+                <label>
+                    关联方式:</label>
+                <input name="JoinType" id="JoinType" class="easyui-validatebox"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    条　　件:</label>
+                <textarea name="Condition" style="width: 370px;" maxlength="400"></textarea>
+            </div>
+        </form>
+</div>
+<div id="btn-B11040602">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok" onclick="tableNameDuplicates_save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B11040602" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B11040602">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B11040602" method="post" novalidate>
+    
+    </form>
+</div>
+<div id="btn-search-B11040602">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+
+        var table;
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'id-' + currentMenuCode,
+            pk: 'Id',
+            getPKValueWhenAdd: function () {
+                return -1;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData.OrderNo = 0;
+            },
+            onBeforeDialogOpen: function () {
+                $("#JoinType").combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    data: [{ ItemId: "Left Join", ItemName: "Left Join" }, { ItemId: "Inner Join", ItemName: "Inner Join" }, { ItemId: "Right Join", ItemName: "Right Join"}],
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    editable: false
+                });
+                var column;
+                if ($("#TableName").val()) {
+                    column = query_column($("#TableName").val());
+                } else {
+                    column = null;
+                }
+                set_column('ColumnName1', column);
+                column = null;
+                set_column('ColumnName2', column);
+
+                $("#TableName1,#TableName2").combobox({
+                    width: 160,
+                    panelHeight: 200,
+                    data: table,
+                    valueField: 'TableName',
+                    textField: 'TableName',
+                    editable: false,
+                    required: true,
+                    onSelect: function (record) {
+                        column = query_column(record.TableName);
+                        if ($(this).attr("Id") == "TableName1") {
+                            set_column('ColumnName1', column);
+                        } else if ($(this).attr("Id")) {
+                            set_column('ColumnName2', column);
+                        }
+                    }
+                });
+            },
+            onAfterDialogOpen: function () {
+                if (models[currentMenuCode].uiMode == 'add') {
+                    var tableName = $("#TableName").val()
+                    if (tableName != "全部") {
+                        $("#TableName1").combobox("setValue", tableName);
+                        var column = query_column(tableName);
+                    }
+                } else if (models[currentMenuCode].uiMode == 'edit') {
+                }
+            },
+            uiMode: 'list',
+            entityName: '表关系',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/TableJoinService/',
+            defaultModel: { Status: 1 }
+        };
+
+        autosize("cc-" + currentMenuCode);
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                if (treeNode.id == '00') {
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status }
+                            ]
+                    });
+                } else {
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status }
+                            ],
+                        fuzzyFields: [
+                            { key: 'TableName1', value: treeNode.text }
+                        ]
+                    });
+                }
+                $("#TableName").val(treeNode.text);
+            }
+        },
+            function (d) {
+                getTreeData('01$03$01', null, null, d);
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    fit: true,
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    checkOnSelect: false,
+                    selectOnCheck: false,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status }
+                            ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                    { field: 'Id', title: '编号', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'TableName1', title: '表名1', width: 100, align: 'center' },
+                    { field: 'TableAliasName1', title: '表别名1', width: 80, align: 'center' },
+                    { field: 'ColumnName1', title: '列名1', width: 80, align: 'center' },
+                    { field: 'TableName2', title: '表名2', width: 100, align: 'center' },
+                    { field: 'TableAliasName2', title: '表别名2', width: 80, align: 'center' },
+                    { field: 'ColumnName2', title: '列名2', width: 80, align: 'center' },
+                    { field: 'JoinType', title: '关联方式', align: 'center', width: 100 },
+                    { field: 'Condition', title: '条件', align: 'center', width: 100 },
+                    { field: 'OrderNo', title: '排序序号', align: 'center', width: 60 },
+                    { field: 'OperatedOn', title: '操作时间', align: 'center', width: 80, formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                    { field: 'CheckInTime', title: '创建时间', align: 'center', width: 80, formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" }
+            ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+
+        //        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/01005'], function (residentBizId_d) {
+        //            residentBizId = residentBizId_d;
+
+        //            setCombobox("ResidentBizId", residentBizId);
+        //        });
+        var queryParams = new Object();
+        queryParams.sort = 'OperatedOn';
+        queryParams.order = 'desc';
+        queryParams.Status = models[currentMenuCode].defaultModel.Status;
+
+        getTo(baseCMSInvokeUrl + '/Pub/SetTableService/Query', { parms: $.toJSON(queryParams) }, function (result) {
+            table = result.rows;
+        }, { async: false });
+    });
+
+    function tableNameDuplicates_save() {
+        var id = $("#id-B11040602").val();
+        var tableName1 = $("#TableName1").combobox("getValue");
+        var tableName2 = $("#TableName2").combobox("getValue");
+        if (tableName1 != tableName2) {
+            var result;
+            getTo(models[currentMenuCode].baseModelUrl + "QueryDuplicates", { parms: $.toJSON({ "TableName1": tableName1, "TableName2": tableName2,"Id":id }) }, function (ret) {
+                result = ret.rows;
+            }, { async: false });
+            if (result == "") {
+                save();
+            } else {
+                alertInfo("表1表2已经存在");
+            }
+        } else {
+            alertInfo("表1表2不能相同");
+        }
+    }
+
+    function set_column(columnId, columnData) {
+        $("#"+columnId).combobox({
+            width: 160,
+            panelHeight: 200,
+            data: columnData,
+            valueField: 'ColumnName',
+            textField: 'ColumnName',
+            editable: false,
+            required: true
+        });
+    }
+
+    function query_column(tableName) {
+        if (tableName) {
+            var column;
+            var queryParams = new Object();
+            queryParams.sort = 'OperatedOn';
+            queryParams.order = 'desc';
+            queryParams.Status = models[currentMenuCode].defaultModel.Status;
+            queryParams.TableName = tableName;
+            getTo(baseCMSInvokeUrl + '/Pub/SetColumnService/Query', { parms: $.toJSON(queryParams) }, function (result) {
+                column = result.rows;
+            }, { async: false });
+            return column;
+        }
+    }
+</script>

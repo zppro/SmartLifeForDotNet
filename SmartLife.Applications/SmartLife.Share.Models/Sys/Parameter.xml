@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Parameter" type="SmartLife.Share.Models.Sys.Parameter, SmartLife.Share.Models" />
+    <typeAlias alias="ParameterPK" type="SmartLife.Share.Models.Sys.ParameterPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Parameter_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Parameter(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ParameterId" >ParameterId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterName" >ParameterName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterValue" >ParameterValue</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ParameterId" >#ParameterId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterName" >#ParameterName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterValue" >#ParameterValue#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Parameter_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Parameter
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterName" >ParameterName=#ParameterName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParameterValue" >ParameterValue=#ParameterValue#</isPropertyAvailable>
+      </dynamic>
+      where ParameterId=#ParameterId#
+    </update>
+    <delete id="Parameter_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Parameter
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ParameterId" >ParameterId=#ParameterId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParameterName" >ParameterName=#ParameterName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParameterValue" >ParameterValue=#ParameterValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Parameter_Load" parameterClass="ParameterPK" resultClass="Parameter" >
+      select ParameterId,Id,Status,CodeClass,ParameterName,Description,ParameterValue from Sys_Parameter
+      where ParameterId=#ParameterId#
+    </select>
+    <select id="Parameter_List" parameterClass="StringObjectDictionary" resultClass="Parameter" >
+      select ParameterId,Id,Status,CodeClass,ParameterName,Description,ParameterValue from Sys_Parameter
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ParameterId" >ParameterId=#ParameterId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParameterName" >ParameterName=#ParameterName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParameterValue" >ParameterValue=#ParameterValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

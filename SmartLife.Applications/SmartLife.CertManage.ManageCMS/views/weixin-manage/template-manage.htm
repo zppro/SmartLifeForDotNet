@@ -1,0 +1,112 @@
+﻿<div id="toolbar-B11040703">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-script" plain="true" onclick="exportScript()">
+                导出SQL</a>
+</div>
+<table id="dg-B11040703" >
+</table>
+<div id="dlg-B11040703" class="easyui-dialog" style="width: 700px; height: 240px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B11040703"  >
+    <div class="ftitle"></div>
+    <form id="fm-B11040703" method="post" novalidate>
+    
+    <div class="fitem">
+        <label>
+            模板编号:</label> 
+        <input   name="TemplateId" id="templateid-B11040703" class="easyui-validatebox" required="true" missingMessage="模板编号不能为空" />
+        <label>
+            模板名称:</label>
+        <input name="TemplateName" class="easyui-validatebox" required="true" missingMessage="模板名称不能为空">
+        <label>
+            业务类型:</label>
+        <input id="BizType" name="BizType" class="easyui-validatebox" > 
+    </div>  
+    <div class="fitem">
+        <label >
+            模板说明:</label>
+        <textarea name="TemplateContent" style="width:580px;" rows="6" ></textarea>
+    </div> 
+    </form>
+</div>
+<div id="btn-B11040703">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'templateid-' + currentMenuCode,
+            pk: 'TemplateId',
+            getPKValueWhenAdd: function () {
+                return "";
+            },
+            exportScriptParams: { tableName: "Pub_WXMessageTemplate", pkColumnName: "TemplateId" },
+            onAfterDialogOpen: function (editrow) {
+                if (editrow) {
+
+                }
+                else {
+                    var comboDatas = $('#BizType').combobox('getData');
+                    $('#BizType').combobox('setValue', comboDatas[0].ItemId);
+                }
+            },
+            uiMode: 'list',
+            disabled: ['edit'],
+            entityName: '微信消息模板',
+            baseModelUrl: baseCMSInvokeUrl + '/WeiXin/Pub/WXMessageTemplateService/',
+            defaultModel: { Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId);
+
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/01015'], function (bizTypes) {
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'TemplateId',
+                    order: 'asc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status
+                    }
+                },
+                onDblClickRow: function (idx, row) {
+                    edit(row);
+                },
+                columns: [[
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'TemplateId', title: '模板编号', width: 150 },
+        { field: 'TemplateName', title: '模板名称', width: 200 },
+        { field: 'BizType', title: '业务类型', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: bizTypes },
+        { field: 'TemplateContent', title: '模板取值', width: 700 }
+    ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#BizType').combobox({
+                width: 152,
+                data: bizTypes,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+        });
+    }); 
+    
+</script>

@@ -1,0 +1,102 @@
+﻿<div id="toolbar-B19040102">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">
+                作废</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-no" plain="true" onclick="stop()">
+                停用</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="restart()">
+                重新启用</a>
+</div>
+<table id="dg-B19040102" >
+</table>
+<div id="dlg-B19040102" class="easyui-dialog" style="width: 360px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B19040102"  >
+    <div class="ftitle"></div>
+    <form id="fm-B19040102" method="post" novalidate>
+    <input type="hidden" name="UserId" id="userid-B19040102" />
+    <div class="fitem">
+        <label>
+            工号:</label>
+        <input name="UserCode" class="easyui-validatebox" required="true" missingMessage="工号不能为空"> 
+    </div>
+    <div class="fitem">
+        <label>
+            名称:</label>
+        <input name="UserName" class="easyui-validatebox" required="true" missingMessage="名称不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            性别:</label>
+        <input id="Gender-M" type="radio" name="Gender" value="M"/><label for="Gender-M">男</label>
+        <input id="Gender-F" type="radio" name="Gender" value="F"/><label for="Gender-F">女</label>
+    </div>
+    </form>
+</div>
+<div id="btn-B19040102">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript"> 
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'userid-' + currentMenuCode,
+            pk: 'UserId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["Area1"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            uiMode: 'list',
+            entityName: '政府机构管理员',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/UserService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00099|" + window.contants.GuidAsGroup_GovernmentOper, Gender: 'N', SystemFlag: 1, Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId);
+        
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'UserCode',
+                order: 'asc',
+                instance: {
+                    Area1: models[currentMenuCode].defaultModel.AreaId,
+                    Status: models[currentMenuCode].defaultModel.Status,
+                    UserType: models[currentMenuCode].defaultModel.UserType,
+                    SystemFlag: models[currentMenuCode].defaultModel.SystemFlag
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+        { field: 'UserId', title: '操作员编号', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'UserCode', title: '工号', width: 100, sortable: true },
+        { field: 'UserName', title: '名称', width: 200 },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'StopFlag', title: '停用', width: 50, align: 'center', formatter: easyuigrid_boolFormatter },
+        { field: 'CheckInTime', title: '录入时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" }
+    ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+    });
+
+</script>

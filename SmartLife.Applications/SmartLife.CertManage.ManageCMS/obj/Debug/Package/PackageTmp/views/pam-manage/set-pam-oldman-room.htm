@@ -1,0 +1,308 @@
+﻿<table id="cc-searchroom" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 205px; border: solid 1px #ddd;" valign="top">
+        <input id="oldManId" type="hidden"/>
+        <input id="stationId" type="hidden"/>
+        <input id="isInRoom" type="hidden"/>
+            <div  style="line-height: 30px; text-align: center; background-color: #fafafa;">
+                曾经住过的房间
+            </div>
+            <div id="binded-room" style="overflow: auto; height:450px;">
+            </div>
+        </td>
+        <td style="width: 150px;border: solid 1px #ddd;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center;   background-color: #fafafa;">
+                楼层房间
+            </div>
+            <div id="div_tree" style=" width: 100%;height:450px; float: left; overflow: auto;">
+                <ul id="tree-searchroom">
+                </ul> 
+            </div>
+        </td>
+        <td valign="top">
+            <div id="toolbar-searchroom" title="查询" style="overflow: auto;height: 30px; padding: 3px;"> 
+                <table width="100%" >
+                    <tr>
+                        <td style="text-align: right;">
+                            关键字：
+                        </td>
+                        <td style="text-align: left;">
+                            <input id="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td> 
+                            <a href="javascript:void(0)"  class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="searchRoom()">查询</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" plain="true" onclick="clearKeyWord()">
+                                清空</a>
+                        </td> 
+                    </tr>
+                </table> 
+            </div>
+            <table id="dg-searchroom">
+            </table>
+            <div   class="easyui-panel" title="房间内的床位" style="background: #fafafa; width:560px; ">
+                <div id="div-bed" style=" height:55px; overflow: auto; "> 
+                <!--<div><a href="javascript:void(0)" title="23424"  class="easyui-linkbutton"   plain="true" style=" float:left;list-style:none; background-color:#66cc66; width:60px;font-weight:bolder; text-align:center; margin:10px 5px 5px 10px;">1 号床位</a></div>
+                <div><a href="javascript:void(0)"  class="easyui-linkbutton"   plain="true" style=" float:left;list-style:none; background-color:#ff0066; width:60px; font-weight:bolder;text-align:center; margin:10px 5px 5px 10px;">2 号床位</a></div>
+                <div><a href="javascript:void(0)"  class="easyui-linkbutton"   plain="true" style=" float:left; list-style:none;background-color:#63B8FF; width:60px;font-weight:bolder; text-align:center; margin:10px 5px 5px 10px;">7 号床位</a></div>
+                -->
+                </div> 
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    var remenberBedNo = 0;//选择的床位号
+
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) { 
+            $('#oldManId').val(dialogData.OldManId);
+            $('#stationId').val(dialogData.StationId);
+            var currentMenuCode = 'searchroom';
+            models[currentMenuCode] = {
+                treeId: 'tree-' + currentMenuCode,
+                gridId: 'dg-' + currentMenuCode,
+                pkId: 'oldManid-' + currentMenuCode,
+                toolbarId: 'toolbar-' + currentMenuCode,
+                pk: 'OldManId',
+                getPKValueWhenAdd: function () {
+                    return window.contants.guidAutoGenerate;
+                },
+                uiMode: 'list',
+                entityName: '老人设置房间',
+                baseModelUrl: baseCMSInvokeUrl + '/Pam/ServeManService/',
+                defaultModel: { StationId: dialogData.StationId, OldManId: dialogData.OldManId,Status:1 }
+            };
+            initTree('easyUITree', 'tree-searchroom', {
+                onClick: function (treeNode) {
+                    var _instance; 
+                    if (treeNode.attributes.PId == "_") {
+                        _instance = { 'Status': models[currentMenuCode].defaultModel.Status,
+                            'StationId': models[currentMenuCode].defaultModel.StationId
+                        };
+                    }
+
+                    else if (treeNode.attributes.PId.toUpperCase() == models[currentMenuCode].defaultModel.StationId.toUpperCase()) {
+                        _instance = { 'Status': models[currentMenuCode].defaultModel.Status,
+                            'StationId': models[currentMenuCode].defaultModel.StationId,
+                            'FloorNo': treeNode.id
+                        };
+                    }
+                    else {
+                        _instance = { 'Status': models[currentMenuCode].defaultModel.Status,
+                            'StationId': models[currentMenuCode].defaultModel.StationId,
+                            'RoomId': treeNode.id
+                        };
+                    } 
+                    $('#dg-searchroom').datagrid('load', {
+                        sort: 'RoomNo',
+                        order: 'asc',
+                        instance: _instance
+                    });
+                },
+                onLoadSuccess: function () {
+                    //左边的树，默认展开一级
+                    var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                    $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                    $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                }
+            },
+            function (d) {
+                getTreeData('01$01$10', "OrderNo asc", '{"StationId":"' + $('#stationId').val().toUpperCase() + '" }', d);
+            },
+            null,
+            function (treeObj) {
+                $('#dg-searchroom').datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    width: 560,
+                    height: 405,
+                    url: baseCMSInvokeUrl + '/Pam/RoomService/ListForEasyUIgridPage',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'RoomNo',
+                        order: 'asc',
+                        fuzzyFieldOP: ' or ',
+                        instance: {
+                            Status: 1,
+                            StationId: models[currentMenuCode].defaultModel.StationId
+                        }
+                    },
+                    onSelect: function (index, row) {
+                        //                    alert($.toJSON(row));
+                        getListBed(row);
+                        remenberBedNo = 0;
+                    },
+                    columns: [[
+        { field: 'RoomId', title: '房间编号', width: 150, hidden: true },
+        { field: 'RoomNo', title: '房间号', width: 80, align: 'center', sortable: true },
+        { field: 'BedNo', title: '床位数', width: 50, align: 'center' },
+        { field: 'OccupancyNumber', title: '入住人数', width: 60, align: 'center' },
+        { field: 'ExtNo', title: '分机号', width: 100 },
+        { field: 'OperatedBy', title: '操作人', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+            var ret = "";
+            if (row.OperatedBy) {
+                var url = baseCMSInvokeUrl + '/Pub/UserService/' + row.OperatedBy;
+                getTo(url, null, function (result) {
+                    ret = result.instance;
+                }, { async: false });
+            }
+            return ret;
+        }, textField: "UserName", valueField: "UserId"
+        },
+        { field: 'OperatedOn', title: '操作时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" }
+        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            });                  //end loadTree
+            livedRoom(models[currentMenuCode].defaultModel.OldManId, models[currentMenuCode].defaultModel.StationId); //获得这个老人在此养老机构已经住过的房间
+        }
+        else {
+            alertInfo("老人为空");
+        }
+    }
+    //加载房间内的床位
+    function getListBed(row) {
+        var bedNo = row.BedNo;
+        getTo(baseCMSInvokeUrl + '/Pam/RoomService/RoomOldManNow/' + row.RoomId + ',' + $('#stationId').val(), null, function (ret) {
+            var str = '';
+            if (ret.Success) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                for (var i = 1; i <= bedNo; i++) {
+                    var f = true;
+                    _.each(rows, function (o) {
+                        if (parseInt(o.SickBedNo) == i) {
+                            var title = '姓名：' + o.OldManName + '    性别：' + easyuigrid_genderFormatter(o.Gender, null, null);
+                            str += '<div><a href="javascript:void(0)"  class="easyui-linkbutton l-btn l-btn-plain"  id="bed' + i + '"  title="' + title + '"   plain="true" style=" width: 60px; text-align: center; font-weight: bolder; margin-top: 10px; margin-right: 5px; margin-bottom: 5px; margin-left: 10px; float: left; background-color: rgb(255, 0, 102);"><span class="l-btn-left"><span class="l-btn-text">' + i + ' 号床位</span></span></a></div>';
+                            f = false;
+                        }
+                    });
+                    if (f) {
+                        str += '<div><a href="javascript:void(0)"   onclick=getBed("' + i + '") id="bed' + i + '" class="easyui-linkbutton l-btn l-btn-plain"   plain="true" style=" width: 60px; text-align: center; font-weight: bolder; margin-top: 10px; margin-right: 5px; margin-bottom: 5px; margin-left: 10px; float: left; background-color: rgb(102, 204, 102);"><span class="l-btn-left"><span class="l-btn-text">' + i + ' 号床位</span></span></a></div>';
+                    }
+                }
+            }
+             
+            $('#div-bed').html(str);
+        }, { async: false });
+    }
+    //选择床位号
+    function getBed(i) {
+        var row = $('#dg-searchroom').datagrid('getSelected');
+        if (row) {
+            $('#bed' + remenberBedNo).css({ "background-color": "#66cc66" });
+            $('#bed' + i).css({ "background-color": "#63B8FF" }); 
+        }
+        else {
+            alert('请选择一个房间');
+        }
+        remenberBedNo = i;
+    }
+
+    //模糊查询
+    function searchRoom() {  
+        $('#dg-searchroom').datagrid('load', {
+            sort: 'RoomNo',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: 1,
+                StationId: $('#stationId').val()
+            },
+            fuzzyFields: [{ key: 'RoomNo', value: $('#KeyWord').val() },
+                          { key: 'ExtNo', value: $('#KeyWord').val() }
+                          ]
+        });
+    }
+    //清空查询
+    function clearKeyWord() {
+        $('#KeyWord').val(null);
+    }
+    //获得这个老人在此养老机构已经住过的房间
+    function livedRoom(oldManId, stationId) {
+        $('#binded-room').html(null);
+        getTo(baseCMSInvokeUrl + '/Pam/RoomService/LivedRoom/' + oldManId + ',' + stationId, null, function (ret) {
+            if (ret.rows.length > 0) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var str = '<ul>'; 
+                str = _.map(rows, function (o) {
+                    var tb = o.BeginDate.substring(0, o.BeginDate.lastIndexOf(':'));
+                    var te = o.EndDate.substring(0, o.EndDate.lastIndexOf(':'));
+                    if (te == '2999/12/31 23:59') { $('#isInRoom').val('此老人已经在 “' + tb + '” 入住到 “' + o.RoomNo + '” 房间') }
+                    var str = '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">房 &nbsp;间 &nbsp;号：</label>' + o.RoomNo + '</li>';
+                    str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">床 &nbsp;位 &nbsp;号：</label>' + o.SickBedNo + '</li>';
+                    str += '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">入住时间：</label>' + tb + '</li>';
+                    str += te == '2999/12/31 23:59' ? '<li  style="margin-left:5px; margin-top:5px;"><span style=" color:#63B8FF;cursor:pointer;"  onclick=getOutRoom1("' + o.Id + '","' + o.RoomId + '","' + o.OccupancyNumber + '")>退出房间</span></li>' : '<li  style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">离开时间：</label>' + te + '</li>';
+//                    str += '<li  style="margin-left:5px; margin-top:5px;"> </li>';
+                    str += '</br></br>';
+                    //'<li  style="margin-left:5px; margin-top:5px;">房间号：' + o.RoomNo + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#63B8FF;cursor:pointer;"  onclick=removeBinded("' + o.OpenId + '","' + oldManId + '")>解绑</span></li>'
+                    return str;
+                }).join("");
+
+                str = str + '</ul>';
+                $('#binded-room').html(str);
+                count = ret.rows.length;
+            }
+        }, { async: false });
+    }
+    //退出房间
+    function getOutRoom1(strId, roomId, occupancyNumber) {
+        alertConfirm('退出房间，将作废“老人与服务人员的关系”和“所有工作计划”，确定要退出吗？', function (r) {
+            if (r) {
+                var oldManId = $('#oldManId').val();
+                putTo(baseCMSInvokeUrl + '/Pam/RoomService/GetOutRoomAndNullifyWorkPlan/' + roomId + ',' + oldManId, null, function (ret) {
+                    if (ret.Success) {
+                        livedRoom($('#oldManId').val(), $('#stationId').val());
+                        searchRoom();
+                        alertInfo("操作成功");
+                    }
+                });
+            }
+        });
+    }
+    function dialogBeforeSubmit() {
+        var result = false;
+        var isInRoom = $('#isInRoom').val();
+        var row = $('#dg-searchroom').datagrid('getSelected');
+        if (isInRoom == '') {
+            if (row) {
+                if (parseInt(row.BedNo) > parseInt(row.OccupancyNumber)) {
+                    if (remenberBedNo != 0) {
+                        result = true;
+                    }
+                    else {
+                        result = false;
+                        alert("请选择床位");
+                    } 
+                }
+                else {
+                    result = false;
+                    alert(row.RoomNo + " 房间已经住满");
+                }
+            }
+            else {
+                result = false;
+                alert("请选择一个房间");
+            }
+        }
+        else {
+            alert(isInRoom);
+        } 
+          return result;
+      //        return false; 
+    }
+
+    function dialogClose() { 
+        var row = $('#dg-searchroom').datagrid('getSelected');
+        return { RoomId: row.RoomId, OccupancyNumber: row.OccupancyNumber, OldManId: $('#oldManId').val(), SickBedNo: remenberBedNo };
+    }
+
+    
+</script>

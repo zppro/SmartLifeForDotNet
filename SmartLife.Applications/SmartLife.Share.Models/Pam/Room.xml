@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Room" type="SmartLife.Share.Models.Pam.Room, SmartLife.Share.Models" />
+    <typeAlias alias="RoomPK" type="SmartLife.Share.Models.Pam.RoomPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Room_Create" parameterClass="StringObjectDictionary" >
+      insert into Pam_Room(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="RoomId" >RoomId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomNo" >RoomNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ExtNo" >ExtNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BedNo" >BedNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OccupancyNumber" >OccupancyNumber</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FloorNo" >FloorNo</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="RoomId" >#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomNo" >#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ExtNo" >#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BedNo" >#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OccupancyNumber" >#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FloorNo" >#FloorNo#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Room_Update" parameterClass="StringObjectDictionary" >
+      update Pam_Room
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BedNo" >BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OccupancyNumber" >OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+      </dynamic>
+      where RoomId=#RoomId#
+    </update>
+    <delete id="Room_Delete" parameterClass="StringObjectDictionary" >
+      delete Pam_Room
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BedNo" >BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Room_Load" parameterClass="RoomPK" resultClass="Room" >
+      select RoomId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RoomNo,ExtNo,BedNo,OccupancyNumber,StationId,FloorNo from Pam_Room
+      where RoomId=#RoomId#
+    </select>
+    <select id="Room_List" parameterClass="StringObjectDictionary" resultClass="Room" >
+      select RoomId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RoomNo,ExtNo,BedNo,OccupancyNumber,StationId,FloorNo from Pam_Room
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BedNo" >BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Room_ListByPage" parameterClass="StringObjectDictionary" resultClass="Room" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,RoomId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RoomNo,ExtNo,BedNo,OccupancyNumber,StationId,FloorNo from Pam_Room
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BedNo" >BedNo=#BedNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

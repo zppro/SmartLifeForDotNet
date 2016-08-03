@@ -1,0 +1,116 @@
+﻿<div>
+    <form id="fm-set-merchant-info"> 
+        <div class="fitem">
+        <label>
+            接单方式:</label>
+        <input name="AcceptType" id="AcceptType"  required="true"/>
+        <label>
+            结算周期:</label>
+        <input name="SettlementPeriod" id="SettlementPeriod"  required="true" />
+        </div>
+        <div class="fitem">
+        <label>
+            结算方式:</label>
+        <input name="SettlementMode" id="SettlementMode" required="true" />
+        <label>
+            工作时间:</label>
+        <input name="WorkDay" id="WorkDay"  />
+        </div>
+        <div class="fitem">
+        <label>
+            服务时间开始:</label>
+        <input name="ServeTimeBeginOfDay" id="ServeTimeBeginOfDay" style=" width:125px;"  />
+        <label>
+            服务时间结束:</label>
+        <input name="ServeTimeEndOfDay" id="ServeTimeEndOfDay"  style=" width:125px;"/>
+        </div>
+        <div class="fitem">
+        <label>
+            服务时间描述:</label>
+        <input name="ServeTimeOfDayDescription" id="ServeTimeOfDayDescription"  style=" width:125px;" />
+            <label>
+            服务流程标志:</label>
+        <input name="ServeFlowFlag" id="ServeFlowFlag" required="true" style=" width:125px;"  />
+        </div>
+        <div class="fitem"> 
+            <label>
+            服务额外说明:</label>
+        <input name="ServeExtraComment" id="ServeExtraComment"   style=" width:125px;"  />
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var isAdd = true;
+    var stationId;
+    function dialogOpen(dialogId, dialogData) {
+        stationId = dialogData.StationId; 
+        getCombobox();
+    }
+
+    function getCombobox() {
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11025',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/11019',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/00014'
+        ], function (settlementMode, acceptType, settlementPeriod) {
+            setCombobox("SettlementMode", settlementMode, 63);
+            setCombobox("AcceptType", acceptType, 63);
+            setCombobox("SettlementPeriod", settlementPeriod, 83);   
+            $('#ServeFlowFlag').combobox({
+                width: 130,
+                panelHeight: 43,
+                method: 'get',
+                data: [{ 'ItemId': 0, 'ItemName': '关闭' }, { 'ItemId': 1, 'ItemName': '打开'}],
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+            getTo(baseCMSInvokeUrl + '/Oca/MerchantService/Query?parms=' + $.toJSON({ 'StationId': stationId }), null, function (result) {
+                //                        alert($.toJSON(result));
+                if (result.Success && result.rows.length > 0) {
+                    var ret = result.rows[0];
+                    $('#fm-set-merchant-info').form('clear');
+                    $('#fm-set-merchant-info').form('load', ret);
+                    isAdd = false;
+                }
+                else {
+                    $('#fm-set-merchant-info').form('clear');
+                    isAdd = true;
+                }
+            });    
+        }); 
+    }
+    function setCombobox(controlsId, data, pH) {
+        $('#' + controlsId).combobox({
+            width: 153,
+            panelHeight: pH,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    function dialogBeforeSubmit() {
+        var result = false;
+        var merchant = getJQO('#fm-set-merchant-info').serializeObject();
+        merchant = _.extend(merchant, { 'StationId': stationId }); 
+        var checkNull = 'true';
+        checkNull = merchant.SettlementPeriod == '' ? '请选择结算周期' : merchant.SettlementMode == '' ? '请选择结算方式' : merchant.ServeFlowFlag == '' ? '请选择服务流程标志' : 'true';
+
+        if (checkNull == 'true') {
+            result = true;
+        }
+        else {
+            result = false;
+            alert(checkNull);
+        }
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var merchant = getJQO('#fm-set-merchant-info').serializeObject();   
+        merchant = _.extend(merchant, { 'StationId': stationId });
+        merchant = _.extend(merchant, { 'isAdd': isAdd });
+        return merchant;
+    }
+</script>

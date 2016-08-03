@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Ewallet_OldMan_Account_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.OldManId,a.OldManName,a.Gender,isnull(a.Tel,a.Mobile) as ContactPhone,a.Address,a.AreaId,
+      isnull(b.BalanceOfGovernment,0) as BalanceOfGovernment,
+      isnull(b.BalanceOfSelf,0) as BalanceOfSelf from
+      Oca_OldManBaseInfo a left join Oca_Ewallet_OldMan b
+      on a.OldManId=b.OldManId
+      where a.Status=1
+      <isPropertyAvailable prepend=" AND " property="Status" >isnull(b.Status,1)=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >isnull(b.AreaId,#AreaId#)=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Ewallet_Recharge_Record_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.OldManId,a.OldManName,a.Gender,isnull(a.Tel,a.Mobile) as ContactPhone,a.Address,a.AreaId,
+      b.RechargeItem,b.RechargeTime,b.RechargeAmount
+      from  Oca_OldManBaseInfo a   inner join Oca_Ewallet_Recharge_Record b
+      on b.RechargeObjectType='00001' and b.RechargeObject=a.OldManId
+      where a.Status =1
+      <isPropertyAvailable prepend=" AND " property="Status" >b.Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >isnull(b.AreaId,#AreaId#)=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RechargeAccount" >b.RechargeAccount=#RechargeAccount#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

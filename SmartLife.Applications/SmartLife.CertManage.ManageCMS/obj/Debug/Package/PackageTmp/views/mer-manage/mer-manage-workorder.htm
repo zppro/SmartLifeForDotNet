@@ -1,0 +1,523 @@
+﻿<div id="search-sample-B230103" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B230103" method="post">
+    <table width="100%">
+        <tr>
+            <td id="CurrentMerchant-cc" style="text-align: left; width: 200px;">
+                <div id="CurrentMerchant-c" style="display: inline-block;">
+                    <input id="CurrentMerchant" /></div>
+                <input id="CheckInTime" name="CheckInTime" class="Wdate" onfocus="WdatePicker()"
+                    onchange="datetiemchange()" style="width: 90px;" />
+            </td>
+            <td style="text-align: left">
+                工单状态:
+                <input id="workOrderDoStatus" class="easyui-validatebox" />
+            </td>
+            <td style="text-align: left">
+                关键字：<input name="KeyWord" id="KeyWord" class="easyui-validatebox" style="width: 90px;" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                    清空</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<table id="dg-B230103">
+</table>
+<div id="dlg-BizButtons-B230103" class="easyui-dialog" style="width: 280px; height: 340px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-BizButtons-B230103">
+    <div class="ftitle">
+    </div>
+    <div class="fitem">
+        <label>
+            处 　　理:
+        </label>
+    </div>
+    <div class="fitem">
+        　<a href="javascript:void(0)" class="easyui-linkbutton overButton" iconcls="icon-tip" onclick="overWorkOrder(this)">一　　　健　　　完　　　成</a>
+    </div>
+    <div class="fitem">
+        <label>
+            服 　　务:
+        </label>
+    </div>
+    <div class="fitem">
+        　
+        <a href="javascript:void(0)" class="easyui-linkbutton bizButton bizArrive" btnTag="Arrive" btnName="到达"  iconcls="icon-next" onclick="responseWorkOrderByButtonTag(this)">到达</a>
+        　　　
+        <a href="javascript:void(0)" class="easyui-linkbutton bizButton bizLeave" btnTag="Leave" btnName="离开" iconcls="icon-back" onclick="responseWorkOrderByButtonTag(this)">离开</a>
+    </div>
+    <div class="fitem">
+        <label>
+            评 　　价:
+        </label>
+    </div>
+    <div class="fitem">
+        　
+        <a href="javascript:void(0)" class="easyui-linkbutton bizButton bizFeedback" btnTag="Feedback" btnName="满意" btnValue="00001" iconcls="icon-ok" onclick="responseWorkOrderByButtonTag(this)">满意</a>
+        　　　
+        <a href="javascript:void(0)" class="easyui-linkbutton bizButton bizFeedback" btnTag="Feedback" btnName="不满意" btnValue="00005" iconcls="icon-undo" onclick="responseWorkOrderByButtonTag(this)">不满意</a>
+    </div>
+</div>
+<div id="btn-BizButtons-B230103">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="closeBtnDlg()">关闭</a>
+</div>
+
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+
+    $(function () {
+        loadfiles([
+            { type: "css", url: "../../css/mer/restore-datagrid-default.css" }
+            ], function () {
+
+                //加载商家
+                $('#CurrentMerchant').combobox({
+                    width: 100,
+                    panelWidth: 200,
+                    data: top.gUserInfo.MappingMerchants,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onSelect: function (record) {
+                        page_load();
+                    }
+                });
+                if (top.gUserInfo.MappingMerchants.length > 0) {
+                    $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+
+                    if (top.gUserInfo.MappingMerchants.length == 1) {
+                        $('#CurrentMerchant-c').hide();
+                        $('#CurrentMerchant-cc').width(190);
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何商家');
+                    $('#toolbar-Schedule').hide();
+                }
+
+                setToday(); 
+                page_load();
+            }); 
+    });
+
+    function page_load() {
+        var checkInTime = toJsonDate(Date.parse($('#CheckInTime').val()));
+        validateUI();
+        var param = { CheckInTime: checkInTime, fuzzyFields: [], workOrderDoStatus: '1,2,3,4,5' };
+
+
+        
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            headers: { ApplicationId: gApplicationId, StationId: $('#CurrentMerchant').combobox('getValue') },
+            uiMode: 'list',
+            entityName: '工单处理',
+            baseModelUrl: baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId, -36);
+        
+        datagridSet(param);
+        
+        $('#workOrderDoStatus').combobox({
+            width: 90,
+            panelHeight: 105,
+            multiple: true,
+            data: [{ ItemId: 1, ItemName: "未响应" },
+                   { ItemId: 2, ItemName: "已响应" },
+                   { ItemId: 3, ItemName: "服务中" },
+                   { ItemId: 4, ItemName: "服务结束" },
+                   { ItemId: 5, ItemName: "回访结束"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+
+
+    function datagridSet(param) {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            //            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + '/GetWorkOrderInfoAll',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: param,
+            headers: models[currentMenuCode].headers,
+            onLoadSuccess: function (data) {
+                $('.iconPG').unbind('click').bind('click', function () {
+                    var workOrderId = $(this).attr('WorkOrderId');
+                    var onclick = $(this).attr('click_operate');
+                    var stationId = $('#CurrentMerchant').combobox('getValue');
+                    var serveStationName = $('#CurrentMerchant').combobox('getText');
+                    if (onclick == 'responseWorkOrder') {
+                        responseWorkOrder(workOrderId, stationId, serveStationName);
+                    }
+                    else if (onclick == 'getResponseWorkOrder') {
+                        getResponseWorkOrder(workOrderId, stationId, serveStationName);
+                    }
+                    else if (onclick == 'dispatchServeMan') {
+                        dispatchServeMan(workOrderId, stationId);
+                    }
+                    else if (onclick == 'superviseServeMan') {
+                        superviseServeMan(workOrderId, stationId);
+                    }
+                    else if (onclick == 'getServeWorkOrderInfo') {
+                        getServeWorkOrderInfo(workOrderId, stationId);
+                    }
+                    else if (onclick == 'inputWorkOrder') {
+                        var serveManArriveTime = $(this).attr('ServeManArriveTime');
+                        var serveManLeaveTime = $(this).attr('ServeManLeaveTime');
+                        var feedbackToOldMan = $(this).attr('FeedbackToOldMan');
+                        var feedbackToServiceStation = $(this).attr('FeedbackToServiceStation');
+
+                        if (!feedbackToServiceStation) {
+                            DispatchManResponseWorkOrder(workOrderId, serveManArriveTime, serveManLeaveTime, feedbackToOldMan);
+                        }
+                        else {
+                            inputWorkOrder(workOrderId, stationId);
+                        }
+                    }
+                    else if (onclick == 'DispatchManResponseWorkOrder') {
+                        var serveManArriveTime = $(this).attr('ServeManArriveTime');
+                        var serveManLeaveTime = $(this).attr('ServeManLeaveTime');
+                        var feedbackToOldMan = $(this).attr('FeedbackToOldMan');
+                        DispatchManResponseWorkOrder(workOrderId, serveManArriveTime, serveManLeaveTime, feedbackToOldMan);
+                    }
+                    else {
+                        getWorkOrderInfo(workOrderId, stationId);
+                    }
+
+                });
+            },
+            columns: [[
+                { field: 'WorkOrderId', title: '工单编号', width: 100, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'CL', title: '处理', width: 110, align: 'center', formatter: easyuigrid_linkFormatter, fn: workOrderCL },
+                { field: 'WorkOrderNo', title: '工单号', width: 180, align: 'center' },
+                { field: 'ZT', title: '工单状态', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: workOrderZT },
+                { field: 'OldManName', title: '老人姓名', width: 80, align: 'center' },
+                { field: 'Mobile', title: '电话', width: 90 },
+                { field: 'Address', title: '地址', width: 150, align: 'center' },
+                { field: 'WorkOrderContent', title: '工作内容', width: 150, align: 'center' },
+            //                { field: 'ServeManName', title: '服务人员', width: 80, align: 'center' },
+                {field: 'CheckInTime', title: '呼入时间', width: 130, align: 'center' },
+                { field: 'ServiceTimeRequired', title: '要求服务时间', width: 130, align: 'center' },
+                { field: 'ServeItemAName', title: '服务大类', width: 70, align: 'center' },
+                { field: 'ServeItemBName', title: '服务小类', width: 90, align: 'center' },
+                { field: 'ServeModeName', title: '服务方式', width: 70, align: 'center' },
+                { field: 'ServeTypeName', title: '服务类别', width: 70, align: 'center' },
+                { field: 'ServeFee', title: '服务费用', width: 50, align: 'center' },
+                { field: 'ServeFeeByGov', title: '政府承担', width: 50, align: 'center' },
+                { field: 'ServeFeeBySelf', title: '自费', width: 50, align: 'center' },
+                { field: 'FeedbackToServiceStationName', title: '满意度', width: 50, align: 'center' }
+            //                { field: 'Tel', title: '工作状态', width: 100 },
+            //                { field: 'Mobile', title: '手机', width: 100 },
+            //                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+            //                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+    function workOrderCL(row) {
+        return setWorkOrder(row, "CL");
+    }
+
+    function workOrderZT(row) {
+        return setWorkOrder(row, "ZT");
+    }
+    function setWorkOrder(row, status) {
+        var htm_ZT = '';
+        var htm_CL = '';
+//                alert(row.InputtedTimeByServiceStation);
+        if (row.DoStatus == 0 && row.ReceiveStatus== 0 && IsNull(row.ServeStationId, '') == '') {
+            htm_ZT = '<label style=" color:#FF6347;">未响应</label>';
+            htm_CL = '<a class="iconPG" WorkOrderId="' + row.WorkOrderId + '" click_operate="responseWorkOrder" >接单</a>';
+        }
+        else if (row.DoStatus == 0 && row.ReceiveStatus == 1) {
+            htm_ZT = '<label style="color:#63B8FF;">已申请</label>';
+            htm_CL = '<a class="iconPG" WorkOrderId ="' + row.WorkOrderId + '"  click_operate="getResponseWorkOrder" >查看</a>';
+        }
+        else if (isTrue(row.DoStatus) && row.ReceiveStatus == 2) {
+            htm_ZT = '<label style="color:#DA70D6;">接单失败</label>';
+            htm_CL = '<a class="iconPG" WorkOrderId ="' + row.WorkOrderId + '"  click_operate="getResponseWorkOrder" >查看</a>';
+        }
+        else if (isTrue(row.DoStatus) && IsNull(row.ServeStationId, '') != '' && IsNull(row.ServeManName, '') == '') {
+            htm_ZT = '<label style="color:#63B8FF;">接单成功</label>';
+            htm_CL = '<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" ServeManArriveTime ="' + row.ServeManArriveTime + '" ServeManLeaveTime ="' + row.ServeManLeaveTime + '" FeedbackToOldMan ="' + row.FeedbackToOldMan + '" click_operate="DispatchManResponseWorkOrder">手工处理</a>&nbsp;|&nbsp;<a class="iconPG" WorkOrderId ="' + row.WorkOrderId + '"  click_operate="dispatchServeMan" >派单</a>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManArriveTime,'') == '') {
+            htm_ZT = '<label style=" color:#FFCC00;">服务未开始</label>';
+            //            htm_CL = '<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" click_operate="superviseServeMan">督办</a>';
+            htm_CL = '<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" ServeManArriveTime ="' + row.ServeManArriveTime + '" ServeManLeaveTime ="' + row.ServeManLeaveTime + '" FeedbackToOldMan ="' + row.FeedbackToOldMan + '" click_operate="DispatchManResponseWorkOrder">手工处理</a>&nbsp;|&nbsp;<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" click_operate="getServeWorkOrderInfo">查看</a>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManArriveTime,'') != '' && IsNull(row.ServeManLeaveTime,'') == '') {
+            htm_ZT = '<label style=" color:#2E8B57;">服务已开始</label>';
+            htm_CL = '<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" ServeManArriveTime ="' + row.ServeManArriveTime + '" ServeManLeaveTime ="' + row.ServeManLeaveTime + '" FeedbackToOldMan ="' + row.FeedbackToOldMan + '" click_operate="DispatchManResponseWorkOrder">手工处理</a>&nbsp;|<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" click_operate="getServeWorkOrderInfo">查看</a>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManLeaveTime, '') != '' && IsNull(row.InputtedTimeByServiceStation, '') == '') {
+            htm_ZT = '<label style=" color:#0033FF;">服务结束</label>';
+            htm_CL = '<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '" ServeManArriveTime ="' + row.ServeManArriveTime + '" ServeManLeaveTime ="' + row.ServeManLeaveTime + '" FeedbackToOldMan ="' + row.FeedbackToOldMan + '" click_operate="DispatchManResponseWorkOrder">手工处理</a>&nbsp;|<a  class="iconPG" WorkOrderId ="' + row.WorkOrderId + '"ServeManArriveTime ="' + row.ServeManArriveTime + '" ServeManLeaveTime ="' + row.ServeManLeaveTime + '" FeedbackToOldMan ="' + row.FeedbackToOldMan + '"  FeedbackToServiceStation ="' + row.FeedbackToServiceStation + '" click_operate="inputWorkOrder">结单</a>';
+        }
+        else if (isTrue(row.DoStatus) && IsNull(row.InputtedTimeByServiceStation, '') != '') {
+            htm_ZT = '完成工单';
+            htm_CL = '<a  class="iconPG"  WorkOrderId ="' + row.WorkOrderId + '" click_operate="getWorkOrderInfo">查看</a>';
+        }
+        else if (row.DoStatus == 4 ) {
+            htm_ZT = '回访完成';
+            htm_CL = '<a  class="iconPG"  WorkOrderId ="' + row.WorkOrderId + '" click_operate="getWorkOrderInfo">查看</a>';
+        }
+        if (status == "ZT") {
+            return htm_ZT;
+        }
+        else {
+            return htm_CL;
+        }
+    }
+    function isTrue(doStatus) {
+        if (doStatus == 1 || doStatus == 2 || doStatus == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    function responseWorkOrder(workOrderId, stationId, serveStationName) {
+        if (workOrderId) {
+            openDialog('response-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-response-workorder-form.htm', function (callback, dialogData) {
+                postTo(models[currentMenuCode].baseModelUrl + '/ResponseWorkOrder', dialogData, function (ret) {
+                    if (ret.Success) {
+                        alert("响应成功");
+                    }
+                }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId});
+                callback();
+                page_load();
+            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId , ServeStationName: serveStationName },
+                title: '响应工单', width: 780, height: 480, padding: 5, mergeDefault: true
+            });
+        }
+    }
+
+    function getResponseWorkOrder(workOrderId, stationId, serveStationName) {
+        if (workOrderId) {
+            openDialog('response-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-response-workorder-form.htm', function (callback, dialogData) {
+
+            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId, ServeStationName: serveStationName }
+            , title: '查看工单', width: 780, height: 480, padding: 5, buttons: [{
+                text: '关闭',
+                iconCls: 'icon-cancel',
+                handler: function () { top.closeDialogFrom(); }
+            }]
+            });
+        }
+    }
+    function dispatchServeMan(workOrderId, stationId) {
+        //        alert($.toJSON($('#' + models[currentMenuCode].gridId).datagrid('getSelected')));
+        if (workOrderId) {
+            openDialog('dispatch-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-dispatch-workorder-form.htm', function (callback, dialogData) {
+//                                alert($.toJSON(dialogData));
+                postTo(models[currentMenuCode].baseModelUrl + '/DispatchServeMan', dialogData, function (ret) {
+                    if (ret.Success) {
+                        alert("派单成功");
+                    }
+                }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+                callback();
+                page_load();
+            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+                title: '派遣人员', width: 820, height: 480, padding: 5, mergeDefault: true
+            });
+        }
+    }
+//    function superviseServeMan(workOrderId, stationId) {
+//        //        alert($.toJSON($('#' + models[currentMenuCode].gridId).datagrid('getSelected')));
+//        if (workOrderId) {
+//            openDialog('supervise-workorder-form', 'views/mer-manage/mer-manage-supervise-workorder-form.htm', function (callback, dialogData) {
+
+//                callback();
+//                page_load();
+//            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+//                title: '督促服务人员', width: 820, height: 480, padding: 5, mergeDefault: true
+//            });
+//        }
+//    }
+    function getServeWorkOrderInfo(workOrderId, stationId) {
+        //        alert($.toJSON($('#' + models[currentMenuCode].gridId).datagrid('getSelected')));
+        if (workOrderId) {
+            openDialog('supervise-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-supervise-workorder-form.htm', null, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+                title: '查看服务人员', width: 820, height: 510, padding: 5, buttons: [{
+                    text: '关闭',
+                    iconCls: 'icon-cancel',
+                    handler: function () { top.closeDialogFrom(); }
+                }]
+            });
+        }
+    }
+    function inputWorkOrder(workOrderId, stationId) {
+        //        alert($.toJSON($('#' + models[currentMenuCode].gridId).datagrid('getSelected')));
+        if (workOrderId) {
+            openDialog('input-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-input-workorder-form.htm', function (callback, dialogData) {
+//                alert($.toJSON(dialogData));
+                                postTo(models[currentMenuCode].baseModelUrl + '/InputWorkOrder', dialogData, function (ret) {
+                                    if (ret.Success) {
+                                        alert("结单成功");
+                                    }
+                                }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+                callback();
+                page_load();
+            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+                title: '确认工单', width: 820, height: 510, padding: 5, mergeDefault: true
+            });
+        }
+    }
+
+    function overWorkOrder(overBtn) {
+        var workOrderId = $(overBtn).attr("WorkOrderId");
+        var stationId = $('#CurrentMerchant').combobox('getValue');
+        if (workOrderId) {
+            openDialog('over-workorder-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-over-workorder.htm', function (callback, dialogData) {
+                $('#dlg-BizButtons-B230103').dialog("close");
+                postTo(models[currentMenuCode].baseModelUrl + '/InputWorkOrder', $.toJSON(dialogData), function (ret) {
+                    if (ret.Success) {
+                        alert("处理成功！");
+                    }
+                }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+
+                page_load();
+                callback();
+            }, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+                title: '工单-一键完成', width: 820, height: 510, padding: 5, mergeDefault: true
+            });
+        }
+    }
+
+    //派单人员手工响应工单
+    function DispatchManResponseWorkOrder(workOrderId, serveManArriveTime, serveManLeaveTime, feedbackToOldMan) {
+        if (workOrderId) {
+            $('#dlg-BizButtons-B230103').dialog(_.extend({
+                onClose: function () {
+                },
+                //onBeforeOpen: function () {
+                //    $("#dlg-BizButtons-B230103 .bizButton").attr("WorkOrderId", workOrderId);
+                //},
+                onOpen: function () {
+                    $("#dlg-BizButtons-B230103 .overButton").attr("WorkOrderId", workOrderId);
+
+                    $("#dlg-BizButtons-B230103 .bizButton").attr("WorkOrderId", workOrderId).linkbutton('disable');
+                    if (!serveManArriveTime) {
+                        $("#dlg-BizButtons-B230103 .bizArrive").linkbutton('enable');
+                    }
+                    if (serveManArriveTime && !serveManLeaveTime) {
+                        $("#dlg-BizButtons-B230103 .bizLeave").linkbutton('enable');
+                    }
+                    if (serveManArriveTime && !feedbackToOldMan) {
+                        $("#dlg-BizButtons-B230103 .bizFeedback").linkbutton('enable');
+                    }
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '编辑-服务处理');
+        }
+    }
+    function responseWorkOrderByButtonTag(ob_buttonTag) {
+        var workOrderId = $(ob_buttonTag).attr("WorkOrderId");
+        var strButtonName = $(ob_buttonTag).attr("btnName");
+
+        if (workOrderId) {
+            alertConfirm('确定' + strButtonName + '？', function (ret) {
+                if (ret == true) {
+                    var buttonTag = $(ob_buttonTag).attr("btnTag");
+                    var strButtonValue = $(ob_buttonTag).attr("btnValue");
+
+                    var formData = { "WorkOrderId": workOrderId, "ButtonTag": buttonTag };
+                    if (strButtonValue) {
+                        formData = _.extend(formData, { "FeedbackToOldMan": strButtonValue });
+                    }
+
+                    postTo(baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service/ResponseWorkOrderByDispatchMan', $.toJSON(formData), function (ret) {
+                        if (ret.Success && ret.ErrorCode == 0) {
+                            closeBtnDlg();
+                            $('#dg-B230103').datagrid("reload");
+                        }
+                    }, null, { ApplicationId: gApplicationId });
+                }
+            });
+        }
+        else {
+            alertInfo("工单服务不存在！");
+        }
+    }
+    //关闭手工处理窗口
+    function closeBtnDlg() {
+        $('#dlg-BizButtons-B230103').dialog("close");
+    }
+
+    function getWorkOrderInfo(workOrderId, stationId) {
+        //        alert($.toJSON($('#' + models[currentMenuCode].gridId).datagrid('getSelected')));
+        if (workOrderId) {
+            openDialog('get-workorderinfo-form', dialogUrlPrefix + 'views/mer-manage/mer-manage-get-workorderinfo-form.htm', null, { dialogData: { WorkOrderId: workOrderId, StationId: stationId },
+                title: '查看工单', width: 820, height: 510, padding: 5, buttons: [{
+                    text: '关闭',
+                    iconCls: 'icon-cancel',
+                    handler: function () { top.closeDialogFrom(); }
+                }]
+            });
+        }
+    }
+    function execEx() {
+        var selected = $('#workOrderDoStatus').combobox('getValues').toString();
+        var checkInTime = toJsonDate(Date.parse($('#CheckInTime').val()));
+        //        alert(selected.toString());
+        var param;
+        if ($('#KeyWord').val() != '') {
+            param = { CheckInTime: checkInTime, fuzzyFields: [], workOrderDoStatus: selected == '' ? '1,2,3,4,5' : selected };
+            param.fuzzyFields.push({ key: 'OldManName', value: $('#KeyWord').val() });
+            param.fuzzyFields.push({ key: 'Tel', value: $('#KeyWord').val() });
+            param.fuzzyFields.push({ key: 'Mobile', value: $('#KeyWord').val() });
+            param.fuzzyFields.push({ key: 'WorkOrderContent', value: $('#KeyWord').val() });
+            param.fuzzyFields.push({ key: 'ServeManName', value: $('#KeyWord').val() });
+            param.fuzzyFields.push({ key: 'WorkOrderNo', value: $('#KeyWord').val() });
+        }
+        else {
+            param = { CheckInTime: checkInTime, workOrderDoStatus: selected == '' ? '1,2,3,4,5' : selected };
+        }
+        datagridSet(param);
+    }
+    function datetiemchange() {
+        execEx();
+    }
+    function resetexec() {
+        $('#workOrderDoStatus').combobox('clear');
+        $('#KeyWord').val(null);
+        setToday();
+    }
+    function setToday() {
+        $('#CheckInTime').val(Date.today().toString('yyyy-MM-dd'));
+    }
+</script>

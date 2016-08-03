@@ -1,0 +1,122 @@
+﻿<div id="toolbar-B110108">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+            plain="true" onclick="edit()">编辑</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-remove" plain="true" onclick="nullify()"> 作废</a><a href="javascript:void(0)"
+                    class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                    删除</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-no" plain="true"
+                        onclick="stop()"> 停用</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"
+                            plain="true" onclick="restart()"> 重新启用</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                iconcls="icon-tip" plain="true" onclick="SetUserGroup()"> 设置所属组</a>
+</div>
+<table id="dg-B110108">
+</table>
+<div id="dlg-B110108" class="easyui-dialog" style="width: 360px; height: 210px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B110108">
+    <div class="ftitle">
+    </div>
+    <form id="fm-B110108" method="post" novalidate>
+    <input type="hidden" name="UserId" id="userId-B110108" />
+    <div class="fitem">
+        <label>
+            用户编码:</label>
+        <input name="UserCode" class="easyui-validatebox" required="true" missingmessage="用户编码不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            用户名称:</label>
+        <input name="UserName" class="easyui-validatebox" required="true" missingmessage="用户名称不能为空">
+    </div>
+       <div class="fitem">
+        <label>
+            性别:</label>
+        <input id="Gender-M" type="radio" name="Gender" value="M"/><label for="Gender-M">男</label>
+        <input id="Gender-F" type="radio" name="Gender" value="F"/><label for="Gender-F">女</label>
+    </div>
+    </form>
+</div>
+<div id="btn-B110108">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<script type="text/javascript">
+    var groupIds;
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'userId-' + currentMenuCode,
+            pk: 'UserId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                //alert($.toJSON(formData));
+                formData["UserType"] = "00099|";
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            uiMode: 'list',
+            entityName: '用户账户',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/UserService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), SystemFlag: 0, Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId);
+
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            //toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'UserCode',
+                order: 'asc',
+                instance: {
+                    AreaId: models[currentMenuCode].defaultModel.AreaId,
+                    Status: models[currentMenuCode].defaultModel.Status,
+                    UserType: "00099|",
+                    SystemFlag: models[currentMenuCode].defaultModel.SystemFlag
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+        { field: 'UserId', title: '用户编号', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'UserCode', title: '用户编码', width: 100, sortable: true },
+        { field: 'UserName', title: '用户名称', width: 200 },
+        { field: 'StopFlag', title: '是否停用', width: 200, formatter: easyuigrid_boolFormatter },
+        { field: 'CheckInTime', title: '录入时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" }
+    ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+    });
+
+
+    function SetUserGroup() {
+        var row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        if (row) {
+            openDialog('set-user-area-sys-admin', 'views/dialogs/set-user-group.htm', function (callback, dialogData) {
+                postTo(models[currentMenuCode].baseModelUrl + 'SetGroup/' + row.UserId, $.toJSON({ UserId: row.UserId, UserType: "00099|" + dialogData }), function () {
+                    alertInfo('设置所属组成功！');
+                });
+                callback();
+            }, { dialogData: row, title: '系统管理员-设置所属组 (' + row.UserName + ')', width: 475, height: 500, padding: 5, mergeDefault: true });
+        }
+        else {
+            alertInfo('请选中要设置所属组的用户！');
+        }
+    }
+    
+
+
+</script>

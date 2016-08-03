@@ -1,0 +1,179 @@
+﻿<div id="service-process-archive-history"></div>
+<div class="service-process-title">
+    服务过程记录</div>
+<div id="service-process-content" style="margin-left:15px;">
+</div>
+<div id="do-process-box-c1">
+    <div id="famliycalls-time" style="height:24px; line-height:24px;"></div>
+    <div style="float:left; padding-top:5px;">处理过程录入:&nbsp;&nbsp;</div>
+    <input type="text" id="do-process-box" style="float: left" />
+    <a id="btnSendTrackLog" class="button-red-sendlog" style="float: left">发送</a>
+</div>
+<div id="do-process-box-c2">
+    <div class="servcietype">
+        <select id="ServcieType">
+            <option >紧急救助</option>
+            <option >亲人通话</option>
+            <option >娱乐资讯</option>
+            <option >生活服务</option>
+        </select>
+    </div>
+    <div class="servcieaidprocess" >
+        <a id="btnHoldRetreive" class="button-red-0 shield" >呼叫保持</a>
+        <a id="btnCallsTransfer" class="button-red-0 shield"  >转接班长</a>
+        <a id="btnSaveAndClose" class="button-red-0" >保存关闭</a> 
+        <a id="btnFinishCallService" class="button-red-0">处理完成</a> 
+    </div>
+</div> 
+
+<div id="calltransfer-block"></div>
+<div id="service-history-block"></div>
+
+<script type="text/javascript">
+    $(function () {
+        fetchServiceTrackLog('service-process-content');
+        setInterval(function () {
+            fetchServiceTrackLog('service-process-content');
+        }, 3000);
+        $('#do-process-box').unbind('keypress').bind('keypress', function (event) {
+            if (event.which == 13) {
+                $('#btnSendTrackLog').trigger('click');
+            }
+        });
+        fetchServiceArchiveHistory('service-process-archive-history');
+        $('#btnSendTrackLog').unbind('click').bind('click', function () {
+            //发送处理日志
+            if (pageData) {
+                var $txt = $('#do-process-box');
+                if ($.trim($txt.val()) == "") {
+                    alertError('请输入处理日志');
+                    $txt.focus();
+                    return;
+                }
+                if (recordLog(pageData.CallServiceId, 1, $txt.val())) {
+                    $txt.val("");
+                    fetchServiceTrackLog('service-process-content');
+                }
+            }
+        });
+        //服务类型 
+        editServiceTypeSelect(window.location.href.toString(), serviceTypeData, $("#ServcieType"));
+        $("#ServcieType").unbind('change').bind('change', function () {
+            alertConfirm('确定要切换成当前所选择的服务吗？', function (ret) {
+                if (ret == true) {
+                    switchAidServiceType(window.location.href.toString(), pageData, $("#ServcieType"));
+                }
+            });
+        });
+        $('#btnSaveAndClose').unbind('click').bind('click', function () {
+            if (pageData) {
+                //saveCallService(pageData.CallServiceId, "{}");
+                window.external.CloseWin(false);
+            }
+        });
+        $('#btnFinishCallService').unbind('click').bind('click', function () {
+            //完成
+            if (pageData) {
+                if (pageData.ServiceArchive) {
+                    alertConfirm('确定完成此次服务？', function (ret) {
+                        if (ret == true) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成');
+                            if (success) {
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON({ DoStatus: 3, DoResults: '处理完成' }), function (result) {
+                                    //调用CS关闭窗口
+                                    window.external.CloseWin(true);
+                                }, { async: false });
+                            }
+                        }
+                    });
+                } 
+                else {
+                    openDialog2('set-callservice-archive', 'callservice-archive.htm', function (callback, dialogData) {
+                        if (dialogData) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成：此服务属于 ' + dialogData.ArchiveName);
+                            if (success) {
+                                var formData = { DoStatus: 3, DoResults: '处理完成', ServiceArchive: dialogData.ArchiveId, CallBackFlag: dialogData.CallBackFlag };
+                                if (dialogData.EvaluateToOldMan) {
+                                    formData = _.extend(formData, { EvaluateToOldMan: dialogData.EvaluateToOldMan })
+                                }
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON(formData), function (result) {
+                                    //调用CS关闭窗口
+                                    if (window.execMode == "ForSeat") {
+                                        window.external.CloseWin(true);
+                                    }
+                                });
+                            }
+                            else {
+                                callback();
+                            }
+                        }
+                    }, { dialogData: pageData, title: '设置参数', width: 350, height: 450, padding: 5, mergeDefault: true });
+                }
+            }
+        });
+
+        //呼叫转移
+        $("#btnCallsTransfer").unbind('click').bind('click', function () {
+            getHtml(baseUrl + '/views/dialogs/set-calls-transfer.htm', function (str) {
+
+                $("#calltransfer-block").html(str);
+                $.parser.parse('#fm-calls-transfer,#btn-calls-transfer');
+                $("#dlg-calls-transfer").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () {
+                        onLoadCallsTransfer(pageData);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '转接-对话框');
+            });
+        });
+
+        //新版本屏蔽呼叫保持和呼叫转移功能
+        if (top.execMode == "ForSeat") {
+            $(".shield").hide();
+        }
+        //呼叫保持
+        $('#btnHoldRetreive').unbind('click').bind('click', function () {
+            if (top.execMode == "CS" || top.execMode == "ForSeat") {
+                toggleHoldRetreive();
+            }
+        });
+        $('#btnSetBusyFree').unbind('click').bind('click', function () {
+            if (top.execMode == "CS") {
+                toggleDialStatus();
+            }
+        });
+
+        function toggleHoldRetreive() {
+            if ($('#btnHoldRetreive').text() == "呼叫保持") {
+                //正常->呼叫保持
+                window.external.SetCallHold();
+            }
+            else if ($('#btnHoldRetreive').text() == "恢复") {
+                //呼叫保持->正常
+                window.external.SetCallRetreive();
+            }
+        }
+
+        //如果是回访，则隐藏完成服务处理按钮
+        if (pageData && pageData.CallBackFlag == 1) {
+            $('#btnFinishCallService').hide();
+        }
+        //亲人通话，显示出当前月份服务通话服务（分钟）统计
+        if (pageData && pageData.ServiceQueueNo) {
+            if (right(pageData.ServiceQueueNo, 1) == "1") {
+                getTo(baseCMSInvokeUrl + '/Oca/CallService/GetOldManFamliyCallsTime/' + pageData.OldManId, null, function (result) {
+                    if (result.Success) {
+                        $("#famliycalls-time").html('亲人通话已使用: &nbsp;' + result.ret + '&nbsp;(分)')
+                    }
+                });
+            }
+        }
+
+    });
+
+    
+</script>

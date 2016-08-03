@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Models", "SmartLife.Applications\SmartLife.Share.Models\SmartLife.Share.Models.csproj", "{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.BaseData.ManageServices", "SmartLife.Applications\SmartLife.BaseData.ManageServices\SmartLife.BaseData.ManageServices.csproj", "{E7A69DF0-17BE-46A9-B413-677734FED3D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.BaseData.ManageCMS", "SmartLife.Applications\SmartLife.BaseData.ManageCMS\SmartLife.BaseData.ManageCMS.csproj", "{266647A4-6EC4-47EE-A903-3470C435E421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Behaviors", "SmartLife.Applications\SmartLife.Share.Behaviors\SmartLife.Share.Behaviors.csproj", "{2774C50E-4B9A-4140-9BE9-50F5110BF87E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccProjectUniqueName0 = SmartLife.Applications\\SmartLife.Share.Models\\SmartLife.Share.Models.csproj
+		SccProjectName0 = SmartLife.Applications/SmartLife.Share.Models
+		SccLocalPath0 = SmartLife.Applications\\SmartLife.Share.Models
+		SccProjectUniqueName1 = SmartLife.Applications\\SmartLife.BaseData.ManageServices\\SmartLife.BaseData.ManageServices.csproj
+		SccProjectName1 = SmartLife.Applications/SmartLife.BaseData.ManageServices
+		SccLocalPath1 = SmartLife.Applications\\SmartLife.BaseData.ManageServices
+		SccProjectUniqueName2 = SmartLife.Applications\\SmartLife.BaseData.ManageCMS\\SmartLife.BaseData.ManageCMS.csproj
+		SccProjectName2 = SmartLife.Applications/SmartLife.BaseData.ManageCMS
+		SccLocalPath2 = SmartLife.Applications\\SmartLife.BaseData.ManageCMS
+		SccProjectUniqueName3 = SmartLife.Applications\\SmartLife.Share.Behaviors\\SmartLife.Share.Behaviors.csproj
+		SccProjectName3 = SmartLife.Applications/SmartLife.Share.Behaviors
+		SccLocalPath3 = SmartLife.Applications\\SmartLife.Share.Behaviors
+		SccLocalPath4 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A69DF0-17BE-46A9-B413-677734FED3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A69DF0-17BE-46A9-B413-677734FED3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A69DF0-17BE-46A9-B413-677734FED3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A69DF0-17BE-46A9-B413-677734FED3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266647A4-6EC4-47EE-A903-3470C435E421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266647A4-6EC4-47EE-A903-3470C435E421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266647A4-6EC4-47EE-A903-3470C435E421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266647A4-6EC4-47EE-A903-3470C435E421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

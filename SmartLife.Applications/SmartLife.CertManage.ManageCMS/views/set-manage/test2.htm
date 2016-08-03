@@ -1,0 +1,26 @@
+﻿<div id="div_content">
+</div>
+ <script type="text/javascript">
+     var url = baseCMSInvokeUrl + '/Pub/SubsetHelperService/';
+
+     function dialogOpen(dialogId, dialogData) {
+         postTo(url + "GetHtml_Sets", $.toJSON({ "SolutionId": "S1" }), function (result) {
+             $('#div_content').html(result);
+
+             $('.easyui-tabs').tabs({ border: false
+               , onSelect: function (title, index) {
+               }
+             });
+         }, { async: false });
+     }
+
+     function dialogBeforeSubmit() {
+         return true;
+     }
+
+
+     function dialogClose(dialogId) {
+         return "";
+
+     }
+</script>

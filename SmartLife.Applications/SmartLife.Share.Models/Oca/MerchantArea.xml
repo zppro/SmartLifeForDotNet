@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="MerchantArea" type="SmartLife.Share.Models.Oca.MerchantArea, SmartLife.Share.Models" />
+        <typeAlias alias="MerchantAreaPK" type="SmartLife.Share.Models.Oca.MerchantAreaPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="MerchantArea_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_MerchantArea(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeArea" >ServeArea</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeArea" >#ServeArea#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="MerchantArea_Update" parameterClass="StringObjectDictionary" >
+            update Oca_MerchantArea
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeArea" >ServeArea=#ServeArea#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="MerchantArea_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_MerchantArea
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeArea" >ServeArea=#ServeArea#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="MerchantArea_Load" parameterClass="MerchantAreaPK" resultClass="MerchantArea" >
+            select Id,CheckInTime,DataSource,Status,StationId,ServeArea from Oca_MerchantArea
+            where Id=#Id#
+        </select>
+        <select id="MerchantArea_List" parameterClass="StringObjectDictionary" resultClass="MerchantArea" >
+            select Id,CheckInTime,DataSource,Status,StationId,ServeArea from Oca_MerchantArea
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeArea" >ServeArea=#ServeArea#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="MerchantArea_ListByPage" parameterClass="StringObjectDictionary" resultClass="MerchantArea" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,DataSource,Status,StationId,ServeArea from Oca_MerchantArea
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeArea" >ServeArea=#ServeArea#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

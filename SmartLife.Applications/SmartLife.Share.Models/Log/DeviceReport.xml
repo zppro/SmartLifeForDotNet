@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Log" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="DeviceReport" type="SmartLife.Share.Models.Log.DeviceReport, SmartLife.Share.Models" />
+    <typeAlias alias="DeviceReportPK" type="SmartLife.Share.Models.Log.DeviceReportPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="DeviceReport_Create" parameterClass="StringObjectDictionary" >
+      insert into Log_DeviceReport(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceId" >DeviceId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceStatus" >DeviceStatus</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceId" >#DeviceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceStatus" >#DeviceStatus#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="DeviceReport_Update" parameterClass="StringObjectDictionary" >
+      update Log_DeviceReport
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DeviceStatus" >DeviceStatus=#DeviceStatus#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="DeviceReport_Delete" parameterClass="StringObjectDictionary" >
+      delete Log_DeviceReport
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceStatus" >DeviceStatus=#DeviceStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="DeviceReport_Load" parameterClass="DeviceReportPK" resultClass="DeviceReport" >
+      select Id,CheckInTime,DeviceId,DeviceStatus from Log_DeviceReport
+      where Id=#Id#
+    </select>
+    <select id="DeviceReport_List" parameterClass="StringObjectDictionary" resultClass="DeviceReport" >
+      select Id,CheckInTime,DeviceId,DeviceStatus from Log_DeviceReport
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceStatus" >DeviceStatus=#DeviceStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="DeviceReport_ListByPage" parameterClass="StringObjectDictionary" resultClass="DeviceReport" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,DeviceId,DeviceStatus from Log_DeviceReport
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceId" >DeviceId=#DeviceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DeviceStatus" >DeviceStatus=#DeviceStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

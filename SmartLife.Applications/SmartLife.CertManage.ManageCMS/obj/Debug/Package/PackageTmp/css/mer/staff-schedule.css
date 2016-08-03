@@ -1,0 +1,36 @@
+﻿.main-area{ width:99%; overflow-x:auto;overflow-y:hidden; padding:relative;}
+.root-block{ width:300px;}
+.selectedCell{ background-color:#ffee00 !important;color:Green;}
+.restday{background-color:#FFF0F0;}
+.cantchangeday{background-color:#E2E2E2;}
+.serveInfo{width:270px;height:110px; position:relative; text-align:left; padding:4px; overflow-y:auto; }
+.tmp span{color:Blue;}
+ul.tmp li,ul.formal li{margin:4px auto;}
+.serve-info-item-serveman-gray{ margin:0 2px;color:Gray;cursor:pointer; }
+.serve-info-item-fromto-gray{ margin:0 2px;color:Gray;cursor:pointer; }
+.serve-info-item-serveitem-gray{ margin:0 0 0 2px;color:Gray;cursor:pointer; }
+.serve-info-item-serveduration-gray{ margin:0 0px;color:Gray;cursor:pointer; }
+.serve-info-item-description-gray{ color:Gray;cursor:pointer; } 
+
+.serve-info-item-serveman-green{ margin:0 2px;color:Green;cursor:pointer; }
+.serve-info-item-fromto-green{ margin:0 2px;color:Green;cursor:pointer; }
+.serve-info-item-serveitem-green{ margin:0 0 0 2px;color:Green;cursor:pointer; }
+.serve-info-item-serveduration-green{ margin:0 0px;color:Green;cursor:pointer; }
+.serve-info-item-description-green{ color:Green;cursor:pointer; } 
+
+.serve-info-item-serveman-blue{ margin:0 2px;color:Blue;cursor:pointer; }
+.serve-info-item-fromto-blue{ margin:0 2px;color:Blue;cursor:pointer; }
+.serve-info-item-serveitem-blue{ margin:0 0 0 2px;color:Blue;cursor:pointer; }
+.serve-info-item-serveduration-blue{ margin:0 0px;color:Blue;cursor:pointer; }
+.serve-info-item-description-blue{ color:Blue;cursor:pointer; } 
+
+.addServeInfo{ position:absolute; right:1px; bottom:1px; z-index:201; cursor:pointer;}
+.actionServeInfoItem{ cursor:pointer;} 
+.saveServeInfo{position:absolute; right:1px; top:1px; z-index:201; cursor:pointer; display:none;}
+.createWorkOrder{position:absolute; right:1px; top:20px; z-index:201; cursor:pointer; }
+#OnlyShowGovTurnkey{ vertical-align:middle;}
+/**********easyui datagrid 覆盖样式 **********/
+.datagrid-row{height: 120px;}
+.datagrid-row-selected{background:none;color:Green;}
+.datagrid-row-over{background:none;color:Green;}
+.datagrid-view2 .datagrid-btable .datagrid-cell{ position:relative;height:118px;}

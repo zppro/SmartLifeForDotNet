@@ -1,0 +1,94 @@
+﻿<style type="text/css">
+    .conf-name-mot{width:200px; height:175px;margin:15px 20px 15px 20px; float:left; border:solid 1px #006699;  -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+    .conf-name-mot-head{width:100%;color:White;  text-indent:2px; line-height:30px; height:30px; font-size:12px; background-color:#3C87C0; text-align:center; }
+    .conf-name-mot-body{width:100%; text-align:left; height:125px; font-size:20px; color:white; background-color:Green; }
+    .conf-name-mot-body .bbody {margin-left:10px;padding-top:5px; height:80px;overflow-y: auto;}
+    .conf-name-mot-body .bfoot {margin-left:10px;  height:40px;}
+    .conf-name-mot-body .cbfoot {height:20px; line-height:20px;}
+    .conf-name-mot-foot{width:100%;color:#000; text-indent:5px; line-height:20px; height:20px; font-size:12px; position:relative; }
+    .conf-name-mot-foot a{ position:absolute; right:8px;}
+</style>
+<div id="conference-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+</div>
+<script type="text/javascript">
+    var repeatTime = 5000; //5秒
+    var extcode = getQueryString('extcode');
+    $(function () {
+        autosize('conference-panel', -3);
+
+        if (top.gCallCenter && extcode) {
+            var confName = "conf_" + extcode;
+
+            var conferenceUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_conference";
+            var conferenceMemberUrl = "http://" + top.gCallCenter.IP + ":" + top.gCallCenter.Port + "/atstar/index.php/status-query?op=list_conference_member";
+            //设置循环读取会议室 
+            setTimeout(function () {
+                postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetConferenceInfo", $.toJSON({ ConferenceUrl: conferenceUrl, ConferenceMemberUrl: conferenceMemberUrl, ExtCode: confName }), function (result) {
+                    if (result.Success && result.ret) {
+                        var ret = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+                        if (ret) {
+                            var htm = [];
+                            htm.push("<div style='margin:0 auto; width:90%;'><ul>");
+                            htm.push(_.map(_.filter(ret.data, function (i) {
+                                return i.conf_name.indexOf(confName) > -1;
+                            }), function (o) {
+                                var htmls = [];
+                                htmls.push("<li class='conf-name-mot' id='" + o.conf_name + "' uuid='" + o.uuid + "'>");
+                                htmls.push("<div class='conf-name-mot-head'><span>" + o.conf_name.substr(5, 5) + "</span></div>");
+                                htmls.push("<div class='conf-name-mot-body'>");
+                                htmls.push("<div class='bbody'>");
+                                if (o.member_data) {
+                                    htmls.push(_.map(_.sortBy(o.member_data, function (data) { return Math.max(data.id) }), function (i, key) {
+                                        return "<div class='cbfoot'>成员" + (key + 1).toString() + " : " + i.caller_number + " </div>";
+                                    }).join(""));
+                                }
+                                htmls.push("</div>");
+                                htmls.push("<div class='bfoot'>");
+                                htmls.push("<div class='cbfoot'>成员数量 : " + (o.members ? o.members : 0) + " (个)</div>");
+                                htmls.push("<div class='cbfoot'>通话时长 : " + easyuigrid_TimeSpanFormatter((o.runtimes ? o.runtimes : 0)) + "</div>");
+                                htmls.push("</div>");
+                                htmls.push("<div class='conf-name-mot-foot'><a href='javascript:void(0);' title='关闭会议室' onclick='closeConference(\"" + o.conf_name + "\",\"" + (top.gCallCenter.IP + ":" + top.gCallCenter.Port) + "\")' >x</a></div>");
+                                htmls.push("</li>");
+                                return htmls.join("");
+                            }).join(""));
+
+                            htm.push("</ul></div>");
+                            $("#conference-panel").html(htm.join(""));
+                        }
+                        else {
+                            $("#conference-panel").html("");
+                        }
+                    }
+                    else {
+                        $("#conference-panel").html("");
+                    }
+                });
+
+                setTimeout(arguments.callee, repeatTime);
+            }, 0);
+        }
+
+    });
+
+    function closeConference(confname, ipport) {
+        var params = confname.split('_');
+        alertConfirm('确定关闭会议室？', function (ret) {
+            if (ret == true) {
+                if (params && params.length > 1) {
+                    var pUrl = "http://" + ipport + "/atstar/index.php/status-op?op=ctrlmember&ext_no=" + params[1] + "&memberid=all&confname=" + confname.replace("conf_", "") + "&subop=kick";
+                    postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/GetRemoteData", $.toJSON({ RemoteUrl: pUrl }), function (result) {
+                        if (result.Success && result.ret == "+ok") {
+                            getTo(top.baseCMSInvokeUrl + '/Pub/UserService/' + top.gUserId, null, function (ret) {
+                                if (ret.Success && ret.instance) {
+                                    recordLog(params[2], 1, "[ " + ret.instance.UserName + " ] 关闭会议室");
+                                }
+                            });
+                        }
+                    });
+                    
+                }
+            }
+        });
+
+    }
+</script>

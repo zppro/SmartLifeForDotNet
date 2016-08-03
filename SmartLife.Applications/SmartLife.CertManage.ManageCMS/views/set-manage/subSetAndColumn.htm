@@ -1,0 +1,903 @@
+﻿<table id="cc-B11040605" style="width: 100%; height: 100%;">
+    <tr>
+        <td valign="top" style=" width:42.1%">
+            <div id="toolbar-B11040605"><a behaviorcode="01" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="add_subSet()">新增</a>
+                <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                    plain="true" onclick="edit_subSet()">编辑</a> <a behaviorcode="03" href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">
+                        作废</a>
+            </div>
+            <table id="dg-B11040605">
+            </table>
+            
+        </td>
+        <td style=" height:100%">
+            <div id="toolbar2-B11040605">
+                <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="add_column()">新增</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-add" plain="true" onclick="add_large()">批量新增</a> <a behaviorcode="02"
+                            href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                            onclick="edit_column()">编辑</a>
+                <a behaviorcode="03" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove"
+                    plain="true" onclick="remove_column()">删除</a>
+            </div>
+            <table id="dg2-B11040605">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B11040605" class="easyui-dialog" style="width: 500px; height: 250px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B11040605">
+    <form id="fm-B11040605" method="post" novalidate>
+            <div class="fitem">
+                <label>
+                    子集编号　:</label>
+                <input name="SubSetId" id="subSetId-B11040605" class="easyui-validatebox" required="true"  missingmessage="编号以所属集合编号开头,如‘S10101’"/>
+                <label>
+                    子集名称　:</label>
+                <input name="SubSetName" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem">
+                <label>
+                    集合编号　:</label>
+                <input name="SetId" class="easyui-validatebox" required="true" disabled="disabled"/>
+                <label>
+                    排序序号　:</label>
+                <input name="OrderNo" class="easyui-validatebox" />
+            </div>
+            <div class="fitem">
+                <label>
+                    小　部　件:</label>
+                <input name="WidgetId" id="WidgetId" class="easyui-validatebox"/>
+                <label>
+                    小部件设置:</label>
+                <input name="WidgetOption" class="easyui-validatebox" />
+            </div>
+            <div class="fitem">
+                <label>
+                    描　　　述:</label>
+                <textarea name="Description" style="width: 370px;" maxlength="400"></textarea>
+            </div>
+        </form>
+</div>
+<div id="btn-B11040605">
+    <a href="javascript:void(0)" id="edit_btn" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg2-B11040605" class="easyui-dialog" style="width: 540px; height: 300px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn2-B11040605">
+    <input type="hidden" id="hiddenSubSetId"/>
+    <form id="fm2-B11040605" method="post" novalidate>
+    <input type="hidden" name="TableName" id="TableName"/>
+    <input type="hidden" id="oldColumnNameNew"/>
+            <div class="fitem">
+                <label>
+                    子集编号　:</label>
+                <input name="SubSetId" id="subSetId" class="easyui-validatebox" disabled="disabled"/>
+                <label>
+                    原　列　名:</label>
+                <input name="ColumnName" id="ColumnName" class="easyui-validatebox" required="true"/>
+                <a onclick="justAdd()" href="#" class="easyui-linkbutton"data-options="iconCls:'icon-search'"></a>
+            </div>
+            <div class="fitem">
+                <label>
+                    新　列　名:</label>
+                <input name="ColumnNameNew" id="columnNameNew-B11040605" class="easyui-validatebox" required="true" />
+                <label>
+                    新列中文名:</label>
+                <input name="ColumnCNameNew" class="easyui-validatebox" required="true"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    小部件编号:</label>
+                <input name="WidgetId" id="WidgetId2" class="easyui-validatebox" />
+                <label>
+                    小部件设置:</label>
+                <input name="WidgetOption" class="easyui-validatebox" />
+            </div>
+            <div class="fitem">
+                <label>
+                    排序序号　:</label>
+                <input name="OrderNo" class="easyui-validatebox" />
+                <label>
+                    计算列标志:</label>
+                <input name="ComputeColumnFlag" id="ComputeColumnFlag" class="easyui-validatebox"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    表　达　式:</label>
+                <textarea name="Expression" style="width: 370px;" maxlength="400"></textarea>
+            </div>
+        </form>
+</div>
+<!--选择列-->
+<div id="dlg3-B11040605" class="easyui-dialog" style="width: 1000px; height: 500px;" 
+closed="true" cache="false" buttons=""> 
+    <table id="Table1" style="width: 100%; height: 100%;">
+        <tr>
+        <td style="width: 200px;height:100%" valign="top">
+            <div style="width:96%;height:98%;padding:3px; overflow:auto">
+                <ul id="tree-B11040605">
+                </ul>
+            </div>
+        </td>
+        <td valign="top" style=" width:400px;height:100%;padding:3px;">
+            <table id="dg-ObjectCanAssign">
+            </table>
+        </td>
+        <td style="width:30px;padding:3px;height:100%;">
+            <table>
+                <tr><td><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectall" plain="true" onclick="assignAll()"></a></td></tr>
+                <tr><td><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-selectone" plain="true" onclick="assignSelected()"></a></td></tr>
+                <!--<tr><td><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectone" plain="true" onclick="unAssignSelected()"></a></td></tr>
+                <tr><td><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-deselectall" plain="true" onclick="unAssignAll()"></a></td></tr>-->
+            </table> 
+        </td>
+        <td style=" width:450px;padding:3px; height:100%;padding:3px;" valign="top">
+            <table id="dg-ObjectAssigned">
+            </table>
+        </td>
+        </tr>
+    </table>
+</div>
+<div id="dlg4-B11040605" class="easyui-dialog" style="width: 600px; height: 500px;" 
+closed="true" cache="false" buttons=""> 
+    <table id="Table2" style="width: 100%; height: 100%;">
+        <tr>
+        <td style="width: 200px;height:100%" valign="top">
+            <div style="width:96%;height:98%;padding:3px; overflow:auto">
+                <ul id="tree2-B11040605">
+                </ul>
+            </div>
+        </td>
+        <td valign="top" style=" width:400px;height:100%;padding:3px;">
+            <table id="dg2-ObjectCanAssign">
+            </table>
+        </td>
+        </tr>
+    </table>
+</div>
+
+<div id="btn2-B11040605">
+    <a href="javascript:void(0)" id="A1" class="easyui-linkbutton" iconcls="icon-ok" onclick="save_column()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel_column()">取消</a>
+<div id="dlg-subset-B11040605" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-subset-B11040605">
+    <div class="ftitle">
+    </div>
+    <form id="fm-subset-B11040605" method="post" novalidate>
+    
+    </form>
+</div>
+<div id="btn-subset-B11040605">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-subset" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+
+    var widgetId;
+    var widgetId2;
+    $(function () {
+        var SetId = getQueryStringInTab("SetId");
+        if (SetId) {
+
+            models[currentMenuCode] = {
+                treeId: 'tree-' + currentMenuCode,
+                gridId: 'dg-' + currentMenuCode,
+                gridId2: 'dg2-' + currentMenuCode,
+                toolbarId: 'toolbar-' + currentMenuCode,
+                toolbarId2: 'toolbar2-' + currentMenuCode,
+                dialogId: 'dlg-' + currentMenuCode,
+                dialogId2: 'dlg2-' + currentMenuCode,
+                dlgSearchId: 'dlg-subset-' + currentMenuCode,
+                fmSearchId: 'fm-subset-' + currentMenuCode,
+                btnSearchId: 'btn-subset-' + currentMenuCode,
+                formId: 'fm-' + currentMenuCode,
+                formId2: 'fm2-' + currentMenuCode,
+                buttonId: 'btn-' + currentMenuCode,
+                pkId: 'subSetId-' + currentMenuCode,
+                pk: 'SubSetId',
+                pkId2: 'columnNameNew-' + currentMenuCode,
+                pk2: 'ColumnNameNew',
+                changeFormDataBeforeSubmit: function (formData) {
+                    formData["SetId"] = this.defaultModelWhenAdd.SetId;
+                    if (formData.OrderNo == "") formData.OrderNo = 0;
+                },
+                changeFormDataBeforeSubmit2: function (formData) {
+                    formData.OrderNo == "" ? formData.OrderNo = 0 : formData.OrderNo = formData.OrderNo;
+
+                    formData.ComputeColumnFlag == "" ? formData.ComputeColumnFlag = 0 : formData.ComputeColumnFlag = formData.ComputeColumnFlag;
+                    formData["SubSetId"] = $("#subSetId").val();
+                    if (formData.WidgetId == "") {
+                        formData["WidgetId"] = "00013";
+                    }
+//                    alert($.toJSON(formData));
+                },
+                onBeforeDialogOpen2: function () {
+                    $("#ComputeColumnFlag").combobox({
+                        width: 152,
+                        panelHeight: 60,
+                        data: [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}],
+                        valueField: 'ItemId',
+                        textField: 'ItemName',
+                        editable: false
+                    });
+                },
+                onAfterDialogOpen2: function () {
+                    $("#oldColumnNameNew").val($("#columnNameNew-B11040605").val());
+                    $("#subSetId").val($("#hiddenSubSetId").val());
+                },
+                uiMode: 'list',
+                uiMode2: 'list',
+                entityName: '子集',
+                entityName2: '子集列选择',
+                baseModelUrl: baseCMSInvokeUrl + '/Pub/SubSetService/',
+                baseModelUrl2: baseCMSInvokeUrl + '/Pub/SubSetColumnService/',
+                defaultModel: { Status: 1 },
+                defaultModelWhenAdd: { SetId: SetId }
+            };
+
+            autosize("cc-" + currentMenuCode);
+            validateUI();
+
+            getTo(ajaxData_InvokeUrl + '/GetDictionaryItemWithExtendInfo/00024,[{"ExtendCol":"FieldLevel","ExtendColType":"i"}]', null, function (result) {
+                var widget = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].ExtendInfos[0].ExtendValue == 1) {
+                        widget.push({ "ItemId": result[i].ItemId, "ItemName": result[i].ItemName });
+                    }
+                }
+                widgetId = widget;
+            }, { async: false });
+
+            getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/00024', null, function (result) {
+                widgetId2 = result;
+            }, { async: false });
+
+            $("#WidgetId").combobox({
+                width: 152,
+                panelHeight: 80,
+                required: true,
+                data: widgetId,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+
+            $("#WidgetId2").combobox({
+                width: 152,
+                panelHeight: 80,
+                //                required: true,
+                data: widgetId2,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+            createGridSubset(SetId);
+            createGridSubsetColumn();
+
+        } else { return null; }
+    });                           //end $
+
+    /***************Subset*******************/
+    function createGridSubset(SetId) {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: models[currentMenuCode].entityName,
+            fit: true,
+            rownumbers: true,
+            singleSelect: true,
+            checkOnSelect: false,
+            selectOnCheck: false,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                instance: {
+                    //'Status': models[currentMenuCode].defaultModel.Status,
+                    'SetId': SetId
+                }
+            },
+            onClickRow: function (idx, row) {
+                $("#hiddenSubSetId").val(row.SubSetId);
+                $('#' + models[currentMenuCode].gridId2).datagrid({ url: models[currentMenuCode].baseModelUrl2 + 'ListForEasyUIgrid', queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        'Status': models[currentMenuCode].defaultModel.Status,
+                        'SubSetId': row.SubSetId
+                    }
+                }
+                });
+            },
+            onDblClickRow: function (idx, row) {
+                edit_subSet(row);
+            },
+            columns: [[
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'SubSetId', title: '子集编号', width: 60, align: 'center' },
+                    { field: 'SubSetName', title: '子集名称', width: 100, align: 'center' },
+                    { field: 'SetId', title: '集合编号', width: 60, align: 'center' },
+                    { field: 'WidgetId', title: '小部件', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: widgetId },
+                    { field: 'WidgetOption', title: '小部件设置', width: 200, align: 'center' },
+                    { field: 'Description', title: '描述', align: 'center', width: 160 },
+                    { field: 'Status', title: '状态', width: 80, align: 'center', formatter: easyuigrid_statusFormatter }
+            ]],
+            loader: easyuiLoader
+        }));
+
+        $('#' + models[currentMenuCode].gridId).datagrid({
+            rowStyler: function (index, row) {
+                if (row.Status == 0) {
+                    return 'background-color:#FF6347;';
+                }
+            }
+        });
+    }
+
+    function add_subSet() {
+        getJQO('#' + models[currentMenuCode].dialogId).dialog(_.extend({
+            inline: false,
+            onClose: function () {
+                models[currentMenuCode].uiMode = 'list';
+            },
+            modal: true
+        }, null)).dialog('open').dialog('setTitle', '新增' + models[currentMenuCode].entityName);
+        getJQO('#' + models[currentMenuCode].formId).form('clear');
+
+        if (models[currentMenuCode].defaultModelWhenAdd) {
+            getJQO('#' + models[currentMenuCode].formId).form('load', models[currentMenuCode].defaultModelWhenAdd);
+        }
+        models[currentMenuCode].uiMode = 'add';
+    }
+
+    function edit_subSet(rows) {
+        var row = rows;
+        if (!row) {
+            row = $('#dg-B11040605').datagrid('getSelected');
+        }
+        if (row) {
+            var url;
+            if (models[currentMenuCode].baseEditModelUrl) {
+                if (_.isFunction(models[currentMenuCode].baseEditModelUrl)) {
+                    url = models[currentMenuCode].baseEditModelUrl();
+                }
+                else {
+                    url = models[currentMenuCode].baseEditModelUrl;
+                }
+            }
+            else {
+                url = models[currentMenuCode].baseModelUrl;
+            }
+            url = url + row[models[currentMenuCode].pk];
+
+            getTo(url, null, null, null, null).done(function (ret) {
+                getJQO('#' + models[currentMenuCode].formId).form('clear');
+                getJQO('#' + models[currentMenuCode].formId).form('load', ret.instance);
+
+                getJQO('#' + models[currentMenuCode].dialogId).dialog(_.extend({
+                    onClose: function () {
+                        models[currentMenuCode].uiMode = 'list';
+                    },
+                    modal: true
+                }, models[currentMenuCode].dialogOption)).dialog('open').dialog('setTitle', '编辑' + models[currentMenuCode].entityName);
+            });
+            models[currentMenuCode].uiMode = 'edit';
+        } else {
+            alertInfo("选择需要修改的列");
+        }
+    }
+
+    /***************SubsetColumn*******************/
+    function createGridSubsetColumn() {
+        $('#' + models[currentMenuCode].gridId2).datagrid(easyuigrid_settings({
+            title: models[currentMenuCode].entityName2,
+            fit: true,
+            singleSelect: false,
+            checkOnSelect: true,
+            selectOnCheck: true,
+            toolbar: '#' + models[currentMenuCode].toolbarId2,
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                instance: {
+                    'Status': models[currentMenuCode].defaultModel.Status
+                }
+            },
+            onClickRow: function (idx, row) {
+                $("#hiddenSubSetId").val(row.SubSetId);
+            },
+            onDblClickRow: function (idx, row) {
+                edit_column(row);
+            },
+            columns: [[
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'SubSetId', title: '子集编号', width: 60, align: 'center' },
+                    { field: 'TableName', title: '所属原表', width: 100, align: 'center' },
+                    { field: 'ColumnName', title: '原列名', width: 80, align: 'center' },
+                    { field: 'ColumnNameNew', title: '新列名', width: 80, align: 'center' },
+                    { field: 'ColumnCNameNew', title: '新列中文名', width: 80, align: 'center' },
+                    { field: 'Expression', title: '表达式', width: 200, align: 'center' },
+                    { field: 'WidgetId', title: '小部件编号', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: widgetId },
+                    { field: 'WidgetOption', title: '小部件设置', width: 200, align: 'center' }
+            ]],
+            loader: easyuiLoader
+        }));
+    }
+
+    //弹出新增框
+    function tree_dlg(dlgId, title) {
+        getJQO('#' + dlgId).dialog(_.extend({
+            inline: false,
+            onClose: function () {
+                getJQO('#' + models[currentMenuCode].gridId2).datagrid("load");
+            },
+            modal: true
+        }, null)).dialog('open').dialog('setTitle', title);
+    }
+
+    function cancel_column() {
+        getJQO('#' + models[currentMenuCode].dialogId2).dialog('close');
+    }
+
+    function verifyDuplicate(subSetId, columnNameNew) {
+        var result;
+        getTo(models[currentMenuCode].baseModelUrl2 + "Query", { parms: $.toJSON({ "SubSetId": subSetId, "ColumnNameNew": columnNameNew, "Status": 1 }) }, function (ret) {
+            if (ret.rows == "") {
+                result = true;
+            } else {
+                alertInfo("新列名：" + ret.rows[0].ColumnNameNew + "重复");
+                result = false;
+            }
+        }, { async: false });
+        return result;
+    }
+
+    function add_column() {
+        if ($('#hiddenSubSetId').val()) {
+            if (models[currentMenuCode].onBeforeDialogOpen2) {
+                if (_.isFunction(models[currentMenuCode].onBeforeDialogOpen2)) {
+                    models[currentMenuCode].onBeforeDialogOpen2.apply(this, []);
+                }
+            }
+            getJQO('#' + models[currentMenuCode].dialogId2).dialog(_.extend({
+                inline: false,
+                onClose: function () {
+                    models[currentMenuCode].uiMode2 = 'list';
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '新增' + models[currentMenuCode].entityName2);
+
+            getJQO('#' + models[currentMenuCode].formId2).form('clear');
+            models[currentMenuCode].uiMode2 = 'add';
+
+            if (models[currentMenuCode].onAfterDialogOpen2) {
+                if (_.isFunction(models[currentMenuCode].onAfterDialogOpen2)) {
+                    models[currentMenuCode].onAfterDialogOpen2.apply(this, []);
+                }
+            }
+        } else {
+            alertInfo("请先选择需要增加的子集");
+        }
+    }
+
+    function edit_column(rows) {
+        var row = rows;
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId2).datagrid('getSelected');
+        }
+        if (row) {
+            if (models[currentMenuCode].onBeforeDialogOpen2) {
+                if (_.isFunction(models[currentMenuCode].onBeforeDialogOpen2)) {
+                    models[currentMenuCode].onBeforeDialogOpen2.apply(this, []);
+                }
+            }
+            var url = models[currentMenuCode].baseModelUrl2;
+            url = url + row[models[currentMenuCode].pk] + "," + row[models[currentMenuCode].pk2];
+            getTo(url, null, null, null, null).done(function (ret) {
+                getJQO('#' + models[currentMenuCode].formId2).form('clear');
+                getJQO('#' + models[currentMenuCode].formId2).form('load', ret.instance);
+
+                getJQO('#' + models[currentMenuCode].dialogId2).dialog(_.extend({
+                    onClose: function () {
+                        models[currentMenuCode].uiMode2 = 'list';
+                    },
+                    modal: true
+                }, null)).dialog('open').dialog('setTitle', '编辑' + models[currentMenuCode].entityName2);
+
+                if (models[currentMenuCode].onAfterDialogOpen2) {
+                    if (_.isFunction(models[currentMenuCode].onAfterDialogOpen2)) {
+                        models[currentMenuCode].onAfterDialogOpen2.apply(this, [row]);
+                    }
+                }
+                models[currentMenuCode].uiMode2 = 'edit';
+            });
+        } else {
+            alertInfo("选择需要修改的列");
+        }
+    }
+
+    function remove_column() {
+        var action = 'delete';
+        var actionName = "删除";
+        var unCheckSystemKey = "unCheckSystem"
+        var rows = getJQO('#' + models[currentMenuCode].gridId2).datagrid('getChecked');
+        if (rows.length > 0) {
+            alertConfirm('确定要' + actionName + '选中记录吗？', function (r) {
+                if (r) {
+                    var pks = _.map(rows, function (o) {
+                        return o[models[currentMenuCode].pk2];
+                    });
+                    var selected = pks.join('|');
+                    var fn = function () {
+                        getJQO('#' + models[currentMenuCode].gridId2).datagrid('reload');
+                        models[currentMenuCode].uiMode2 = 'list';
+                        alertInfo(actionName + '成功！');
+                    };
+                    deleteTo2(models[currentMenuCode].baseModelUrl2, $("#hiddenSubSetId").val() + "," + selected, fn, models[currentMenuCode].headers);
+                }
+            });
+        }
+        else {
+            alertInfo('请选中要' + actionName + '的记录！');
+        }
+    }
+    function save_column() {
+        var action;
+        if (getJQO('#' + models[currentMenuCode].formId2).form('validate')) {
+            var formData = getJQO('#' + models[currentMenuCode].formId2).serializeObject();
+
+            formData.PK = getJQO('#' + models[currentMenuCode].pkId2).val();
+            var isCreate;
+            isCreate = models[currentMenuCode].uiMode2 == 'add';
+            formData.isCreate = isCreate;
+            action = isCreate ? "insert" : "update";
+
+            var url;
+            if (!isCreate) {
+                var url = models[currentMenuCode].baseModelUrl2 + $("#subSetId").val() + ",";
+                formData.PK = $("#oldColumnNameNew").val();
+            }
+            else {
+                var url = models[currentMenuCode].baseModelUrl2;
+            }
+            if (models[currentMenuCode].changeFormDataBeforeSubmit2) {
+                models[currentMenuCode].changeFormDataBeforeSubmit2(formData);
+            }
+
+            if ($("#oldColumnNameNew").val() == $("#columnNameNew-B11040605").val()) {
+                saveTo(url, $.extend(models[currentMenuCode].defaultModel || {}, formData), function (ret) {
+                    getJQO('#' + models[currentMenuCode].dialogId2).dialog('close');
+                    getJQO('#' + models[currentMenuCode].gridId2).datagrid(isCreate ? 'load' : 'reload');
+
+                    models[currentMenuCode].uiMode2 = 'list';
+                    alertInfo((isCreate ? '新增' : '编辑') + '成功！');
+                }, models[currentMenuCode].headers);
+            } else {
+                if (verifyDuplicate($("#subSetId").val(), $("#columnNameNew-B11040605").val())) {
+                    saveTo(url, $.extend(models[currentMenuCode].defaultModel || {}, formData), function (ret) {
+                        getJQO('#' + models[currentMenuCode].dialogId2).dialog('close');
+                        getJQO('#' + models[currentMenuCode].gridId2).datagrid(isCreate ? 'load' : 'reload');
+
+                        models[currentMenuCode].uiMode2 = 'list';
+                        alertInfo((isCreate ? '新增' : '编辑') + '成功！');
+                    }, models[currentMenuCode].headers);
+                } else {
+
+                }
+            }
+        }
+    }
+    /**************批量新增列******************/
+    //设置可编辑datagrid
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        if ($('#dg-ObjectCanAssign').datagrid('validateRow', editIndex)) {
+            var ed = $('#dg-ObjectCanAssign').datagrid('getEditor', { index: editIndex, field: 'WidgetId' });
+            var itemName = $(ed.target).combobox('getText');
+            $('#dg-ObjectCanAssign').datagrid('getRows')[editIndex]['ItemName'] = itemName;
+            $('#dg-ObjectCanAssign').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //未选列表
+    function createUnselGrid(dgId, onclick, onDblClick) {
+        $('#' + dgId).datagrid(easyuigrid_settings({
+            title: "未选",
+            fit: true,
+            rownumbers: true,
+            singleSelect: false,
+            method: 'POST',
+            queryParams: {
+                sort: 'Id',
+                order: 'asc',
+                filterFields: [
+                    { key: 'TableName', value: "" }
+                ]
+            },
+            onClickRow: onclick,
+            onDblClickRow: onDblClick,
+            columns: [[
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'Id', title: 'Id', width: 100, hidden: true },
+                    { field: 'ColumnName', title: '列名', width: 100, align: 'left' },
+                    { field: 'ColumnCName', title: '中文名', width: 80, align: 'left' },
+                    { field: 'ColumnNameNew', title: '新列名', width: 100, align: 'left', formatter: function (value, row) {
+                        return row.ColumnName;
+                    }, editor: {
+                        type: 'text'
+                    }
+                    },
+                    { field: 'WidgetId', title: '小部件', width: 60, align: 'center', formatter: function (value, row) {
+                        return row.ItemName;
+                    },
+                        editor: {
+                            type: 'combobox',
+                            options: {
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                method: 'get',
+                                data: widgetId2
+                            }
+                        }
+                    },
+                    { field: 'TableName', title: '表名', width: 120, align: 'left' }
+            ]],
+//            onBeforeEdit: function (index, row) {
+//                //                alert(row.ColumnName);
+//                //                $('#dg-ObjectAssigned').datagrid('updateRow', { index: index, row: { "ColumnNameNew": row.ColumnName} });
+//                //                row.editing = true;
+////                $('#dg-ObjectAssigned').datagrid('endEdit', index);
+//                $('#dg-ObjectAssigned').datagrid('updateRow', { index: index, row: { "ColumnNameNew": row.ColumnName} });
+//            },
+//            onAfterEdit: function (index, row) {
+//                row.editing = false;
+//                $('#dg-ObjectAssigned').datagrid('refreshRow', index);
+//            },
+//            onCancelEdit: function (index, row) {
+//                row.editing = false;
+//                $('#tt').datagrid('refreshRow', index);
+//            },
+            loader: easyuiLoader
+        }))
+    }
+
+    //已选列表
+    function createSelGrid() {
+        $('#dg-ObjectAssigned').datagrid(easyuigrid_settings({
+            title: "已选",
+            fit: true,
+            rownumbers: true,
+            singleSelect: true,
+            method: 'POST',
+            queryParams: {
+                sort: 'Id',
+                order: 'asc',
+                instance: { 'TableName': "" }
+            },
+            columns: [[
+                    { field: 'ColumnName', title: '原列名', width: 100, align: 'left' },
+                    { field: 'Id', title: 'Id', width: 60, hidden: true },
+                    { field: 'ColumnNameNew', title: '新列名', width: 100, align: 'left' },
+                    { field: 'ColumnCNameNew', title: '新列名', width: 100, align: 'left' },
+                    { field: 'WidgetId', title: '小部件', width: 100, align: 'left', formatter: easyuigrid_ajaxFormatter, vals: widgetId2 },
+                    { field: 'TableName', title: '表名', width: 120, align: 'left' }
+            ]],
+            loader: easyuiLoader
+        }))//.datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    //批量新增
+    function add_large() {
+        if ($("#hiddenSubSetId").val()) {
+            initTree('easyUITree', 'tree-B11040605', {
+                onClick: function (treeNode) {
+                    editIndex = undefined;
+                    if (treeNode.id == "00") {
+                        gridReload("");
+                    } else {
+                        gridReload(treeNode.text);
+                    }
+                }
+            },
+            function (d) {
+                getTreeData('01$03$01', null, null, d);
+            },
+            null,
+            function (treeObj) {
+                createUnselGrid('dg-ObjectCanAssign', function (idx, row) {
+                    if (editIndex != idx) {
+                        if (endEditing()) {
+                            $('#dg-ObjectCanAssign').datagrid('selectRow', idx).datagrid('beginEdit', idx);
+                            var ed = $('#dg-ObjectCanAssign').datagrid('getEditor', { index: idx, field: 'ColumnNameNew' });
+                            $(ed.target).val(row.ColumnName);
+                            editIndex = idx;
+                        } else {
+                            $('#dg-ObjectCanAssign').datagrid('selectRow', editIndex);
+                        }
+                    }
+                }, null);
+                createSelGrid();
+            });   //end loadTree
+            tree_dlg('dlg3-B11040605', '新增原始列');
+        } else {
+            alertInfo("请先选择需要增加的子集");
+        }
+    }
+
+    function assignAll() {
+        var rows = $('#dg-ObjectCanAssign').datagrid('getRows');
+        var subSetId = $("#hiddenSubSetId").val();
+        if (rows.length > 0) {
+            alertConfirm("确认插入该表所有列吗?", function (flag) {
+                if (flag) {
+                    endEditing();
+                    var columnNames = [];
+                    for (var i in rows) {
+                        if (rows[i].WidgetId == "" || !rows[i].WidgetId) {
+                            rows[i].WidgetId = '00013';
+                        }
+                        if (rows[i].ColumnNameNew) {
+                            //对ColumnNameNew进行重复判断
+                            if (verifyDuplicate(subSetId, rows[i].ColumnNameNew)) {
+                                columnNames.push(rows[i].TableName + "." + rows[i].ColumnName + "." + rows[i].ColumnNameNew + "." + rows[i].WidgetId + "." + subSetId + "." + rows[i].ColumnCName);
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            if (verifyDuplicate(subSetId, rows[i].ColumnName)) {
+                                columnNames.push(rows[i].TableName + "." + rows[i].ColumnName + "." + rows[i].ColumnName + "." + rows[i].WidgetId + "." + subSetId + "." + rows[i].ColumnCName);
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                    var str_columnNames = columnNames.join(',');
+                    if (str_columnNames) {
+                        postTo(models[currentMenuCode].baseModelUrl2 + 'Create2/' + str_columnNames, null, function (result) {
+                            if (result.Success) {
+                                var treeNode = $("#tree-B11040605").tree("getSelected");
+                                gridReload(treeNode.text);
+                                editIndex = undefined;
+                                alertInfo('插入成功!');
+                            }
+                        }, { async: false });
+                    }
+                }
+            });
+        }
+    }
+
+    function assignSelected() {
+        var rows = $('#dg-ObjectCanAssign').datagrid('getSelections');
+
+        var subSetId = $("#hiddenSubSetId").val();
+        if (rows.length > 0) {
+            alertConfirm("确认插入所选列吗?", function (flag) {
+                if (flag) {
+                    endEditing();
+                    var columnNames = [];
+                    for (var i in rows) {
+                        if (rows[i].ColumnNameNew ) {
+                            //对ColumnNameNew进行重复判断
+                            if (verifyDuplicate(subSetId, rows[i].ColumnNameNew)) {
+                                if (rows[i].WidgetId=="") {
+                                    rows[i].WidgetId = '00013';
+                                }
+                                columnNames.push(rows[i].TableName + "." + rows[i].ColumnName + "." + rows[i].ColumnNameNew + "." + rows[i].WidgetId + "." + subSetId + "." + rows[i].ColumnCName);
+                                } else {
+                                return false;
+                            }
+                        } else {
+                            alertInfo("新列名不能为空");
+                            return false;
+                        }
+                    }
+                    var str_columnNames = columnNames.join(',');
+                    postTo(models[currentMenuCode].baseModelUrl2 + 'Create2/' + str_columnNames, null, function (result) {
+                        if (result.Success) {
+                            var treeNode = $("#tree-B11040605").tree("getSelected");
+                            gridReload(treeNode.text);
+                            editIndex = undefined;
+                            alertInfo('插入成功!');
+                        } else {
+                            alertError('插入失败!');
+                        }
+
+                    }, { async: false });
+                }
+            });
+        } else {
+            alertInfo('没有选中的对象！');
+        }
+    }
+
+    function gridReload(tableName) {
+        var subSetId=$("#hiddenSubSetId").val();
+        if (tableName != "") {
+            $('#dg-ObjectCanAssign').datagrid({ url: baseCMSInvokeUrl + '/Pub/SetColumnService/ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc',
+                filterFields: [
+                    { key: 'TableName', value: tableName }
+                ]
+            }
+            });
+            $('#dg-ObjectAssigned').datagrid({ url: models[currentMenuCode].baseModelUrl2 + 'ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc',
+                instance: { 'TableName': tableName, "SubSetId": subSetId }
+            }
+            });
+        } else {
+            $('#dg-ObjectCanAssign').datagrid({ url: baseCMSInvokeUrl + '/Pub/SetColumnService/ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc'
+            }
+            });
+            $('#dg-ObjectAssigned').datagrid({ url: models[currentMenuCode].baseModelUrl2 + 'ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc',
+                instance: { "SubSetId": subSetId }
+            }
+            });
+        }
+    }
+
+    function gridReload2(tableName) {
+        if (tableName != "") {
+            $('#dg2-ObjectCanAssign').datagrid({ url: baseCMSInvokeUrl + '/Pub/SetColumnService/ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc',
+                filterFields: [
+                    { key: 'TableName', value: tableName }
+                ]
+            }
+            });
+        } else {
+            $('#dg2-ObjectCanAssign').datagrid({ url: baseCMSInvokeUrl + '/Pub/SetColumnService/ListForEasyUIgrid', queryParams: {
+                sort: 'ColumnName',
+                order: 'asc'
+            }
+            });
+        }
+    }
+
+    /************单个新增***************/
+    //新增，查找原始列
+    function justAdd() {
+        initTree('easyUITree', 'tree2-B11040605', {
+            onClick: function (treeNode) {
+                $("#TableName").val(treeNode.text);
+                if (treeNode.id == "00") {
+                    gridReload2("");
+                } else {
+                    gridReload2(treeNode.text);
+                }
+            }
+        },
+        function (d) {
+            getTreeData('01$03$01', null, null, d);
+        },
+        null,
+        function (treeObj) {
+            createUnselGrid('dg2-ObjectCanAssign', function (idx, row) {
+            }, function (idx, row) {
+                $("#ColumnName").val(row.ColumnName);
+                $("#columnNameNew-B11040605").val(row.ColumnName);
+                getJQO('#dlg4-B11040605').dialog('close'); //单选窗口
+            });
+        });    //end loadTree
+        tree_dlg('dlg4-B11040605', '新增原始列');
+    }
+    /***************end_SubsetColumn***********************/
+</script>

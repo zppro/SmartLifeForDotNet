@@ -1,0 +1,177 @@
+﻿<style type="text/css">
+    .ftitle
+    {
+        width:100%;
+        background: #f3f3f3;
+        -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;
+        height:22px;
+        line-height:22px;
+        text-align:center;
+    }
+    .form
+    {
+        margin: 0 auto;
+        width: 190px;
+    }
+    
+    .form table
+    {
+        width: 100%;
+        margin: 5px auto; 
+    }
+    .form label
+    {
+        font-size: 14px;
+        text-align: right;
+        width: 75px;
+    }
+    .form input.text-input
+    {
+        width: 137px;
+        height: 20px;
+        margin: 5px 0 5px 0;
+        border: 0;
+        border: solid 1px #999;
+    }
+</style>
+<div class="ftitle">登录框 </div>
+<div class="form"> 
+    <table>
+        <tr>
+            <td>
+                <label for="Code">
+                    帐号：</label>
+            </td>
+            <td>
+                <input id="login-box-Code" name="Code" class="easyui-validatebox  text-input form-field" data-options="required:true"
+                    type="text" placeholder="请输入您的管理账号" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    密码：</label>
+            </td>
+            <td>
+                <input name="Password" class="easyui-validatebox text-input form-field" type="password"
+                    placeholder="请输入您的密码" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="Code">
+                    分机：</label>
+            </td>
+            <td>
+                <input name="Ext" id="Ext" class="text-input form-field" type="text" />
+            </td>
+        </tr>
+    </table>
+    <div class="fitem">
+        <label style="color: Red; margin-top: 4px;" id="shwowlaber">
+        </label>
+    </div>
+    <div>
+        <a href="javascript:void(0)" id="LoginButton" class="easyui-linkbutton" iconcls="icon-ok" >确定</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-cancel" onclick="cancelLoginBox()" style="float: right;">取消</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        //$.ajaxf.install('script/flash4ajax/AJAX.swf');
+        initForm();
+        getTo(ajaxData_InvokeUrl + '/GetExt?AreaId=' + window.appDeployArea.id + '&StationId=' + gCallCenterId, null, function (result) {
+
+            $('#Ext').combobox({
+                width: 140,
+                panelHeight: 100,
+                required: false,
+                data: result,
+                valueField: 'Value',
+                textField: 'Text',
+                editable: false,
+                onShowPanel: function () {
+                    var p = $(this).combobox('panel');
+                    p.panel('panel').css('z-index', '9999');
+                },
+                onLoadSuccess: function () {
+                    if (top.gExtId) {
+                        $('#Ext').combobox('setValue', top.gExtId + '|' + top.gIPCCDial + '|' + top.gIPCCRelayType + '|' + top.gIPCCRelayPrefix);
+                    }
+                }
+            });
+        });
+        if (top.gUserCode) {
+            $('#login-box-Code').val(top.gUserCode);
+        } 
+        
+
+        bindSubmit("#LoginButton", ".form", function (data) {
+            $.ajaxf.postJSON(AuthenticateUser_InvokeUrl, $.toJSON($.extend(data, { ApplicationIdFrom: gApplicationId, ApplicationIdTo: gInvokeApplicationId, ObjectId: window.objectId, RunMode: window.runMode, Tag: redirectTagOfSignIn })), function (result) {
+                if (result.Success) {
+                    if (result.ret.RedirectUrl) {
+                        gToken = result.ret.Token;
+                        $.cookie("token", gToken);
+                        var url = replaceWithKeys(result.ret.RedirectUrl, { cmsInterfaceRoot: baseCMSInvokeUrl, tag: redirectTagOfIndex });
+                        getTo(url, null, function (result2) {
+                            if (result2.Success) {
+                                //获取用户信息
+                                getTo(baseCMSInvokeUrl + '/Pub/UserService/CheckCurrentUserIsSeat').done(function (result3) {
+                                    if (result3.ret.isCCSeat) {
+                                        if ($('#Ext').combobox('getValue') == "") {
+                                            alertError("您是坐席，请选择一个分机登录！");
+                                            return;
+                                        }
+                                        var arrValues = $('#Ext').combobox('getValue').split('|');
+
+                                        $.cookie("ExtId", arrValues[0]);
+                                        $.cookie("IPCCDial", arrValues[1]);
+                                        $.cookie("IPCCRelayType", arrValues[2]);
+                                        $.cookie("IPCCRelayPrefix", arrValues[3]);
+                                        $.cookie("ExtCode", $('#Ext').combobox('getText'));
+                                        //增加坐席分机绑定 
+                                        postTo(window.CommonAddSeatExtBinding_InvokeUrl, $.toJSON({ ExtId: $.cookie("ExtId") }), null, { async: false });
+                                    }
+                                    else {
+                                        if (window.execMode == "ForSeat") {
+                                            alertError("您不是座席，请切换座席帐号！");
+                                            return;
+                                        }
+                                    }
+                                    if (getQueryString('mode') == 'loginbox' || window.isSwitchUser) {
+                                        var url2 = replaceWithKeys(result2.ret.RedirectUrl, { cmsSiteRoot: baseUrl });
+                                        Redirect(url2);
+                                    }
+                                    else {
+                                        $('.session-out-mask').fadeOut(800);
+                                        $('.session-out-mask-content').fadeOut(800);
+                                    }
+                                });
+                            }
+                            else {
+                                alertError(result2.ErrorMessage);
+                            }
+                        });
+                    }
+                }
+                else {
+                    alertError(result.ErrorMessage);
+                }
+            });
+        });
+    });
+
+    function cancelLoginBox() {
+        if (window.isSwitchUser) {
+            $('.session-out-mask').fadeOut(800);
+            $('.session-out-mask-content').fadeOut(800);
+        }
+        else {
+            Redirect(login_Url);
+        }
+    }
+
+    function showError(strinfo) {
+        $("#shwowlaber").html(strinfo); 
+    }
+</script>

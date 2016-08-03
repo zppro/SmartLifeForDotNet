@@ -1,0 +1,259 @@
+﻿<div id="search-sample-B180499" title="查询" style="overflow:auto;padding:3px;">
+    <form id="fm-search-rough-B180499" method="post" >
+        <table width="100%">
+            <tr>
+                <td style=" text-align:right">关键字：</td>
+                <td style=" text-align:left"><input name="KeyWord" class="easyui-validatebox" /></td>
+                <td style=" text-align:right">呼入时间：</td>
+                <td style=" text-align:left"><input name="CheckInTime_Start" class="Wdate"  onFocus="WdatePicker()" /></td>
+                <td style=" text-align:right">服务状态：</td>
+                <td style=" text-align:left"><input id="CC-DoStatus" name="DoStatus_Start" class="combobox" /></td>
+                <td style=" text-align:right">归档类型：</td>
+                <td style=" text-align:left"><input id="CC-ServiceArchive" name="ServiceArchive" class="combobox" /></td>
+                <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  onclick="exec(true)">查询</a></td>
+                <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">清空</a></td>
+                <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"  onclick="query()">高级查询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="toolbar-B180499">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-tip" plain="true"
+        onclick="view()">查看</a>
+</div>
+<table id="dg-B180499" >
+</table>
+<div id="dlg-B180499" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B180499"  >
+    <div class="ftitle"></div>
+    <form id="fm-B180499" method="post" novalidate>
+    <input type="hidden" name="CallServiceId" id="callserviceid-B180499" /> 
+    </form>
+</div>
+<div id="btn-B180499">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<div id="dlg-YY" class="easyui-dialog" style="width: 170px; height: 300px; padding: 10px;"
+ closed="true" cache="false" >
+    <ul id="YY-Content">
+    </ul>
+</div> 
+<div id="dlg-search-B180499" class="easyui-dialog" style="width: 520px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B180499"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B180499" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            呼叫服务内容:</label>
+        <input name="Content"  />
+        <label>
+            主&nbsp;&nbsp;叫&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;码:</label>
+        <input name="Caller" />
+    </div>
+    <div class="fitem">
+        <label>
+            接收分机编号:</label>
+        <input name="ServiceExtNo" />
+        <label>
+            起始呼入时间:</label>
+        <input name="CheckInTime_Start" class="Wdate"  onFocus="WdatePicker()" />
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180499">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        validateUI(); 
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'callserviceid-' + currentMenuCode,
+            pk: 'CallServiceId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['Content'] = formData['KeyWord'];
+                formData['Caller'] = formData['KeyWord'];
+                formData['ServiceExtNo'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '生活服务记录',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/CallService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, GroupType: '10003', ServiceArchive: '00000' }
+        };
+        autosize(models[currentMenuCode].gridId, -34);
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridByPage2',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status,
+                    AreaId: models[currentMenuCode].defaultModel.AreaId,
+                    ServiceArchive: models[currentMenuCode].defaultModel.ServiceArchive
+                },
+                filterFields: [
+                    { key: 'GroupType', value: models[currentMenuCode].defaultModel.GroupType },
+                    { key: 'DoStatus_Start', value: '00001' }
+                ]
+            },
+            onDblClickRow: function (idx, row) {
+                view(row);
+            },
+            onLoadSuccess: function (data) {
+                $('.iconYY').linkbutton({ text: '', plain: true });
+                _.each(data.rows, function (obj) {
+                    var yyBtn = $('.iconYY[CallServiceId="' + obj.CallServiceId + '"]');
+                    getTo(models[currentMenuCode].baseModelUrl + 'GetServiceVoice/' + obj.CallServiceId, null, function (ret) {
+                        if (ret.rows.length > 0) {
+                            yyBtn.linkbutton({ text: '录音', plain: true, iconCls: 'icon-loud' }).unbind('click').bind('click', function () {
+                                $('#YY-Content').html(_.map(ret.rows, function (o, i) {
+                                    var seqName = i + 1;
+                                    var urlOutter = '#';
+                                    var nameOutter = '';
+                                    if (o.VoiceType == 0) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType0, o);
+                                        nameOutter = '服务录音' + seqName + '(外网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType1, o);
+                                        nameOutter = '多方通话录音' + seqName + '(外网)';
+                                    }
+                                    else {
+                                        urlOutter = replaceWithKeys(top.strTemplateOfVoiceType2, o);
+                                        nameOutter = '录音' + seqName + '(外网)';
+                                    }
+                                    var urlInner = '#';
+                                    var nameInner = '';
+                                    if (o.VoiceType == 0) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType0ForInner, o);
+                                        nameInner = '服务录音' + seqName + '(内网)';
+                                    }
+                                    else if (o.VoiceType == 1) {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType1ForInner, o);
+                                        nameInner = '多方通话录音' + seqName + '(内网)';
+                                    }
+                                    else {
+                                        urlInner = replaceWithKeys(top.strTemplateOfVoiceType2ForInner, o);
+                                        nameInner = '录音' + seqName + '(内网)';
+                                    }
+                                    return '<li><a class="iconYYD" href="' + urlOutter + '" target="_blank">' + nameOutter + '</a><a class="iconYYD" href="' + urlInner + '" target="_blank">' + nameInner + '</a></li>';
+                                }).join(""));
+
+                                $("#dlg-YY").dialog({
+                                    onClose: function () {
+                                    },
+                                    onBeforeOpen: function () {
+                                        $('.iconYYD').linkbutton({ plain: true, iconCls: 'icon-loud' });
+                                    },
+                                    modal: true
+                                }).dialog('open').dialog('setTitle', '查看服务录音');
+                            });
+                        }
+                        else {
+                            yyBtn.remove();
+                        }
+                    });
+                });
+            },
+            columns: [[
+                { field: 'CallServiceId', title: '呼叫服务编号', width: 150, hidden: true },
+                { field: 'Content', title: '呼叫服务内容', width: 160 },
+                { field: 'Caller', title: '主叫号码', width: 90, align: 'right' },
+                { field: 'Callee', title: '被叫号码', width: 70, align: 'right' },
+                { field: 'CheckInTime', title: '呼入时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'OperatedOn', title: '最后响应时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'CallSeconds', title: '通话时长', width: 100, align: 'center', formatter: easyuigrid_TimeSpanFormatter },
+                { field: 'DoStatus', title: '服务状态', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '未受理:0~t受理中:1~t处理中:2~t处理完成:3' },
+                { field: 'OldManId', title: '老人编号', width: 100, hidden: true },
+                { field: 'OperatedBy', title: '服务工号', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+                    var ret = "";
+                    if (row.OperatedBy) {
+                        var url = baseCMSInvokeUrl + '/Pub/UserService/' + row.OperatedBy;
+
+                        getTo(url, null, function (result) {
+                            ret = result.instance;
+                        }, { async: false });
+                    }
+                    return ret;
+                }, textField: "UserCode", valueField: "UserId"
+                },
+                { field: 'ServiceExtNo', title: '接收分机编号', width: 80, align: 'center' },
+                { field: 'YY', title: '语音', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconYY" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        $('#CC-DoStatus').combobox({
+            width: 140,
+            panelHeight: 85,
+            data: [{ ItemId: '00001', ItemName: '未处理即时类服务' },
+                   { ItemId: '00002', ItemName: '未处理政府购买服务' },
+                   { ItemId: '00003', ItemName: '已处理' },
+                   { ItemId: '00009', ItemName: '全部记录'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            value: '00001'
+        });
+
+        var ArchiveData = [{ "ItemCode": "00000", "ItemId": "00000", "ItemName": "全部服务"}];
+        getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/11013', null, function (ret) {
+            if (ret) {
+                ArchiveData = _.union(ArchiveData, ret);
+                $('#CC-ServiceArchive').combobox({
+                    width: 140,
+                    panelHeight: 300,
+                    data: ArchiveData,
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    value: "00000"
+                });
+            }
+        });
+
+    });
+
+    function view(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            var url = '/views/shared/tabContainer.htm?pageUrl=views/old-care/life-aid-info.htm';
+            OpenNewWinAsCallService(url, row.CallServiceId, 'info');
+        }
+        else {
+            alertInfo('请选中要查看的服务记录！');
+        }
+    }
+
+</script>

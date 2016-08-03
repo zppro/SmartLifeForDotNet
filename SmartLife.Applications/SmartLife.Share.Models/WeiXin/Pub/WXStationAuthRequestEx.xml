@@ -1,0 +1,27 @@
+﻿<sqlMap namespace="SmartLife.Share.Models.WeiXin.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Count_WXStationAuthRequest_ListByPageForAudit" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as xx  from  dbo.Pub_WXStationAuthRequest a inner join Meb_NormalAccount b on a.OpenId=b.OpenId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="WXStationAuthRequest_ListByPageForAudit" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+      a.Id,a.CheckInTime,a.OpenId,a.DoStatus,b.NickName,b.Gender  from  dbo.Pub_WXStationAuthRequest a inner join Meb_NormalAccount b on a.OpenId=b.OpenId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic> 
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="ServiceStation_Light_ListForServeManAuthorized" parameterClass="StringObjectDictionary" resultClass="ServiceStation_Light" >
+      select distinct a.StationId,StationCode,StationName,StationType,StationType2 from Pub_ServiceStation a inner join Pub_WXStationAuthRequest b on a.StationId=b.StationId
+      where a.Status=1 and a.StationType = '00003' and b.DoStatus=1 and b.OpenId=#OpenId#
+    </select>
+  </statements>
+</sqlMap>

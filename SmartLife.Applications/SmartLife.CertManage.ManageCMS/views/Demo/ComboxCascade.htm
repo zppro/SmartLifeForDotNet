@@ -1,0 +1,164 @@
+﻿<table id="cc-B11070104">
+    <tr>
+        <td valign="top">
+            <table id="dg-B11070104">
+                <form id="fm-B11070104" method="post" novalidate>
+                <div class="fitem">
+                    <label>
+                        街道社区:</label>
+                    <input name="AreaIdStreet" id="AreaIdStreet" />
+                    <input name="AreaIdCommunity" id="AreaIdCommunity" />
+                    <input type="hidden" name="AreaId2" id="AreaId2" />
+                    <input type="hidden" name="AreaId3" id="AreaId3" />
+                </div>
+            </table>
+        </td>
+    </tr>
+</table>
+<pre class="prettyprint  linenums" style=" height:395px; overflow:scroll; padding: 2px; border: 1px solid #000">
+<xmp>
+<table id="cc-B11070104" style="width: 100%; height: 100%;">
+    <tr>
+        <td valign="top">
+            <table id="dg-B11070104">
+                <form id="fm-B11070104" method="post" novalidate>
+                <div class="fitem">
+                    <label>
+                        街道社区:</label>
+                    <input name="AreaIdStreet" id="AreaIdStreet" />
+                    <input name="AreaIdCommunity" id="AreaIdCommunity" />
+                    <input type="hidden" name="AreaId2" id="AreaId2" />
+                    <input type="hidden" name="AreaId3" id="AreaId3" />
+                </div>
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        var areas;
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+
+        },
+            function (d) {
+                var res;
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+  
+      $('#AreaIdStreet').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    onSelect: function (d) {
+                        $('#AreaId2').val(d.ItemId);
+                        var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                        //如果该街道下有社区，则自动填充
+                        if (community.length > 0) {
+                            $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                            $('#AreaId3').val(community[0].ItemId);
+                        }
+                        //否则为空
+                        else {
+                            $('#AreaIdCommunity').combobox('setValue', null);
+                            $('#AreaId3').val(null);
+                        }
+                    }
+                });
+                //社区
+                $('#AreaIdCommunity').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                });
+            }); 
+    });
+</script>
+</xmp>
+</pre>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        var areas;
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+
+        },
+            function (d) {
+                var res;
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+  
+      $('#AreaIdStreet').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    onSelect: function (d) {
+                        $('#AreaId2').val(d.ItemId);
+                        var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                        //如果该街道下有社区，则自动填充
+                        if (community.length > 0) {
+                            $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                            $('#AreaId3').val(community[0].ItemId);
+                        }
+                        //否则为空
+                        else {
+                            $('#AreaIdCommunity').combobox('setValue', null);
+                            $('#AreaId3').val(null);
+                        }
+                    }
+                });
+                //社区
+                $('#AreaIdCommunity').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                });
+            }); 
+    });
+</script>

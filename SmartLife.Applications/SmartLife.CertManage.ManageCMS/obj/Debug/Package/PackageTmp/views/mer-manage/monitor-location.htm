@@ -1,0 +1,229 @@
+﻿<div id="toolbar-B230102">
+    <table width="100%">
+        <tr>
+            <td id="Merchant-t" style="text-align: left; width: 190px;">
+                <div id="Merchant-d" style="display: inline-block;"><input id="CC-Merchant" /></div>
+            </td>
+            <td style="text-align: left; width: 170px;">
+                <input id="CC-MerchantServerMan"/>
+            </td>
+            <td style="text-align: left;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="locationServerMan()">定位</a>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="location-panel"  >地图载入中...</div>
+
+<script type="text/javascript">
+    $(function () {
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" },
+        { type: "js", url: "../../script/map/transgps.js" }
+        ], function () {
+            //加载商家
+            $('#CC-Merchant').combobox({
+                width: 180,
+                panelWidth: 300,
+                data: top.gUserInfo.MappingMerchants,
+                valueField: 'StationId',
+                textField: 'StationName',
+                editable: false,
+                onSelect: function (record) {
+                    selectMerchantUser();
+                }
+            });
+            if (top.gUserInfo.MappingMerchants.length > 0) {
+                $('#CC-Merchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+                selectMerchantUser();
+
+                if (top.gUserInfo.MappingMerchants.length == 1) {
+                    $('#Merchant-d').hide();
+                    $('#Merchant-t').width(10);
+                }
+            }
+            else {
+                alertInfo('当前帐号没有绑定任何商家');
+            }
+
+            //初始化地图
+            autosize("location-panel", -26);
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            initMap("location-panel", longitude, latitude, function () {
+                locationServerMan();
+            });
+        });
+    });
+
+    function selectMerchantUser() {
+        var stationId = $('#CC-Merchant').combobox('getValue');
+        if (stationId) {
+            getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeMan/' + stationId + ',' + window.contants.UserTypeAsMerchant + ',' + window.contants.GuidAsGroup_MerchantServeMan, null, function (ret) {
+                if (ret.Success) {
+                    if (ret.rows && ret.rows.length > 0) {
+
+                        $('#CC-MerchantServerMan').combobox({
+                            width: 160,
+                            panelWidth: 180,
+                            data: ret.rows,
+                            valueField: 'UserId',
+                            textField: 'UserName',
+                            multiple: true,
+                            editable: false,
+                            onSelect: function (row) {
+                                $('#UserId_' + row.UserId).prop('checked', true);
+                            },
+                            onUnselect: function (row) {
+                                $('#UserId_' + row.UserId).prop('checked', false);
+                            },
+                            formatter: function (row) {
+                                var htmls = [];
+                                htmls.push('<input type="checkbox" align="absmiddle" id="UserId_' + row.UserId + '" >' + row.UserName);
+                                return htmls.join("");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function locationServerMan() {
+        var sourceIds = $('#CC-MerchantServerMan').combobox('getValues');
+        if (!sourceIds || sourceIds.length == 0) {
+            sourceIds = _.map($('#CC-MerchantServerMan').combobox('getData'), function (o) {
+                return o.UserId;
+            });
+        }
+
+        if (!map) {
+            alertInfo('地图初始化未加载成功，请稍后再试...');
+            return;
+        }
+
+        if (sourceIds.length > 0) {
+            getLatLng(sourceIds);
+        }
+    }
+
+    //获取经纬度
+    var currentTimeOutId;
+    var currentGeo;
+    var bline = false;
+    function getLatLng(sourceIds) {
+        var strParams = { SourceTable: 'Meb_NormalAccount', LocateType: 'WX-Location-Report', StationId: $('#CC-Merchant').combobox('getValue') };
+        currentGeo = getGeo();  //解析经纬度
+
+        if (currentTimeOutId) {
+            clearTimeout(currentTimeOutId);
+        }
+        var repeatTime = 60000; //一分钟刷新一次
+        if (sourceIds.length == 1) {
+            repeatTime = 30000; //10秒钟刷新一次
+            bline = true;
+        }
+        else {
+            repeatTime = 60000; //1分钟刷新一次
+            bline = false;
+        }
+        
+        currentTimeOutId = setTimeout(function () {
+            //单个定位画轨迹点 
+            if (sourceIds.length == 1) {
+                _.extend(strParams, { SourceId: sourceIds[0] });
+                getTo(baseCMSInvokeUrl + '/Pub/LocationService/Top26LocationList?parms=' + $.toJSON(strParams), null, function (ret) {
+                    if (ret.Success) {
+                        var rows = _.map(ret.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+
+                        if (rows && rows.length > 0) {
+                            parestDiTuPoint(rows);
+                        }
+                    }
+                });
+            }
+            else {
+                postTo(baseCMSInvokeUrl + '/Pub/LocationService/LatestLocationBySourceId?parms=' + $.toJSON(strParams), $.toJSON(sourceIds), function (ret) {
+                    if (ret.Success) {
+                        var rows = _.map(ret.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+                        if (rows && rows.length > 0) {
+                            parestDiTuPoint(rows);
+                        }
+                    }
+                });
+            }
+            currentTimeOutId = setTimeout(arguments.callee, repeatTime);
+        }, 0);
+    }
+
+    var mapRows;
+    function parestDiTuPoint(rows) {
+        mapRows = rows;
+        map.clearOverlays();
+
+        var gpspoints = _.map(mapRows, function (o) {
+            return new BMap.Point(o.Longitude, o.Latitude);
+        });
+
+        BMap.Convertor.transMore(gpspoints, 0, callback);
+    }
+
+
+    function callback(xyResults) {
+        var latlngs = _.map(xyResults, function (o, i) {
+            var tmpPoint = null;
+            if (o.error == 0) {
+                tmpPoint = new BMap.Point(o.x, o.y);
+            }
+            var TmpSN = 0;
+            if (mapRows[i].SN) TmpSN = mapRows[i].SN;
+
+            return { UserName: mapRows[i].UserName, UserId: mapRows[i].SourceId, SN: TmpSN, Point: tmpPoint };
+        });
+
+        if (latlngs && latlngs.length > 0) {
+            marketLatLng(latlngs);
+        }
+    }
+    //画图
+    function marketLatLng(latlngs) {
+        var points = [];
+        _.each(_.filter(latlngs, function (i) {
+            if (i.Point) return i;
+        }), function (o) {
+            points.push(o.Point);
+            map.centerAndZoom(o.Point, 18);
+
+            if (!bline) {
+                var mak = retPointMarker(o.Point);
+                var dsettings = {
+                    BmpPt: o.Point,
+                    BmpMarker: mak,
+                    BmpLabel: o.UserName
+                };
+                parsePointToAddress(currentGeo, dsettings);
+            }
+            else {
+                addCustomMarker(o.Point, o.SN);   //添加标注
+            }
+        });
+        if (points && points.length > 0) {
+            //设置缩放和画线
+            setViewport(points);
+            if (bline) {
+                addPointLine(points, true);
+            }
+        }
+    }
+</script>

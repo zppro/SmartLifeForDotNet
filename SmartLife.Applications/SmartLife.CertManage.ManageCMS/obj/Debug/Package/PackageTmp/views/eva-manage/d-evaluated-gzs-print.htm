@@ -1,0 +1,384 @@
+﻿<div id="cc-B170205">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            所属街道社区
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B170205"></ul>
+            <input type="hidden"  id="_AreaId2" />
+            <input type="hidden"  id="_AreaId3" />
+        </div>
+    </div>
+    <div id="toolbar-B170205">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-tip" plain="true" onclick="previewGZS()">预览</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-print" plain="true" onclick="exportGZS()">导出</a>
+    </div> 
+    <div id="search-sample-B170205" title="查询" style="overflow:auto;padding:3px;">
+        <form id="fm-search-rough-B170205" method="post" >
+            <table width="100%">
+                <tr>
+                    <td style=" text-align:right">关键字：</td>
+                    <td style=" text-align:left"><input name="KeyWord" class="easyui-validatebox"  placeholder="评估报告编号、申请人姓名"/></td>  
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  onclick="exec(true)">查询</a></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">清空</a></td> 
+                </tr>
+            </table>
+        </form>
+    </div>
+    <table id="dg-B170205" >
+    </table>
+</div>
+<div id="dlg-B170205" class="easyui-dialog" style="width: 900px; height: 500px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B170205"  >
+    <div class="ftitle"></div>
+    <form id="fm-B170205" method="post" novalidate>
+        <input type="hidden" name="ReportId" id="reportid-B170205" /> 
+        <table cellpadding='0' class="table">
+            <tr>
+                <td height="60" colspan="5" style='background-color:#CCCCCC' class="title_4">评估报告</td>
+            </tr>
+            <tr>
+                <td height="70" colspan="5" style='text-align:left' class="title_4">&nbsp;&nbsp;&nbsp;&nbsp;
+                评估报告二：评估报告确认
+                </td>
+            </tr>
+            <tr>
+                <td height="70" colspan="5" class="title_4">评估表基本信息</td>
+            </tr>
+            <tr>
+                <td width="20%" colspan="2" class="title_5">评估表编号</td>
+                <td  width="30%" style="text-align:left;">
+                    <input name='ReportCode' class='txt_bg_01' disabled="disabled"/>
+                </td>
+                <td width="20%"  class="title_5">完成日期</td>
+                <td width="30%" class="title_5">
+                    <input name="OperatedOn" class="txt_bg_01 Wdate" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="6" width="5%"  class="title_4">
+                    <div class='vertical_txt'>
+                    (1)评估员确认完成</div>
+                </td>
+                <td width="15%" class="title_5">评估员姓名(2名)</td>
+                <td width="30%" style="text-align:left;">
+                    <input name='OperatedBy' class='txt_bg_01 g_checker' disabled="disabled"/>
+                </td>
+                <td width="20%" rowspan="2" class="title_5">确认完成</td>
+                <td width="30%" rowspan="2" class="title_5">
+                    &nbsp;<input name="AssessType" type="radio" value="00001" disabled="disabled"/>首次评估<br/>
+                    &nbsp;<input name="AssessType" type="radio" value="00002" disabled="disabled"/>复检评估<br/>
+                    &nbsp;<input name="AssessType" type="radio" value="00003" disabled="disabled"/>变更评估
+                </td>
+            </tr>
+            <tr>
+                <td width="15%"  class="title_5">联系电话</td>
+                <td width="30%" style="text-align:left;">
+                    <input name='AssessmentCall' class='txt_bg_01' disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%"  class="title_5">所属单位</td>
+                <td colspan="3" style="text-align:left;">
+                    <input name='AssessmentUnit' class='txt_bg_01' disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" class="title_5">评估分值</td>
+                <td style="text-align:left;" >
+                    <input name='AssessmentScores' class='txt_bg_01' disabled="disabled"/>
+                </td>
+                <td width="20%" class="title_5">建议服务形式</td>
+                <td width="30%" class="title_5">
+                    &nbsp;<input name="ServeItemType" type="radio" value="00001" disabled="disabled"/>居家养老(计时服务)<br/>
+                    &nbsp;<input name="ServeItemType" type="radio" value="00002" disabled="disabled"/>机构养老(计费服务)
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" class="title_5">服务起始时间</td>
+                <td style="text-align:left;" >
+                    <input name="ServiceBeginTime" class="txt_bg_01 Wdate" disabled="disabled"/>
+                </td>
+                <td width="20%" class="title_5">服务截止时间</td>
+                <td width="30%" class="title_5">
+                    <input name="ServiceEndTime" class="txt_bg_01 Wdate"  disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" class="title_5">评估员签字</td>
+                <td style="text-align:left;" >
+                    <input name='Assessor' class='txt_bg_01' disabled="disabled"/>
+                </td>
+                <td width="20%" class="title_5">日期</td>
+                <td width="30%" class="title_5">
+                    
+                </td>
+            </tr>
+            <tr >
+                <td width="5%" class="title_4" >
+                    <div class='vertical_txt'>
+                    (2)村(社区)意见</div>
+                </td>
+                <td colspan="4" width="95%" class="title_5" >
+                    <div class="txt_check_top">
+                        <input name="CommunityCheck" type="radio" value="0" disabled="disabled"/>符合评估标准&nbsp;&nbsp;&nbsp;
+                        <input name="CommunityCheck" type="radio" value="1" disabled="disabled"/>要求再次评估
+                        <br />
+                        <textarea name="CommunityRemark" cols="50"  rows="2" class="text" disabled="disabled"/>
+                    </div>
+                    <div class="txt_date_bottom">
+                         确认人:<input name="CommunityChecker" class="txt_bg_01 g_checker" style="width:150px;" disabled="disabled"/><br />
+                        <input name="CommunityTime" class="Wdate txt_bg_01" style="width:150px;" disabled="disabled"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="5%" class="title_4">
+                    <div class='vertical_txt'>
+                        (3)镇(街道)审查</div>
+                </td>
+                <td colspan="4">
+                    <div class="txt_check_top">
+                            <input name="StreetExamine" type="radio" value="0" disabled="disabled" />符合评估标准
+                            &nbsp;&nbsp;&nbsp;<input name="StreetExamine" type="radio" value="1" disabled="disabled" />建议再次评估
+                    </div>
+                    <div class="txt_date_bottom">
+                            审查人:<input name="StreetExaminer" class="txt_bg_01 g_checker" style="width:150px;" disabled="disabled" /><br />
+                            <input name="StreetExamineTime" class="Wdate txt_bg_01" style="width:150px;" disabled="disabled"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="5%" class="title_4">
+                    <div class='vertical_txt'>
+                        (4)市民政局审核</div>
+                </td>
+                <td colspan="4" class="title_5">
+                    <div  class="txt_check_top">
+                            <input name="CityAudit" type="radio" value="0" disabled="disabled"/>确认评估结果
+                            &nbsp;&nbsp;&nbsp;<input name="CityAudit" type="radio" value="1" disabled="disabled"/>要求再次评估
+                            &nbsp;&nbsp;&nbsp;<input name="CityAudit" type="radio" value="2" disabled="disabled"/>市评估组抽查
+                    </div>
+                    <div class="txt_date_bottom">
+                        审核人:<input name="CityApproval" class="txt_bg_01 g_checker" style="width:150px;" disabled="disabled"/><br />
+                        <input name="CityAuditTime" class="Wdate txt_bg_01" style="width:150px;" disabled="disabled"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="btn-B170205">
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()"> 确定</a>--> 
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div> 
+ 
+<div id="export-iframe-block" style=" display:none;"></div>
+
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        var areas;
+        var serveItemA;
+        var serveItemB;
+        var assessLevel;
+        placeholder(); //占位符初始化
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            treeId: 'tree-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'reportid-' + currentMenuCode,
+            pk: 'ReportId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['EvaluatedName'] = formData['KeyWord'];
+                formData['ReportCode'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onAfterDialogOpen: function () {
+                _.each($('.Wdate'), function (o) {
+                    if ($(o).val()) {
+                        $(o).val(ndateFormatter($(o).val(), 'yyyy年MM月dd日'));
+                    }
+                });
+                _.each($('.g_checker'), function (o) {
+                    if ($(o).val()) {
+                        var url = baseCMSInvokeUrl + '/Pub/UserService/' + $(o).val();
+                        getTo(url, null, function (result) {
+                            $(o).val(result.instance.UserCode)
+                        });
+                    }
+                });
+            },
+            uiMode: 'list',
+            entityName: '申请报告信息',
+            headers: { ConnectId: '' },
+//            headers: { ConnectId: baseInfoNode },
+            baseModelUrl: baseCMSInvokeUrl + '/Eva/EvaluatedReportService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+            //defaultModelWhenAdd: { Gender: 'M' }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12001', null, function (result) {
+            serveItemA = result;
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12002', null, function (result) {
+            serveItemB = result;
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/12008', null, function (result) {
+            assessLevel = result;
+        }, { async: false });
+
+        autosize(models[currentMenuCode].gridId);
+
+        autosize("cc-" + currentMenuCode, -3);
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+        loadfiles([
+        { type: "css", url: "../../css/eva/eva-form.css" }
+        ], function () {
+            initTree('easyUITree', models[currentMenuCode].treeId, {
+                onClick: function (treeNode) {
+                    //查询参数
+                    var FilterFields = [];
+                    //获取节点
+                    var treeNodeId = treeNode.id; //当前节点
+                    if (treeNodeId.length > 6) {
+                        var tmpAreaId = treeNodeId.substring(14, 18);
+                        if (tmpAreaId == '0000') {//街道
+                            FilterFields.push({ key: "AreaId2", value: treeNodeId });
+                        }
+                        else {//社区
+                            FilterFields.push({ key: "AreaId2", value: treeNode.attributes.PId });
+                            FilterFields.push({ key: "AreaId3", value: treeNodeId });
+                        }
+                    }
+
+                    //                    FilterFields.push({ key: 'Status', value: models[currentMenuCode].defaultModel.Status });
+                    //                    FilterFields.push({ key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }); 
+                    var QueryParams = $('#' + models[currentMenuCode].gridId).datagrid('options').queryParams;
+                    QueryParams = _.extend(QueryParams, { filterFields: FilterFields });
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', QueryParams);
+                },
+                onLoadSuccess: function () {
+                    //左边的树，默认展开一级
+                    var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                    $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                    $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                }
+            },
+            function (d) {
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: false,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage22',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        instance: {
+                            Status: models[currentMenuCode].defaultModel.Status,
+                            AreaId: models[currentMenuCode].defaultModel.AreaId
+                        }
+                    },
+                    onDblClickRow: function (idx, row) {
+                        previewGZS([row]);
+                    },
+                    columns: [[
+                { field: 'ReportId', title: '评估报告', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'ReportCode', title: '评估报告编号', width: 200, align: 'center' },
+                { field: 'EvaluatedName', title: '申请人姓名', width: 80, align: 'center' },
+                { field: 'AssessType', title: '评估类别', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveItemA },
+                { field: 'AssessmentScores', title: '评估分值', width: 80, align: 'center' },
+                { field: 'AssessLevel', title: '评估对象等级', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: assessLevel },
+                { field: 'ServeItemType', title: '建议服务类型', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveItemB },
+                    //                { field: 'DoStatus', title: '服务状态', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '待评估:0~t评估中:1~t评估完成:2~t审核中:3~t审核通过:4~t审核不通过:5' },
+                {field: 'PrintNo', title: '打印次数', width: 80, align: 'center' },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+            ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+        });
+
+    });
+
+    function previewGZS(rows) {
+        if (!rows) {
+            rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+        }
+        if (rows && rows.length > 0) {
+            openDialog('print-evaluation-book', 'views/dialogs/print-evaluation-book.htm', function (callback, dialogData) {
+                postTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/UpdateEvaluatedPrintNo/' + dialogData.ReportId, null, function () {
+                });
+                callback();
+            }, { dialogData: rows, title: '预览-服务补贴告知书', width: 880, height: 680, padding: 5, mergeDefault: true });
+        }
+        else {
+            alertInfo("请选中要打印的记录!");
+        }
+    }
+
+    //导出告知书
+    function exportGZS(rows) {
+        $('#export-iframe-block').html('');
+
+        var iframe = document.createElement("iframe");
+        iframe.src = baseUrl + '/views/dialogs/export-box.htm';
+        iframe.scrolling = "no";
+        iframe.frameBorder = 0;
+        $('#export-iframe-block').html(iframe);
+    }
+    //数据
+    function exportFileData() {
+        var rows;
+        if (!rows) {
+            rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+        }
+        if (rows && rows.length > 0) {
+            var reportIds = _.map(rows, function (o) { return o.ReportId });
+        }
+
+        var qureryData = { sort: 'OperatedOn', order: 'desc', ConnectId: '', ReportIds: reportIds };
+        var formData = {
+            actionUrl: baseCMSInvokeUrl + '/AppShare/ExportExcel.ashx',
+            actionType: 'ExportAssessmentNotice',
+            actionData: qureryData
+        };
+
+        return formData;
+    }
+
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

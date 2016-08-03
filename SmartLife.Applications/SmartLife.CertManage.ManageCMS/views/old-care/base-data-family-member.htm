@@ -1,0 +1,89 @@
+﻿<div id="toolbar-B181002">
+    <!--<a id="uploadBaseDataOfFamilyMember" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true" >上传居民资料</a>-->
+</div>
+<table id="dg-B181002" >
+</table>
+<div id="dlg-B181002" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B181002"  >
+    <div class="ftitle"></div>
+    <form id="fm-B181002" method="post" novalidate>   
+    <div class="fitem">
+        <label>
+            导出模板:</label>
+        <a  target="_blank" id="aTemplate"  class="easyui-linkbutton"  >点击下载excel模板</a> 
+    </div> 
+    <div class="fitem">
+            <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-B181002">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'stationid-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            uiMode: 'list',
+            entityName: '居民资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/FamilyMemberService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    }
+                },
+                columns: [[
+                { field: 'FamilyMemberId', title: '家庭成员编号', width: 150, hidden: true },
+                { field: 'FamilyMemberName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Tel', title: '座机', width: 100, align: 'center' },
+                { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+                { field: 'Address', title: '地址', width: 300 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#uploadBaseDataOfFamilyMember').bind('click', function () {
+                uploadBaseData(models[currentMenuCode].entityName, models[currentMenuCode].defaultModel)
+            });
+        });
+
+    }); 
+</script>

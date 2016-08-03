@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Api_CallInParam" class="StringObjectDictionary">
+      <parameter  property="Version" column="Version" direction="Input" type="string" dbType="char" />
+      <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="IP" column="IP" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="CallQueueRet" column="CallQueueRet" direction="Output" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Api_OnDutyParam" class="StringObjectDictionary">
+      <parameter  property="Version" column="Version" direction="Input" type="string" dbType="char" />
+      <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="IP" column="IP" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="SessionId" column="SessionId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="CallQueueRet" column="CallQueueRet" direction="Output" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Api_CallIn_eCommParam" class="StringObjectDictionary">
+      <parameter  property="Version" column="Version" direction="Input" type="string" dbType="char" />
+      <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="UuidOfIPCC" column="UuidOfIPCC" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="IP" column="IP" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="CallQueueRet" column="CallQueueRet" direction="Output" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Api_CallInRolledOut_eCommParam" class="StringObjectDictionary">
+      <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="UuidOfIPCC" column="UuidOfIPCC" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Api_AbandonByCaller_eCommParam" class="StringObjectDictionary">
+      <parameter  property="UuidOfIPCC" column="UuidOfIPCC" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Api_RecordCallSeconds_eCommParam" class="StringObjectDictionary">
+      <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="CallSeconds" column="CallSeconds" direction="Input" type="int" dbType="int" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Api_CallIn" parameterMap="SP_Api_CallInParam" resultClass="StringObjectDictionary">
+      SP_Api_CallIn
+    </procedure>
+    <procedure id="SP_Api_OnDuty" parameterMap="SP_Api_OnDutyParam" resultClass="StringObjectDictionary">
+      SP_Api_OnDuty
+    </procedure>
+    <procedure id="SP_Api_CallIn_eComm" parameterMap="SP_Api_CallIn_eCommParam" resultClass="StringObjectDictionary">
+      SP_Api_CallIn_eComm
+    </procedure>
+    <procedure id="SP_Api_CallInRolledOut_eComm" parameterMap="SP_Api_CallInRolledOut_eCommParam" resultClass="StringObjectDictionary">
+      SP_Api_CallInRolledOut_eComm
+    </procedure>
+    <procedure id="SP_Api_AbandonByCaller_eComm" parameterMap="SP_Api_AbandonByCaller_eCommParam" resultClass="StringObjectDictionary">
+      SP_Api_AbandonByCaller_eComm
+    </procedure>
+    <procedure id="SP_Api_RecordCallSeconds_eComm" parameterMap="SP_Api_RecordCallSeconds_eCommParam" resultClass="StringObjectDictionary">
+      SP_Api_RecordCallSeconds_eComm
+    </procedure>
+  </statements>
+</sqlMap>

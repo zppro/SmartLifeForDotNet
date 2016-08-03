@@ -1,0 +1,58 @@
+﻿ <div>  
+        <table id="cc-ServeManList"></table>
+ </div>
+<script type="text/javascript">
+    var userId;
+    var userName;
+    alert(userId);
+    function dialogOpen(dialogId, dialogData) {
+        $('#cc-ServeManList').datagrid(easyuigrid_settings({
+            title: "",
+            height: 540,
+            rownumbers: false,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/PensionAgencyListForEasyUIgridByStationId/' + dialogData.StationId,
+            method: 'POST',
+            queryParams: {
+                page: 1,
+                rows: 1000,
+                sort: 'UserName',
+                order: 'asc',
+                filterFields: [
+                            { key: 'Area1', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                            { key: 'Status', value: 1 },
+                            { key: 'UserType', value: "00004|" + window.contants.GuidAsGroup_PensionAgencyServeMan }
+                            ]
+            },
+            onSelect: function (index, row) {
+                userId = row.UserId;
+                userName = row.UserName;
+                Closed(dialogId);
+                dialogClose(dialogId);
+            },
+            columns: [[
+                    { field: 'UserId', title: '服务人员编号', width: 150, hidden: true },
+        { field: 'UserName', title: '名称', width: 100, align: 'center' },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'CallNo', title: '呼叫器号码', width: 120, align: 'center' }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+
+    }
+
+    function Closed(dialogId) {
+        $('#' + dialogId).dialog('close'); 
+    
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        var info = { UserId: userId, UserName: userName };
+        alert($.toJSON(info));
+        return info;
+    }
+</script>

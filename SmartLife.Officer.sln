@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Models", "SmartLife.Applications\SmartLife.Share.Models\SmartLife.Share.Models.csproj", "{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Officer.ManageServices", "SmartLife.Applications\SmartLife.Officer.ManageServices\SmartLife.Officer.ManageServices.csproj", "{4BFF0BA2-AAB3-41FF-9D88-2E133E39D432}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Officer.ManageCMS", "SmartLife.Applications\SmartLife.Officer.ManageCMS\SmartLife.Officer.ManageCMS.csproj", "{35D5ACA5-58F1-4FB6-B579-AC4883D6BCB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Officer.CertServices", "SmartLife.Applications\SmartLife.Officer.CertServices\SmartLife.Officer.CertServices.csproj", "{DC300051-3750-4CE1-8A2B-E0D1968ECAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Behaviors", "SmartLife.Applications\SmartLife.Share.Behaviors\SmartLife.Share.Behaviors.csproj", "{2774C50E-4B9A-4140-9BE9-50F5110BF87E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SmartLife.Applications\\SmartLife.Share.Models\\SmartLife.Share.Models.csproj
+		SccProjectName1 = SmartLife.Applications/SmartLife.Share.Models
+		SccLocalPath1 = SmartLife.Applications\\SmartLife.Share.Models
+		SccProjectUniqueName2 = SmartLife.Applications\\SmartLife.Officer.ManageServices\\SmartLife.Officer.ManageServices.csproj
+		SccProjectName2 = SmartLife.Applications/SmartLife.Officer.ManageServices
+		SccLocalPath2 = SmartLife.Applications\\SmartLife.Officer.ManageServices
+		SccProjectUniqueName3 = SmartLife.Applications\\SmartLife.Officer.ManageCMS\\SmartLife.Officer.ManageCMS.csproj
+		SccProjectName3 = SmartLife.Applications/SmartLife.Officer.ManageCMS
+		SccLocalPath3 = SmartLife.Applications\\SmartLife.Officer.ManageCMS
+		SccProjectUniqueName4 = SmartLife.Applications\\SmartLife.Officer.CertServices\\SmartLife.Officer.CertServices.csproj
+		SccProjectName4 = SmartLife.Applications/SmartLife.Officer.CertServices
+		SccLocalPath4 = SmartLife.Applications\\SmartLife.Officer.CertServices
+		SccProjectUniqueName5 = SmartLife.Applications\\SmartLife.Share.Behaviors\\SmartLife.Share.Behaviors.csproj
+		SccProjectName5 = SmartLife.Applications/SmartLife.Share.Behaviors
+		SccLocalPath5 = SmartLife.Applications\\SmartLife.Share.Behaviors
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFF0BA2-AAB3-41FF-9D88-2E133E39D432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFF0BA2-AAB3-41FF-9D88-2E133E39D432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFF0BA2-AAB3-41FF-9D88-2E133E39D432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFF0BA2-AAB3-41FF-9D88-2E133E39D432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D5ACA5-58F1-4FB6-B579-AC4883D6BCB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D5ACA5-58F1-4FB6-B579-AC4883D6BCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D5ACA5-58F1-4FB6-B579-AC4883D6BCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D5ACA5-58F1-4FB6-B579-AC4883D6BCB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC300051-3750-4CE1-8A2B-E0D1968ECAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC300051-3750-4CE1-8A2B-E0D1968ECAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC300051-3750-4CE1-8A2B-E0D1968ECAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC300051-3750-4CE1-8A2B-E0D1968ECAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2774C50E-4B9A-4140-9BE9-50F5110BF87E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="CallService_ForMonitor_V" type="SmartLife.Share.Models.Oca.CallService_ForMonitor_V, SmartLife.Share.Models" />
+    <typeAlias alias="CallService_ForMonitor_VPK" type="SmartLife.Share.Models.Oca.CallService_ForMonitor_VPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="CallService_ForMonitor_V_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_CallService_ForMonitor_V(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Content" >Content</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >LongitudeS</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >LatitudeS</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallSeconds" >CallSeconds</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoResults" >DoResults</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >OldManName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallNo" >CallNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueId" >ServiceQueueId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNo" >ServiceQueueNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtId" >ServiceExtId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtNo" >ServiceExtNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceCatalog" >ServiceCatalog</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonFlag" >AbandonFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DialBackCount" >DialBackCount</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonOn" >AbandonOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastDialBackOn" >LastDialBackOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueIdOld" >ServiceQueueIdOld</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNoOld" >ServiceQueueNoOld</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Caller" >Caller</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Callee" >Callee</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UuidOfIPCC" >UuidOfIPCC</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceArchive" >ServiceArchive</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PopFlag" >PopFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Content" >#Content#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallSeconds" >#CallSeconds#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoResults" >#DoResults#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallNo" >#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueId" >#ServiceQueueId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNo" >#ServiceQueueNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtId" >#ServiceExtId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtNo" >#ServiceExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceCatalog" >#ServiceCatalog#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonFlag" >#AbandonFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DialBackCount" >#DialBackCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonOn" >#AbandonOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastDialBackOn" >#LastDialBackOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueIdOld" >#ServiceQueueIdOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNoOld" >#ServiceQueueNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Caller" >#Caller#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Callee" >#Callee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UuidOfIPCC" >#UuidOfIPCC#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceArchive" >#ServiceArchive#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PopFlag" >#PopFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="CallService_ForMonitor_V_Update" parameterClass="StringObjectDictionary" >
+      update Oca_CallService_ForMonitor_V
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Content" >Content=#Content#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallSeconds" >CallSeconds=#CallSeconds#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DoResults" >DoResults=#DoResults#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueId" >ServiceQueueId=#ServiceQueueId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtId" >ServiceExtId=#ServiceExtId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceExtNo" >ServiceExtNo=#ServiceExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceCatalog" >ServiceCatalog=#ServiceCatalog#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonFlag" >AbandonFlag=#AbandonFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DialBackCount" >DialBackCount=#DialBackCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AbandonOn" >AbandonOn=#AbandonOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastDialBackOn" >LastDialBackOn=#LastDialBackOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueIdOld" >ServiceQueueIdOld=#ServiceQueueIdOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceQueueNoOld" >ServiceQueueNoOld=#ServiceQueueNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UuidOfIPCC" >UuidOfIPCC=#UuidOfIPCC#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServiceArchive" >ServiceArchive=#ServiceArchive#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PopFlag" >PopFlag=#PopFlag#</isPropertyAvailable>
+      </dynamic>
+      where
+    </update>
+    <delete id="CallService_ForMonitor_V_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_CallService_ForMonitor_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Content" >Content=#Content#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallSeconds" >CallSeconds=#CallSeconds#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoResults" >DoResults=#DoResults#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueId" >ServiceQueueId=#ServiceQueueId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtId" >ServiceExtId=#ServiceExtId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtNo" >ServiceExtNo=#ServiceExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceCatalog" >ServiceCatalog=#ServiceCatalog#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonFlag" >AbandonFlag=#AbandonFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DialBackCount" >DialBackCount=#DialBackCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_Start" >AbandonOn>=to_date(#AbandonOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_End" >AbandonOn&lt;=to_date(#AbandonOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_Start" >LastDialBackOn>=to_date(#LastDialBackOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_End" >LastDialBackOn&lt;=to_date(#LastDialBackOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueIdOld" >ServiceQueueIdOld=#ServiceQueueIdOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNoOld" >ServiceQueueNoOld=#ServiceQueueNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UuidOfIPCC" >UuidOfIPCC=#UuidOfIPCC#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceArchive" >ServiceArchive=#ServiceArchive#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PopFlag" >PopFlag=#PopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="CallService_ForMonitor_V_Load" parameterClass="CallService_ForMonitor_VPK" resultClass="CallService_ForMonitor_V" >
+      select CallServiceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,Content,LongitudeS,LatitudeS,CallSeconds,DoStatus,DoResults,OldManId,OldManName,Gender,CallNo,ServiceQueueId,ServiceQueueNo,ServiceExtId,ServiceExtNo,ServiceCatalog,AbandonFlag,DialBackCount,AbandonOn,LastDialBackOn,ServiceQueueIdOld,ServiceQueueNoOld,Caller,Callee,UuidOfIPCC,ServiceArchive,PopFlag,EvaluateToSeat from Oca_CallService_ForMonitor_V
+      where
+    </select>
+    <select id="CallService_ForMonitor_V_List" parameterClass="StringObjectDictionary" resultClass="CallService_ForMonitor_V" >
+      select CallServiceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,Content,LongitudeS,LatitudeS,CallSeconds,DoStatus,DoResults,OldManId,OldManName,Gender,CallNo,ServiceQueueId,ServiceQueueNo,ServiceExtId,ServiceExtNo,ServiceCatalog,AbandonFlag,DialBackCount,AbandonOn,LastDialBackOn,ServiceQueueIdOld,ServiceQueueNoOld,Caller,Callee,UuidOfIPCC,ServiceArchive,PopFlag,EvaluateToSeat from Oca_CallService_ForMonitor_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Content" >Content=#Content#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallSeconds" >CallSeconds=#CallSeconds#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoResults" >DoResults=#DoResults#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueId" >ServiceQueueId=#ServiceQueueId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtId" >ServiceExtId=#ServiceExtId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtNo" >ServiceExtNo=#ServiceExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceCatalog" >ServiceCatalog=#ServiceCatalog#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonFlag" >AbandonFlag=#AbandonFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DialBackCount" >DialBackCount=#DialBackCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_Start" >AbandonOn>=to_date(#AbandonOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_End" >AbandonOn&lt;=to_date(#AbandonOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_Start" >LastDialBackOn>=to_date(#LastDialBackOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_End" >LastDialBackOn&lt;=to_date(#LastDialBackOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueIdOld" >ServiceQueueIdOld=#ServiceQueueIdOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNoOld" >ServiceQueueNoOld=#ServiceQueueNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UuidOfIPCC" >UuidOfIPCC=#UuidOfIPCC#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceArchive" >ServiceArchive=#ServiceArchive#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PopFlag" >PopFlag=#PopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EvaluateToSeat" >=#EvaluateToSeat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="CallService_ForMonitor_V_ListByPage" parameterClass="StringObjectDictionary" resultClass="CallService_ForMonitor_V" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,CallServiceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,Content,LongitudeS,LatitudeS,CallSeconds,DoStatus,DoResults,OldManId,OldManName,Gender,CallNo,ServiceQueueId,ServiceQueueNo,ServiceExtId,ServiceExtNo,ServiceCatalog,AbandonFlag,DialBackCount,AbandonOn,LastDialBackOn,ServiceQueueIdOld,ServiceQueueNoOld,Caller,Callee,UuidOfIPCC,ServiceArchive,PopFlag,EvaluateToSeat from Oca_CallService_ForMonitor_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Content" >Content=#Content#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LongitudeS" >LongitudeS=#LongitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LatitudeS" >LatitudeS=#LatitudeS#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallSeconds" >CallSeconds=#CallSeconds#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoResults" >DoResults=#DoResults#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueId" >ServiceQueueId=#ServiceQueueId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtId" >ServiceExtId=#ServiceExtId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceExtNo" >ServiceExtNo=#ServiceExtNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceCatalog" >ServiceCatalog=#ServiceCatalog#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonFlag" >AbandonFlag=#AbandonFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DialBackCount" >DialBackCount=#DialBackCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_Start" >AbandonOn>=to_date(#AbandonOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AbandonOn_End" >AbandonOn&lt;=to_date(#AbandonOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_Start" >LastDialBackOn>=to_date(#LastDialBackOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastDialBackOn_End" >LastDialBackOn&lt;=to_date(#LastDialBackOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueIdOld" >ServiceQueueIdOld=#ServiceQueueIdOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceQueueNoOld" >ServiceQueueNoOld=#ServiceQueueNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UuidOfIPCC" >UuidOfIPCC=#UuidOfIPCC#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServiceArchive" >ServiceArchive=#ServiceArchive#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PopFlag" >PopFlag=#PopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EvaluateToSeat" >EvaluateToSeat=#EvaluateToSeat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

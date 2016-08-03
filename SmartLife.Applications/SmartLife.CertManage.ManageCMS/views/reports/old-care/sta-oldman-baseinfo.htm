@@ -1,0 +1,526 @@
+﻿
+<script type="text/javascript">
+    var info;
+    var page = 1;
+
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report.css" }
+        ], function () { });
+    });
+
+    //显示控制器
+    function statistics() {
+        $("#ssss").hide();
+        $("#dataTable").hide();
+        $("#lsattab").hide();
+        $("#caption").hide();
+        $("#thead").hide();
+        $("#container").show();
+
+        //lodcontainer();
+    }
+    function tabletu() {
+        $("#ssss").show();
+        $("#dataTable").show();
+        $("#lsattab").show();
+        $("#caption").show();
+        $("#thead").show();
+        $("#container").hide();
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var area = $("#Area").val();
+        var gender = $("#genderSelect").val();
+        var age = $("#ageSelect").val();
+        var healthInsuranceFlag = $("#healthInsuranceFlagSelect").val();
+        var socialInsuranceFlag = $("#socialInsuranceFlagSelect").val();
+
+        var params = new Object();
+        params.Area = area;
+        params.Gender = gender;
+        params.Age = age;
+        params.HealthInsuranceFlag = healthInsuranceFlag;
+        params.SocialInsuranceFlag = socialInsuranceFlag;
+        var json = JSON.stringify(params);
+        return json;
+    }
+
+
+    function reset() {
+        $('#AreaSelect').combotree('setValue', "");
+        $("#genderSelect").val("请选择");
+        $("#ageSelect").val("请选择");
+        $("#healthInsuranceFlagSelect").val("请选择");
+        $("#socialInsuranceFlagSelect").val("请选择");
+    }
+
+    //查询方法   查询条件放入隐藏域 
+    function query() {
+        var CheckInTimeFrom = $("#CheckInTimeFrom").val();
+        $("#CheckInTimeF").val(CheckInTimeFrom);
+
+        var CheckInTimeTo = $("#CheckInTimeTo").val();
+        $("#CheckInTimeT").val(CheckInTimeTo);
+
+        var area = $('#AreaSelect').combotree('getValue');
+        if (area != "") {
+            $("#Area").val(area);
+        }
+
+        //var param = $.toJSON({ 'OldManName': $("#OldManN").val() });
+
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+            lodcontainer();
+        });
+    }
+
+
+    function firstPage() {
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+        });
+    }
+    //上一页
+    function upPage() {
+        page = $("#nowpage").val();
+        page--;
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, page);
+            };
+        });
+    }
+    //最后一页
+    function lastPage() {
+        page = $("#nowpage").val();
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                var last = $("#sum").text();
+                createTable(info, last);
+            };
+        });
+    }
+
+    //刷新
+    function refresh() {
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, 1);
+            };
+        });
+    }
+
+    //下一页
+    function nextPage() {
+        page = $("#nowpage").val();
+        page++;
+        var sql = sqlstr();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            info = ret;
+            if (info) {
+                createTable(info, page);
+            };
+        });
+    }
+    //-----------------------------------------------------------------创建表格
+    function createTable(data, page) {
+
+        var tabStr = "<table class='t1'>";
+        tabStr+="<tr><th width='42' height='30'>序号</th><th width='80'>姓名</th><th width='170'>身份证</th><th width='40'>性别</th><th width='50'>年龄</th><th width='50'>医保</th><th width='50'>社保</th><th width='110'>座机</th><th width='110'>手机</th><th width='80'>居住情况</th><th width='80'>身份情况</th><th width='100'>家庭住址</th></tr>";
+
+        var dataArray = eval(data);
+        var len = dataArray.length;
+
+        if (len > 0) {
+            if (len % 50 == 0) {
+                sumpage = parseInt(len / 50);
+            } else {
+                sumpage = parseInt(len / 50) + 1;
+            }
+            $("#nowpage").val(sumpage);
+            $("#sum").text(sumpage);
+            if (page < 1) {
+                page = 1;
+                $("#nowpage").val(page);
+            }
+            else {
+                $("#nowpage").val(page);
+                $("#sum").text(sumpage);
+            }
+
+            if (page > sumpage) {
+                page = sumpage;
+                $("#nowpage").val(sumpage);
+            }
+
+
+            if (len > 50 * page) {
+                k = page * 50;
+            } else {
+                k = (page - 1) * 50 + len % 50;
+            }
+
+            for (var i = (page - 1) * 50; i < k; i++) {
+
+                var j = i + 1;
+                var nowyear = new Date().getFullYear();
+
+                //document.write(dataArray[i].CheckInTime);
+                //alert(ndateFormatter(dataArray[i].CheckInTime, "yyyy-MM-dd"))
+                var FCheckInTime = ndateFormatter(dataArray[i].CheckInTime, "yyyy-MM-dd");
+                var FBirthday = nowyear - ndateFormatter(dataArray[i].Birthday, "yyyy");
+                var FOperatedOn = ndateFormatter(dataArray[i].OperatedOn, "yyyy-MM-dd");
+                var gender = prseGender(dataArray[i].Gender);
+                var livingState = ParseLivingState(dataArray[i].LivingState);
+                var oldManIdentity = ParseOldManIdentity(dataArray[i].OldManIdentity);
+                var HealthInsuranceFlag = dataArray[i].HealthInsuranceFlag == 0 ? '无' : '有';
+                var SocialInsuranceFlag = dataArray[i].SocialInsuranceFlag == 0 ? '无' : '有';
+                tabStr = tabStr + "<tr><td width='42'>" + j + "</td><td width='80'>" + dataArray[i].OldManName + "</td><td width='170'>" + dataArray[i].IDNo + "</td><td width='40'>" + gender + "</td><td width='50'>" + dataArray[i].Age
+            + "</td><td width='50'>" + HealthInsuranceFlag + "</td><td width='50'>" + SocialInsuranceFlag + "</td><td width='110'>" + dataArray[i].Tel + "</td><td width='110'>" + dataArray[i].Mobile + "</td><td width='80'>" + livingState + "</td><td width='80'>" + oldManIdentity + "</td><td width='100' style='border-right:none' >" + dataArray[i].Address + "</td></tr>";
+
+            }
+            tabStr += "</table>";
+            $("#dataTable").html(tabStr);
+        } else {
+            $("#nowpage").val(1);
+            $("#sum").text(1);
+            tabStr += "</table>";
+            $("#dataTable").html(tabStr);
+        }
+    }
+    function ParseOldManIdentity(oldManIdentity) {
+        if (oldManIdentity == "00001") {
+            return "普通";
+        } else if (oldManIdentity == "00002") {
+            return "老干部";
+        } else {return "未知";}
+    };
+    function ParseLivingState(livingState) {
+        if (livingState == "00001") {
+            return "未知";
+        } else if (livingState == "00002") {
+            return "独居";
+        } else if (livingState == "00003") {
+            return "孤寡";
+        } else if (livingState == "00004") {
+            return "空巢";
+        }
+    };
+    function prseGender(gender) {
+        if (gender == "M") {
+            return "男";
+        } else if (gender == "F") {
+            return "女";
+        } else {
+            return "未知";
+        }
+    }
+
+    $(function () {
+
+        var winHeight = $(window).height();
+        $('#dataTable').height(winHeight - 270);
+        var id = top.appDeployArea.code;
+
+        //加载地域下拉列表                                     
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/AreaQuery', { parms: $.toJSON({ 'AreaId': id }) }, function (ret) {
+            var data = eval(ret);
+            streetID = data[0].AreaId;
+            $("#Area").val(streetID);
+            $('#AreaSelect').combotree({
+                data: data,
+                loadFilter: function (data) {
+                    address = convert(data);
+                    return address;
+                }
+            });
+        }, { async: false });
+
+
+        var sql = sqlstr(); //获取条件
+        //加载报表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/OldQuery', { params: sql }, function (ret) {
+            var info = ret;
+            if (info) {
+                createTable(info, page);
+            }
+
+        });
+
+
+
+    });
+
+
+    //---------------------------------------------------加载树
+    function convert(rows) {
+        function exists(rows, ParentId) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].AreaId == ParentId) return true;
+            }
+            return false;
+        }
+
+        var nodes = [];
+        // 得到顶层节点  
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (!exists(rows, row.ParentId)) {
+                nodes.push({
+                    id: row.AreaId,
+                    text: row.AreaName
+                });
+            }
+        }
+
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+        while (toDo.length) {
+            var node = toDo.shift();    // 父节点   
+            // 得到子节点   
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.ParentId == node.id) {
+                    var child = { id: row.AreaId, text: row.AreaName };
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                    toDo.push(child);
+                }
+            }
+        }
+        return nodes;
+    }
+
+
+
+    //---------------------------------------------------------------------统计图
+    function lodcontainer() {
+        //动态取值
+        var Name = "老人统计图";
+        var das = new Array();
+        var smallName = new Array();
+        smallName = ["60-70岁", "71-80岁", "81-90岁", "90—100岁", "100岁以上"];
+        var streetNames = [];
+        var arr = [];
+        for (var i = 0, len = data.length; i < len; i++) {//得到不重复的街道名
+            !RegExp(data[i].areaName, "g").test(streetNames.join(",")) && (streetNames.push(data[i].areaName));
+        }
+        for (var i = 0; i < streetNames.length; i++) {
+            var datas = new Array();
+            for (var j = 0; j < smallName.length; j++) {
+                datas[j] = arr[i][j];
+            }
+
+            var da = { 'name': streetNames[i], 'data': datas };
+            das[i] = da;
+        }
+
+        $('#container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: Name
+            },
+            xAxis: {//横轴  
+                categories: smallName,
+                labels: {
+                    rotation: -50
+                }
+
+            }, series: das
+
+        });
+}
+
+
+//控制myDate97显示格式
+function getFormat() {
+    if ($("#reqMethod").val() == "month") {
+        return 'yyyy-MM';
+    } else if ($("#reqMethod").val() == "year") {
+        return 'yyyy';
+    } else {
+        return 'yyyy-MM-dd';
+    }
+}
+
+ 
+</script>
+<div>
+    <table style="margin-left: 20px; padding-top: 20px">
+        <tbody>
+            <tr>
+                <td width="80">
+                    行政区划：
+                </td>
+                <td width="280">
+                    <input id="AreaSelect" class="easyui-combotree" style="width:260px;" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">性别：</span>
+                </td>
+                <td>
+                    <select id="genderSelect" style="width: 70px">
+                        <option value="" selected="selected">请选择</option>
+                        <option value="M">男</option>
+                        <option value="F">女</option>
+                        <option value="W">未知</option>
+                    </select>
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">年龄：</span>
+                </td>
+                <td>
+                    <select id="ageSelect" style="width: 80px">
+                        <option value="" selected="selected">请选择</option>
+                        <option value="1">从小到大</option>
+                        <option value="0">从大到小</option>
+                    </select>
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">医保：</span>
+                </td>
+                <td>
+                    <select id="healthInsuranceFlagSelect" style="width: 70px">
+                        <option value="" selected="selected">请选择</option>
+                        <option value="1">有</option>
+                        <option value="0">无</option>
+                    </select>
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">社保：</span>
+                </td>
+                <td style="width:80px">
+                    <select id="socialInsuranceFlagSelect" style="width: 70px">
+                        <option value="" selected="selected">请选择</option>
+                        <option value="1">有</option>
+                        <option value="0">无</option>
+                    </select>
+                </td>
+                <td width="70">
+                    <button onclick="reset();">
+                        重置</button>
+                </td>
+                <td style="width: 80px">
+                    <button align="right" onclick="query();">
+                        查询</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="hidden" id="CheckInTimeF" />
+    <input type="hidden" id="CheckInTimeT" />
+    <input type="hidden" id="OperatedOnF" />
+    <input type="hidden" id="OperatedOnT" />
+    <input type="hidden" id="OldManN" />
+    <input type="hidden" id="GenderS" />
+    <input type="hidden" id="Addres" />
+    <input type="hidden" id="Telt" />
+    <input type="hidden" id="Area" />
+    <div class="datagrid-tools" style="height: 30px; background-color: #fafafa">
+        <!--<span><img style="margin-left: 30px" src="../../images/report-form/export.jpg" /><a href="javascript:void(0)">导出</a></span>
+        <span><img style="margin-left: 30px" src="../../images/report-form/print.jpg" /><a href="javascript:void(0)">打印</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/statistics.jpg"/><a href="javascript:void(0)" onclick="statistics()">统计</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/table.jpg"/><a href="javascript:void(0)" onclick="tabletu()">表格</a></span>-->
+    </div>
+</div>
+<div id="caption" style="text-align: center; margin-top: 15px">
+    老人花名册</div>
+<div id="thead" style="border: 1px solid; width:98%; margin-right: auto; margin-left: auto;
+    border-bottom: none">
+ <!--   <table style="width:98%;">
+        <tr>
+            <th width='42' height='30'>
+                序号
+            </th>
+            <th width='80'>
+                姓名
+            </th>
+            <th width='170'>
+                身份证
+            </th>
+            <th width='40'>
+                性别
+            </th>
+            <th width='50'>
+                年龄
+            </th>
+            <th width='50'>
+                医保
+            </th>
+            <th width='50'>
+                社保
+            </th>
+            <th width='110'>
+                座机
+            </th>
+            <th width='110'>
+                手机
+            </th>
+            <th width='80'>
+                居住情况
+            </th>
+            <th width='80'>
+                身份情况
+            </th>
+            <th width='100' style="border-right: none">
+                家庭住址
+            </th>
+        </tr>
+    </table>-->
+</div>
+<div id="dataTable" align="center" style="overflow-y: scroll; border: 1px solid;
+    border-top: none; width:98%; margin-right: auto; margin-left: auto;">
+</div>
+<div id="lsattab" style="padding-bottom: 0px; width: 100%; height: 30px; margin-top: 10px;
+    border-right: 1px solid #CCC; border-bottom: 1px solid #CCC; border-left: 1px solid #CCC;">
+    <!--<button style="background-image: url(img/firstPage.jpg) norepeat ;width:10px; height:10px;border:none; "></button>-->
+    <select id="page" style="margin-left: 20px; margin-top: 8px;" onchange="">
+        <option value="min">50</option>
+        <!--<option value="common">15</option>
+<option value="max">18</option>-->
+    </select>
+    <input type="button" style="width: 10px; height: 10px; margin-left: 20px; border: 0;
+        background: url(../../images/report-form/firstPage.jpg) no-repeat; cursor: pointer"
+        onclick="firstPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/upPage.jpg) no-repeat; cursor: pointer"
+        onclick="upPage()" />
+    第<input type="text" style="width: 15px; height: 10px" id="nowpage" value="1" onchange="pagechang();" />共<label
+        id="sum"></label>页
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/nextPage.jpg) no-repeat; cursor: pointer"
+        onclick="nextPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/lastPage.jpg) no-repeat; cursor: pointer"
+        onclick="lastPage()" />
+    <!--      <input type="button" style="width: 10px; height: 13px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/refresh.jpg) no-repeat; cursor: pointer"
+            onclick="refresh()" />-->
+</div>
+</div>
+<div id="container" style="min-width: 310px; height: 400px; width: 1000; margin: 0">
+</div>

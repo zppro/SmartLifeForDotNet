@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Cer" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Redirect" type="SmartLife.Share.Models.Cer.Redirect, SmartLife.Share.Models" />
+    <typeAlias alias="RedirectPK" type="SmartLife.Share.Models.Cer.RedirectPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Redirect_Create" parameterClass="StringObjectDictionary" >
+      insert into Cer_Redirect(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdFrom" >ApplicationIdFrom</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdTo" >ApplicationIdTo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tag" >Tag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Url" >Url</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectId" >ObjectId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdFrom" >#ApplicationIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdTo" >#ApplicationIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tag" >#Tag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Url" >#Url#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectId" >#ObjectId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Redirect_Update" parameterClass="StringObjectDictionary" >
+      update Cer_Redirect
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdFrom" >ApplicationIdFrom=#ApplicationIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationIdTo" >ApplicationIdTo=#ApplicationIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Tag" >Tag=#Tag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Url" >Url=#Url#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="Redirect_Delete" parameterClass="StringObjectDictionary" >
+      delete Cer_Redirect
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationIdFrom" >ApplicationIdFrom=#ApplicationIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationIdTo" >ApplicationIdTo=#ApplicationIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tag" >Tag=#Tag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Url" >Url=#Url#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Redirect_Load" parameterClass="RedirectPK" resultClass="Redirect" >
+      select Id,CheckInTime,ApplicationIdFrom,ApplicationIdTo,Tag,Url,ObjectId from Cer_Redirect
+      where Id=#Id#
+    </select>
+    <select id="Redirect_List" parameterClass="StringObjectDictionary" resultClass="Redirect" >
+      select Id,CheckInTime,ApplicationIdFrom,ApplicationIdTo,Tag,Url,ObjectId from Cer_Redirect
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationIdFrom" >ApplicationIdFrom=#ApplicationIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationIdTo" >ApplicationIdTo=#ApplicationIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tag" >Tag=#Tag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Url" >Url=#Url#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

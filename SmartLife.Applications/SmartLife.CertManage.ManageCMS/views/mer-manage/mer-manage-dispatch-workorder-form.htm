@@ -1,0 +1,190 @@
+﻿<style type="text/css">
+.bottom_table td{ line-height:33px; text-align:center; border-width: 1px; border-color: #C0C0C0;  border-bottom-style: solid; border-right-style: solid;}
+.top_td{border:0; text-align:left; font-size:16px;}
+table input{ border:0; margin-left:5px;}
+</style>
+<div id="dispatch-workorder-form" title="派单" style="overflow: auto; padding: 3px;">
+    <form id="fm-dispatch-workorder" method="post" novalidate>
+    <div class="fitem">
+       <table style=" width:100%;">
+       <tr><td colspan="3" id="serveStationName" style=" text-align:center; border:0; font-size:25px; line-height:40px; "></td></tr>
+       <tr><td class="top_td"><label>工单编号：</label><input name="WorkOrderNo" style=" width:200px;" /></td><td  class="top_td"><label>坐席：</label><input name="OperatedByName" /></td><td  class="top_td"><label>工单状态：</label><input name="DoStatus" /></td></tr></table>
+        <table class="bottom_table" style=" border-width: 1px; border-color: #C0C0C0; width:100%; border-top-style: solid; border-left-style: solid;">
+        <tr><td>工单内容</td><td colspan="5"><input name="WorkOrderContent" style=" width:600px;"/></td></tr>
+        <tr><td>工单归属</td><td colspan="3"><input name="" /></td><td>服务类别</td><td><input name="ServeTypeName" /></td></tr>
+        <tr><td>服务大类</td><td><input name="ServeItemAName" /></td><td>服务小类</td><td><input name="ServeItemBName" /></td><td>服务方式</td><td><input name="ServeModeName" /></td></tr>
+        <tr><td>要求上门时间</td><td><input name="ServiceTimeRequired" /></td><td>要求备注</td><td colspan="3"><input name="RemarkRequired" /></td></tr>
+        <tr><td>服务费用（元）</td><td><input name="ServeFee" /></td><td>政府承担（元）</td><td><input name="ServeFeeByGov" /></td><td>自费（元）</td><td><input name="ServeFeeBySelf" /></td></tr>
+        <tr><td>呼入时间</td><td><input name="CheckInTime" /></td><td>督办时间</td><td><input name="SuperviseTime" /></td><td>督办人员</td><td><input name="SupervisedByName" /></td></tr>
+        <tr><td>老人姓名</td><td><input name="OldManName" /></td><td>老人性别</td><td><input name="Gender" /></td><td>老人座机</td><td><input name="Tel" /></td></tr>
+        <tr><td>老人手机</td><td><input name="Mobile" /></td><td>家庭地址</td><td colspan="3"><input name="Address" /></td></tr>
+        <tr><td>服务人员</td><td colspan="5" style=" padding-left:5px;"><input id="ServeManName" name="ServeManName"  type="hidden" /><input id="ServeManId"  type="hidden" /><input id="NameAndIDNo" /></td></tr>
+        <!-- 
+        <tr><td>服务人员</td><td colspan="5"><input id="NameAndIDNo" /><input id="ServeManName" name="ServeManName" type="hidden" /></td></tr>
+        <tr><td>服务人员</td><td><input name="ServeManName" id="ServeManName" /></td><td>上门服务起始时间</td><td><input name="ServeBeginTime" id="ServeBeginTime" class="easyui-datetimebox"  required="true" missingmessage="不能为空"/></td><td>上门服务截止时间</td><td><input name="ServeEndTime" id="ServeEndTime" class="easyui-datetimebox"  required="true" missingmessage="不能为空"/></td></tr>
+        <tr><td>老人签字</td><td colspan="2"><input name="" /></td><td>服务人员签字</td><td colspan="2"><input name="" /></td></tr>
+        <tr><td>服务结果</td><td colspan="5"><input name="ServeResultName" /></td></tr>
+        <tr><td>结果备注</td><td colspan="5"><input name="ServeResultRemark" /></td></tr>
+        <tr><td>评价老人</td><td colspan="5"><input name="FeedbackToServiceStationName" /></td></tr>
+        <tr><td>评价备注</td><td colspan="5"><input name="FeedbackRemarkToServiceStation" /></td></tr>-->
+        </table>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var url = baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service/';
+    var workOrderId;
+    var stationId;
+    function dialogOpen(dialogId, dialogData) {
+        workOrderId = dialogData.WorkOrderId;
+        stationId = dialogData.StationId;
+        //        alert($.toJSON(dialogData));
+        getTo(url + 'GetWorkOrderInfo/' + workOrderId, null, function (ret) {
+            if (ret.Success) {
+                var result = xml2json.parser(ret.ret, 'StringObjectDictionary');
+//                alert($.toJSON(result));
+                $('#fm-dispatch-workorder').form('clear');
+                $('#fm-dispatch-workorder').form('load', result);
+                $('input[name="Gender"]').val(gender(result.Gender));
+                $('#serveStationName').text( result.ServeStationName);
+                    $("input[name='DoStatus']").val(doStatus(result.DoStatus));
+            }
+        }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+
+//        //加载服务人员
+//        getAll([baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeMan/' + stationId + ',' + window.contants.UserTypeAsMerchant + ',' + window.contants.GuidAsGroup_MerchantServeMan,
+//                    ajaxData_InvokeUrl + '/GetDictionaryItem/11013'], function (r1, r2s) {
+//                        $('#ServeManName').combobox({
+//                            width: 150,
+//                            panelWidth: 150,
+//                            data: r1.rows,
+//                            valueField: 'UserId',
+//                            textField: 'UserName',
+//                            editable: false
+//                        });
+//                    });
+            var areas;
+                    //加载服务人员
+                    $('#NameAndIDNo').combogrid({
+                        delay: 500,
+                        width: 150,
+                        panelWidth: 190,
+                        panelHeight: 240,
+                        mode: 'local',
+                        data: areas,
+                        idField: 'UserId',
+                        textField: 'UserName',
+                        //过滤
+                        onChange: function (newValue, oldValue) {
+                            if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#NameAndIDNo').combobox("getText")))) {
+                                //                                alert($.trim(newValue));
+                                var queryParams = {
+                                    sort: 'UserName',
+                                    order: 'asc',
+                                    page: '1',
+                                    rows: '20',
+                                    instance: {
+                                        UserType: window.contants.UserTypeAsMerchant,
+                                        UserName:$.trim(newValue)
+                                    }
+                                };
+                                postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeManForInput/' + window.contants.GuidAsGroup_MerchantServeMan + ',' + stationId, $.toJSON(queryParams), function (ret) {
+//                                                                        alert($.toJSON(ret));
+                                    $('#NameAndIDNo').combogrid("grid").datagrid("loadData", ret);
+                                });
+                            }
+                        },
+                        filter: function (q, row) {
+                            return row["UserName"].indexOf(q) != -1 || row["UserCode"].indexOf(q) != -1;
+                        },
+                        columns: [[
+                                        { field: 'UserName', title: '姓名', width: 50, sortable: true },
+                                        { field: 'Gender', title: '性别', width: 35, sortable: true, formatter: easyuigrid_genderFormatter },
+                                        { field: 'UserCode', title: '工号', width: 100, sortable: true }
+                                    ]],
+                        //姓名选择为空的时候    清除表单中的所以内容
+                        onHidePanel: function () {
+                            if ($('#NameAndIDNo').combo('getText') == "") {
+                                $('#ServeManId').val(null);
+                                $('#ServeManName').val(null);
+                            }
+                        },
+                        //选择一个老人之后   把老人的基本信息都填入表单
+                        onCheck: function (index, record) {
+                            $('#ServeManId').val(record.UserId);
+                            $('#ServeManName').val(record.UserName);
+                        }
+                    });
+    }
+
+
+    function dialogBeforeSubmit() {
+      var serveManId=  $('#ServeManId').val();
+      var serveManName = $('#ServeManName').val();
+//        var serveManName = $('#ServeManName').combobox('getText');
+//        var serveBeginTime = $('#ServeBeginTime').combobox('getValue').replace(/-/g, "/");
+//        var serveEndTime =$('#ServeEndTime').combobox('getValue').replace(/-/g, "/");
+//        var nowTime = '\/Date(' + Date.now() + '+0800)\/';
+        var result = false;
+        if (serveManName == '' || serveManId=='') {
+            alert("服务人员不能为空");
+            result = false;
+        }
+//        else if (serveBeginTime == '' || serveEndTime == '') {
+//            alert("上门时间不能为空");
+//            result = false;
+//        }
+//        else if (serveBeginTime >= serveEndTime) {
+//            alert("上门服务截止时间必须大于上门服务起始时间");
+//            result = false;
+//        }
+//        else if (toJsonDate(serveEndTime) <= nowTime) {
+//            alert("上门服务截止时间必须大于当前时间");
+//            result = false;
+//        }
+        else {
+            result = true;
+        }
+
+        return result;
+    }
+
+    function gender(g) {
+        if (g == "M" || g == "F") {
+            return g == "M" ? "男" : "女";
+        }
+        else {
+            return "未知";
+        }
+    }
+    
+    function doStatus(ds) {
+        var ret;
+        switch (ds){
+            case 0: ret = "未响应";
+                break;
+            case 1: ret = "已响应";
+                break;
+            case 2: ret = "已响应";
+                break;
+            case 3: ret = "已完成";
+                break;
+            case 4: ret = "已回访";
+                break;
+        }
+        return ret;
+    }
+
+    function dialogClose(dialogId) {
+        return $.toJSON({
+            WorkOrderId: workOrderId,
+            OperatedBy: top.gUserId,
+                    ServeManName: $('#ServeManName').val(),
+                    ServeManId: $('#ServeManId').val()
+//            ServeManDispatchedTime:'\/Date(' + Date.now() + '+0800)\/',
+//            ServeBeginTime: toJsonDate($('#ServeBeginTime').datetimebox('getValue').replace(/-/g, "/")),
+//            ServeEndTime: toJsonDate($('#ServeEndTime').datetimebox('getValue').replace(/-/g, "/"))
+          });
+    }
+    
+</script>

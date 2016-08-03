@@ -1,0 +1,42 @@
+﻿<div id="service-B180399-view" class="1024X768">
+    <div class="oldman-info-panel">&nbsp;</div>
+    <div class="service-middle">
+        <div class="service-process-history-panel" >&nbsp;
+        </div>
+    </div>
+    <div id="infotainment-aid-info-panel" class="right-panel" >
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize('service-B180399-view');
+            var urlRoot;
+            var outside = getQueryString('outside');
+            if (outside == "1") {
+                urlRoot = getUrlRootFromOutside('views/');
+            }
+            else {
+                urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+            }
+
+            getHtml(urlRoot + 'shared/oldman-info-panel.htm', function (str) {
+                $('#service-B180399-view .oldman-info-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'shared/service-process-history-panel.htm', function (str) {
+                $('#service-B180399-view .service-process-history-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'old-care/infotainment-aid-info-panel.htm', function (str) {
+                $('#service-B180399-view #infotainment-aid-info-panel').html(str);
+            });
+        });
+
+    });
+
+</script>

@@ -1,0 +1,930 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Share.Models</RootNamespace>
+    <AssemblyName>SmartLife.Share.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Solution-Outputs\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Auth\AccessPointPart.cs" />
+    <Compile Include="Auth\AreaModule.cs" />
+    <Compile Include="Auth\AreaModuleSetting.cs" />
+    <Compile Include="Auth\GroupModule.cs" />
+    <Compile Include="Auth\GroupModuleSetting.cs" />
+    <Compile Include="Auth\LisenceUser.cs" />
+    <Compile Include="Auth\Module.cs" />
+    <Compile Include="Auth\DeployNodeObject.cs" />
+    <Compile Include="Bas\BuildingBaseInfo.cs" />
+    <Compile Include="Bas\BuildingUnitBaseInfo.cs" />
+    <Compile Include="Bas\BuildingUnitBaseInfo_V.cs" />
+    <Compile Include="Bas\FamilyBaseInfo.cs" />
+    <Compile Include="Bas\FamilyBaseInfo_V.cs" />
+    <Compile Include="Bas\HouseBaseInfo.cs" />
+    <Compile Include="Bas\HouseBaseInfo_V.cs" />
+    <Compile Include="Bas\ResidentActivityLog.cs" />
+    <Compile Include="Bas\ResidentBaseInfo.cs" />
+    <Compile Include="Bas\ResidentIDNoRequisition.cs" />
+    <Compile Include="Bas\ResidentMigrateLog.cs" />
+    <Compile Include="Bas\RoadBaseInfo.cs" />
+    <Compile Include="Tmp\XlsOfResidentBaseInfo.cs" />
+    <Compile Include="Cer\DeployNode.cs" />
+    <Compile Include="Cer\Redirect.cs" />
+    <Compile Include="Cer\ObjectToken.cs" />
+    <Compile Include="Dcc\DayCareObject4AIO.cs" />
+    <Compile Include="Dcc\DayCareObjectBaseInfo.cs" />
+    <Compile Include="Eva\EvaluatedBaseInfo.cs" />
+    <Compile Include="Eva\EvaluatedBaseInfo_V.cs" />
+    <Compile Include="Eva\EvaluatedReport.cs" />
+    <Compile Include="Eva\EvaluatedRequisition.cs" />
+    <Compile Include="Eva\EvaluatedRequisition_V.cs" />
+    <Compile Include="Eva\EvaluationInfo.cs" />
+    <Compile Include="Inc\SyncOut_ServiceWorkOrder_120701.cs" />
+    <Compile Include="Log\DeviceReport.cs" />
+    <Compile Include="Oca\CallService_ForMonitor_V.cs" />
+    <Compile Include="Oca\InstitutionsCareCenter.cs" />
+    <Compile Include="Oca\MerchantServeManMappingOldMan.cs" />
+    <Compile Include="Oca\MerchantServiceReserve.cs" />
+    <Compile Include="Oca\OldManBaseInfo_ForMonitor_V.cs" />
+    <Compile Include="Oca\OldManComplainInfo.cs" />
+    <Compile Include="Oca\ServiceCallBack.cs" />
+    <Compile Include="Oca\ServiceListDaily_All_V.cs" />
+    <Compile Include="Pam\AgencyObjectConfigInfo.cs" />
+    <Compile Include="Pam\AssessmentItem.cs" />
+    <Compile Include="Pam\AssessmentResult.cs" />
+    <Compile Include="Pam\BookMeal.cs" />
+    <Compile Include="Pam\CourseSchedule.cs" />
+    <Compile Include="Pam\DeviceMsgNotice.cs" />
+    <Compile Include="Pam\OldManMappingServeMan.cs" />
+    <Compile Include="Pam\PensionAgencyObjectBaseInfo.cs" />
+    <Compile Include="Pam\Room.cs" />
+    <Compile Include="Pam\RoomOldMan.cs" />
+    <Compile Include="Pam\ServeMan.cs" />
+    <Compile Include="Pam\SetMeal.cs" />
+    <Compile Include="Pam\StationInfo.cs" />
+    <Compile Include="Pam\UserMappingRoom.cs" />
+    <Compile Include="Pam\WorkExecute.cs" />
+    <Compile Include="Pam\WorkPlan.cs" />
+    <Compile Include="Pub\FlowDefineMapping.cs" />
+    <Compile Include="Pub\Location.cs" />
+    <Compile Include="Pub\MerchantUser.cs" />
+    <Compile Include="Oca\CallCenter.cs" />
+    <Compile Include="Oca\CallRecord.cs" />
+    <Compile Include="Oca\CallService.cs" />
+    <Compile Include="Oca\CallService4M.cs" />
+    <Compile Include="Oca\CC_Ext.cs" />
+    <Compile Include="Oca\CC_Group.cs" />
+    <Compile Include="Oca\EPay_AssessPackage.cs" />
+    <Compile Include="Oca\EPay_OldManAccount.cs" />
+    <Compile Include="Oca\EPay_Package.cs" />
+    <Compile Include="Oca\EPay_PackageItem.cs" />
+    <Compile Include="Oca\EPay_RechargeRecord.cs" />
+    <Compile Include="Oca\Ewallet_Charge_Record.cs" />
+    <Compile Include="Oca\Ewallet_Merchant.cs" />
+    <Compile Include="Oca\Ewallet_OldMan.cs" />
+    <Compile Include="Oca\Ewallet_Recharge_Record.cs" />
+    <Compile Include="Oca\FamilyCamera.cs" />
+    <Compile Include="Oca\FamilyMember.cs" />
+    <Compile Include="Oca\Merchant.cs" />
+    <Compile Include="Oca\MerchantArea.cs" />
+    <Compile Include="Oca\MerchantServeItem.cs" />
+    <Compile Include="Oca\MerchantServeMode.cs" />
+    <Compile Include="Oca\MerchantServePeriod.cs" />
+    <Compile Include="Oca\MutualAidPerson.cs" />
+    <Compile Include="Oca\OldManBaseInfo.cs" />
+    <Compile Include="Oca\OldManConfigInfo.cs" />
+    <Compile Include="Oca\OldManFamilyInfo.cs" />
+    <Compile Include="Oca\OldManLocateInfo.cs" />
+    <Compile Include="Oca\ServiceFamilyResponse.cs" />
+    <Compile Include="Oca\ServiceReceive.cs" />
+    <Compile Include="Oca\ServiceTrackLog.cs" />
+    <Compile Include="Oca\ServiceTrackLog4M.cs" />
+    <Compile Include="Oca\ServiceVoice.cs" />
+    <Compile Include="Oca\ServiceWorkOrder.cs" />
+    <Compile Include="Oca\ServiceVoiceAddress.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pub\Accounting_Period.cs" />
+    <Compile Include="Pub\Area.cs" />
+    <Compile Include="Pub\Area_V.cs" />
+    <Compile Include="Pub\Article.cs" />
+    <Compile Include="Pub\ArticleColumn.cs" />
+    <Compile Include="Pub\Attachment.cs" />
+    <Compile Include="Pub\CallObject.cs" />
+    <Compile Include="Pub\ArticleColumnPermit.cs" />
+    <Compile Include="Pub\ArticleColumn_Relation.cs" />
+    <Compile Include="Pub\Device.cs" />
+    <Compile Include="Pub\MerchantOpenArea.cs" />
+    <Compile Include="Pub\PensionAgencyUser.cs" />
+    <Compile Include="Pub\ReminderObject.cs" />
+    <Compile Include="Pub\ServiceStation_Light.cs" />
+    <Compile Include="Pub\ServiceStation_ForMonitor_V.cs" />
+    <Compile Include="Pub\Table.cs" />
+    <Compile Include="Pub\SurveyResult.cs" />
+    <Compile Include="Pub\Survey.cs" />
+    <Compile Include="Pub\Flow.cs" />
+    <Compile Include="Pub\FlowDefine.cs" />
+    <Compile Include="Pub\Group.cs" />
+    <Compile Include="Pub\GroupMember.cs" />
+    <Compile Include="Pub\GroupPermit.cs" />
+    <Compile Include="Pub\Reminder.cs" />
+    <Compile Include="Pub\ServiceStation.cs" />
+    <Compile Include="Pub\SmsSend.cs" />
+    <Compile Include="Pub\User.cs" />
+    <Compile Include="Pub\UserArea.cs" />
+    <Compile Include="Pub\SurveyItem.cs" />
+    <Compile Include="Pub\TableJoin.cs" />
+    <Compile Include="Pub\Column.cs" />
+    <Compile Include="Pub\SetSolution.cs" />
+    <Compile Include="Pub\Set.cs" />
+    <Compile Include="Pub\SubSet.cs" />
+    <Compile Include="Pub\SubSetColumn.cs" />
+    <Compile Include="Pub\UserMappingWeiXin.cs" />
+    <Compile Include="Pub\Col_Article.cs" />
+    <Compile Include="SQLServer\MsdbJob.cs" />
+    <Compile Include="SQLServer\MsdbJob4Update.cs" />
+    <Compile Include="SQLServer\MsdbJobSchedule.cs" />
+    <Compile Include="SQLServer\MsdbJob4Start.cs" />
+    <Compile Include="SQLServer\MsdbJob4Stop.cs" />
+    <Compile Include="Sys\Application.cs" />
+    <Compile Include="Sys\ApplicationAccessibility.cs" />
+    <Compile Include="Sys\Behavior.cs" />
+    <Compile Include="Sys\DatabaseConnect.cs" />
+    <Compile Include="Sys\DictionaryItem.cs" />
+    <Compile Include="Sys\DictItem.cs" />
+    <Compile Include="Sys\Menu.cs" />
+    <Compile Include="Sys\MenuBehavior.cs" />
+    <Compile Include="Sys\Parameter.cs" />
+    <Compile Include="Sys\Platform.cs" />
+    <Compile Include="Sys\PlatformApplication.cs" />
+    <Compile Include="Sys\Server.cs" />
+    <Compile Include="Sys\Tree.cs" />
+    <Compile Include="Sys\TreeItem.cs" />
+    <Compile Include="Sys\WhiteList.cs" />
+    <Compile Include="Sys\DictItemEx.cs" />
+    <Compile Include="Sys\DictItemEx2.cs" />
+    <Compile Include="WeiXin\Meb\NormalAccount.cs" />
+    <Compile Include="WeiXin\Meb\NormalAccountFollow.cs" />
+    <Compile Include="WeiXin\Meb\ServiceAccount.cs" />
+    <Compile Include="WeiXin\Oca\CallService.cs" />
+    <Compile Include="WeiXin\Oca\OldMan.cs" />
+    <Compile Include="WeiXin\Oca\ServiceWorkOrder.cs" />
+    <Compile Include="WeiXin\Pub\WXButton.cs" />
+    <Compile Include="WeiXin\Pub\WXCheckIn.cs" />
+    <Compile Include="WeiXin\Pub\WXMessageTemplate.cs" />
+    <Compile Include="WeiXin\Pub\WXSend.cs" />
+    <Compile Include="WeiXin\Pub\WXStationAuthRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Platform.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.Models.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NativeSql.xml" />
+    <EmbeddedResource Include="Share.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Application.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\WhiteList.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\User.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cer\Redirect.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cer\ObjectToken.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Parameter.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\ApplicationAccessibility.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\PlatformApplication.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Menu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\DictionaryItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Group.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Tree.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\TreeItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Behavior.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\MenuBehavior.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\GroupPermit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\GroupMember.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\MenuEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Area.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Area_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\AreaEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\UserArea.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\DictionaryItemEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cer\DeployNode.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cer\DeployNodeEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManBaseInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ServiceStation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MutualAidPerson.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\FamilyMember.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\FamilyCamera.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Ewallet_OldMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Ewallet_Merchant.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Ewallet_Recharge_Record.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Ewallet_Charge_Record.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Ewallet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManFamilyInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallCenter.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallCenterEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CC_Group.xml" />
+    <EmbeddedResource Include="Oca\CC_GroupEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CC_Ext.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\UserEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManConfigInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="IPCC.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.IPCC.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallService.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceTrackLog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallService4M.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceTrackLog4M.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceFamilyResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Inc\SyncIn.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.DataExchange.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ServiceStationEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallServiceEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceWorkOrder.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceReceive.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceWorkOrderEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceVoice.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManLocateInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManLocateInfoEx.xml" />
+    <EmbeddedResource Include="Pub\Reminder.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantServeItem.xml" />
+    <EmbeddedResource Include="Oca\MerchantServeMode.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ReminderEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantServePeriod.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SmsSend.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SmsSendEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Attachment.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallRecord.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_Package.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_PackageItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_RechargeRecord.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_OldManAccount.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Accounting_Period.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Share.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.WeiXin.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXButton.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Meb\NormalAccount.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Meb\NormalAccountFollow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Meb\ServiceAccount.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\DatabaseConnect.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\DatabaseConnectEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="providers.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.Officer.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Meb\NormalAccountEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.BaseData.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.Auth.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\Merchant.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentBaseInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\LisenceUser.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Oca\OldMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\CallObject.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\Server.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedBaseInfo.xml" />
+    <EmbeddedResource Include="Eva\EvaluatedReport.xml" />
+    <EmbeddedResource Include="Eva\EvaluatedRequisition.xml" />
+    <EmbeddedResource Include="Eva\EvaluationInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\ServerEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SQLServer.Share.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SQLServer.Job.Share.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedBaseInfoEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedRequisition_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Oca\CallService.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Oca\ServiceWorkOrder.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sys\BehaviorEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedReportEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\FlowDefine.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Flow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentBaseInfoEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_AssessPackage.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Survey.xml" />
+    <EmbeddedResource Include="Pub\SurveyResult.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\EPay_PackageEx.xml" />
+    <EmbeddedResource Include="Pub\SurveyItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Pub\SurveyBlock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SurveyBlock.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Inc\SyncOut_ServiceWorkOrder_120701.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SurveyResultEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Table.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\TableJoin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Column.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SetSolution.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Set.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SubSet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SubSetColumn.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\BuildingBaseInfo.xml" />
+    <EmbeddedResource Include="Bas\BuildingUnitBaseInfo.xml" />
+    <EmbeddedResource Include="Bas\FamilyBaseInfo.xml" />
+    <EmbeddedResource Include="Bas\HouseBaseInfo.xml" />
+    <EmbeddedResource Include="Bas\RoadBaseInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\SubSetColumnEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\BuildingUnitBaseInfo_V.xml" />
+    <EmbeddedResource Include="Bas\FamilyBaseInfo_V.xml" />
+    <EmbeddedResource Include="Bas\HouseBaseInfo_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Article.xml" />
+    <EmbeddedResource Include="Pub\ArticleColumn.xml" />
+    <EmbeddedResource Include="Pub\ArticleColumnPermit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\Auth.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Auth\Module.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\AreaModule.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ArticleColumn_Relation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\FlowEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\GroupEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ColumnEx.xml" />
+    <EmbeddedResource Include="Pub\Device.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantArea.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\MerchantOpenArea.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\MerchantUser.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManBaseInfo_ForMonitor_V.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ServiceStation_ForMonitor_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantServiceReserve.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantServiceReserveEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\Location.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\LocationEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\CallService_ForMonitor_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\UserMappingWeiXin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXMessageTemplate.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXStationAuthRequest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXStationAuthRequestEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceCallBack.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXSend.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceCallBackEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServeRecord.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ArticleColumnEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ArticleEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ReminderObject.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXCheckIn.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\Pub\WXCheckInEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\ServiceListDaily_All_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Log\DeviceReport.xml" />
+    <EmbeddedResource Include="Log\DeviceReportEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentMigrateLog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\AreaModuleEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\AreaModuleSetting.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\GroupModule.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\GroupModuleEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Auth\GroupModuleSetting.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\GroupMemberEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentIDNoRequisition.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentIDNoRequisitionEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManBaseInfoEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\FlowDefineMapping.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\MerchantServeManMappingOldMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\InstitutionsCareCenter.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\ReportTest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManComplainInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oca\OldManComplainInfoEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\PensionAgencyUser.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\PensionAgencyObjectBaseInfo.xml" />
+    <EmbeddedResource Include="Pam\Room.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\RoomOldMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\ServeMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\WorkExecute.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\WorkPlan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dcc\DayCareObjectBaseInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dcc\DayCareObject4AIO.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\PensionAgencyObjectBaseInfoEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dcc\Dcc.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\UserMappingRoom.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\WorkExecuteEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\RoomEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\WorkPlanEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\OldManMappingServeMan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\ServeManEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\OldManMappingServeManEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\AgencyObjectConfigInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bas\ResidentActivityLog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\AssessmentItem.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\AssessmentResult.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedBaseInfo_V.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SmartLife.Share.WeiXin.PFA.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WeiXin\PFA.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\StationInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\DeviceEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\CourseSchedule.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\DeviceMsgNotice.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\BookMeal.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\SetMeal.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\BookMealEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\CourseScheduleEx.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\PA.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pam\DeviceMsgNoticeEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pub\DeviceEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Eva\EvaluatedRequisition_VEx.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tmp\XlsOfResidentBaseInfo.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,616 @@
+﻿<div>
+    <div>
+        <table style="width: 90%; margin-left: 20px; padding-top: 2px">
+            <tbody>
+                <tr>
+                    <td width="60">
+                        街道社区：
+                    </td>
+                    <td width="150">
+                        <input id="tree-AreaId" /> 
+                        <input id="AreaId2" type="hidden" />
+                        <input id="AreaId3" type="hidden" />
+                    </td>
+                    <td width="60">
+                        呼叫时间：
+                    </td>
+                    <td width="150">
+                        <input class="Wdate" id="CheckIn" style="width: 140px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd ',maxDate:'%y-%M-%d'})" />
+                    </td>
+                    <td>
+                        <button onclick="query();">
+                            查询</button>
+                    </td>
+                    <td>
+                        <table align="right" style="width:600px;">
+                            <tr>
+                                <td style="float: right;">
+                                    <table>
+                                        <tr style="height:45px;">
+                                            <td valign="bottom">
+                                                <h3>今日累计呼叫</h3>
+                                            </td>
+                                            <td id="callToday" style="font-size: 30px; color: Red; padding: 0 4px;">
+                                              --
+                                            </td>
+                                            <td valign="bottom">
+                                                <h3>次</h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td> 
+                                <td style="float: right;">
+                                    <table>
+                                        <tr style="height:45px;">
+                                            <td valign="bottom">
+                                                <h3>已服务老人</h3>
+                                            </td>
+                                            <td   id="serviceOldMan"  style="font-size: 30px; padding: 0 4px;">
+                                                --
+                                            </td>
+                                            <td valign="bottom">
+                                                <h3>人</h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td> 
+                                <td style="float: right;">
+                                    <table>
+                                        <tr style="height:45px;">
+                                            <td valign="bottom">
+                                                <h3>已发放终端</h3>
+                                            </td>
+                                            <td   id="count"  style="font-size: 30px; padding: 0 4px;">
+                                                --
+                                            </td>
+                                            <td valign="bottom">
+                                                <h3>台</h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--        <div class="datagrid-tools" style="height: 30px;background-color:#fafafa">
+            <span><img style="margin-left: 30px" src="../../images/report-form/export.jpg" /><a href="javascript:void(0)">导出</a></span>
+            <span><img style="margin-left: 30px" src="../../images/report-form/print.jpg" /><a href="javascript:void(0)">打印</a></span> 
+        </div>-->
+    </div>
+    <div id="caption" style="width: 99%; text-align: center; line-height: 51px">
+        <h2>
+            <span id="currentDate" style="font-size: 24px;display:none;"></span><span id="CurrentAreaName" style="font-size: 26px;"></span>智慧养老呼叫情况即时统计图</h2>
+    </div>
+   <!-- <div style="height: 22px;">
+        <div style="height: 20px; float: left;">
+            <span style="font-size: 15px; font-weight: bold;">今日累计呼叫&nbsp;</span> <font id="callToday2"
+                style="font-size: 18px; color: Red;">--</font> <span style="font-size: 15px; font-weight: bold;">
+                    &nbsp;次</span>
+        </div>
+        <div style="height: 20px; float: left;">
+            <span style="font-size: 15px; font-weight: bold;">　今日有效呼叫&nbsp;</span> <font id="eff-callToday"
+                style="font-size: 18px; color: Red;">--</font> <span style="font-size: 15px; font-weight: bold;">
+                    &nbsp;次</span>
+        </div>
+    </div>-->
+    <div style="width: 65%; float: left">
+        <div id="callhor" style="border: 1px solid;">
+        </div>
+        <div id="callday" style="border: 1px solid;">
+        </div>
+    </div>
+    <div style="width: 35%; float: right">
+        <div id="callbing" style="border: 1px solid;">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var flog = false;
+    var repeatTime = 20000;
+
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report.css" }
+        ], function () {
+            initTree('easyUIComboTree', 'tree-AreaId', {
+                width: 140,
+                panelWidth: 200,
+                panelHeight: 260,
+                required: false,
+                editable: false,
+                onSelect: function (treeNode) {
+                    flog = true;
+                    var areaId;
+                    var treeNodeId = treeNode.id; //当前节点的层次
+                    var areaText = treeNode.text;
+                    if (treeNodeId.length > 6) {
+                        var sub_id = treeNodeId.substring(14, 18);
+                        if (sub_id == '0000') {
+                            areaId = left(treeNodeId, 13);
+                        }
+                        else {
+                            areaId = left(treeNodeId, 18);
+                        }
+                    }
+                    else {
+                        areaId = "AAA";
+                        flog = false;
+                    };
+                    $('#CurrentAreaName').text(areaText); //显示选择的街道社区
+                    query(areaId);
+                },
+                onLoadSuccess: function () {
+                    //默认展开一级
+                    var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                    $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                    $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+
+                    var node_Children = $('#tree-AreaId').combotree('tree').tree('getChildren'); //取所有的节点
+                    var rows = [];
+                    _.each(node_Children, function (o) {
+                        if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+                            rows.push(o); //取所有的社区
+                        }
+                    });
+                    if (rows.length > 1) {//社区大于一个  为街道权限，默认设置第一个社区所在的街道
+                        $('#tree-AreaId').combotree('setValue', rows[0].attributes.PId);
+                    }
+                    else if (rows.length == 1) {//只有一个社区  为社区权限 ，默认设置社区
+                        $('#tree-AreaId').combotree('setValue', rows[0].id);
+                        $('#tree-AreaId').combotree('disable');
+                    }
+                    else {
+                        alert('没有任何权限');
+                    }
+                }
+            },
+         function (d) {
+             var res;
+             postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                 res = result;
+             }, { async: false })
+             if (res) {
+                 getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+             } else {
+                 getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+             }
+         });
+            startdate(); //mydate97初始化当前日期
+            var winWidth = $(window).width();
+            var winHeight = $(window).height();
+            $("#callhor").height((winHeight - 170) / 2);
+            $("#callday").height((winHeight - 170) / 2);
+            $("#callbing").height(winHeight - 170);
+
+            setTimeout(function () {
+                var areaId;
+                if (flog) {
+                    areaId = getAreaId();
+                    query(areaId);
+                    setTimeout(arguments.callee, repeatTime);
+                }
+            }, 0);
+        });
+    });
+
+    //全部条件的json格式
+    function sqlstr(areaId) {
+        var CheckInTime = $("#CheckIn").val();
+        var params = new Object();
+        params.CheckInTime = CheckInTime;
+        params.AreaId = areaId;
+        //var json = JSON.stringify(params);
+        var json = $.toJSON(params);
+        return json;
+    }
+
+    var currentDaySum;
+
+    //查询方法   查询条件放入隐藏域 
+    function query(areaId) {
+        if (!areaId) {
+            if (flog) {
+                areaId = getAreaId();
+            }
+            else {
+                areaId = 'AAA';
+            }
+        }
+        var sql = sqlstr(areaId); //获取条件
+
+        $('#currentDate').text($.trim($("#CheckIn").val()));
+
+
+        //临时获取发放终端数  
+        var queryDate = Date.parseExact($('#currentDate').text(), 'yyyy-MM-dd');
+
+        //已服务老人
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetServiceOldManStreet/' + areaId, null, function (ret) {
+            if (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                $("#serviceOldMan").text(rows[0].Number);
+            }
+        });
+        //已发放终端
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetPaymentTerminalStreet/' + areaId, null, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            $("#count").text(rows[0].callNum);
+        });
+
+        //按小时
+        if (queryDate.equals(Date.today())) {
+            getTo(baseCMSInvokeUrl + '/Pub/ReportService/CallTypeMinuteStreet', { parms: sql }, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                hourpicture(rows);
+            });
+        }
+        else {
+            hourpicture(null);
+        }
+
+
+        //统计一天每小时的呼叫量
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetDayPerHourStreet', { parms: sql }, function (ret) {
+
+            if (ret.Success) {
+                daypicture(ret.rows);
+            }
+        });
+
+//        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetDayEffectiveCallStreet', { parms: sql }, function (ret) {
+//            if (ret.Success) {
+//                $('#eff-callToday').text(ret.rows);
+//            }
+//        });
+
+        //获取饼状图数据  
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetServiceTypePieStreet', { parms: sql }, function (result) {
+            var rows = _.map(result.rows, function (o) {
+
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            //alert($.toJSON(rows[1].serviceType));
+            var items = { item1: 0, item2: 0, item3: 0, item4: 0 };
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].serviceType == "0") {
+                    items.item1 += 1;
+                } else if (rows[i].serviceType == "1") {
+                    items.item2 += 1;
+                } else if (rows[i].serviceType == "2") {
+                    items.item3 += 1;
+                } else if (rows[i].serviceType == "3") {
+                    items.item4 += 1;
+                }
+            }
+            bingpicture(items);
+        });
+    }
+
+    //---------------------------------------------------初始化
+
+
+    //---------------------------------------------------------------------饼状图
+    function bingpicture(data) {
+
+        var typeName = "";
+
+        var sta = [{ name: "紧急呼叫(" + data.item1 + ")", color: "#ff3300", y: data.item1 },
+        { name: "亲人通话(" + data.item2 + ")", color: "#0000ff", y: data.item2 },
+        { name: "公共服务(" + data.item3 + ")", color: "#FFFF00", y: data.item3 },
+        { name: "生活服务(" + data.item4 + ")", color: "#00ff00", y: data.item4}];
+        var sum = data.item1 + data.item2 + data.item3 + data.item4;
+
+        $('#callToday').text(sum);
+//        $('#callToday2').text(sum);
+        $('#callbing').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: ' 呼叫分类次数统计图'
+            },
+            tooltip: {
+                pointFormat: ': <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    showInLegend: true,
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                data: sta
+            }]
+        });
+    }
+
+    function daypicture(data) {
+        var max = _.max(data) + 1;
+        $('#callday').highcharts({
+            chart: {
+                type: 'column',
+                margin: [50, 50, 100, 80]
+            },
+            title: {
+                text: '今日呼叫次数统计'
+            },
+            xAxis: {
+                categories: [
+                        '00:00-00:59',
+                        '01:00-01:59',
+                        '02:00-02:59',
+                        '03:00-03:59',
+                        '04:00-04:59',
+                        '05:00-05:59',
+                        '06:00-06:59',
+                        '07:00-07:59',
+                        '08:00-08:59',
+                        '09:00-09:59',
+                        '10:00-10:59',
+                        '11:00-11:59',
+                        '12:00-12:59',
+                        '13:00-13:59',
+                        '14:00-14:59',
+                        '15:00-15:59',
+                        '16:00-16:59',
+                        '17:00-17:59',
+                        '18:00-18:59',
+                        '19:00-19:59',
+                        '20:00-20:59',
+                        '21:00-21:59',
+                        '22:00-22:59',
+                        '23:00-23:59'
+                    ],
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '10px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: max,
+                title: {
+                    text: '通  话  次  数'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            //                tooltip: {
+            //                    pointFormat: '<b>{point.y:f} 次</b>',
+            //                },
+            series: [{
+                name: '次数',
+                data: data,
+                dataLabels: {
+                    enabled: true,
+                    rotation: 0,
+                    color: '#000',
+                    align: 'center',
+                    x: 0,
+                    y: 0,
+                    style: {
+                        fontSize: '11px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }]
+        });
+    }
+
+    //===============================================================================day24小时统计图
+    function daypicture2(data) {
+
+        var xAliasData = _.map(data, function (o) {
+            return o.xAlias;
+        });
+
+        var yAliasData = _.map(data, function (o) {
+            return o.yAlias;
+        });
+
+        var max = _.max(yAliasData) + 10;
+        $('#callday').highcharts({
+            chart: {
+                type: 'column',
+                margin: [50, 50, 100, 80]
+            },
+            title: {
+                text: '今日呼叫次数统计'
+            },
+            xAxis: {
+                categories: xAliasData,
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '10px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: max,
+                title: {
+                    text: '通  话  次  数'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y:f} 次</b>'
+            },
+            series: [{
+                name: 'Population',
+                data: yAliasData,
+                dataLabels: {
+                    enabled: true,
+                    rotation: 0,
+                    color: '#000',
+                    align: 'center',
+                    x: 0,
+                    y: 0,
+                    style: {
+                        fontSize: '11px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }]
+        });
+    }
+    //=================================================================================   一小时统计图
+    function hourpicture(data) {
+        var xAliasData = _.map(data, function (o) {
+            return o.xAlias;
+        });
+
+        var yAliasData = _.map(data, function (o) {
+            return o.yAlias;
+        });
+        var max = _.max(yAliasData) + 2;
+        $('#callhor').highcharts({
+            chart: {
+                type: 'column',
+                margin: [50, 50, 100, 80]
+            },
+            title: {
+                text: '当前呼叫次数统计'
+            },
+            xAxis: {
+                categories: xAliasData,
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: max,
+                title: {
+                    text: '通  话  次  数'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y:.f} 次</b>'
+            },
+            series: [{
+                name: 'Population',
+                data: yAliasData,
+                dataLabels: {
+                    enabled: true,
+                    rotation: 0,
+                    color: '#000',
+                    align: 'center',
+                    x: 0,
+                    y: 0,
+                    style: {
+                        fontSize: '11px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }]
+        });
+    }
+
+    //控制myDate97显示格式
+    function getFormat() {
+        return 'yyyy-MM-dd';
+    }
+    function getTime() {
+        return new Date();
+    }
+
+
+    function startdate() {
+        var today = new Date();
+        cdateT = getDate(0, 0, 0, today);
+        $('#CheckIn').val(cdateT);
+
+    }
+
+    //得到day拼接日期
+    function getDate(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = time.getDate() + day;
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (d > monthday[m - 1]) {
+            m++;
+            d = 1;
+        } else if (d - day <= 0) {
+            m--;
+            if (m <= 0) {
+                y--;
+                m = 12;
+            }
+            d = monthday[m - 1];
+        }
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        if (m <= 9) m = "0" + m;
+        if (d <= 9) d = "0" + d;
+        var cdate = y + "-" + m + "-" + d;
+        return cdate;
+    }
+
+    function getAreaId() {
+        var areaId;
+        var treeNodeId = $('#tree-AreaId').combotree('getValues').toString();
+        if (treeNodeId.length > 6) {
+            var sub_id = treeNodeId.substring(14, 18);
+            if (sub_id == '0000') {
+                areaId = left(treeNodeId, 13);
+            }
+            else {
+                areaId = left(treeNodeId, 18);
+            }
+        }
+        else {
+            areaId = "AAA";
+        };
+        return areaId;
+    }
+
+</script>

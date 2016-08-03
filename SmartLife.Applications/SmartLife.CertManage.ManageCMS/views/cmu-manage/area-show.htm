@@ -1,0 +1,203 @@
+﻿<!--主界面-->
+<div class="mainDiv_area_show">
+    <!--<span class="overTool">
+       <a id="A1"><img src="../../images/public/icon-thumbnailMap.png" alt="地图模式" /></a>
+       <a id="A2" style="display:none"><img src="../../images/public/icon-list_show.png" alt="列表模式" /></a>
+    </span>-->
+    <div id="area-panel_0" class="area-panel"></div>
+    <div class="rightSideTool">
+        <a id="bt_map_show"><img src="../../images/public/icon-thumbnailMap.png" alt="地图模式" /></a>
+        <a id="bt_list_show" style="display:none"><img src="../../images/public/icon-list_show.png" alt="列表模式" /></a>
+    </div>
+    <div style=" clear:both"></div>
+</div>
+<!--弹出界面-->
+<div id="dlg-B120001" class="easyui-dialog" style="width: 900px; height: 550px; padding: 10px;" closed="true" cache="false" buttons="#btn-B120001">
+    <div style=" width:100%; height:100%">
+        <!--街道相关统计信息-->
+        <div class="streetCount">
+        </div>
+        <!--下属社区列表-->
+        <div id="area-panel_1" class="area-panel"></div>
+    </div>
+</div>
+<div id="btn-B120001">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="Dialog_Close('dlg-B120001')">
+        关闭</a>
+</div>
+<div id="dlg-B120002" class="easyui-dialog" style="width: 800px; height: 500px; padding: 10px;" closed="true" cache="false" buttons="#btn-B120002">
+    <div style=" width:100%; height:100%">
+    <!--左面区域(显示社区简介)-->
+    <div id="communityIntroduction"></div>
+    <!--右面区域-->
+    <div style="width:70%; height:100%; float:left;">
+        <!--社区相关统计信息-->
+        <div class="communityCount"></div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+</div>
+<div id="btn-B120002">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="Dialog_Close('dlg-B120002')">
+        关闭</a>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            //            dialogOption: {
+            //                onBeforeOpen: function () {
+            //                }
+            //            },
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'userid-' + currentMenuCode,
+            pk: 'UserId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                //formData["Area1"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            uiMode: 'list',
+            entityName: '管辖街道',
+            baseModelUrl: baseCMSInvokeUrl + '/Cmu/ShareService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), SystemFlag: 0, Status: 1 }
+        };
+
+        loadfiles([
+            { type: "css", url: "../../css/cmu-manage.css" }
+            ], function () {
+                $(".mainDiv_area_show").parent().height($(window).height()); //与屏幕同高(使mainDiv_area_show层地图过大时可出现滚动条)
+                //加载街道列表
+                Create_StreetList();
+  
+                /*******地图显示******/
+                $("#bt_map_show").click(function () {
+                    $("#bt_list_show").show();
+                    $(this).hide();
+                    getHtml("../../views/cmu-manage/hz_gongshu.htm", function (result) {
+                        $("#area-panel_0").html(result);
+                        //必须在加载后声明
+                        $("map > area").click(function () {
+                            openDialog_Communities(this.id);
+                        });
+                    }, null);
+                });
+                /*****列表显示****/
+                $("#bt_list_show").click(function () {
+                    $("#bt_map_show").show();
+                    $(this).hide();
+                    Create_StreetList();
+                });
+            });
+
+    });
+
+    /******公共方法*******/
+    function Create_StreetList() {
+        getTo(models[currentMenuCode].baseModelUrl + "GetStreetsInArea?param=" + models[currentMenuCode].defaultModel.AreaId, null, function (streets) {
+            var htmls = [];
+            htmls.push('<ul>');
+            $.each(streets, function (i, o) {
+                htmls.push('<li class="area-name"><a href="javascript:void(0);" onclick="openDialog_Communities(\'' + o.AreaId + '\')">' + o.AreaName + '</a></li>');
+            });
+            htmls.push('</ul>');
+            $('#area-panel_0').html(htmls.join(""));
+        }, { async: false });
+    }
+
+    function Create_CommunityList(areaId) {
+        getAll([models[currentMenuCode].baseModelUrl + "/GetCommunitiesInStreet?param=" + areaId,
+                models[currentMenuCode].baseModelUrl + "/GetTerminalCount?param=" + areaId],function(communities,count){
+            var htmls = [];
+            htmls.push('<ul>');
+            $.each(communities, function (i, o) {
+                htmls.push('<li class="area-name"><a href="javascript:void(0);" onclick="openDialog_Community(\'' + o.AreaId + '\')">' + o.AreaName + '</a></li>');
+            });
+            htmls.push('</ul>');
+            $('#area-panel_1').html(htmls.join(""));
+
+            $('.streetCount').first().html("终端数:"+count);
+        });
+    }
+
+    function Create_CommunityInfo(areaId) {
+        getAll([models[currentMenuCode].baseModelUrl + "/GetCommunityInfo?param=" + areaId,
+                models[currentMenuCode].baseModelUrl + "/GetTerminalCount?param=" + areaId], function (community, count) {               
+            $("#communityIntroduction").html(community.Description);
+
+            $('.communityCount').first().html("终端数:" + count);
+        });
+    }
+
+    function openDialog_Communities(areaId) {
+//        openDialog(models[currentMenuCode].dialogId, 'views/cmu-manage/street-show.htm', function (callback, dialogData) {
+//        }, { dialogData: areaId, title: '社区列表', width: 1000, height: 600, padding: 5 });
+        var dialogOption = {
+            onBeforeOpen: function () {
+                Create_CommunityList(areaId);
+            }
+        };
+        getJQO('#dlg-B120001').dialog(_.extend({
+            onClose: function () {
+            },
+            modal: true
+        }, dialogOption)).dialog('open').dialog('setTitle', '社区列表');
+    }
+
+    function openDialog_Community(areaId) {
+        var dialogOption = {
+            onBeforeOpen: function () {
+                Create_CommunityInfo(areaId);
+            }
+        };
+        getJQO('#dlg-B120002').dialog(_.extend({
+            onClose: function () {
+            },
+            modal: true
+        }, dialogOption)).dialog('open').dialog('setTitle', '社区信息');
+    }
+
+    function Dialog_Close(dialogId) {
+        $('#' + dialogId).dialog('close');
+    }
+ 
+    //        autosize(models[currentMenuCode].gridId);
+
+    //        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+    //            title: "",
+    //            pagination: true,
+    //            rownumbers: true,
+    //            singleSelect: true,
+    //            url: models[currentMenuCode].baseModelUrl + 'GetStreetInArea',
+    //            method: 'POST',
+    //            //toolbar: '#' + models[currentMenuCode].toolbarId,
+    //            queryParams: {
+    //                sort: 'AreaCode',
+    //                order: 'asc',
+    //                instance: {
+    //                    ParentId: models[currentMenuCode].defaultModel.AreaId,
+    //                    Status: models[currentMenuCode].defaultModel.Status,
+    //                    //Levels: models[currentMenuCode].defaultModel.Levels
+    //                    Levels: 4
+    //                }
+    //            },
+    //            onDblClickRow: function (idx, row) {
+    //                openDialog(models[currentMenuCode].dialogId, 'views/dialogs/cmu-community-show.htm', function (callback, dialogData) {
+
+    //                }, { dialogData: row.AreaId, title: '街道信息', width: 800, height: 500, padding: 5 });
+    //            },
+    //            columns: [[
+    //                { field: 'AreaId', title: '区域编号', width: 150, hidden: true },
+    //                { field: 'AreaCode', title: '区域编码', width: 100, sortable: true },
+    //                { field: 'AreaName', title: '区域名称', width: 200 },
+    //                { field: 'Description', title: '备注', width: 400 },
+    //             ]],
+    //            loader: easyuiLoader
+    //        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+</script>
+

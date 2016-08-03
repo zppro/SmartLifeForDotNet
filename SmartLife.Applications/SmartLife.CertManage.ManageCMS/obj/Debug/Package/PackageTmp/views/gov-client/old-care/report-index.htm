@@ -1,0 +1,79 @@
+﻿<style>
+.line{height:50%;width:100%;}
+.index{height:200px;width:200px;border:solid 1px #999;}
+.one{ float:left;margin:50px 0px 50px 150px;}
+.two{float:left;margin:50px 100px 50px 100px}
+.three{float:left;margin:50px 150px 50px 0px}
+.pic{height:100%;width:100%;}
+#screen-all{background-image:url("old-care/screen-all.jpg");}
+#screen-vouch{background-image:url("old-care/screen-vouch.jpg")}
+#screen-stat-table{background-image:url("old-care/screen-stat-table.jpg")}
+#sta-call-cartogram{background-image:url("old-care/sta-call-cartogram.jpg")}
+#sta-call-service-archive{background-image:url("old-care/sta-call-service-archive.jpg")}
+.index p{text-align:center;}
+.index p a{color:Black; font-size:20px}
+</style>
+
+<div id="report-index" style="height:100%;width:100%">
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        report();
+    });
+    function report() {
+        var html = [];
+        html.push("<div class='line'>");
+        html.push("<div class='index one'>");
+        html.push("<div class='pic' id='screen-all' onclick='openInfo(\"screen-all\")'></div>");
+        html.push("<p><a href='#' onclick='openInfo(\"screen-all\")'>呼叫来电实时信息</a></p>");
+        html.push("</div>");
+
+        html.push("<div class='index two'>");
+        html.push("<div class='pic' id='screen-vouch' onclick='openInfo(\"screen-vouch\")'></div>");
+        html.push("<p><a href='#' onclick='openInfo(\"screen-vouch\")'>每日政府购买服务</a></p>");
+        html.push("</div>");
+
+        html.push("<div class='index three'>");
+        html.push("<div class='pic' id='screen-stat-table' onclick='openInfo(\"screen-stat-table\")'></div>");
+        html.push("<p><a href='#' onclick='openInfo(\"screen-stat-table\")'>统计表格</a></p>");
+        html.push("</div>")
+
+        html.push("</div>");
+
+        html.push("<div class='line'>");
+
+        html.push("<div class='index one'>");
+        html.push("<div class='pic' id='sta-call-cartogram' onclick='openInfo(\"sta-call-cartogram\")'></div>");
+        html.push("<p><a href='#' onclick='openInfo(\"sta-call-cartogram\")'>呼叫情况统计图</a></p>");
+        html.push("</div>");
+
+        html.push("<div class='index two'>");
+        html.push("<div class='pic' id='sta-call-service-archive' onclick='openInfo(\"sta-call-service-archive\")'></div>");
+        html.push("<p><a href='#' onclick='openInfo(\"sta-call-service-archive\")'>呼叫服务归档统计</a></p>");
+        html.push("</div>");
+
+        html.push("</div>");
+
+        $('#report-index').html(html.join(''));
+    }
+    function openInfo(type) {
+        var pageUrl = '';
+        if (type == 'screen-all') {
+            pageUrl = '../old-care/big-screen-all-services.htm';
+            window.external.OpenPopup(pageUrl, null);
+        } else if (type == 'screen-vouch') {
+            pageUrl = '../old-care/big-screen-vouch-services.htm';
+            window.external.OpenPopup(pageUrl, null);
+        } else if (type == 'screen-stat-table') {
+            pageUrl = '../old-care/big-screen-stat-table.htm';
+            window.external.OpenPopup(pageUrl, null);
+        } else if (type == 'sta-call-cartogram') {
+            pageUrl = '../reports/old-care/sta-call-cartogram.htm';
+            window.external.OpenPopup(pageUrl, null);
+        } else if (type == 'sta-call-service-archive') {
+            pageUrl = '../reports/old-care/sta-call-service-archive.htm';
+            window.external.OpenPopup(pageUrl, null);
+        }
+    }
+</script>

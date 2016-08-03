@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="EAB.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Behavior_ListByMenu" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.BehaviorCode,a.Id,a.Status,a.BehaviorName,case when b.BehaviorCode is not null then cast(1 as bit) else cast(0 as bit) end Checked
+      from Sys_Behavior a left join Sys_MenuBehavior b
+      on a.BehaviorCode=b.BehaviorCode and b.MenuId=#MenuId#
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="BehaviorCode" >a.BehaviorCode=#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BehaviorName" >a.BehaviorName=#BehaviorName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="BehaviorForMenu_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.BehaviorCode,CAST(1 as bit) as PermitFlag from Sys_Behavior a inner join Sys_MenuBehavior b on a.BehaviorCode=b.BehaviorCode
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="BehaviorForMenu_ListByPermisson" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.BehaviorCode,case when c.ResourceId  is null then CAST(0 as bit) else CAST(1 as bit) end as PermitFlag from Sys_Behavior a
+      inner join Sys_MenuBehavior b on a.BehaviorCode=b.BehaviorCode
+      left join (
+      select distinct ResourceId from pub_groupPermit x inner join Pub_GroupMember y on x.GroupId = y.GroupId
+      where UserId=#UserId# and len(ResourceId) = 8 )c on (b.MenuId+'-'+a.BehaviorCode) = c.ResourceId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

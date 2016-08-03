@@ -1,0 +1,417 @@
+﻿<table id="cc-B130803" style=" width:100%;">
+    <tr>
+        <td style="width: 300px;" valign="top">
+            <div style="height: 25px; width: 300px; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd; border-right: solid 1px #ddd; background-color: #fafafa; padding-top:5px;">
+                <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div><label style=" font-size:14px; font-weight:bolder; margin-top:5px;">老人</label> 
+            </div>
+            <div id="div_tree" style="border: solid 1px #ddd; border-bottom:none; width: 300px;height:150px; overflow: auto;">
+                <ul id="tree-B130803">
+                </ul>         
+                <input id="RoomId"   type="hidden"/>
+                <input id="FloorNo"  type="hidden"/>
+            </div>      
+            <table id="dg-old-man">
+            </table>
+        </td>
+        <td valign="top">               
+            <table id="dg-work-item">
+            </table>
+        </td>
+    </tr> 
+</table>
+<div id="toolbar-old-man">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                姓名/身份证：<input name="KeyWord" id="KeyWord" class="easyui-validatebox" style=" width:90px;" />
+            </td>
+            <td  >
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="execS()">
+                    查询</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton"  iconcls="icon-reload" plain="true" onclick="resetS()">
+                    清空</a>
+            </td> 
+        </tr>
+    </table>
+</div>
+<div id="toolbar-work-item">
+    <table  >
+        <tr > 
+            <td  >
+                服务项目：
+                <input id="WorkItem" style="width: 110px" />
+            </td>
+            <td   >
+                工单时间：
+                <input class="Wdate" id="RemindTime_Start" style="width: 90px" onfocus="var RemindTime_End=$dp.$('RemindTime_End');WdatePicker({onpicked:function(){RemindTime_End.focus();},dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'RemindTime_End\')}'})" />
+                &nbsp;到：&nbsp;<input class="Wdate" id="RemindTime_End" style="width: 110px"
+                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'RemindTime_Start\')}'})" />
+            </td> 
+            <td >
+                月份： <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-prev" plain="true"
+                    onclick="passMonth('Last')"></a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-next" plain="true" onclick="passMonth('Next')"></a>
+            </td>
+            <td   >
+                <button onclick="execW();">
+                    查询</button>
+                <button onclick="resetW();">
+                    重置</button>
+            </td>
+        </tr> 
+    </table>
+</div>
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    $(function () {
+        //加载机构
+        $('#CurrentAgencys').combobox({
+            width: 120,
+            panelWidth: 150,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: false,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                    $('#toolbar-Schedule').hide();
+                }
+            },
+            onSelect: function (record) {
+                initialize();  //初始化页面
+            }
+        });
+        initialize(); //初始化页面
+    });
+
+    function creatTree(stationId) {
+        initTree('easyUITree', 'tree-' + currentMenuCode, {
+            onClick: function (treeNode) {
+                if (treeNode.attributes.PId == "_") {
+                    $('#FloorNo').val(null);
+                    $('#RoomId').val(null);
+                }
+                else if (treeNode.attributes.PId.toUpperCase() == stationId.toUpperCase()) {
+                    $('#FloorNo').val(treeNode.id);
+                    $('#RoomId').val(null);
+                }
+                else {
+                    $('#FloorNo').val(null);
+                    $('#RoomId').val(treeNode.id);
+                }
+
+                $('#dg-old-man').datagrid('load', getQueryOld(stationId));
+//                $('#dg-work-item').datagrid('load', getQueryWork(stationId));
+ 
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#tree-' + currentMenuCode).tree('getRoot');
+                $('#tree-' + currentMenuCode).tree("collapseAll");
+                $('#tree-' + currentMenuCode).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                getTreeData('01$01$10', "OrderNo asc", '{"StationId":"' + $('#CurrentAgencys').combobox('getValue').toUpperCase() + '" }', d);
+            },
+            null,
+            function (treeObj) {
+
+            });    //end loadTree
+    }
+
+    //初始化页面 
+    function initialize() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (ret) {
+            $('#WorkItem').combobox({
+                width: 110,
+                panelWidth: 120,
+                multiple: true,
+                data: ret,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+            $('#KeyWord').val(null);
+            autosize('cc-B130803', -5);
+            startdate(); //时间控件初始化
+            var h = $("#cc-" + currentMenuCode).height();
+            loadOldMan(stationId, h - 180); //加载服务人员
+            loadWorkItem(stationId, h +2); //加载服务项目 
+        });
+        creatTree(stationId);
+    }
+
+    //去查询条件(老人)
+    function getQueryOld(stationId) { 
+        var keyWord = $('#KeyWord').val().trim(); 
+        var queryParams = {
+                sort: 'OldManName',
+                order: 'asc',
+                page: 1,
+                rows: 1000,
+                fuzzyFieldOP: ' or ', 
+                filterFields: [
+                            { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                            { key: 'Status', value: 3 },
+                            { key: 'ResidentStatus', value: 7 },
+                            { key: 'StationId', value: stationId }
+                            ],
+                fuzzyFields: [
+                            { key: 'OldManName', value: keyWord },
+                            { key: 'IDNo', value: keyWord },
+                            { key: 'InputCode1', value: keyWord },
+                            { key: 'InputCode2', value: keyWord }
+                            ]
+            }
+        var floorNo = $('#FloorNo').val();
+        var roomId = $('#RoomId').val(); 
+        if (floorNo && floorNo != '') {
+            queryParams.filterFields.push({ key: 'FloorNo', value: floorNo });
+        }
+        if (roomId && roomId!='') {
+            queryParams.filterFields.push({ key: 'RoomId', value: roomId });
+        }
+//                alert($.toJSON(queryParams));
+        return queryParams;
+    }
+    //加载老人
+    function loadOldMan(stationId, height) {
+        $('#dg-old-man').datagrid(easyuigrid_settings({
+            title: "",
+            height: height,
+            pagination: false,
+            rownumbers: true,
+            singleSelect: false,
+            url: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/ListForEasyUIgridPage3',
+            method: 'POST',
+            toolbar: '#toolbar-old-man',
+            queryParams: getQueryOld(stationId),
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center', sortable: true },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter }, 
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'RoomNo', title: '所在房间', width: 60, align: 'center', sortable: true },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo, sortable: true }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    //去查询条件
+    function getQueryWork(stationId) {
+        var remindTime_Start = $('#RemindTime_Start').val() + ' 00:00:00';
+        var remindTime_End = $('#RemindTime_End').val() + ' 23:59:59';
+        var floorNo = $('#FloorNo').val();
+        var roomId = $('#RoomId').val();
+        var queryParams = {
+            sort: 'w.RemindTime',
+            order: 'asc',
+            filterFields: [
+                            { key: 'RStationId', value: stationId },
+                            { key: 'UStatus', value: 1 },
+                            { key: 'PStatus', value: 3 },
+                            { key: 'PResidentStatus', value: 7 },
+                            { key: 'RStatus', value: 1 },
+                            { key: 'RemindTime_Start', value: remindTime_Start },
+                            { key: 'RemindTime_End', value: remindTime_End }
+                            ],
+            fuzzyFields: []
+        }
+        var oldManIds = "";
+        var rows = $('#dg-old-man').datagrid('getSelections');
+        var oldManIdArr = _.map(rows, function (o) { return o.OldManId });
+        if (oldManIdArr.length > 0) {
+            oldManIds = "'" + oldManIdArr.join("','") + "'";
+            queryParams.fuzzyFields.push({ key: 'OldManIds', value: oldManIds });
+        }
+        var strWorkItem = $('#WorkItem').combobox('getValues').join(',');
+        if (strWorkItem.length > 0) {
+            queryParams.fuzzyFields.push({ key: 'WorkItems', value: strWorkItem });
+        }
+        var floorNo = $('#FloorNo').val();
+        var roomId = $('#RoomId').val();
+        if (floorNo && floorNo != '') {
+            queryParams.filterFields.push({ key: 'FloorNo', value: floorNo });
+        }
+        if (roomId && roomId != '') {
+            queryParams.filterFields.push({ key: 'RoomId', value: roomId });
+        }
+//                alert($.toJSON(queryParams));
+        return queryParams;
+    }
+
+    //加载服务项目 
+    function loadWorkItem(stationId, height) {
+        $('#dg-work-item').datagrid(easyuigrid_settings({
+            title: "",
+            height: height,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Pam/WorkExecuteService/ListWorkItemUnfinished',
+            method: 'POST',
+            toolbar: '#toolbar-work-item',
+            queryParams: getQueryWork(stationId),
+            rowStyler: function (index, row) {
+                var arriveTime = row.ServeManArriveTime.toString();
+                var leaveTime = row.ServeManLeaveTime.toString();
+                if (arriveTime == '') {
+                    return 'background-color:#FF6347'; //不通过的为红色
+                }
+                else if (leaveTime == '') {
+                    return 'background-color:#FFFF00';
+                }
+            },
+            columns: [[
+                    { field: 'RemindTime', title: '服务时间', width: 150, align: 'center', sortable: true },
+                    { field: 'WorkItemName', title: '服务项目', width: 100 },
+                    { field: 'RoomNo', title: '房间', width: 60, align: 'center', sortable: true },
+                    { field: 'OldManName', title: '老人姓名', width: 90, sortable: true },
+                    { field: 'PGender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                    { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                    { field: 'UserId', title: '服务人员ID', width: 150, hidden: true },
+                    { field: 'UserName', title: '服务人员', width: 90, sortable: true },
+            //                    { field: 'UGender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                    {field: 'OldManId', title: '老人姓名ID', width: 150, hidden: true },
+                    { field: 'ServeManArriveTime', title: '到达时间', width: 150, align: 'center', sortable: true },
+                    { field: 'ServeManLeaveTime', title: '离开时间', width: 150, align: 'center', sortable: true },
+                    { field: 'Reminded', title: '提醒次数', width: 60 },
+                    { field: 'Remark', title: '注意事项', width: 150, align: 'center' }
+                    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    //查询服务人员
+    function execS() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        var h = $("#cc-" + currentMenuCode).height();
+        loadOldMan(stationId, h - 180);
+    }
+    //查询工作项
+    function execW() {
+        var stationId = $('#CurrentAgencys').combobox('getValue');
+        var h = $("#cc-" + currentMenuCode).height();
+        loadWorkItem(stationId, h +2); //加载服务项目 
+    }
+    //清空服务人员
+    function resetS() {
+        $('#KeyWord').val(null);
+    }
+    //清空工作项
+    function resetW() {
+        $('#dg-old-man').datagrid('clearSelections');
+        $('#WorkItem').combobox('clear');
+        startdate(); //时间控件初始化 ;
+    }
+
+    //时间控件初始化
+    function startdate() {
+        var today = new Date();
+        cdateT = getDate(0, 0, 0, today);
+        cdateF = getDate_f(0, 0, 0, today);
+        $('#RemindTime_Start').val(cdateF);
+        $('#RemindTime_End').val(cdateT);
+    }
+
+    function passMonth(LastOrNext) {
+        var dt = Date.parse($('#RemindTime_Start').val()); //取当前时间控件的日期
+        var d;
+        if (LastOrNext == 'Last') {//判断是上个月还是下个月
+            d = Date.getDateOfPreMonth(dt); //上个月月初
+        }
+        else {
+            d = Date.getDateOfNextMonth(dt); //下个月月初
+        }
+        cdateF = getDate_f(0, 0, 0, d);
+        $('#RemindTime_Start').val(cdateF);
+
+        d = Date.getDateOfNextMonth(d); //根据月初日期，取到下个月月初第一天
+        d.setTime(d.getTime() - 24 * 60 * 60 * 1000); //下个月月初第一天减去一天，得到月末
+        var s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        $('#RemindTime_End').val(s);
+    }
+
+    Date.getDayOfMonth = function (y, Mm) {
+        if (typeof y == 'undefined') { y = (new Date()).getFullYear(); }
+        if (typeof Mm == 'undefined') { Mm = (new Date()).getMonth(); }
+        var Feb = (y % 4 == 0) ? 29 : 28;
+        var aM = new Array(31, Feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        return aM[Mm];
+    };
+    Date.getDateOfPreMonth = function (dt) {
+        if (typeof dt == 'undefined') { dt = (new Date()); }
+        var y = (dt.getMonth() == 0) ? (dt.getFullYear() - 1) : dt.getFullYear();
+        var m = (dt.getMonth() == 0) ? 11 : dt.getMonth() - 1;
+        var preM = Date.getDayOfMonth(y, m);
+        var d = (preM < dt.getDate()) ? preM : dt.getDate();
+        return new Date(y, m, d);
+    };
+    Date.getDateOfNextMonth = function (dt) {
+        if (typeof dt == 'undefined') { dt = (new Date()); }
+        var y = (dt.getMonth() == 11) ? (dt.getFullYear() + 1) : dt.getFullYear();
+        var m = (dt.getMonth() == 11) ? 0 : dt.getMonth() + 1;
+        var preM = Date.getDayOfMonth(y, m);
+        var d = (preM < dt.getDate()) ? preM : dt.getDate();
+        return new Date(y, m, d);
+    };
+    //得到day拼接日期
+    function getDate(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = time.getDate() + day;
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (d > monthday[m - 1]) {
+            m++;
+            d = 1;
+        } else if (d - day <= 0) {
+            m--;
+            if (m <= 0) {
+                y--;
+                m = 12;
+            }
+            d = monthday[m - 1];
+        }
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        if (m <= 9) m = "0" + m;
+        if (d <= 9) d = "0" + d;
+        var cdate = y + "-" + m + "-" + d;
+        return cdate;
+    }
+    //得到day拼接日期(每月第一天)
+    function getDate_f(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = "01";
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (m <= 9) m = "0" + m;
+        var cdate = y + "-" + m + "-" + d;
+        return cdate;
+    } 
+</script>

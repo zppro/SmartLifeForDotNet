@@ -1,0 +1,351 @@
+﻿<div id="CurrentAgencys-cc" style="margin-bottom: 5px;text-align: left; width: 200px;">    
+                <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div>
+</div> 
+<div   id="cc-B130102" style="overflow:auto;">
+    <div  title="基本信息"  class="easyui-panel"  style="  padding:10px;   width:680px; height:400px;">
+            <form id="fm-B130102" method="post" novalidate>
+            <input type="hidden" name="StationId" id="stationid-B130102" />
+            <input type="hidden" name="AreaId" id="AreaId" />
+            <input type="hidden" name="AreaId2" id="AreaId2" />
+            <input type="hidden" name="AreaId3" id="AreaId3" />
+            <input type="hidden" name="Status" id="Status" />
+            <div class="fitem">
+                <label>
+                    机构编码:</label>
+                <input name="StationCode" id="StationCode" class="easyui-validatebox" required="true"
+                    readonly="readonly" style=" color:#888;"  />
+                <label>
+                    机构名称:</label>
+                <input name="StationName" id="StationName" class="easyui-validatebox" required="true"
+                    readonly="readonly" style=" color:#888; width:300px;"  />        
+            </div>
+            <div class="fitem">
+                <label>
+                    街道社区:</label>
+                <input name="AreaIdStreet" id="AreaIdStreet" />
+                <input name="AreaIdCommunity" id="AreaIdCommunity" />
+            </div>
+            <div class="fitem">
+                <label>
+                    座　　机:</label>
+                <input name="Tel" id="Tel" />
+                <label>
+                    传　　真:</label>
+                <input name="Fax" id="Fax" />
+                <label>
+                    电子邮件:</label>
+                <input name="Email" id="Email" />
+            </div>
+            <div class="fitem">
+                <label>
+                    服务热线:</label>
+                <input name="Hotline" maxlength="30" id="Hotline" />
+                <label>
+                    联&nbsp;系&nbsp;人 :</label>
+                <input name="LinkMan" id="LinkMan" />
+                <label>
+                    联系号码:</label>
+                <input name="LinkManMobile" id="LinkManMobile" />
+            </div>
+            <div class="fitem">
+                <label>
+                    邮　　编:</label>
+                <input name="PostCode" maxlength="6" id="PostCode" />
+                <label>
+                    经　　度:</label>
+                <input name="LongitudeS" maxlength="20" id="LongitudeS" />
+                <label>
+                    纬　　度:</label>
+                <input name="LatitudeS" maxlength="20" id="LatitudeS" />
+            </div>
+            <div class="fitem">
+                <label>
+                    地　　址:</label>
+                <textarea name="Address" id="Address" style="width: 580px;" maxlength="200"></textarea>
+            </div>
+            <div class="fitem">
+                <label>
+                    简　　介:</label>
+                <textarea name="Intro" id="Intro" style="width: 580px; height:60px;" maxlength="400"></textarea>
+            </div>
+            <div class="fitem">
+                <label>
+                    备　　注:</label>
+                <textarea name="Remark" id="Remark" style="width: 580px;height:30px;" maxlength="400"></textarea>
+            </div>
+            </form> 
+    </div>
+    <div title="相关信息"  class="easyui-panel"  style=" margin:auto auto; width:680px; height:150px; padding:10px; position: relative;"> 
+        <form id="fm-info-B130102" method="post" novalidate>
+        <input type="hidden" id="isCreate" /> 
+        <div class="fitem">
+            <label>
+                服务网点信息:</label>
+            <input name="SelfServiceLimit" id="SelfServiceLimit" class="easyui-validatebox"   /> 
+        </div>
+        </form> 
+        <div style="width: 90px; position:absolute; bottom: 22px;  right: 20px;"> 
+            <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                onclick="saveEx()" >保存</a>
+        </div>
+    </div> 
+</div>
+<!--<div id="btn-B130102" class="easyui-tabs" style=" width:750px; height:450px;margin-left:20px;">
+    <div title="机构信息" style=" margin-left:10px; position:relative;">
+    </div>
+    <div title="服务网点信息" style=" margin-left:10px; position:relative;"> 
+    <div style="width: 90px; position:absolute; top: 15px; left: 600px;">
+        <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+             id='add_merchant' onclick="add_merchant()">新增</a>
+        <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+             id='update_merchant' onclick="update_merchant()">修改</a>
+    </div>
+            <form id="fminfo-B12040201" method="post" novalidate>
+            <div class="fitem">
+                <label>
+                    总床位数:</label>
+                <input name="OwnBeds" id="OwnBeds" class="easyui-validatebox" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                <label>
+                    入住数量:</label>
+                <input name="StayingNums" id="StayingNums" class="easyui-validatebox" onkeyup="value=value.replace(/[^\d]/g,'')" />
+            </div>
+            <div class="fitem"> 
+                <label>
+                    登记性质:</label>
+                <input name="RegistrationType" id="RegistrationType" />
+                <label>
+                    成立时间:</label>
+                <input name="Established" id="Established" onblur="checkBirthday()" class="easyui-datebox"
+                    required="true" />
+            </div> 
+            </form>
+    </div>
+</div>-->
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    var orgData;
+    var isAgencys = true;
+    if (isAgencys) {
+        orgData = top.gUserInfo.MappingAgencys;
+    }
+    else {
+        orgData = [{ "StationCode": "4612030003001110",
+            "StationId": "6203DD5C-C480-436F-8CA3-1672055EA5C7",
+            "StationName": "浙江蓝谷养老日照中心演示",
+            "StationType": "00006",
+            "StationType2": "00006"
+        }]; 
+    } 
+
+    var areas;
+    $(function () {
+        autosizeEx();
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+                getCombobox();
+                $('#CurrentAgencys').combobox({
+                    width: 180,
+                    panelWidth: 200,
+                    data: orgData,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: true,
+                    onLoadSuccess: function () {    
+                        if (orgData.length > 0) {
+                            $('#CurrentAgencys').combobox('setValue', orgData[0].StationId);
+
+                            if (orgData.length == 1) {
+                                $('#CurrentAgencys-c').hide();
+                                $('#CurrentAgencys-cc').width(190);
+                            }
+                        }
+                        else {
+                            alertInfo('当前帐号没有绑定任何机构');
+                            $('#CurrentAgencys-cc').hide();
+                        }
+                    },
+                    onSelect: function (record) {
+                        buildPageByMerchant();
+                    }
+                });
+            });
+        buildPageByMerchant();
+    });
+
+    function saveEx() {
+        var ret = false;
+        var strStationId = $('#CurrentAgencys').combobox('getValue');
+        ret = update_station(strStationId);//1
+        ret = saveStationInfo(strStationId);//2
+        if (ret==0) {
+            alert('保存成功');
+        }
+        else if(ret==1){
+            alert('基本信息保存失败');
+        }
+        else if (ret ==2) {
+            alert('相关信息保存失败');
+        }
+    }
+
+    function update_station(stationId) {
+        var result = 1;
+        var station = getJQO('#fm-B130102').serializeObject();
+        putTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, $.toJSON(station), function (ret) {
+            if (ret.Success) {
+                postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/SynBaseInfo', null, function (ret) {
+                    result = 0;
+                }, { async: false }, { ConnectId: baseInfoNode });
+            } 
+        }, null, { ConnectId: baseInfoNode });
+        return result;
+    }
+
+    function saveStationInfo(stationId) {
+        var result = 2;
+        var iscreate = $('#isCreate').val();
+        var stationInfo = getJQO('#fm-info-B130102').serializeObject();
+        stationInfo = _.extend(stationInfo, { 'StationId': stationId }); 
+        if (iscreate == 'true') {
+            postTo(baseCMSInvokeUrl + '/Pam/StationInfoService/', $.toJSON(stationInfo), function (ret) {
+                if (ret.Success) {
+                    result = 0;
+                    $('#isCreate').val(false);
+                }
+            }, { async: false }); 
+        }
+        else {
+            putTo(baseCMSInvokeUrl + '/Pam/StationInfoService/' + stationId, $.toJSON(stationInfo), function (ret) {
+                if (ret.Success) {
+                    result = 0;
+                    $('#isCreate').val(false);
+                }
+            }, { async: false });  
+     } 
+        return result;
+    }
+
+    function buildPageByMerchant() {
+       var stationId = $('#CurrentAgencys').combobox('getValue'); 
+        getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, null, function (result) {
+            if (result.Success) { 
+                var ret = result.instance;
+                $('#fm-B130102').form('clear');
+                $('#fm-B130102').form('load', ret);
+
+                $('#AreaIdStreet').combobox('setValue', ret.AreaId2);
+                $('#AreaIdCommunity').combobox('setValue', ret.AreaId3);
+                $("#AreaIdStreet").combobox('disable');
+                $("#AreaIdCommunity").combobox('disable');
+            }
+        });
+        getTo(baseCMSInvokeUrl + '/Pam/StationInfoService/Query?parms=' + $.toJSON({ 'StationId': stationId }), null, function (result) {
+            //            alert($.toJSON(result));
+            if (result.Success && result.rows.length > 0) {
+                var ret = result.rows[0];
+                $('#fm-info-B130102').form('clear');
+                $('#fm-info-B130102').form('load', ret);
+                $('#isCreate').val(false);
+            }
+            else {
+                $('#fm-info-B130102').form('clear');
+                $('#SelfServiceLimit').val(1);
+                $('#isCreate').val(true);
+            }
+        });
+    }
+
+    function getCombobox() {
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11025',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/11019',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/00014'
+        ], function (settlementMode, acceptType, settlementPeriod) {
+            setCombobox("SettlementMode", settlementMode, 63);
+            setCombobox("AcceptType", acceptType, 63);
+            setCombobox("SettlementPeriod", settlementPeriod, 83);
+            setCombobox("ServeFlowFlag", [{ 'ItemId': 0, 'ItemName': '关闭' }, { 'ItemId': 1, 'ItemName': '打开'}], 43);
+        });
+        //街道
+        $('#AreaIdStreet').combobox({
+            width: 153,
+            panelHeight: 150,
+            method: 'get',
+            data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            filter: function (q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) == 0;
+            },
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#AreaIdStreet').combo('getText') == "") {
+                    $('#AreaIdCommunity').combobox('setValue', null);
+                    $('#AreaId2').val(null);
+                    $('#AreaId3').val(null);
+                }
+            },
+            onSelect: function (d) {
+                $('#AreaId2').val(d.ItemId);
+                var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                //如果该街道下有社区，则自动填充
+                if (community.length > 0) {
+                    $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                    $('#AreaId3').val(community[0].ItemId);
+                }
+                //否则为空
+                else {
+                    $('#AreaIdCommunity').combobox('setValue', null);
+                    $('#AreaId3').val(null);
+                }
+            }
+        });
+        //社区
+        $('#AreaIdCommunity').combobox({
+            width: 153,
+            panelHeight: 150,
+            method: 'get',
+            data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            filter: function (q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) == 0;
+            },
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#AreaIdCommunity').combo('getText') == "") {
+                    $('#AreaId3').val(null);
+                }
+            },
+            onSelect: function (d) {
+                $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                $('#AreaId2').val(d.ParentId);
+                $('#AreaId3').val(d.ItemId);
+            }
+        });
+    }
+    function setCombobox(controlsId, data, pH) {
+        $('#' + controlsId).combobox({
+            width: 153,
+            panelHeight: pH,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    function autosizeEx() {
+        autosize('cc-B130102', -25); // 
+        var tabContainer_width = $('#cc-B130102').parent().width(); 
+        if (tabContainer_width > 680) {
+            var w = tabContainer_width - 680;  
+            $("#cc-B130102").css("margin-left", w/2);
+        }
+    }
+</script>

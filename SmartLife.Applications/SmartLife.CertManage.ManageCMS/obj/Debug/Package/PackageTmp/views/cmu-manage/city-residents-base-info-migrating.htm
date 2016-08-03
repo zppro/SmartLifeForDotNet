@@ -1,0 +1,564 @@
+﻿<style type="text/css">
+    .baseinfo tr td
+    {
+        height: 30px;
+    }
+</style>
+<table id="cc-B12020502" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B12020502">
+            </ul>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B12020502">  
+             <a href="javascript:void(0)" id="migrate_ok_p" class="easyui-linkbutton"
+                        iconcls="icon-ok" plain="true" onclick="migrate_ok_p()">允许迁入</a><a href="javascript:void(0)"
+                            id="migrate_refuse_p" class="easyui-linkbutton" iconcls="icon-cancel" plain="true"
+                            onclick="migrate_refuse_p()">拒绝迁入</a><a href="javascript:void(0)" id="migrate_cancel_p"
+                                class="easyui-linkbutton" iconcls="icon-undo" plain="true" onclick="migrate_cancel_p()">
+                                撤销迁出</a>
+            </div>
+            <div id="search-sample-B12020502" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B12020502" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="KeyWord" name="KeyWord" class="easyui-validatebox" />
+                        </td>
+                        <td style="text-align: right">
+                            状态：
+                        </td>
+                        <td style="text-align: left">
+                            <input id="migrateStatus" class="combobox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfmEx(true)">
+                                重置</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B12020502">
+            </table>
+        </td>
+    </tr>
+</table> 
+<div id="dlg-B12020502" class="easyui-dialog" style="width: 600px; height: 330px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B12020502">     
+    <div  class="easyui-panel" title="老人姓名" style="background: #fafafa; padding: 5px 0 0 5px; 
+          float: left;">
+        <div class="easyui-layout" data-options="fit:true" style="height:100px; overflow:auto;  "> 
+        <label id="oldManNames" style=" font-weight:bolder;"></label>  
+        </div>
+    </div>    
+    <div  class="easyui-panel" title="操作说明" style="background: #fafafa; padding: 5px 0 0 5px; 
+          float: left;">
+          <input id='isDialogOpen' type="hidden" />
+        <div class="easyui-layout" data-options="fit:true" style="height:65px; overflow:auto; "> 
+        <textarea  name="ResidentDynamicMoveRemark" id="ResidentDynamicMoveRemark" style=" width:550px; height:50px;"  ></textarea> 
+        </div>
+    </div>  
+</div>
+<div id="btn-B12020502"> 
+    <a href="javascript:void(0)" id="migrateSave" class="easyui-linkbutton" iconcls="icon-ok"
+        onclick="migrateSave()">确定</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-cancel" onclick="cancel()">取消</a>
+</div>
+h<div id="dlg-search-B12020502" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B12020502">
+    <div class="ftitle">
+        <form id="fm-search-B12020502" method="post" novalidate>
+        <div class="fitem">
+            <table class="baseinfo">
+                <tr>
+                    <td style="text-align: right">
+                        姓 名:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="ResidentName" />
+                    </td>
+                    <td style="text-align: right">
+                        性 别:
+                    </td>
+                    <td style="text-align: left">
+                        <input id="CC-Gender" name="Gender_Start" class="combobox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        身份证:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="IDNo" />
+                    </td>
+                    <td style="text-align: right">
+                        座机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Tel" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        手机:
+                    </td>
+                    <td style="text-align: left">
+                        <input name="Mobile" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="btn-search-B12020502">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="execEx()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">
+        关闭</a>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        var areas;
+        var areas2;
+        $('#migrate_refuse').hide();
+        $('#migrate_refuse_p').hide();
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode, //查询时读取formData的值
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'residentId-' + currentMenuCode,
+            pk: 'ResidentId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                //                formData['AreaCode_Start'] = formData['AreaCode'];
+                formData['ResidentName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+
+            },
+            onBeforeDialogOpen: function (rows) {
+                rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+                var migrateResultFlag = false;
+                var names = [];
+                _.each(rows, function (o) {
+                    if (o.MigrateResultFlag == '1' || o.MigrateResultFlag == '0') {
+                        migrateResultFlag = true;
+                        names.push(o.ResidentName);
+                    }
+                });
+                if (migrateResultFlag) {
+                    var str = _.uniq(names).join('、');
+                    alert('选择的老人中，“' + str + '”已经完成迁入迁出操作，不再次执行此次操作');
+                    $('#isDialogOpen').val(0);
+                }
+                else {
+                    $('#isDialogOpen').val(1);
+                }
+            },
+            onAfterDialogOpen: function (rows) {
+                rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+                $('#oldManNames').text(_.map(rows, function (o) { return o.ResidentName }).join('、'));
+                $('#ResidentDynamicMoveRemark').text('');
+                if ($('#isDialogOpen').val().toString() == '0') {
+                    cancel();
+                }
+            },
+            headers: { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '居民基本资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 3, ResidentStatus: 3 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+        autosize("cc-B12020502", -30); //datagrid收缩30个像素点
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false }, models[currentMenuCode].headers);
+
+        areas2 = getAreas();
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18);
+                    }
+                }
+                else {
+                    areaId = "";
+                };
+                datagrid_load(areaId);
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                //                alert($.toJSON(node.target));
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false })
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#migrateStatus').combobox({
+                    width: 140,
+                    panelHeight: 62,
+                    data: [{ ItemId: '0', ItemName: '待迁入' },
+               { ItemId: '10', ItemName: '已迁出' },
+               { ItemId: '11', ItemName: '已迁入'}],
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    editable: false,
+                    value: 0
+                });
+
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    fit: true,
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: false,
+                    url: models[currentMenuCode].baseModelUrl + 'ResidentBaseInfoMigrated/' + models[currentMenuCode].headers.ConnectId,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'ResidentDynamicMoveOperatedOn',
+                        order: 'desc',
+                        filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaIdTo', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'MigrateResultFlag', value: $('#migrateStatus').combobox("getValue") }
+                            ]
+                    },
+                    onLoadSuccess: function () {
+                        var migrateStatus = $('#migrateStatus').combobox("getValue");
+                        if (migrateStatus == 10) {
+                            $('#migrate_ok').hide();
+                            $('#migrate_refuse').hide();
+                            $('#migrate_cancel').show();
+                            $('#migrate_ok_p').hide();
+                            $('#migrate_refuse_p').hide();
+                            $('#migrate_cancel_p').show();
+                        }
+                        else if (migrateStatus == 11) {
+                            $('#migrate_ok').hide();
+                            $('#migrate_refuse').hide();
+                            $('#migrate_cancel').hide();
+                            $('#migrate_ok_p').hide();
+                            $('#migrate_refuse_p').hide();
+                            $('#migrate_cancel_p').hide();
+                        }
+                        else {
+                            $('#migrate_ok').show();
+                            $('#migrate_refuse').show();
+                            $('#migrate_cancel').hide();
+                            $('#migrate_ok_p').show();
+                            $('#migrate_refuse_p').show();
+                            $('#migrate_cancel_p').hide();
+                        }
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    rowStyler: function (index, row) {
+                        var flag = row.MigrateResultFlag.toString();
+                        if (flag == '1') {
+                            return 'background-color:#00CC66'; //成功为绿色
+                        }
+                        else if (flag == '0') {
+                            return 'background-color:#FF6347'; //失败为红色 
+                        }
+                        else {
+                            return 'background-color:#63B8FF'; //待定为蓝色
+                        }
+                    },
+                    frozenColumns: [[
+                                        { field: 'CK', title: '', checkbox: true },
+                    { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter }
+                    ]],
+                    columns: [[
+                    { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                    { field: 'MigrateResultFlag', title: '变更结果', width: 80, align: 'center', formatter: _easyuigrid_bool2Formatter },
+                    { field: 'ResidentDynamicMoveRemark', title: '变更说明', width: 120, align: 'left' },
+                    { field: 'AreaIdTo', title: '迁入辖区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas2, textField: "ItemName", valueField: "ItemId" },
+                    { field: 'AreaId2To', title: '迁入街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3To', title: '迁入社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'ResidentDynamicMoveCheckInTime', title: '变更时间', align: 'center', width: 135, formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                    { field: 'AreaIdFrom', title: '迁出辖区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas2, textField: "ItemName", valueField: "ItemId" },
+                    { field: 'AreaId2From', title: '迁出街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3From', title: '迁出社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'ResidentStatus', title: '居民状态', width: 80, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '正常:1~t迁出:3~t死亡:5' },
+                    { field: 'NationName', title: '民族', width: 80, align: 'center' },
+                    { field: 'Tel', title: '座机', align: 'center', width: 100 },
+                    { field: 'Mobile', title: '手机', align: 'center', width: 100 },
+                    { field: 'AreaId', title: '现居辖区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas2, textField: "ItemName", valueField: "ItemId" },
+                    { field: 'AreaId2', title: '现居街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'AreaId3', title: '现居社区', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                    { field: 'NativePlaceName', title: '籍贯', align: 'center', width: 150 },
+                    { field: 'AccountTypeName', title: '户口类型', width: 80, align: 'center', width: 80 },
+                    { field: 'HouseholdRegisterName', title: '户籍', align: 'center', width: 150 },
+                    { field: 'PlaceOfHouseholdRegister', title: '户籍(详)', width: 100, align: 'center' },
+                    { field: 'ResidentialOfHometownName', title: '现居地', align: 'center', width: 150 },
+                    { field: 'ResidentialAddress', title: '现居(详)', width: 100, align: 'center' },
+                    { field: 'EducationLevelName', title: '文化程度', align: 'center', width: 80 },
+                    { field: 'MarriageName', title: '婚姻状况', align: 'center', width: 60 },
+                    { field: 'IncomeStatusName', title: '收入情况', align: 'center', width: 80 },
+                    { field: 'HousingStatusName', title: '住房情况', align: 'center', width: 80 },
+                    { field: 'PostCode', title: '邮编', width: 80, align: 'center' },
+                    { field: 'Remark', title: '备注', align: 'center', width: 250 }
+            ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            });      //end loadTree
+    });
+     
+
+    var doEdit = "";
+    function migrate_cancel_p() {
+        var rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+        if (rows.length > 1) {
+            alert("撤销迁出只允许单个操作");
+        } 
+        else {
+            doEdit = "cancel";
+            edit();
+        }
+     }
+
+     function migrate_refuse_p() {
+         var rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+         if (rows.length > 1) {
+             alert("拒绝迁入只允许单个操作");
+         }
+         else {
+             doEdit = "refuse";
+             edit();
+         }
+     }
+
+     function migrate_ok_p() {  
+         doEdit = "ok";
+         edit();
+     }
+     function migrateSave() {
+         var remark = $('#ResidentDynamicMoveRemark').val().trim(); 
+         if (remark && remark != '') {
+             var rows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections');
+             var residentIds = _.map(rows, function (o) { return o.ResidentId }).join(',');
+             var date = {
+                 ResidentIds: residentIds,
+                 AreaIdFrom: rows[0].AreaIdFrom,
+                 AreaId2From: rows[0].AreaId2From,
+                 AreaId3From: rows[0].AreaId3From,
+                 AreaIdTo: rows[0].AreaIdTo,
+                 AreaId2To: rows[0].AreaId2To,
+                 AreaId3To: rows[0].AreaId3To,
+                 Remark: remark
+             }
+             if (doEdit == "ok") {
+                 migrate_ok_d(date);
+             }
+             else {
+                 migrate_back_d(date, doEdit);
+             }
+         }
+         else {
+             alert("请填写必要的操作说明");
+         } 
+     }
+     function migrate_back_d(date, m) {
+         if (date) {
+             var message = m == 'refuse' ? '拒绝选择的对象迁入' : '撤销选择的对象迁出';
+             alertConfirm('确定' + message + '？', function (r) {
+                 if (r) {
+                     postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/ResidentMigrateBack', $.toJSON(date), function (ret) {
+                         if (ret.Success) {
+                             alert('操作成功');
+                             $('#' + models[currentMenuCode].dialogId).dialog('close');
+                         }
+                     }, { async: false }, models[currentMenuCode].headers);
+                     $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                 }
+             });
+         }
+         else {
+             alertError('请选中要操作的记录');
+         }
+     }
+
+     function migrate_ok_d(date) {
+         if (date) {
+            alertConfirm('确定允许选择的人迁入吗？', function (r) {
+                if (r) {
+                    postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/ResidentMigrateConfirm', $.toJSON(date), function (ret) {
+                        if (ret.Success) {
+                            alert('操作成功');
+                            $('#' + models[currentMenuCode].dialogId).dialog('close');
+                        }
+                    }, { async: false }, models[currentMenuCode].headers);
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+            });
+        }
+        else {
+            alertError('请选择需要操作的对象');
+        }
+    }
+    function datagrid_load(areaId) {
+        var migrateStatus = $('#migrateStatus').combobox("getValue");
+        var param = {
+            sort: 'ResidentDynamicMoveOperatedOn',
+            order: 'desc',
+            filterFields: [],
+            fuzzyFields: []
+        }
+
+        if (migrateStatus == 10) {
+            param.filterFields.push(
+                             { key: 'AreaIdFrom', value: models[currentMenuCode].defaultModel.AreaId },
+                             { key: 'MigrateResultFlag', value: migrateStatus });
+            param.fuzzyFields.push({ key: 'AreaIdFrom', value: areaId });
+        }
+        else if (migrateStatus == 11) {
+            param.filterFields.push(
+                             { key: 'AreaIdTo', value: models[currentMenuCode].defaultModel.AreaId },
+                             { key: 'MigrateResultFlag', value: migrateStatus });
+            param.fuzzyFields.push({ key: 'AreaIdTo', value: areaId });
+        }
+        else {
+            param.filterFields.push(
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                             { key: 'AreaIdTo', value: models[currentMenuCode].defaultModel.AreaId },
+                             { key: 'MigrateResultFlag', value: migrateStatus });
+            param.fuzzyFields.push({ key: 'AreaIdTo', value: areaId });
+        }
+
+        $('#' + models[currentMenuCode].gridId).datagrid('load', param);
+    }
+
+    function execEx(v) {
+        var areaId;
+        var treeNodeId = '';
+        var treeNode = $('#' + models[currentMenuCode].treeId).tree('getSelected');
+        if (treeNode) {
+            treeNodeId = treeNode.id;  //当前节点的层次
+        }
+        if (treeNodeId.length > 6) {
+            var sub_id = treeNodeId.substring(14, 18);
+            if (sub_id == '0000') {
+                areaId = left(treeNodeId, 13);
+            }
+            else {
+                areaId = left(treeNodeId, 18);
+            }
+        }
+        else {
+            areaId = "";
+        };
+        datagrid_load(areaId);
+        exec(v);
+    }
+
+    function resetfmEx(v) {
+        $('#KeyWord').val(null);
+        $('#migrateStatus').combobox("setValue", 0);
+    }
+
+    function getAreas() {
+        var areas2;
+        var areaCode = top.appDeployArea.code.substring(0, 4);
+        var strParms = { DictionaryId: '00005', ItemCode: areaCode };
+        var itemId;
+        getTo(baseCMSInvokeUrl + '/Sys/DictionaryItemService/Query?parms=' + $.toJSON(strParms), null, function (ret) {
+            if (ret.rows.length > 0) {
+                itemId = ret.rows[0].ItemId;
+            }
+            else {
+                alert('市级节点未取到，本市Id未知');
+            }
+        }, { async: false }, { ConnectId: baseInfoNode });
+        //                alert(itemId);
+        getTo(ajaxData_InvokeUrl + '/GetCityAndAreaInProvince/' + itemId, null, function (result) {
+            areas2 = result;
+        }, { async: false }, { ConnectId: baseInfoNode });
+        //        alert($.toJSON(areas2));
+        return areas2;
+    }
+
+    $('#CC-Gender').combobox({
+        width: 140,
+        panelHeight: 63,
+        data: [{ ItemId: 'N', ItemName: '全部' },
+                   { ItemId: 'M', ItemName: '男' },
+                   { ItemId: 'F', ItemName: '女'}],
+        valueField: 'ItemId',
+        textField: 'ItemName',
+        editable: false,
+        value: 'N'
+    });
+
+    function _easyuigrid_bool2Formatter(val, row, idx) {
+        var migrateResultFlag = row.MigrateResultFlag.toString();
+        if (migrateResultFlag == '1') {
+            val = "成功";
+        }
+        else if (migrateResultFlag == '0') {
+            val = "失败";
+        }
+        else {
+            val = "待定";
+        }
+        return val;
+    }
+</script>

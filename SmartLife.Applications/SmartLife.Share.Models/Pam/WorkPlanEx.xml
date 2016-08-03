@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps> 
+    <parameterMap id="SP_Pam_GenDailyWorkExcuteParam" class="StringObjectDictionary">
+      <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="UserId" column="UserId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="char" />
+      <parameter  property="BatchFlag" column="BatchFlag" direction="Input" type="int" dbType="int" /> 
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap> 
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Pam_GenDailyWorkExcute" parameterMap="SP_Pam_GenDailyWorkExcuteParam" resultClass="StringObjectDictionary">
+      SP_Pam_GenDailyWorkExcute
+    </procedure>
+    <update id="NullifyWorkPlan_Update" parameterClass="StringObjectDictionary" >
+      update Pam_WorkPlan
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserIdNew" >UserId=#UserIdNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManIdNew" >OldManId=#OldManIdNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Workload" >Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindFlag" >RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindRepeats" >RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlanPeriod" >PlanPeriod=#PlanPeriod#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlanSchedule" >PlanSchedule=#PlanSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerBeginTime" >ServerBeginTime=#ServerBeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+      </dynamic> 
+      <dynamic prepend=" where ">
+        <isPropertyAvailable prepend=" And " property="StatusW" >Status=#StatusW#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable> 
+      </dynamic>
+    </update>
+    <select id="Count_ListForEasyUIgridDictionaryItemByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse, u.UserId,u.UserCode,u.UserName,u.UserType,u.Gender as GenderU
+      ,wp.PlanId,WorkItem,dbo.FUNC_Tol_GetDictionaryItemName('13001',wp.WorkItem) WorkItemName, wp.Workload
+      ,CAST( wp.Workload as varchar(40))+' 分钟' as WorkloadName,wp.RemindFlag,wp.RemindRepeats,wp.PlanPeriod
+      ,dbo.FUNC_Tol_GetDictionaryItemName('13002',wp.PlanPeriod) PlanPeriodName,wp.PlanSchedule,wp.Remark as RemarkWP,wp.ServerBeginTime,wp.PlayRepeats
+      ,p.OldManId,p.OldManName,p.Gender as GenderP,p.Birthday,p.IDNo,p.HealthInsuranceFlag,p.HealthInsuranceNumber,
+      p.SocialInsuranceFlag,p.SocialInsuranceNumber,p.LivingState,p.OldManIdentity,p.AreaId,p.AreaId2,p.AreaId3,
+      p.Address,p.LongitudeS,p.LatitudeS,p.PostCode,p.Tel,p.Mobile,p.Remark as RemarkP
+      from Pub_User u right join Pam_WorkPlan wp on u.UserId=wp.UserId
+      left join Oca_OldManBaseInfo p on wp.OldManId=p.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlanId" >wp.PlanId=#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >wp.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >wp.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >wp.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >wp.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >wp.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >wp.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >wp.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserId" >wp.UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >wp.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >wp.WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Workload" >wp.Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindFlag" >wp.RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindRepeats" >wp.RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanPeriod" >wp.PlanPeriod=#PlanPeriod#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanSchedule" >wp.PlanSchedule=#PlanSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerBeginTime" >wp.ServerBeginTime=#ServerBeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >wp.Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ListForEasyUIgridDictionaryItemByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,u.UserId,u.UserCode,u.UserName,u.UserType,u.Gender as GenderU
+      ,wp.PlanId,WorkItem,dbo.FUNC_Tol_GetDictionaryItemName('13001',wp.WorkItem) WorkItemName, wp.Workload
+      ,CAST( wp.Workload as varchar(40))+' 分钟' as WorkloadName,wp.RemindFlag,wp.RemindRepeats,wp.PlanPeriod
+      ,dbo.FUNC_Tol_GetDictionaryItemName('13002',wp.PlanPeriod) PlanPeriodName,wp.PlanSchedule,wp.Remark as RemarkWP,wp.ServerBeginTime,wp.PlayRepeats
+      ,p.OldManId,p.OldManName,p.Gender as GenderP,p.Birthday,p.IDNo,p.HealthInsuranceFlag,p.HealthInsuranceNumber,
+      p.SocialInsuranceFlag,p.SocialInsuranceNumber,p.LivingState,p.OldManIdentity,p.AreaId,p.AreaId2,p.AreaId3,
+      p.Address,p.LongitudeS,p.LatitudeS,p.PostCode,p.Tel,p.Mobile,p.Remark as RemarkP
+      from Pub_User u right join Pam_WorkPlan wp on u.UserId=wp.UserId
+      left join Oca_OldManBaseInfo p on wp.OldManId=p.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlanId" >wp.PlanId=#PlanId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >wp.Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >wp.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >wp.CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >wp.CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >wp.OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >wp.OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >wp.OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserId" >wp.UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >wp.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >wp.WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Workload" >wp.Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindFlag" >wp.RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindRepeats" >wp.RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanPeriod" >wp.PlanPeriod=#PlanPeriod#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlanSchedule" >wp.PlanSchedule=#PlanSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerBeginTime" >wp.ServerBeginTime=#ServerBeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >wp.Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="WorkPlanListByAgency" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.OldManId,OldManName,$PivotColumnsForSelect$ from Oca_OldManBaseInfo x left join (
+      select OldManId,$PivotColumns$
+      from(
+      select oldManId,PlanDate,dbo.JoinStr(ServeInfo)  as ServeInfo from
+      (select wp.oldManId,SUBSTRING(CONVERT(varchar(100),  wp.PlanDate, 112),1,11) PlanDate
+      ,dbo.JoinStr(cast(isnull(wp.PlanId,'00000000-0000-0000-0000-000000000000') as CHAR(36))
+      +'|'+cast(wp.WorkItem as char(5)) +'|' + cast(wp.UserId as char(36))
+      +'|'+u.UserName +'|'+ar.WorkSchedule +'|'+cast(ar.Workload as char(3))
+      ) as ServeInfo
+      from  Pam_WorkPlan wp left join Pam_AssessmentResult ar  on wp.OldManId=ar.OldManId and wp.WorkItem=ar.WorkItem left join Pub_User u on u.UserId=wp.UserId
+      where wp.Status=1 and ar.Status=1
+      group By  wp.oldManId, wp.PlanDate
+      ) b group By  oldManId, PlanDate
+      ) a
+      pivot(max(ServeInfo) for PlanDate in($PivotColumns$))b
+      ) y on x.OldManId =y.OldManId  inner join
+      (select ro.OldManId,ro.RoomId,r.FloorNo from Pam_RoomOldMan ro inner join Pam_Room r on ro.RoomId=r.RoomId where ro.EndDate>GETDATE() and r.Status=1 and r.StationId=#StationId# ) z
+      on x.OldManId=z.OldManId
+      where  x.StationId=#StationId#  and x.Status =3 and x.ResidentStatus =7
+      <isPropertyAvailable prepend=" And " property="RoomId" >z.RoomId=#RoomId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="FloorNo" >z.FloorNo=#FloorNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="OldManName" >$OldManName$</isPropertyAvailable>
+      order by OldManName asc
+    </select>
+    <select id="GetWorkItemListForEveryDay" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select Id,Status,OldManId,WorkItem,WorkSchedule,Workload,RemindFlag,RemindRepeats,PlayRepeats,CheckFlag,CheckDescription,SourceTable,SourceId
+      from Pam_AssessmentResult
+      where Status=1 and OldManId=#OldManId#
+      and WorkItem not in
+      (select WorkItem from Pam_WorkPlan
+      where Status=1 and OldManId=#OldManId# and FinishFlag=0
+      and CompleteStatus=0 and  DATEDIFF(d,PlanDate, #PlanDate#)=0)
+      order by WorkSchedule asc
+    </select>
+    <update id="CopyWorkPlan_Week" parameterClass="StringObjectDictionary" >
+      delete Pam_WorkPlan
+      where Status=1 and PlanDate>='$CopyTo_Start$' and PlanDate&lt;='$CopyTo_End$'
+      and OldManId in ($OldManIds$)
+      insert into Pam_WorkPlan
+      (PlanId,Status, CheckInTime,OperatedBy,OperatedOn,PlanDate
+      ,RoomId,OldManId,WorkItem,FinishFlag,UserId,Remark,CompleteStatus,WorkloadActual )
+      select NEWID() PlanId,Status,GETDATE() CheckInTime,'$OperatedBy$' OperatedBy,GETDATE() OperatedOn,dateadd(day,$Days$,PlanDate) PlanDate
+      ,RoomId,OldManId,WorkItem,0 FinishFlag,UserId,Remark,0 CompleteStatus,WorkloadActual
+      from Pam_WorkPlan
+      where Status=1 and PlanDate>='$CopyFrom_Start$' and PlanDate&lt;='$CopyFrom_End$'
+      and OldManId in ($OldManIds$)
+    </update>
+    <delete id="DeleteUndoWorkPlan" parameterClass="StringObjectDictionary" >
+      delete from Pam_WorkPlan where PlanId in (
+      select PlanId from Pam_WorkPlan a inner join pub_PensionAgencyUser b on a.UserId=b.UserId
+      where a.PlanDate>GETDATE() and b.StationId=#StationId#)
+    </delete>
+  </statements>
+</sqlMap>

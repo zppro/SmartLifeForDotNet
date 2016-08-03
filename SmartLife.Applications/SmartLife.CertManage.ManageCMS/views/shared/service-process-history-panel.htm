@@ -1,0 +1,110 @@
+﻿<div class="service-process-title">
+    服务过程记录:</div>
+<div id="service-process-content-history" ></div>
+<div class="service-process-title">
+    回访记录:</div>
+<div style="width:94%;margin:5px auto; height:130px;">
+    <table id="dg-callback-service">
+    </table>
+</div>
+
+
+<div id="callback-service-block"></div>
+
+<script type="text/javascript">
+    $(function () {
+        fetchServiceTrackLog('service-process-content-history', 30);
+
+        if (pageData) {
+            var evaluatLevel;
+            getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/11017', null, function (result) {
+                evaluatLevel = result;
+            }, { async: false });
+
+            $("#dg-callback-service").height($("#dg-callback-service").parent().height());
+            $('#dg-callback-service').datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: baseCMSInvokeUrl + '/Oca/ServiceCallBackService/ListForEasyUIgridByPage',
+                method: 'POST',
+                queryParams: {
+                    sort: 'CheckInTime',
+                    order: 'desc',
+                    instance: {
+                        Status: 1,
+                        CallServiceId: pageData.CallServiceId
+                    }
+                },
+                onLoadSuccess: function (data) {
+                    $('.iconEditHF').linkbutton({ text: '编辑', plain: false}).unbind('click').bind('click', function () {
+                        var callBackId = $(this).attr('CallBackId');
+                        showHf(callBackId, evaluatLevel);
+                    });
+                },
+                onDblClickRow: function (idx, row) {
+                    viewHf(row, evaluatLevel);
+                },
+                pageSize: 3,
+                pageList: [3],
+                columns: [[
+                { field: 'CallBackId', title: '回访编号', width: 80, hidden: true },
+                { field: 'EditHF', title: '编辑回访', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconEditHF" CallBackId="' + row.CallBackId + '"></a>';
+                }
+                },
+                { field: 'OperatedBy', title: '服务工号', width: 130, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+                    var ret = "";
+                    if (row.OperatedBy) {
+                        var url = baseCMSInvokeUrl + '/Pub/UserService/' + row.OperatedBy;
+
+                        getTo(url, null, function (result) {
+                            ret = result.instance;
+                        }, { async: false });
+                    }
+                    return ret;
+                }, textField: "UserCode", valueField: "UserId"
+                },
+                { field: 'OperatedOn', title: '回访时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'DoStatus', title: '回访状态', width: 75, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '待回访:0~t已回访:1' },
+                { field: 'EvaluatedLevel', title: '回访评价', width: 75, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: evaluatLevel, textField: "ItemName", valueField: "ItemId" }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+        }
+    });
+
+    function viewHf(row, evaluatLevel) {
+        if (!row) {
+            row = $('#dg-callback-service').datagrid('getSelected');
+        }
+        if (row) {
+            showHf(row.CallBackId, evaluatLevel)
+        }
+        else {
+            alertInfo('请选中要查看的回访记录！');
+        }
+    }
+
+    function showHf(strCallBackId, evaluatLevel) {
+        if (strCallBackId) {
+            getHtml(baseUrl + '/views/dialogs/set-callback-service.htm', function (str) {
+
+                $("#callback-service-block").html(str);
+                $.parser.parse('#fm-callback-service,#btn-callback-service');
+                $("#dlg-callback-service").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                        $('#dg-callback-service').datagrid("reload");
+                    },
+                    onBeforeOpen: function () {
+                        loadCallBackService(strCallBackId, evaluatLevel);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '完善老人信息');
+            });
+        }
+    }
+</script>

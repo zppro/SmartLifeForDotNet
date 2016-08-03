@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+      <select id="CourseScheduleList" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.DeviceId,y.DeviceCode,y.DeviceName,$PivotColumnsForSelect$ from Pam_Device x inner join Pub_Device y
+        on x.DeviceId=y.DeviceId left join ( select * from (
+        select t.DeviceId,CONVERT(varchar(100),t.BeginTime, 112) BeginDate,dbo.JoinStr(CAST(t.Id as varchar(20))+'|'+
+        CONVERT(varchar(100),t.BeginTime,24)+'|'+CONVERT(varchar(100),DATEADD(S,t.CourseDuration, t.BeginTime),24)+'|'+
+        t.CourseId+'|'+ISNULL(t.CourseName,'')+'|'+CAST(t.CourseDuration as varchar(20))+'|'+ ISNULL(t.CourseInfo,'')+'|'+ISNULL(t.Remark,'')+'|'+CAST(t.CourseFlag as varchar(10)) ) as
+        CourseInfo From Pam_CourseSchedule t where t.Status=1 and t.StationId=#StationId#
+        <isPropertyAvailable prepend=" And " property="CourseFlag" >t.CourseFlag=#CourseFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DeviceId" >t.DeviceId=#DeviceId#</isPropertyAvailable>
+        group by t.DeviceId,CONVERT(varchar(100),t.BeginTime, 112)) tt
+        pivot (max(tt.CourseInfo) for tt.BeginDate in ($PivotColumns$)) as pvt ) z on y.DeviceId=z.DeviceId
+        where x.StationId=#StationId# and  x.Status=1 and y.DeviceType='00012' and y.Status=1
+        <isPropertyAvailable prepend=" And " property="DeviceId" >y.DeviceId=#DeviceId#</isPropertyAvailable>
+        order by x.CheckInTime desc
+      </select>
+    </statements>
+</sqlMap>

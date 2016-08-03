@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="CC_Ext" type="SmartLife.Share.Models.Oca.CC_Ext, SmartLife.Share.Models" />
+        <typeAlias alias="CC_ExtPK" type="SmartLife.Share.Models.Oca.CC_ExtPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="CC_Ext_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_CC_Ext(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ExtId" >ExtId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExtCode" >ExtCode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCDial" >IPCCDial</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayType" >IPCCRelayType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayPrefix" >IPCCRelayPrefix</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ExtId" >#ExtId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExtCode" >#ExtCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCDial" >#IPCCDial#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayType" >#IPCCRelayType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayPrefix" >#IPCCRelayPrefix#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="CC_Ext_Update" parameterClass="StringObjectDictionary" >
+            update Oca_CC_Ext
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ExtCode" >ExtCode=#ExtCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCDial" >IPCCDial=#IPCCDial#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayType" >IPCCRelayType=#IPCCRelayType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IPCCRelayPrefix" >IPCCRelayPrefix=#IPCCRelayPrefix#</isPropertyAvailable>
+            </dynamic>
+            where ExtId=#ExtId#
+        </update>
+        <delete id="CC_Ext_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_CC_Ext
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ExtId" >ExtId=#ExtId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExtCode" >ExtCode=#ExtCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCDial" >IPCCDial=#IPCCDial#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayType" >IPCCRelayType=#IPCCRelayType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayPrefix" >IPCCRelayPrefix=#IPCCRelayPrefix#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="CC_Ext_Load" parameterClass="CC_ExtPK" resultClass="CC_Ext" >
+            select ExtId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,ExtCode,IPCCDial,IPCCRelayType,StationId,IPCCRelayPrefix from Oca_CC_Ext
+            where ExtId=#ExtId#
+        </select>
+        <select id="CC_Ext_List" parameterClass="StringObjectDictionary" resultClass="CC_Ext" >
+            select ExtId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,ExtCode,IPCCDial,IPCCRelayType,StationId,IPCCRelayPrefix from Oca_CC_Ext
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ExtId" >ExtId=#ExtId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExtCode" >ExtCode=#ExtCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCDial" >IPCCDial=#IPCCDial#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayType" >IPCCRelayType=#IPCCRelayType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayPrefix" >IPCCRelayPrefix=#IPCCRelayPrefix#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="CC_Ext_ListByPage" parameterClass="StringObjectDictionary" resultClass="CC_Ext" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ExtId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,ExtCode,IPCCDial,IPCCRelayType,StationId,IPCCRelayPrefix from Oca_CC_Ext
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ExtId" >ExtId=#ExtId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExtCode" >ExtCode=#ExtCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCDial" >IPCCDial=#IPCCDial#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayType" >IPCCRelayType=#IPCCRelayType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IPCCRelayPrefix" >IPCCRelayPrefix=#IPCCRelayPrefix#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

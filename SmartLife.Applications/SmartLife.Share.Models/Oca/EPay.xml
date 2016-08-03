@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="ListRechargeObjectAsCanAssign" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.OldManId as ObjectId,x.OldManName as ObjectName from Oca_OldManBaseInfo x
+      inner join Oca_OldManConfigInfo y on x.OldManId = y.OldManId
+      left join Oca_EPay_RechargeRecord z on y.OldManId=z.ObjectId and z.AccountNature=#AccountNature# and z.PeriodId1=#PeriodId1# and z.PeriodId2=#PeriodId2#
+      where x.Status= 1 and y.GovTurnkeyFlag=1 and z.ObjectId is null
+      <isPropertyAvailable prepend=" AND " property="WhereClause">($WhereClause$)</isPropertyAvailable>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ListRechargeObjectAsCanAssign2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.OldManId as ObjectId,x.OldManName as ObjectName from Oca_OldManBaseInfo x
+        inner join Oca_OldManConfigInfo y on x.OldManId = y.OldManId
+        left join Oca_EPay_RechargeRecord z on y.OldManId=z.ObjectId and z.AccountNature=#AccountNature# and z.PeriodId1=#PeriodId1# and z.PeriodId2=#PeriodId2#
+        where x.Status= 1 and y.GovTurnkeyFlag=0 and z.ObjectId is null and y.AssessLevel is not null and y.AssessLevel=#AssessLevel#
+        <isPropertyAvailable prepend=" AND " property="WhereClause">($WhereClause$)</isPropertyAvailable>
+        <dynamic prepend=" ORDER BY ">
+            <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+        </dynamic>
+    </select>
+    <select id="ListRechargeObjectAsCanAssign3" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.OldManId as ObjectId,x.OldManName as ObjectName from Oca_OldManBaseInfo x
+        inner join Oca_OldManConfigInfo y on x.OldManId = y.OldManId
+        right join Oca_EPay_RechargeRecord z on y.OldManId=z.ObjectId and z.AccountNature=#AccountNature# and z.PeriodId1=#PeriodId1# and z.PeriodId2=#PeriodId2#
+        where x.Status= 1 and y.GovTurnkeyFlag=0 and z.ObjectId is not null and y.AssessLevel is not null and y.AssessLevel=#AssessLevel#
+        <isPropertyAvailable prepend=" AND " property="WhereClause">($WhereClause$)</isPropertyAvailable>
+        <dynamic prepend=" ORDER BY ">
+            <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+        </dynamic>
+    </select>
+    <select id="EPaySpendingList" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.FeeType,b.Remain,(CASE WHEN b.FeeType ='00002' THEN dbo.FUNC_Oca_CeilingHour(a.ServeManArriveTime,a.ServeManLeaveTime)
+      WHEN b.FeeType ='00001' then 1.0 END) AS tResult
+      from Oca_ServiceWorkOrder a left join Oca_EPay_OldManAccount b on a.OldManId=b.OldManId and
+      a.ServeItemB=b.ServeItemB
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+      <select id="Count_EPaySpending_ListByPager" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select 1 as NoUse
+        from Oca_ServiceWorkOrder a left join Oca_EPay_OldManAccount b on a.OldManId=b.OldManId and
+        a.ServeItemB=b.ServeItemB
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+      </select>
+      <select id="EPaySpending_ListByPager" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.* from (
+        select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+        a.*,b.FeeType,b.Remain,(CASE WHEN b.FeeType ='00002' THEN dbo.FUNC_Oca_CeilingHour(a.ServeManArriveTime,a.ServeManLeaveTime)
+        WHEN b.FeeType ='00001' then 1.0 END) AS tResult
+        from Oca_ServiceWorkOrder a left join Oca_EPay_OldManAccount b on a.OldManId=b.OldManId and
+        a.ServeItemB=b.ServeItemB
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+        )x where x.SN > ($PageNo$-1)*$PageSize$
+      </select>
+  </statements>
+</sqlMap>

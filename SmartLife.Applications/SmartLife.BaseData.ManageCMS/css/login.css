@@ -1,0 +1,190 @@
+﻿
+/***blue skin***/
+body
+{
+    background-image:url(../images/login/Login_bg.png);
+    background-position:top center; 
+    /*background-color:#015a94;*/
+    background-color:#fff;
+    background-repeat:no-repeat;
+    position:relative;
+}
+#Container
+{ 
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    width:100%;
+    height:100%;
+    background:none;
+}
+#Head
+{
+    width:550px;
+    height:46px;
+    margin: 0 auto;
+    margin-top:100px;  
+}
+#Logo
+{ 
+    width:198px;
+    height:79px; 
+    background-image:url(../images/login/logo.png);
+    background-position:center center; 
+    background-repeat:no-repeat;    
+    display:inline-block;
+}
+#SP1
+{ 
+    width:40px;
+    height:46px; 
+    background-image:url(../images/login/xian.png);
+    background-position:center center; 
+    background-repeat:no-repeat;  
+    display:inline-block;
+}
+#SystemName
+{
+    width:280px; 
+    /*
+    background-image:url(../images/login/Login_SystemName.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+    */
+    display:inline-block;  
+    float:right;
+}
+#ApplicationAliasName
+{
+    width:100%;
+    margin:0 0 0 0px;
+    padding:50px 0 0 0;
+    text-align:left;
+    font-size:24px;
+    font-weight:bold; 
+}
+#Main
+{
+    position:relative;
+    padding-top:40px;
+    height:1px;
+}
+
+#MainLogin
+{
+    width:611px;
+    height:332px;
+    margin:0 auto;
+    background-position:center center; 
+    background-repeat:no-repeat;
+    position:relative;
+}  
+.MainLoginUser
+{
+    background-image:url(../images/login/Login_box_User.png);
+    
+}
+.MainLoginAdmin
+{
+    background-image:url(../images/login/Login_box_Admin.png);
+    
+}
+#LoginButton
+{
+    background-image:url(../images/login/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    width:268px;
+    height:34px; 
+}
+ 
+ 
+#MainLogin .long
+{
+    width:90px;
+    height:20px;
+}
+#MainLogin .btn
+{
+    margin-left:61px;
+    color:#26599a;
+    width:63px;
+    }
+#MainCopyRight
+{ 
+    margin-left:auto;
+    margin-right:auto;
+    width:827px; 
+    height:266px;
+    background-image:url(../images/login/lou.png);
+    background-repeat:no-repeat;
+    background-position:bottom center;
+    text-align:center;
+}
+.copyright
+{ 
+    color:#333; 
+   
+    margin-top:5px; 
+}
+.copyright a
+{
+    
+    color:#333;
+    text-align:center;
+    font-size:12px; 
+} 
+.form
+{
+   width:386px;
+   height:332px;
+   position:absolute;
+   right:0px;
+   
+}
+.form table
+{
+    width:268px; 
+    margin:0 auto;
+    margin-top:92px;
+}
+.form td
+{
+    height:30px; 
+}
+.form label
+{  
+    font-size: 14px; 
+    text-align: right;
+    width:75px; 
+}
+.form input.text-input
+{
+    width: 137px; 
+    height:20px;
+    border: none;
+}
+
+.form #RememberUserCodeDiv
+{
+    width:80px;
+    margin:0 0 0 82px;
+}
+
+.env-required
+{
+    position:absolute; top:2px; right:2px;padding:2px;color:#ccc;
+}
+.env-required a
+{
+    color:#ccc;
+    text-decoration:none;
+    margin-left:3px;
+    margin-right:3px;
+    display:none;
+}
+#helpLink
+{
+    display:inline-block;
+}

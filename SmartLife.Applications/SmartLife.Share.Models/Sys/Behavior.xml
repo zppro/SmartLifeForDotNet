@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Behavior" type="SmartLife.Share.Models.Sys.Behavior, SmartLife.Share.Models" />
+    <typeAlias alias="BehaviorPK" type="SmartLife.Share.Models.Sys.BehaviorPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Behavior_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Behavior(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="BehaviorCode" >BehaviorCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BehaviorName" >BehaviorName</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="BehaviorCode" >#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BehaviorName" >#BehaviorName#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Behavior_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Behavior
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BehaviorName" >BehaviorName=#BehaviorName#</isPropertyAvailable>
+      </dynamic>
+      where BehaviorCode=#BehaviorCode#
+    </update>
+    <delete id="Behavior_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Behavior
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="BehaviorCode" >BehaviorCode=#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BehaviorName" >BehaviorName=#BehaviorName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Behavior_Load" parameterClass="BehaviorPK" resultClass="Behavior" >
+      select BehaviorCode,Id,Status,BehaviorName from Sys_Behavior
+      where BehaviorCode=#BehaviorCode#
+    </select>
+    <select id="Behavior_List" parameterClass="StringObjectDictionary" resultClass="Behavior" >
+      select BehaviorCode,Id,Status,BehaviorName from Sys_Behavior
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="BehaviorCode" >BehaviorCode=#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BehaviorName" >BehaviorName=#BehaviorName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

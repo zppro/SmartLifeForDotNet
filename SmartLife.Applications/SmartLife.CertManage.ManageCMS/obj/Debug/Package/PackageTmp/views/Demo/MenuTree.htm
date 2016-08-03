@@ -1,0 +1,52 @@
+﻿<table>
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B11070202" style="overflow: auto;">
+            </ul>
+        </td>
+    </tr>
+</table>
+<pre class="prettyprint  linenums" style=" height:200px; overflow:scroll; padding: 2px; border: 1px solid #000">
+<xmp>
+<table>
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B11070202" style="overflow: auto;">
+            </ul>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+        },
+        function (d) {
+            getTreeData('00$00$01', "OrderNo asc", null, d);
+        },
+        null,
+        function (treeObj) {
+        }); 
+    });
+
+</script>
+</xmp>
+</pre>
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+        },
+        function (d) {
+            getTreeData('00$00$01', "OrderNo asc", null, d);
+        },
+        null,
+        function (treeObj) {
+        }); 
+    });
+
+</script>

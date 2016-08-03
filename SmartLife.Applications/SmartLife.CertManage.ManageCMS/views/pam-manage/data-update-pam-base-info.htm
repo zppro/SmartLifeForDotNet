@@ -1,0 +1,257 @@
+﻿<table id="cc-socialorganization" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px; border: solid 1px #ddd;" valign="top">
+            <div id="toolbar-Groups" style="line-height: 35px; text-align: center; background-color: #fafafa;">
+                社会组织所在区域
+            </div>
+            <div id="tree-socialorganization" style="overflow: auto;">
+            </div>
+        </td>
+        <td valign="top">
+            <div id="search-sample-socialorganization" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-socialorganization" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="width: 90px;">
+                        </td>
+                        <td style="text-align: left">
+                            关键字：<input name="KeyWord" class="easyui-validatebox" />
+                        </td> 
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <div id="toolbar-socialorganization">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="pullAgency()">添加社会组织</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                    onclick="createUser()">建立管理员账号</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-remove" plain="true" onclick="nullifyEx()">作废</a> 
+            </div>
+            <table id="dg-socialorganization">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-search-socialorganization" class="easyui-dialog" style="width: 480px; height: 180px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-socialorganization">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-socialorganization" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            机构编码:</label>
+        <input name="StationCode" />
+        <label>
+            机构名称:</label>
+        <input name="StationName">
+    </div>
+    <div class="fitem">
+        <label>
+            联&nbsp;&nbsp;系&nbsp;&nbsp;人:</label>
+        <input name="LinkMan" />
+        <label>
+            手机号码:</label>
+        <input name="LinkManMobile" />
+    </div>
+    </form>
+</div>
+<div id="btn-search-socialorganization">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+</div>
+<script type="text/javascript"> 
+    $(function () {
+        var areas;
+        isAgency();
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'stationid-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['StationName'] = formData['KeyWord'];
+                formData['StationCode'] = formData['KeyWord'];
+                formData['LinkMan'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '社会组织管理',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, StationType: '00006', StationType2: currentMenuCode == 'B130101' ? '00001' : '00002', UserType: currentMenuCode == 'B130101' ? '00004|00001000-0006-0000-0000-000000000001' : '00005|00001000-0006-0000-0000-000000000004' }
+        };
+
+        validateUI();
+        autosize("cc-" + currentMenuCode);
+        autosize(models[currentMenuCode].gridId, -30);
+        autosize(models[currentMenuCode].treeId, -$('#toolbar-Groups').height() - 40);
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        //创建树
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaCode;
+                var areaLevels = treeNode.attributes.Levels; //当前节点的层次
+                if (areaLevels > 2) {
+                    areaCode = left(treeNode.attributes.Code, 3 + treeNode.attributes.Levels * 2);
+                }
+                else {
+                    areaCode = "";
+                };
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'CheckInTime',
+                    order: 'desc',
+                    filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'StationType', value: models[currentMenuCode].defaultModel.StationType },
+                            { key: 'StationType2', value: models[currentMenuCode].defaultModel.StationType2 }
+                    ],
+                    fuzzyFields: [{ key: 'AreaCode', value: areaCode}]
+                });
+            },
+            onLoadSuccess: function () {
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+        function (d) {
+            if (top.gUserInfo.isSuperAdmin) {
+                getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+            } else {
+                getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+            }
+        },
+        null,
+        function (treeObj) {
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPageByTree',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId,
+                        StationType: models[currentMenuCode].defaultModel.StationType,
+                        StationType2: models[currentMenuCode].defaultModel.StationType2
+                    }
+                },
+                columns: [[
+                { field: 'StationId', title: '服务站编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'StationCode', title: '社会组织编码', width: 150 },
+                { field: 'StationName', title: '社会组织名称', width: 220 },
+                { field: 'LinkMan', title: '联系人', width: 60, align: 'center' },
+                { field: 'LinkManMobile', title: '手机号码', width: 100 },
+                { field: 'Tel', title: '座机', width: 100 },
+                //{ field: 'Fax', title: '传真', width: 100 },
+                {field: 'Email', title: '电邮', width: 100 },
+                //{ field: 'PostCode', title: '邮编', width: 60 },
+                {field: 'Address', title: '地址', width: 200 },
+                { field: 'AreaId2', title: '所属街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '所属社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+        }); //end loadTree
+
+    });
+
+    function pullAgency() {
+        openDialog('add-pam-addagency-baseinfo', 'views/pam-manage/data-add-pam-addagency.htm', function (callback, dialogData) {
+            var ids = _.map(dialogData, function (o) {
+                return o.StationId;
+            }).join(',');
+            callback();
+            postTo(models[currentMenuCode].baseModelUrl + 'PullAgencyBaseInfo/' + ids + '|' + models[currentMenuCode].defaultModel.AreaId + '|' + baseInfoNode, null, function (ret) {
+                if (ret.Success) {
+                    alertInfo("添加社会组织成功");
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+            });
+        }, { dialogData: models[currentMenuCode].defaultModel.StationType2, title: '添加社会组织', width: 1000, height: 500, padding: 5, buttons: [{
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () { top.closeDialog(); }
+        }]
+        });
+    }
+
+    function createUser() {
+        var row = $('#' + models[currentMenuCode].gridId).datagrid('getSelections'); 
+        if (row&&row.length>0) {
+            var id = row[0].StationId;
+            postTo(models[currentMenuCode].baseModelUrl + 'PullAgencyBaseInfo/' + id + '|' + models[currentMenuCode].defaultModel.AreaId + '|' + baseInfoNode, $.toJSON({ 'UserType': models[currentMenuCode].defaultModel.UserType }), function (ret) {
+                top.openTab('UD367', 'B130105'+'|'+id, '机构管理员管理', 'views/pam-manage/user-pam-amdin-manage.htm', null, null, true, true, false, false);
+            });
+        }
+        else {
+            alert("请选择一个社会组织");
+        }
+    }
+
+    function nullifyEx(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            alertConfirm('确定要作废此社会组织吗？', function (r) {
+                if (r) {
+                    putTo(models[currentMenuCode].baseModelUrl + 'NullifyAgency/' + row.StationId + ',' + models[currentMenuCode].defaultModel.StationType2, null, function (ret) {
+                        if (ret.Success) {
+                            alertInfo("作废成功");
+                            $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                        }
+                    }, null, { ConnectId: baseInfoNode });
+                }
+            })
+        }
+        else {
+            alertInfo('请选择要作废的社会组织');
+        }
+    }
+    function isAgency() {
+        var code = $('body').html(); //把body的代码考进去 
+        code = code.replace(/socialorganization/g, currentMenuCode); // 你可以只替换大小于符号
+        $("body").empty().html(code); //重写如页面  
+    }
+</script>

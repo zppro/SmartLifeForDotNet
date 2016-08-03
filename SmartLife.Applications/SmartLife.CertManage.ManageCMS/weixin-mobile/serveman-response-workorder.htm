@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="http://share.lifeblue.com.cn/css/jqm/jquery.mobile-1.4.4.min.css" />
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/underscore/underscore-1.5.0-min.js"></script>
+    <script type="text/javascript" src="script/mobile-switch-var.js?12"></script>
+    <script type="text/javascript" src="script/mobile-global-var.js"></script>
+    <script type="text/javascript" src="script/mobile-site.js?123"></script>
+    <script type="text/javascript">
+        $(document).on('mobileinit', function () {
+            getTo(parameterData_InvokeUrl + "/Sys_TechSupport", null, function (result) {
+                $('.tech-support').text(result.ret.Value);
+            });
+        }); 
+    </script>
+    <script type="text/javascript" src="http://share.lifeblue.com.cn/script/jqm/jquery.mobile-1.4.4.min.js"></script>
+    <script type="text/javascript">
+        var buttonTag = getQueryString('ButtonTag');
+        var workOrderId = getQueryString('WorkOrderId');
+        var openId = getQueryString('oid'); 
+        $(document).on("pagebeforecreate", '#pageOfCheckOpenIdCanResponse', function () {
+         
+            getTo(baseWeiXinInvokeUrl + '/api/v1/CheckOpenIdCanResponse/' + openId + ',' + workOrderId + ',' + buttonTag, null, function (ret) {
+                if (ret.Success) {
+                    $('.TheServeManName').text('服务人员：' + ret.ret.ServeManName);
+                    $('.TheOldManName').text(ret.ret.OldManName);
+                    var pageName;
+                    if (buttonTag == 'Arrive') {
+                        pageName = 'pageOfResponseWorkOrderToArrive';
+                    }
+                    else if (buttonTag == 'Leave') {
+                        pageName = 'pageOfResponseWorkOrderToLeave';
+                    }
+                    else if (buttonTag == 'Feedback') {
+                        pageName = 'pageOfResponseWorkOrderToFeedback';
+                    }
+                    $.mobile.changePage('#' + pageName, { transition: "slide" });
+                }
+                else {
+                    $('#CheckResult').text(ret.ErrorMessage);
+                }
+            });
+        });
+        function setFeedbackResult(feedbackResult, feedbackResultName) {
+            $('#FeedbackResult').data('feedback-result', feedbackResult);
+            $('#FeedbackResult').text(feedbackResultName); 
+        }
+        function MakeSureResponseToWorkOrder() {
+            var feedbackToOldMan = null;
+            var responseOPName;
+            if (buttonTag == 'Arrive') {
+                responseOPName = '到达';
+            }
+            else if (buttonTag == 'Leave') {
+                responseOPName = '离开';
+            }
+            else if (buttonTag == 'Feedback') {
+                responseOPName = '评价老人';
+                feedbackToOldMan = $('#FeedbackResult').data('feedback-result');
+            }
+            postTo(baseWeiXinInvokeUrl + '/api/v1/ResponseWorkOrderByServeMan', $.toJSON({ OpenId: openId, WorkOrderId: workOrderId, ButtonTag: buttonTag, FeedbackToOldMan: feedbackToOldMan }), function (result) {
+                if (result.Success) {
+                    $('#ResponseResult').text('【' + responseOPName + '】响应成功');
+
+                }
+                else {
+                    $('#ResponseResult').text(result.ErrorMessage);
+                }
+                $.mobile.changePage('#pageOfResponseWorkOrderResult', { transition: "slide" });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div data-role="page" id="pageOfCheckOpenIdCanResponse">
+        <div data-role="header"> 
+            <h2>核实服务人员</h2>
+        </div>
+        <div role="main" class="ui-content">
+              <h1 id="CheckResult" style="text-align:center; color:Green;">检测中</h1>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfResponseWorkOrderToArrive">
+        <div data-role="header">
+            <h2>到达老人家</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <h1 class="TheServeManName" style="text-align:center; "></h1> 
+           <a data-rel="popup" data-role="button" data-theme="b"  href="#popupResponseWorkOrderToArrive" >确认到达</a>
+           <div data-role="popup" id="popupResponseWorkOrderToArrive">
+                <h3 style="text-align:center;">
+                    到达【<span class="TheOldManName"></span>】家中，开始服务吗？</h3>
+                <div style="width:80%; margin:0 auto;"><a href="#"  data-role="button" onclick="MakeSureResponseToWorkOrder();">
+                    确定</a> <a href="#" data-role="button"   data-rel="back" data-theme="b">取消</a>
+                    </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfResponseWorkOrderToLeave">
+        <div data-role="header">
+            <h2>离开老人家</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <h1 class="TheServeManName" style="text-align:center; "></h1> 
+           <a data-rel="popup" data-role="button" data-theme="b"  href="#popupResponseWorkOrderToLeave" >确认离开</a>
+           <div data-role="popup" id="popupResponseWorkOrderToLeave">
+                <h3 style="text-align:center;">
+                    离开【<span class="TheOldManName"></span>】家，结束服务吗？</h3>
+                <div style="width:80%; margin:0 auto;"><a href="#"  data-role="button" onclick="MakeSureResponseToWorkOrder();">
+                    确定</a> <a href="#" data-role="button"   data-rel="back" data-theme="b">取消</a>
+                    </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfResponseWorkOrderToFeedback">
+        <div data-role="header">
+            <h2>评价老人</h2>
+        </div>
+        <div role="main" class="ui-content">
+            <h1 class="TheServeManName" style="text-align:center; "></h1> 
+            <fieldset data-role="controlgroup" data-type="horizontal"   style="text-align:center;">
+                <a data-rel="popup" data-role="button" data-theme="b"  href="#popupResponseWorkOrderToFeedback" onclick="setFeedbackResult('00001','满意')">满意</a> 
+                <a data-rel="popup" data-role="button" data-theme="d"  href="#popupResponseWorkOrderToFeedback" onclick="setFeedbackResult('00005','不满意')">不满意</a>
+            </fieldset>
+           <div data-role="popup" id="popupResponseWorkOrderToFeedback">
+                <h3 style="text-align:center;">
+                    评价【<span class="TheOldManName"></span>】-【<span id="FeedbackResult" data-feedback-result="" ></span>】？</h3>
+                <div style="width:80%; margin:0 auto;"><a href="#"  data-role="button" onclick="MakeSureResponseToWorkOrder();">
+                    确定</a> <a href="#" data-role="button"   data-rel="back" data-theme="b">取消</a>
+                    </div>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+    <div data-role="page" id="pageOfResponseWorkOrderResult">
+        <div data-role="header"> 
+            <h2>响应结果</h2>
+        </div>
+        <div role="main" class="ui-content">
+              <h1 id="ResponseResult" style="text-align:center; color:Green;"></h1>
+        </div>
+        <div data-role="footer">
+            <h4 class="tech-support">
+            </h4>
+        </div>
+    </div>
+</body>
+</html>

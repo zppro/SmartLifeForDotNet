@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parameterMaps>
+      <parameterMap id="SP_Pam_ResponseWorkExcuteParam" class="StringObjectDictionary">
+        <parameter  property="ExtNo" column="ExtNo" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+        <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+      </parameterMap>
+      <parameterMap id="SP_Pam_DeviceAlarmParam" class="StringObjectDictionary">
+        <parameter  property="Caller" column="Caller" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="Callee" column="Callee" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="UuidOfIPCC" column="UuidOfIPCC" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="CallQueueRet" column="CallQueueRet" direction="Output" type="string" dbType="nvarchar" />
+        <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+        <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+      </parameterMap>
+      <parameterMap id="SP_Pam_GetWorkItemForServeManParam" class="StringObjectDictionary">
+        <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+        <parameter  property="UserId" column="UserId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+        <parameter  property="RemindTime_Start" column="RemindTime_Start" direction="Input" type="string" dbType="varchar" />
+        <parameter  property="RemindTime_End" column="RemindTime_End" direction="Input" type="string" dbType="nvarchar" />
+        <parameter  property="WorkItem" column="WorkItem" direction="Input" type="string" dbType="nvarchar" />
+        <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+        <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+      </parameterMap>
+    </parameterMaps>
+    <statements>
+        <procedure id="SP_Pam_DeviceAlarm" parameterMap="SP_Pam_DeviceAlarmParam" resultClass="StringObjectDictionary">
+            SP_Pam_DeviceAlarm
+        </procedure>
+        <procedure id="SP_Pam_ResponseWorkExcute" parameterMap="SP_Pam_ResponseWorkExcuteParam" resultClass="StringObjectDictionary">
+            SP_Pam_ResponseWorkExcute
+        </procedure>
+        <procedure id="SP_Pam_GetWorkItemForServeMan" parameterMap="SP_Pam_GetWorkItemForServeManParam" resultClass="StringObjectDictionary">
+            SP_Pam_GetWorkItemForServeMan
+        </procedure>
+        <select id="DayOfWorkExecuteMonitor" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select  a.*,b.StationId,b.OldManName,c.SickBedNo,d.ExtNo,d.RoomNo,e.ItemName,x.UserName,y.CallNo
+            From Pam_WorkExecute a inner join Oca_OldManBaseInfo b
+            on a.OldManId=b.OldManId and ISNULL(b.StationId,'')&lt;>'' and b.StationId&lt;>'null' and b.Status=3 and b.ResidentStatus=7
+          inner join Pam_RoomOldMan c on b.OldManId=c.OldManId and a.RoomId=c.RoomId and GETDATE() between c.BeginDate and c.EndDate
+          inner join Pam_Room d on c.RoomId = d.RoomId and d.Status=1
+          inner join Sys_DictionaryItem e on a.WorkItem=e.ItemId and e.DictionaryId='13001'
+          inner join Pub_User x on a.UserId = x.UserId
+          left join Pam_ServeMan y on a.UserId = y.UserId
+          left join Pam_UserMappingRoom z on z.RoomId=a.RoomId
+          where DATEDIFF(d,a.RemindTime,GETDATE())=0 and b.StationId=#StationId#
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="UserId">z.UserId=#UserId#</isPropertyAvailable>
+            order by d.FloorNo,d.RoomNo,a.RemindTime desc
+        </select>
+        <select id="DailyWorkExecuteReminder" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.*,b.SickBedNo,c.RoomNo,c.ExtNo,c.FloorNo,d.CallNo from  Pam_WorkExecute a
+            inner join Pam_RoomOldMan b on a.OldManId=b.OldManId and a.RoomId=b.RoomId and GETDATE() between b.BeginDate and b.EndDate
+            inner join Pam_Room c on c.RoomId=b.RoomId inner join Pam_ServeMan d on a.UserId=d.UserId
+            where DATEDIFF(D,a.RemindTime,GETDATE())=0 and a.ServeManArriveTime is null
+            and GETDATE() > a.RemindTime and a.Reminded &lt; a.RemindMax
+        </select>
+        <update id="DailyReminder_UpdateWorkExecute" parameterClass="StringObjectDictionary" >
+            update Pam_WorkExecute set Reminded=(case when RemindMax>Reminded then Reminded+1 else Reminded end),
+            LastScanTime=(case when RemindMax>Reminded then GETDATE() else LastScanTime end)
+            where Id in('$Ids$')
+        </update>
+        <select id="Count_ListWorkExecuteByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select 1 as NoUse,* From (select a.*,b.IDNo,b.Gender,b.OldManName,b.Mobile,b.Tel,b.InputCode1,
+            b.InputCode2,b.Address,b.StationId,c.SickBedNo,d.ExtNo,d.FloorNo,d.RoomNo,e.ItemName,x.UserName,y.CallNo
+            From Pam_WorkExecute a inner join Oca_OldManBaseInfo b
+            on a.OldManId=b.OldManId and ISNULL(b.StationId,'')&lt;>'' and b.StationId&lt;>'null' and b.Status=3 and b.ResidentStatus=7
+          inner join Pam_RoomOldMan c on b.OldManId=c.OldManId and a.RoomId=c.RoomId and GETDATE() between c.BeginDate and c.EndDate
+          inner join Pam_Room d on c.RoomId = d.RoomId and d.Status=1
+          inner join Sys_DictionaryItem e on a.WorkItem=e.ItemId and e.DictionaryId='13001'
+          inner join Pub_User x on a.UserId = x.UserId
+          left join Pam_ServeMan y on a.UserId = y.UserId
+          left join Pam_UserMappingRoom z on z.RoomId=a.RoomId and x.UserId=z.UserId
+          <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >a.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >a.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_Start" >a.PlanEndTime>=#PlanEndTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_End" >a.PlanEndTime&lt;=#PlanEndTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_Start" >a.LastScanTime>=#LastScanTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_End" >a.LastScanTime&lt;=#LastScanTime_End#</isPropertyAvailable>
+            </dynamic>
+            ) m
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SickBedNo" >SickBedNo=#SickBedNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="ListWorkExecuteByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN, * From
+            (select a.*,b.IDNo,b.Gender,b.OldManName,b.Mobile,b.Tel,b.InputCode1,b.InputCode2,
+            b.Address,b.StationId,c.SickBedNo,d.ExtNo,d.FloorNo,d.RoomNo,e.ItemName,x.UserName,y.CallNo
+            From Pam_WorkExecute a inner join Oca_OldManBaseInfo b
+            on a.OldManId=b.OldManId and ISNULL(b.StationId,'')&lt;>'' and b.StationId&lt;>'null' and b.Status=3 and b.ResidentStatus=7
+          inner join Pam_RoomOldMan c on b.OldManId=c.OldManId and a.RoomId=c.RoomId and GETDATE() between c.BeginDate and c.EndDate
+          inner join Pam_Room d on c.RoomId = d.RoomId and d.Status=1
+          inner join Sys_DictionaryItem e on a.WorkItem=e.ItemId and e.DictionaryId='13001'
+          inner join Pub_User x on a.UserId = x.UserId
+          left join Pam_ServeMan y on a.UserId = y.UserId
+          left join Pam_UserMappingRoom z on z.RoomId=a.RoomId and x.UserId=z.UserId
+          <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >a.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >a.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_Start" >a.PlanEndTime>=#PlanEndTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_End" >a.PlanEndTime&lt;=#PlanEndTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_Start" >a.LastScanTime>=#LastScanTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_End" >a.LastScanTime&lt;=#LastScanTime_End#</isPropertyAvailable>
+            </dynamic>
+            ) m
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManName" >OldManName=#OldManName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Address" >Address=#Address#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SickBedNo" >SickBedNo=#SickBedNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FloorNo" >FloorNo=#FloorNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomNo" >RoomNo=#RoomNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ExtNo" >ExtNo=#ExtNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallNo" >CallNo=#CallNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+      <select id="GetRoomInfoForMonitor" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select r.RoomId,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.StationId as StationIdR,r.FloorNo
+        ,ro.BeginDate,ro.EndDate,ro.SickBedNo
+        ,p.OldManId,p.OldManName,p.Gender,p.IDNo,p.HealthInsuranceFlag,p.SocialInsuranceFlag,p.StationId as StationIdP
+        from Pam_Room r right join Pam_RoomOldMan ro on r.RoomId=ro.RoomId
+        left join Oca_OldManBaseInfo p on ro.OldManId=p.OldManId
+        where p.Status=3 and p.ResidentStatus=7 and ro.roomId=#RoomId# and ro.EndDate>GETDATE() and r.StationId=#StationId# and p.StationId=#StationId#
+      </select>
+      <select id="GetCautionInfo" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select c.CheckInTime,c.Content,DoStatus,c.DoResults,a.* from Oca_CallService c
+        left join (
+        select p.OldManId,p.OldManName,p.Gender,p.IDNo,
+        ro.SickBedNo,r.RoomId,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.StationId,r.FloorNo
+        from Oca_OldManBaseInfo p left join Pam_RoomOldMan ro on p.OldManId=ro.OldManId
+        right join  Pam_Room r on ro.RoomId=r.RoomId
+        where r.Status=1 and p.Status=3 and p.ResidentStatus=7 and ro.EndDate>GETDATE()
+        <isPropertyAvailable prepend=" AND " property="StationId">ro.StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RoomId">ro.RoomId=#RoomId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        ) a on c.OldManId=a.OldManId
+        where c.DataSource='00006'
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </select>
+      <select id="Count_WorkItemUnfinished" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select 1 as NoUse,u.UserId,u.Status UStatus,u.UserCode,u.UserName,u.Gender UGender,u.InputCode1 UInputCode1,u.InputCode2 UInputCode2,
+        p.OldManId,p.Status PStatus,p.OldManName,p.Gender PGender,p.IDNo,p.InputCode1 PInputCode1,p.InputCode2 PInputCode2,
+        r.RoomId,r.Status RStatus,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.FloorNo,
+        w.WorkItem,dbo.FUNC_Tol_GetDictionaryItemName('13001',w.WorkItem) WorkItemName ,
+        w.ServeManArriveTime,w.ServeManLeaveTime,w.RemindTime,w.PlanEndTime,w.Reminded,w.RemindMax,w.PlayRepeats
+        from Pub_User u right join Pam_WorkExecute w on u.UserId=w.UserId
+        left join Oca_OldManBaseInfo p on w.OldManId=p.OldManId
+        left join Pam_Room r on w.RoomId=r.RoomId
+        <dynamic prepend=" WHERE ">
+          <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="UStatus" >u.Status=#UStatus#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="UserCode" >u.UserCode=#UserCode#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UserName" >u.UserName=#UserName#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="UGender" >u.Gender=#UGender#</isPropertyAvailable>  
+          <isPropertyAvailable prepend=" AND " property="StopFlag" >StopFlag=#StopFlag#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="UInputCode1" >u.InputCode1=#UInputCode1#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UInputCode2" >u.InputCode2=#UInputCode2#</isPropertyAvailable>
+
+          <isPropertyAvailable prepend=" AND " property="OldManId" >p.OldManId=#OldManId#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="PStatus" >p.Status=#PStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PResidentStatus" >p.ResidentStatus=#PResidentStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="OldManName" >p.OldManName=#OldManName#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PGender" >p.Gender=#PGender#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="IDNo" >p.IDNo=#IDNo#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="PInputCode1" >p.InputCode1=#PInputCode1#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PInputCode2" >p.InputCode2=#PInputCode2#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="PStationId" >p.StationId=#PStationId#</isPropertyAvailable>
+
+          <isPropertyAvailable prepend=" AND " property="RoomId" >r.RoomId=#RoomId#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="RStatus" >r.Status=#RStatus#</isPropertyAvailable> 
+          <isPropertyAvailable prepend=" AND " property="RoomNo" >r.RoomNo=#RoomNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="ExtNo" >r.ExtNo=#ExtNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="BedNo" >r.BedNo=#BedNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >r.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RStationId" >r.StationId=#RStationId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="FloorNo" >r.FloorNo=#FloorNo#</isPropertyAvailable>
+ 
+          <isPropertyAvailable prepend=" AND " property="WorkItem" >w.WorkItem=#WorkItem#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >w.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindTime_End" >w.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="Reminded" >w.Reminded=#Reminded#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindMax" >w.RemindMax=#RemindMax#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PlayRepeats" >w.PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic> 
+      </select>
+      <select id="WorkItemUnfinished" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.* from (
+        select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN, u.UserId,u.Status UStatus,u.UserCode,u.UserName,u.Gender UGender,u.InputCode1 UInputCode1,u.InputCode2 UInputCode2,
+        p.OldManId,p.Status PStatus,p.OldManName,p.Gender PGender,p.IDNo,p.InputCode1 PInputCode1,p.InputCode2 PInputCode2,
+        r.RoomId,r.Status RStatus,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.FloorNo,
+        w.WorkItem,dbo.FUNC_Tol_GetDictionaryItemName('13001',w.WorkItem) WorkItemName ,
+        w.ServeManArriveTime,w.ServeManLeaveTime,w.RemindTime,w.PlanEndTime,w.Reminded,w.PlayRepeats
+        from Pub_User u right join Pam_WorkExecute w on u.UserId=w.UserId
+        left join Oca_OldManBaseInfo p on w.OldManId=p.OldManId
+        left join Pam_Room r on w.RoomId=r.RoomId
+        <dynamic prepend=" WHERE ">
+          <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UStatus" >u.Status=#UStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UserCode" >u.UserCode=#UserCode#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UserName" >u.UserName=#UserName#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UGender" >u.Gender=#UGender#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="StopFlag" >StopFlag=#StopFlag#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UInputCode1" >u.InputCode1=#UInputCode1#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="UInputCode2" >u.InputCode2=#UInputCode2#</isPropertyAvailable>
+
+          <isPropertyAvailable prepend=" AND " property="OldManId" >p.OldManId=#OldManId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PStatus" >p.Status=#PStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PResidentStatus" >p.ResidentStatus=#PResidentStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="OldManName" >p.OldManName=#OldManName#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PGender" >p.Gender=#PGender#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="IDNo" >p.IDNo=#IDNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PInputCode1" >p.InputCode1=#PInputCode1#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PInputCode2" >p.InputCode2=#PInputCode2#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PStationId" >p.StationId=#PStationId#</isPropertyAvailable>
+
+          <isPropertyAvailable prepend=" AND " property="RoomId" >r.RoomId=#RoomId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RStatus" >r.Status=#RStatus#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RoomNo" >r.RoomNo=#RoomNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="ExtNo" >r.ExtNo=#ExtNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="BedNo" >r.BedNo=#BedNo#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="OccupancyNumber" >r.OccupancyNumber=#OccupancyNumber#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RStationId" >r.StationId=#RStationId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="FloorNo" >r.FloorNo=#FloorNo#</isPropertyAvailable>
+
+          <isPropertyAvailable prepend=" AND " property="WorkItem" >w.WorkItem=#WorkItem#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >w.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindTime_End" >w.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="Reminded" >w.Reminded=#Reminded#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="RemindMax" >w.RemindMax=#RemindMax#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="PlayRepeats" >w.PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic> 
+        )x where x.SN > ($PageNo$-1)*$PageSize$
+      </select>
+      <select id="GetAgencyServeForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select isnull(p.OldManName,'') as OldManName
+        ,isnull(dbo.FUNC_Tol_GetDictionaryItemName('13001',w.WorkItem),'') as WorkItem
+        ,isnull(u.UserName,'') as UserName
+        ,isnull(r.RoomNo,'') as RoomNo
+        ,w.RemindTime,w.ServeManArriveTime,w.ServeManLeaveTime
+        from Pam_WorkExecute w left join Oca_OldManBaseInfo p on w.OldManId=p.OldManId
+        left join Pam_Room r on w.RoomId=r.RoomId  left join Pub_User u on w.UserId=u.UserId
+        where p.StationId=#ServeStationId# and r.StationId=#ServeStationId# and r.Status=1 and
+        DATEDIFF( D,w.RemindTime,GETDATE())=0
+        and (
+        (abs(DATEDIFF( MINUTE,GETDATE(),w.RemindTime))&lt;=#timeSpanOfMinute# and w.ServeManArriveTime is null)
+        or
+        ( w.ServeManArriveTime is not null and w.ServeManLeaveTime is null  )
+        or
+        (abs(DATEDIFF( MINUTE,GETDATE(),w.ServeManLeaveTime))&lt;=#timeSpanOfMinute# and  w.ServeManArriveTime is not null)
+        )
+        order by w.RemindTime asc
+      </select>
+      <select id="GetAgencyServeCountForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select SUM(Num1) undo,SUM(Num2) doing,SUM(Num3) doed,SUM(Num1+Num2+Num3) count
+        from (
+        select case when ServeManArriveTime IS NULL then 1 else 0 end Num1 ,
+        case when ServeManArriveTime IS not NULL and ServeManLeaveTime IS NULL  then 1 else 0 end Num2 ,
+        case when ServeManArriveTime IS not NULL and ServeManLeaveTime IS not NULL  then 1 else 0 end Num3
+        from Pam_WorkExecute w left join Oca_OldManBaseInfo p on w.OldManId=p.OldManId
+        left join Pam_Room r on w.RoomId=r.RoomId
+        where DATEDIFF( D,RemindTime,GETDATE())=0 and RemindTime &lt;=GETDATE()
+          and p.StationId=#ServeStationId# and r.StationId=#ServeStationId#
+          ) m
+        </select>
+      <delete id="DeleteUndoWorkExecute" parameterClass="StringObjectDictionary" >
+        delete from Pam_WorkExecute where Id in (
+        select a.Id from Pam_WorkExecute a inner join pub_PensionAgencyUser b  
+         on a.UserId=b.UserId where b.StationId=#StationId#  
+         and a.ServeManArriveTime is null and a.RemindTime>GETDATE()) 
+      </delete>
+    </statements>
+</sqlMap>

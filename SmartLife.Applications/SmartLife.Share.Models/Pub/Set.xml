@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Set" type="SmartLife.Share.Models.Pub.Set, SmartLife.Share.Models" />
+        <typeAlias alias="SetPK" type="SmartLife.Share.Models.Pub.SetPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="Set_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_Set(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="SetId" >SetId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SetName" >SetName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SolutionId" >SolutionId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetId" >WidgetId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetOption" >WidgetOption</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="SetId" >#SetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SetName" >#SetName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SolutionId" >#SolutionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetId" >#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetOption" >#WidgetOption#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="Set_Update" parameterClass="StringObjectDictionary" >
+            update Pub_Set
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SetName" >SetName=#SetName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SolutionId" >SolutionId=#SolutionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetId" >WidgetId=#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetOption" >WidgetOption=#WidgetOption#</isPropertyAvailable>
+            </dynamic>
+            where SetId=#SetId#
+        </update>
+        <delete id="Set_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_Set
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="SetId" >SetId=#SetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SetName" >SetName=#SetName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SolutionId" >SolutionId=#SolutionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetId" >WidgetId=#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetOption" >WidgetOption=#WidgetOption#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="Set_Load" parameterClass="SetPK" resultClass="Set" >
+            select SetId,Id,CheckInTime,Status,OperatedBy,OperatedOn,SetName,SolutionId,OrderNo,Description,WidgetId,WidgetOption from Pub_Set
+            where SetId=#SetId#
+        </select>
+        <select id="Set_List" parameterClass="StringObjectDictionary" resultClass="Set" >
+            select SetId,Id,CheckInTime,Status,OperatedBy,OperatedOn,SetName,SolutionId,OrderNo,Description,WidgetId,WidgetOption from Pub_Set
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="SetId" >SetId=#SetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SetName" >SetName=#SetName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SolutionId" >SolutionId=#SolutionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetId" >WidgetId=#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetOption" >WidgetOption=#WidgetOption#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="Set_ListByPage" parameterClass="StringObjectDictionary" resultClass="Set" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,SetId,Id,CheckInTime,Status,OperatedBy,OperatedOn,SetName,SolutionId,OrderNo,Description,WidgetId,WidgetOption from Pub_Set
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="SetId" >SetId=#SetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SetName" >SetName=#SetName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SolutionId" >SolutionId=#SolutionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetId" >WidgetId=#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WidgetOption" >WidgetOption=#WidgetOption#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

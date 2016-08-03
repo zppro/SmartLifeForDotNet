@@ -1,0 +1,377 @@
+﻿ <div id="queryParam">
+    <table style="margin-left: 20px; padding-top: 5px">
+        <tbody>
+            <tr style="height: 30px;">
+                <td width="50">
+                    关键字：
+                </td>
+                <td width="100">
+                    <input id="KeyWord" placeholder="姓名、电话、手机、地址" />
+                </td>
+                <td width="80" style="text-align: right;">
+                    街道社区：
+                </td>
+                <td width="100">
+                    <input id="tree-AreaId" />
+                    <input id="Area" type="hidden" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">医保：</span>
+                </td>
+                <td>
+                    <input id="HealthInsuranceFlag" name="HealthInsuranceFlag" />
+                </td>
+                <td style="width: 80px;">
+                    <span style="float: right">居住情况：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="LivingState" name="LivingState" />
+                </td>
+                <td width="90" rowspan="2" style="text-align: center;">
+                    <button align="right" onclick="_query();">
+                        查询</button>
+                </td>
+                <td style="width: 90px" rowspan="2" style="text-align: center;">
+                    <button onclick="reset();">
+                        重置</button>
+                </td>
+            </tr>
+            <tr style="height: 30px;">
+                <td style="width: 50px;">
+                    <span style="float: right">年龄：</span>
+                </td>
+                <td>
+                    <input id="AgeFrom" name="AgeFrom" style="width: 60px;" /> 到
+                    <input id="AgeTo" name="AgeTo" style="width: 60px;" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">性别：</span>
+                </td>
+                <td>
+                    <input id="Gender" name="Gender" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">社保：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="SocialInsuranceFlag" name="SocialInsuranceFlag" />
+                </td>
+                <td style="width: 50px;">
+                    <span style="float: right">身份情况：</span>
+                </td>
+                <td style="width: 80px">
+                    <input id="OldManIdentity" name="OldManIdentity" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="thead">
+    <table>
+        <tr>
+            <th width='40' height='30'>
+                序号
+            </th>
+            <th width='80'>
+                姓名
+            </th>
+            <th width='170'>
+                身份证
+            </th>
+            <th width='40'>
+                性别
+            </th>
+            <th width='40'>
+                年龄
+            </th>
+            <th width='50'>
+                医保
+            </th>
+            <th width='50'>
+                社保
+            </th>
+            <th width='100'>
+                座机
+            </th>
+            <th width='100'>
+                手机
+            </th>
+            <th width='60'>
+                居住情况
+            </th>
+            <th width='60'>
+                身份情况
+            </th>
+            <th width='180' style="border-right: 1px solid;">
+                家庭住址
+            </th>
+        </tr>
+    </table>
+</div>
+<div id="dataTable">
+    <table id="dg-cc">
+    </table>
+</div>
+<div style="width: 1010px; margin-right: auto; margin-left: auto;">
+    <div id="lsattab">
+        <select id="page" style="margin-left: 20px; margin-top: 8px;" onchange="_query()">
+            <option value="max">50</option>
+            <option value="common">15</option>
+            <option value="min">18</option>
+        </select>
+        <input type="button" style="width: 10px; height: 10px; margin-left: 20px; border: 0;
+            background: url(../../images/report-form/firstPage.jpg) no-repeat; cursor: pointer"
+            onclick="firstPage()" />
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/upPage.jpg) no-repeat; cursor: pointer"
+            onclick="upPage()" />
+        第<input type="text" style="width: 15px; height: 10px" id="pageNo" value="1" onchange="query();" />页，共<label
+            id="pages"></label>页，共<label id="sum"></label>条
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/nextPage.jpg) no-repeat; cursor: pointer"
+            onclick="nextPage()" />
+        <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/lastPage.jpg) no-repeat; cursor: pointer"
+            onclick="lastPage()" />
+    </div>
+</div>
+<script type="text/javascript">
+    var info;
+    var oldManIdentity_dt;
+    var livingState_dt;
+
+    placeholder(); //占位符初始化
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report/oldman-baseinfo.css" }
+        ], function () {
+            getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11002',
+                    ajaxData_InvokeUrl + '/GetDictionaryItem/11001'], function (oldManIdentity_d, livingState_d) {
+                        oldManIdentity_dt = oldManIdentity_d;
+                        livingState_dt = livingState_d;
+
+                        setCombobox("OldManIdentity", oldManIdentity_dt, 45);
+                        setCombobox("LivingState", livingState_dt, 80);
+                        setCombobox('Gender', [{ ItemId: "M", ItemName: "男" }, { ItemId: "F", ItemName: "女"}], 45);
+                        setCombobox('HealthInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有"}], 45);
+                        setCombobox('SocialInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有"}], 45);
+
+                        initTree('easyUIComboTree', 'tree-AreaId', {
+                            width: 120,
+                            panelWidth: 200,
+                            panelHeight: 260,
+                            required: false,
+                            editable: false,
+                            onSelect: function (treeNode) {
+                                var treeNodeId = treeNode.id; //当前节点的层次
+                                if (treeNodeId.length > 6) {
+                                    $("#Area").val(treeNode.id);
+                                }
+                                else {
+                                    $("#Area").val(""); //选择的是区级节点 
+                                };
+                            },
+                            onLoadSuccess: function () {
+                                //默认展开一级
+                                var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                                $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                                $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+
+                                var node_Children = $('#tree-AreaId').combotree('tree').tree('getChildren'); //取所有的节点
+                                var rows = [];
+                                _.each(node_Children, function (o) {
+                                    if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+                                        rows.push(o); //取所有的社区
+                                    }
+                                });
+                                if (rows.length > 1) {//社区大于一个  为街道权限，默认设置第一个社区所在的街道
+                                    $('#tree-AreaId').combotree('setValue', rows[0].attributes.PId);
+                                    $("#Area").val(rows[0].attributes.PId);
+                                }
+                                else if (rows.length == 1) {//只有一个社区  为社区权限 ，默认设置社区
+                                    $('#tree-AreaId').combotree('setValue', rows[0].id);
+                                    $('#tree-AreaId').combotree('disable');
+                                    $("#Area").val(rows[0].id);
+                                }
+                                else {
+                                    alert('没有任何权限');
+                                }
+                                query();
+                            }
+                        },
+         function (d) {
+             var res;
+             postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                 res = result;
+             }, { async: false })
+             if (res) {
+                 getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+             } else {
+                 getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+             }
+         });
+                        _autosize();
+                    });
+        });
+    });
+
+    function query() {
+        var sql = sqlstr();
+        //        alert($.toJSON(sql));
+        postTo(baseCMSInvokeUrl + "/Pub/ReportService/OldManRosterStatistics_T", $.toJSON(sql), function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            var sum = ret.total; //总共多少条
+            var pageSize = $("#page").find("option:selected").text(); //一页多少条
+            var pages = Math.ceil(sum / pageSize); //向上取页数  
+            $('#pages').text(pages); //总页数
+            $('#sum').text(sum); //总条数
+            if (rows) {
+                createTable(rows, 1);
+            };
+        }, null, null);
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var pageNo = $('#pageNo').val();
+        var pageSize = $("#page").find("option:selected").text();
+        //        var pageSize = 3;
+        var keyword = $("#KeyWord").val();
+        var area = $("#Area").val();
+        var gender = $("#Gender").combobox('getValue');
+        var ageFrom = $("#AgeFrom").val();
+        var ageTo = $("#AgeTo").val();
+        var healthInsuranceFlag = $("#HealthInsuranceFlag").combobox('getValue');
+        var socialInsuranceFlag = $("#SocialInsuranceFlag").combobox('getValue');
+        var oldManIdentity = $("#OldManIdentity").combobox('getValue');
+        var livingState = $("#LivingState").combobox('getValue');
+
+        var params = new Object();
+        params.page = pageNo;
+        params.rows = pageSize;
+        params.sort = 'OldManName';
+        params.order = 'asc';
+        params.fuzzyFieldOP = ' or ';
+        params.filterFields = [
+                { key: 'Status', value: 1 },
+                { key: 'Gender', value: gender },
+                { key: 'AgeFrom', value: ageFrom },
+                { key: 'AgeTo', value: ageTo },
+                { key: 'HealthInsuranceFlag', value: healthInsuranceFlag },
+                { key: 'SocialInsuranceFlag', value: socialInsuranceFlag },
+                { key: 'OldManIdentity', value: oldManIdentity },
+                { key: 'LivingState', value: livingState }
+                ];
+        params.fuzzyFields = [
+                { key: 'Area', value: area },
+                { key: 'OldManName', value: keyword },
+                { key: 'Address', value: keyword },
+                { key: 'Tel', value: keyword },
+                { key: 'Mobile', value: keyword }
+                ];
+        return params;
+    }
+    function setCombobox(controlsId, data, panelheight) {
+        $('#' + controlsId + '').combobox({
+            width: 80,
+            panelHeight: panelheight,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    //查询按钮
+    function _query() {
+        $('#pageNo').val(1);
+        query();
+    }
+    //上一页
+    function upPage() {
+        var page = parseInt($("#pageNo").val());
+        if (page > 1) {
+            $('#pageNo').val(page - 1);
+            query();
+        }
+        else {
+            alert('已经是第一页');
+        }
+    }
+    //下一页
+    function nextPage() {
+        var page = parseInt($("#pageNo").val());
+        var pages = parseInt($('#pages').text());
+        if (page < pages) {
+            $('#pageNo').val(page + 1);
+            query();
+        }
+        else {
+            alert('已经是最后一页');
+        }
+    }
+    //第一页
+    function firstPage() {
+        $('#pageNo').val(1);
+        query();
+    }
+    //最后一页
+    function lastPage() {
+        var pages = $('#pages').text();
+        $('#pageNo').val(pages);
+        query();
+    }
+
+    //-----------------------------------------------------------------创建表格
+    function createTable(data) {
+
+        var tabStr = "<table class='t1'>";
+        //tabStr += "<tr><th width='42' height='30'>序号</th><th width='80'>姓名</th><th width='170'>身份证</th><th width='40'>性别</th><th width='50'>年龄</th><th width='50'>医保</th><th width='50'>社保</th><th width='110'>座机</th><th width='110'>手机</th><th width='80'>居住情况</th><th width='80'>身份情况</th><th width='100'>家庭住址</th></tr>";
+
+        var dataArray = eval(data);
+        if (dataArray.length > 0) {
+            for (var i = 0; i < dataArray.length; i++) {
+                var j = i + 1;
+                var gender = prseGender(dataArray[i].Gender);
+                var livingState = dataArray[i].LivingStatusName;
+                var oldManIdentityName = dataArray[i].OldManIdentityName;
+                var HealthInsuranceFlag = dataArray[i].HealthInsuranceFlag == 0 ? '无' : '有';
+                var SocialInsuranceFlag = dataArray[i].SocialInsuranceFlag == 0 ? '无' : '有';
+                tabStr = tabStr + "<tr><td width='40'>" + j + "</td><td width='80'>" + dataArray[i].OldManName + "</td><td width='170'>" + easyuigrid_IDNo(dataArray[i].IDNo, null, null) + "</td><td width='40'>" + gender + "</td><td width='40'>" + dataArray[i].Age
+            + "</td><td width='50'>" + HealthInsuranceFlag + "</td><td width='50'>" + SocialInsuranceFlag + "</td><td width='100'>" + dataArray[i].Tel + "</td><td width='100'>" + dataArray[i].Mobile + "</td><td width='60'>" +
+            livingState + "</td><td width='60'>" + oldManIdentityName + "</td><td width='180' style='border-right: 1px solid;text-align: left; ' >" + dataArray[i].Address + "</td></tr>";
+            }
+        }
+        tabStr += "</table>";
+        $("#dataTable").html(tabStr);
+    }
+
+    function reset() {
+        $('#KeyWord').val(null);
+        $('#AgeFrom').val(null);
+        $('#AgeTo').val(null);
+        $('#Gender').combobox('clear');
+        $('#HealthInsuranceFlag').combobox('clear');
+        $('#SocialInsuranceFlag').combobox('clear');
+        $('#LivingState').combobox('clear');
+        $('#OldManIdentity').combobox('clear');
+        $('#pageNo').val(1);
+    }
+
+    function prseGender(gender) {
+        if (gender == "M") {
+            return "男";
+        } else if (gender == "F") {
+            return "女";
+        } else {
+            return "未知";
+        }
+    }
+
+    function _autosize() {
+        var delta = $("#thead").height() + $("#caption").height() + $("#queryParam").height() + 40;
+        $("#dataTable").height($("#dataTable").parent().parent().parent().height() - delta);
+    }
+</script>

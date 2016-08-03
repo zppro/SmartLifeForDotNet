@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <select id="Count_DeviceMsgNoticeListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select 1 as NoUse,a.*,c.DeviceName From Pam_DeviceMsgNotice a inner join Pam_Device b on a.DeviceId=b.DeviceId
+            and a.Status=1 inner join Pub_Device c on b.DeviceId=c.DeviceId and c.Status=1 and c.DeviceType='00012'
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >Oa.peratedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=#OperatedOn_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=#OperatedOn_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >a.DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_Start" >a.BeginTime>=#BeginTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_End" >a.BeginTime&lt;=#BeginTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_Start" >a.EndTime>=#EndTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_End" >a.EndTime&lt;=#EndTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >a.StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >a.DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticePosition" >a.NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeType" >a.NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeContent" >a.NoticeContent=#NoticeContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceCode" >c.DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceName" >c.DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="DeviceMsgNoticeListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+            a.*,c.DeviceName From Pam_DeviceMsgNotice a inner join Pam_Device b on a.DeviceId=b.DeviceId
+            and a.Status=1 inner join Pub_Device c on b.DeviceId=c.DeviceId and c.Status=1 and c.DeviceType='00012'
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >a.OperatedOn>=#OperatedOn_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >a.OperatedOn&lt;=#OperatedOn_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >a.DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_Start" >a.BeginTime>=#BeginTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BeginTime_End" >a.BeginTime&lt;=#BeginTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_Start" >a.EndTime>=#EndTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EndTime_End" >a.EndTime&lt;=#EndTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StationId" >a.StationId=#StationId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceId" >a.DeviceId=#DeviceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticePosition" >a.NoticePosition=#NoticePosition#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeType" >a.NoticeType=#NoticeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NoticeContent" >a.NoticeContent=#NoticeContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceCode" >c.DeviceCode=#DeviceCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DeviceName" >c.DeviceName=#DeviceName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

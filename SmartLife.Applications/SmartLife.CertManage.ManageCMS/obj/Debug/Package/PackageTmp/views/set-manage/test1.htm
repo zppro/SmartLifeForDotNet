@@ -1,0 +1,62 @@
+﻿<div>
+    子集测试
+    <input id="Button1" type="button" value="子集测试" />
+    <input id="Button2" type="button" value="调查问卷测试" />
+</div>
+<script type="text/javascript">
+    var url = baseCMSInvokeUrl + '/Pub/SubsetHelperService/';
+
+    function beforeOpen() {
+        postTo(url + "GetHtml_Sets", $.toJSON({ "SolutionId": "S1" }), function (result) {
+            $('#div_content').html(result);
+
+            $('.easyui-tabs').tabs({ border: false
+               , onSelect: function (title, index) {
+               }
+            });   
+        }, { async: false });
+    }
+
+    function openWindow() {
+        getJQO('#dlg-test-B11040603').dialog(_.extend({
+            //href: url + "GetHtml_Sets",
+            //queryParams: { "SolutionId": "S1" },
+            inline: false,
+            onClose: function () {
+            },
+            modal: true
+        }, null)).dialog('open').dialog('setTitle', '子集测试');
+    }
+
+    function openWindow2() {
+        openDialog("Sub_"+new Date().getTime(), 'Views/set-manage/test2.htm', function (callback, dialogData) {
+            callback();
+        }, { dialogData: "AAA", title: '子集测试', width: 800, height: 500, padding: 5, clearbtns: false, buttons: null
+        });
+    }
+
+    function testFunction() {
+
+        openDialog(models[currentMenuCode].dialogId, 'Views/shared/survey-frame.htm', function (callback, dialogData) {
+            callback();
+        }, { dialogData: "AAA", title: '调查问卷测试', width: 1000, height: 600, padding: 5, clearbtns: false, buttons: null
+        });
+    }
+
+    $(function () {
+        $("#Button1").click(function () {
+            //beforeOpen();
+            //openWindow();
+            openWindow2();
+        });
+
+        $("#Button2").click(function () {
+            testFunction();
+        });
+    });
+
+   
+
+    
+</script>
+

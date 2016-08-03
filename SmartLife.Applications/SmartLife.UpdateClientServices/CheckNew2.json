@@ -1,0 +1,14 @@
+[
+	{
+		"ApplicationId":"PM001",
+		"ApplicationCode":"MerXLX.exe",
+		"ApplicationName":"心连心居家养老服务中心客户端",
+		"Version":"2.1.X"
+	},
+	{
+		"ApplicationId":"CT001",
+		"ApplicationCode":"win.tools.imp.sqlserver.exe",
+		"ApplicationName":"SqlServer数据导入工具",
+		"Version":"0.1.X"
+	}
+]

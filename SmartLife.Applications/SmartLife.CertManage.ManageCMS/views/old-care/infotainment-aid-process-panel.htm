@@ -1,0 +1,394 @@
+﻿<div id="service-process-archive-history"></div>
+<div class="service-process-title">
+    服务过程记录</div>
+<div id="service-process-content-infotainment" style="margin-left:15px; width:94%;margin:5px auto;height:150px; border:solid 1px #999; overflow-y:scroll;">
+</div>
+<div id="do-process-box-c0">
+    <table style="width: 100%;">
+        <tr>
+            <td colspan="5" style="height:24;">呼入号码：<span id="oldman-tel" style=" color:Blue;"></span></td>
+        </tr>
+        <tr id="trHeader1" class="Query">
+            <th>
+                服务类型
+            </th>
+            <th>
+                服务项目
+            </th>
+            <th>
+                关键字
+            </th>
+            <th>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </th> 
+            <th>
+                &nbsp;
+            </th> 
+        </tr>
+        <tr id="trHeader2" class="MatchAll">
+            <th>
+                服务大类
+            </th>
+            <th>
+                服务小类
+            </th>
+            <th>
+                服务方式
+            </th>
+            <th>
+                服务半径
+            </th> 
+            <th>
+                &nbsp;
+            </th> 
+        </tr> 
+        <tr>
+            <td>
+                <select id="infotainment-service-item-A">
+                </select>
+            </td>
+            <td>
+                <select id="infotainment-service-item-B">
+                </select>
+            </td>
+            <td>
+                <input type="text" id="keyword" class="Query" style="float: left;" />
+                <select id="infotainment-service-mode" class="MatchAll" style="display:none;">
+                </select>
+            </td>
+            <td>
+                <select id="infotainment-service-radius" class="MatchAll" style="float: left;display:none;">
+                </select>
+            </td> 
+            <td>
+                <a id="btnQuery" class="button-red-0 Query"  style="float: left;">查询</a>
+                <a id="btnMatch" class="button-match MatchAll"  ></a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="do-process-box-c1">
+    <div style="float: left; padding-top: 5px;">
+        处理过程录入:&nbsp;&nbsp;</div>
+    <input type="text" id="do-process-box" style="float: left" /><a id="btnSendTrackLog"
+        class="button-red-sendlog" style="float: left">发送</a>
+</div>
+<div id="do-process-box-c2">
+    <div class="servcietype">
+        <!--<select id="ServcieType">
+            <option>紧急救助</option>
+            <option>亲人通话</option>
+            <option>娱乐资讯</option>
+            <option>生活服务</option>
+        </select>-->
+    </div>
+    <div class="servcieaidprocess" >
+        <a id="btnHoldRetreive" class="button-red-0 shield" >呼叫保持</a>
+        <a id="btnCallsTransfer" class="button-red-0 shield" >转接班长</a>
+        <a id="btnSaveAndClose" class="button-red-0" >保存关闭</a> 
+        <a id="btnFinishCallService" class="button-red-0" >完成派单</a>
+    </div>
+</div>
+
+<!--弹出匹配老人的对话框-->
+<div id="oldman-callservice-history-block"></div>
+<div id="calltransfer-block"></div>
+<div id="service-history-block"></div>
+<script type="text/javascript">
+    var fromWhere = "infotainment-aid-process-panel.htm";
+    var urlRoot;
+    var outside = getQueryString('outside');
+    if (outside == "1") {
+        urlRoot = getUrlRootFromOutside('views/');
+    }
+    else {
+        urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+    }
+
+    $(function () {
+        if (pageData) {
+            //判断是否匹配切换过来的老人ID
+            if (pageData.OldManId.toUpperCase().indexOf("A9999999") > -1) {
+                //查询记录
+                var queryParams = {
+                    sort: 'CheckInTime',
+                    order: 'desc',
+                    page: 1,
+                    rows: 17,
+                    instance: {
+                        //AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),
+                        Status: 1
+                    },
+                    fuzzyFields: [
+                        { key: 'CallServiceId', value: pageData.CallServiceId }
+                    ]
+                };
+                postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/MatchUnknownOldManList', $.toJSON(queryParams), function (ret) {
+                    if (ret.Success) {
+                        if (ret.total == 1) {//只能匹配到一个老人直接切换
+                            var row = ret.rows[0];
+                            var serviceData = { Content: row.OldManName + "需要公共服务", OldManId: row.OldManId, AreaId3: row.AreaId3, AreaId2: row.AreaId2, LatitudeS: row.LatitudeS, LongitudeS: row.LongitudeS };
+                            var url = window.location.href;
+                            putTo(baseCMSInvokeUrl + '/Oca/CallService/' + pageData.CallServiceId, $.toJSON(serviceData), function (result) {
+                                if (result.Success) {
+                                    OpenNewWinAsCallService(url.substring(url.indexOf("/views/")), pageData.CallServiceId);
+                                }
+                            });
+                        }
+                        else {
+                            getHtml(baseUrl + '/views/dialogs/unknown-oldman-callservice-match.htm', function (str) {
+                                $("#oldman-callservice-history-block").html(str);
+                                $.parser.parse('#btn-infotainment-of-oldman');
+                                $("#the-infotainment-of-oldman").dialog({
+                                    inline: false,
+                                    onClose: function () {
+                                        $(this).dialog('destroy');
+                                    },
+                                    onBeforeOpen: function () {
+                                        dialogOpen(null, pageData);
+                                    },
+                                    modal: true
+                                }).dialog('open').dialog('setTitle', '查看-老人呼叫记录');
+                            });
+                        }
+                    }
+                });
+
+            }
+
+            //绑定呼入号码
+            if (pageData.Caller) {
+                $('#oldman-tel').html(pageData.Caller);
+            }
+        }
+
+        var linkageSel;
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItemWithExtendInfo/11012,[{"ExtendCol":"ProcessType","ExtendColType":"s"}]',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItem/11013',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItem/11014',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItemWithExtendInfo/11015,[{"ExtendCol":"Radius","ExtendColType":"i"}]'], function (ServeItemAs, ServeItemBs, serviceModes, serviceRadiuses) {
+
+                    var linkageselData = {};
+                    _.each(ServeItemAs, function (o) {
+                        linkageselData[o.ItemId] = { name: o.ItemName, value: o.ItemId, processType: _.findWhere(o.ExtendInfos, { "ExtendCol": "ProcessType" }).ExtendValue, cell: {}
+                        };
+                        _.each(ServeItemBs, function (o2) {
+                            if (o2.ItemId.indexOf(o.ItemCode) == 0) {
+                                linkageselData[o.ItemId].cell[o2.ItemId] = { name: o2.ItemName, value: o2.ItemId };
+                            }
+                        });
+                    });
+                    if (top.pageData == undefined) {
+
+                    }
+                    var ops = {
+                        data: linkageselData,
+                        select: ['#infotainment-service-item-A', '#infotainment-service-item-B'],
+                        defVal: '00003',
+                        head: false
+                    };
+
+                    linkageSel = new LinkageSel(ops);
+                    linkageselData = ops = null;
+
+                    $('#infotainment-service-mode').html(_.map(serviceModes, function (o) {
+                        return '<option value="' + o.ItemId + '">' + o.ItemName + '</option>';
+                    }).join(""));
+
+                    $('#infotainment-service-radius').html(_.map(serviceRadiuses, function (o) {
+                        var val = _.findWhere(o.ExtendInfos, { "ExtendCol": "Radius" }).ExtendValue;
+                        return '<option value="' + val + '" id="' + o.ItemId + '">' + o.ItemName + '</option>';
+                    }).join(""));
+
+                    linkageSel.onChange(function () {
+                        var d = this.getSelectedDataArr('name'), zip = this.getSelectedData('value');
+                        var processType = this.getSelectedDataArr('processType')[0];
+                        if (processType == "Query") {
+                            $('.Query').show();
+                            $('.MatchAll').hide();
+                        }
+                        else if (processType == "BuyAndMatch" || processType == "Match") {
+                            $('.Query').hide();
+                            $('.MatchAll').show();
+                        }
+                        //alert(this.getSelectedDataArr('value')[0]);
+                    });
+                }); //get-all
+
+        $('#btnQuery').unbind('click').bind('click', function () {
+            var serviceItemA = linkageSel.getSelectedDataArr('value')[0];
+            var serviceItemB = linkageSel.getSelectedDataArr('value')[1];
+            getHtml(urlRoot + 'old-care/infotainment-aid-panel-query.htm', function (str) {
+                var scriptJs = '<script>var serviceItemA="' + serviceItemA + '";var serviceItemB="' + serviceItemB + '";<' + '/script>';
+                $('#infotainment-aid-panel').html(str);
+            });
+            if (top.pageData) {
+                if (recordLog(pageData.CallServiceId, 1, "坐席[11:0:查询]　" + $('#infotainment-service-item-A  option:selected').text() + '　' + $('#infotainment-service-item-B  option:selected').text())) {
+                    fetchServiceTrackLog('service-process-content-life');
+                }
+
+
+            }
+        });
+        $('#btnMatch').unbind('click').bind('click', function () {
+            var oldManId = "5B06502F-956F-469E-9AD0-01B1EAB03293"; //测试用
+            if (top.execMode == "CS") {
+                oldManId = pageData.OldManId;
+            }
+
+            var processType = linkageSel.getSelectedDataArr('processType')[0];
+            var serviceItemA = linkageSel.getSelectedDataArr('value')[0];
+            var serviceItemB = linkageSel.getSelectedDataArr('value')[1];
+            var serviceMode = $('#infotainment-service-mode').val();
+            var serviceRadius = $('#infotainment-service-radius').val();
+            var serviceRadiusId = $('#infotainment-service-radius option:selected').attr('id');
+
+            getHtml(urlRoot + 'old-care/infotainment-aid-panel-match-all.htm', function (str) {
+                var scriptJs = '<script>var oldManId="' + oldManId + '";var serviceItemA="' + serviceItemA + '";var serviceItemB="' + serviceItemB + '";var serviceMode="' + serviceMode + '";var serviceRadius=' + serviceRadius + ';var serviceRadiusId="' + serviceRadiusId + '";<' + '/script>';
+                $('#infotainment-aid-panel').html(scriptJs + str);
+                $('#do-process-box-c1-1').css({ 'margin-top': '0px' });
+                $.parser.parse('#infotainment-aid-panel');
+            });
+            if (top.pageData) {
+                var oldManId = top.pageData.OldManId;
+                if (recordLog(pageData.CallServiceId, 1, "坐席[11:0:匹配]　" + $('#infotainment-service-item-A option:selected').text() + '　' + $('#infotainment-service-item-B option:selected').text() + '　' + $('#infotainment-service-mode option:selected').text() + '　距离' + $('#infotainment-service-radius option:selected').text())) {
+                    fetchServiceTrackLog('service-process-content-life');
+                }
+            }
+        });
+
+        fetchServiceTrackLog('service-process-content-infotainment');
+        setInterval(function () {
+            fetchServiceTrackLog('service-process-content-infotainment');
+        }, 3000);
+        $('#do-process-box').unbind('keypress').bind('keypress', function (event) {
+            if (event.which == 13) {
+                $('#btnSendTrackLog').trigger('click');
+            }
+        });
+        fetchServiceArchiveHistory('service-process-archive-history');
+        $('#btnSendTrackLog').unbind('click').bind('click', function () {
+            //发送处理日志
+            if (pageData) {
+                var $txt = $('#do-process-box');
+                if ($.trim($txt.val()) == "") {
+                    alertError('请输入处理日志');
+                    $txt.focus();
+                    return;
+                }
+                if (recordLog(pageData.CallServiceId, 1, $txt.val())) {
+                    $txt.val("");
+                    fetchServiceTrackLog('service-process-content-infotainment');
+                }
+            }
+        });
+
+        //新版本屏蔽呼叫保持和呼叫转移功能
+        if (top.execMode == "ForSeat") {
+            $(".shield").hide();
+        }
+        //呼叫保持
+        $('#btnHoldRetreive').unbind('click').bind('click', function () {
+            if (top.execMode == "CS" || top.execMode == "ForSeat") {
+                toggleHoldRetreive();
+            }
+        });
+        $('#btnSetBusyFree').unbind('click').bind('click', function () {
+            if (top.execMode == "CS") {
+                toggleDialStatus();
+            }
+        });
+
+        function toggleHoldRetreive() {
+            if ($('#btnHoldRetreive').text() == "呼叫保持") {
+                //正常->呼叫保持
+                window.external.SetCallHold();
+            }
+            else if ($('#btnHoldRetreive').text() == "恢复") {
+                //呼叫保持->正常
+                window.external.SetCallRetreive();
+            }
+        }
+
+        //        //服务类型
+        //        editServiceTypeSelect(window.location.href.toString(), serviceTypeData, $("#ServcieType"));
+        //        $("#ServcieType").unbind('change').bind('change', function () {
+        //            alertConfirm('确定要切换成当前所选择的服务吗？', function (ret) {
+        //                if (ret == true) {
+        //                    switchAidServiceType(window.location.href.toString(), pageData, $("#ServcieType"));
+        //                }
+        //            });
+        //        });
+        //呼叫转移
+        $("#btnCallsTransfer").unbind('click').bind('click', function () {
+            getHtml(baseUrl + '/views/dialogs/set-calls-transfer.htm', function (str) {
+
+                $("#calltransfer-block").html(str);
+                $.parser.parse('#fm-calls-transfer,#btn-calls-transfer');
+                $("#dlg-calls-transfer").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () {
+                        onLoadCallsTransfer(pageData);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '转接-对话框');
+            });
+        });
+
+        $('#btnSaveAndClose').unbind('click').bind('click', function () {
+            if (pageData) {
+                //saveCallService(pageData.CallServiceId, "{}");
+                window.external.CloseWin(false);
+            }
+        });
+        $('#btnFinishCallService').unbind('click').bind('click', function () {
+            //完成
+            if (pageData) {
+                if ($('a', "#workorder-container").size() == 0) {
+                    openDialog2('set-callservice-archive', 'callservice-archive.htm', function (callback, dialogData) {
+                        if (dialogData) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成：此服务属于 ' + dialogData.archiveName);
+                            if (success) {
+                                var formData = { DoStatus: 3, DoResults: '处理完成', ServiceArchive: dialogData.ArchiveId, CallBackFlag: dialogData.CallBackFlag };
+                                if (dialogData.EvaluateToOldMan) {
+                                    formData = _.extend(formData, { EvaluateToOldMan: dialogData.EvaluateToOldMan })
+                                }
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON(formData), function (result) {
+                                    //调用CS关闭窗口
+                                    if (window.execMode == "ForSeat") {
+                                        window.external.CloseWin(true);
+                                    } 
+                                });
+                            }
+                            callback();
+                        }
+                    }, { dialogData: pageData, title: '设置参数', width: 350, height: 450, padding: 5, mergeDefault: true });
+                }
+                else {
+                    alertConfirm('确定此次服务已经完成派单？', function (ret) {
+                        if (ret == true) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成');
+                            if (success) {
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON({ DoStatus: 3, DoResults: '处理完成' }), function (result) {
+                                    //调用CS关闭窗口
+                                    window.external.CloseWin(true);
+                                }, { async: false });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        //如果是回访，则隐藏完成服务处理按钮
+        if (pageData && pageData.CallBackFlag == 1) {
+            $('#btnFinishCallService').hide();
+        }
+
+        //读取工单列表
+        getWorkOrders('workorder-container', 'workorder-block', pageData.CallServiceId, urlRoot + 'old-care/infotainment-aid-workorder.htm');
+    });
+</script>

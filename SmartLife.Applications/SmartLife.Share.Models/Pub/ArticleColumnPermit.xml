@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ArticleColumnPermit" type="SmartLife.Share.Models.Pub.ArticleColumnPermit, SmartLife.Share.Models" />
+    <typeAlias alias="ArticleColumnPermitPK" type="SmartLife.Share.Models.Pub.ArticleColumnPermitPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ArticleColumnPermit_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_ArticleColumnPermit(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnId" >ColumnId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Category" >Category</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OBJ_ID" >OBJ_ID</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PermitType" >PermitType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnId" >#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Category" >#Category#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OBJ_ID" >#OBJ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PermitType" >#PermitType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ArticleColumnPermit_Update" parameterClass="StringObjectDictionary" >
+      update Pub_ArticleColumnPermit
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Category" >Category=#Category#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OBJ_ID" >OBJ_ID=#OBJ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PermitType" >PermitType=#PermitType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="ArticleColumnPermit_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_ArticleColumnPermit
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OBJ_ID" >OBJ_ID=#OBJ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PermitType" >PermitType=#PermitType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ArticleColumnPermit_Load" parameterClass="ArticleColumnPermitPK" resultClass="ArticleColumnPermit" >
+      select Id,CheckInTime,Status,OperatedBy,ColumnId,Category,OBJ_ID,PermitType,OperatedOn from Pub_ArticleColumnPermit
+      where Id=#Id#
+    </select>
+    <select id="ArticleColumnPermit_List" parameterClass="StringObjectDictionary" resultClass="ArticleColumnPermit" >
+      select Id,CheckInTime,Status,OperatedBy,ColumnId,Category,OBJ_ID,PermitType,OperatedOn from Pub_ArticleColumnPermit
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OBJ_ID" >OBJ_ID=#OBJ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PermitType" >PermitType=#PermitType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ArticleColumnPermit_ListByPage" parameterClass="StringObjectDictionary" resultClass="ArticleColumnPermit" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,ColumnId,Category,OBJ_ID,PermitType,OperatedOn from Pub_ArticleColumnPermit
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Category" >Category=#Category#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OBJ_ID" >OBJ_ID=#OBJ_ID#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PermitType" >PermitType=#PermitType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

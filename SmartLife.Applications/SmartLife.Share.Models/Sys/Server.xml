@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Server" type="SmartLife.Share.Models.Sys.Server, SmartLife.Share.Models" />
+    <typeAlias alias="ServerPK" type="SmartLife.Share.Models.Sys.ServerPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Server_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Server(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ServerId" >ServerId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerCode" >ServerCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >IpAddress</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ServerId" >#ServerId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerCode" >#ServerCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >#IpAddress#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Server_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Server
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerCode" >ServerCode=#ServerCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+      </dynamic>
+      where ServerId=#ServerId#
+    </update>
+    <delete id="Server_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Server
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ServerId" >ServerId=#ServerId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerCode" >ServerCode=#ServerCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Server_Load" parameterClass="ServerPK" resultClass="Server" >
+      select ServerId,Id,Status,CheckInTime,ServerCode,ServerName,IpAddress from Sys_Server
+      where ServerId=#ServerId#
+    </select>
+    <select id="Server_List" parameterClass="StringObjectDictionary" resultClass="Server" >
+      select ServerId,Id,Status,CheckInTime,ServerCode,ServerName,IpAddress from Sys_Server
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ServerId" >ServerId=#ServerId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerCode" >ServerCode=#ServerCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

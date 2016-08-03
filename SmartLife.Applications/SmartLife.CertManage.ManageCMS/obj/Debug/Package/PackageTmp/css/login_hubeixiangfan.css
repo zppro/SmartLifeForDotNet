@@ -1,0 +1,273 @@
+﻿/***yellow skin***/
+#Container
+{ 
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    width:100%;
+    height:100%;
+    background-image:url(../images/login/Login_bg.gif);
+}
+#Main
+{
+    padding-top:170px;
+    margin-left:auto;
+    margin-right:auto;
+    width:486px;
+    height:374px;
+}
+#MainLeft,#MainLogin
+{
+    float:left;
+    background-repeat:no-repeat;
+    overflow:hidden;
+}
+#MainLeft
+{
+    background-image:url(../images/login/Login_left.gif);
+    width:223px;
+    height:154px;
+}
+#MainLogin
+{
+    width:211px;
+    height:154px;
+    background-image:url(../images/login/Login_main.gif);
+}
+
+#Header,#MainBody,#Footer
+{
+    margin-top:0px;
+    margin-bottom:0px;
+    padding-top:0px;
+    padding-bottom:0px;
+}
+
+#Header
+{
+    background-image:url(../images/login/Login_title.png);
+    background-repeat:no-repeat;
+    width:486px;
+    height:71px;
+    overflow:hidden;
+}
+#Header #ApplicationAliasName
+{
+    margin:30px 0 0 96px;
+    font-size:20px;
+    font-weight:bold;
+}
+#MainRight
+{
+    float:left;
+    width:51px;
+    height:154px;
+    background-image:url(../images/login/Login_right.gif);
+    background-repeat:no-repeat;
+    overflow:hidden;
+}
+#Footer
+{
+    float:left;
+    background-image:url(../images/login/Login_footer.gif);
+    background-repeat:no-repeat;
+    width:486px;
+    height:29px;
+}
+#FootReflection
+{
+    float:left;
+    margin-top:5px;
+    margin-left:-12px;
+    background-image:url(../images/login/Login_foot.png);
+    width:498px;
+    height:115px;
+}
+.copyright
+{
+    float:left;
+    font-size:12px;
+    color:#555;
+    margin-top:10px;
+    margin-left:128px;
+    padding-left:59px;
+}
+
+.copyright a
+{
+    
+    color:#555;
+}
+#LoginButton
+{
+    background-image:url(../images/login/Login_button.gif);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:63px;
+    height:23px; 
+    margin-bottom:5px;
+}
+
+/***blue skin***/
+body
+{
+    background-image:url(../images/login_hubeixiangfan/Login_bg.png);
+    background-position:center center; 
+    background-color:#005182;
+    background-repeat:no-repeat;
+    position:relative;
+}
+#Container
+{ 
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    width:100%;
+    height:100%;
+    background:none;
+}
+#Logo
+{
+    position:absolute;
+    top:148px;
+    right:125px\9;
+    left:242px;
+    width:198px;
+    height:79px;
+    background-image:url(../images/login/Login_Logo.png);
+    background-position:center center; 
+    background-repeat:no-repeat;    
+}
+#Main
+{
+    padding-top:551px;
+    padding-top:501px\9;
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;
+    height:163px;
+    /*
+    background-image:url(../images/login/Login_bg2.png);
+    background-position:center center; 
+    background-repeat:no-repeat; 
+    */
+    position:relative;
+}
+#SystemName
+{
+    width:434px;
+    height:192px;
+    top:70px;
+    top:40px\9;
+    left:550px;
+    background-image:url(../images/login_hubeixiangfan/Login_SystemName.png);
+    background-position:left center; 
+    background-repeat:no-repeat; 
+    position:absolute;
+}
+#MainLogin
+{
+    position:absolute;
+    top:190px;
+    top:166px\9; 
+    left:500px;
+    width:536px;
+    height:433px;
+    background-image:url(../images/login_hubeixiangfan/Login_box.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+    padding-top:100px;
+    +padding-top:140px;
+    _padding-top:140px;
+} 
+
+#Footer
+{
+    float:left;
+    background:none;
+    width:486px;
+    height:29px;
+}
+#FootReflection
+{
+     background:none;
+}
+
+.LoginFrame
+{
+    width:211px;
+    height:154px;
+}
+ 
+#MainLogin .long
+{
+    width:90px;
+    height:20px;
+}
+#MainLogin .btn
+{
+    margin-left:61px;
+    color:#26599a;
+    width:63px;
+    }
+#MainCopyRight
+{ 
+    padding-top:120px;
+    padding-top:120px\9;
+    margin-left:auto;
+    margin-right:auto;
+    width:500px;
+}
+.copyright
+{ 
+    color:#fff; 
+}
+
+.copyright a
+{
+    
+    color:#fff;
+}
+
+#Footer #block
+{
+    padding-left:6px;
+}
+     
+.form table
+{
+    margin: 25px auto;
+}
+.form label
+{  
+    font-size: 14px; 
+    text-align: right;
+    width:75px; 
+}
+.form input.text-input
+{
+    width: 137px; 
+    height:20px;
+    margin: 0 0 10px 0;
+    border: 0;
+    border:solid 1px #999;
+}
+
+.form #RememberUserCodeDiv
+{
+    width:80px;
+    margin:0 0 0 82px;
+}
+ 
+
+#LoginButton
+{
+    background-image:url(../images/login_hubeixiangfan/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:65px;
+    height:50px; 
+    margin-top:75px;
+}

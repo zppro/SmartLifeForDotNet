@@ -1,0 +1,151 @@
+﻿html
+{
+    margin:0px;
+    padding:0px;
+}
+body
+{  
+    margin:0px;
+    padding:0px; 
+    background-color:#fff;
+    background-repeat:no-repeat;
+    position:relative; 
+} 
+#Container
+{  
+    margin-left:auto;
+    margin-right:auto; 
+    padding-top:132px; 
+    width:1024px;  
+    height:605px; 
+    position:relative;  
+    background-image:url(../images/login_unicom/Login_Container_Head.png);
+    background-position:center 20px; 
+    background-repeat:no-repeat;    
+}
+#Logo
+{
+    position:absolute;
+    top:10px;
+    left:20px;
+    width:125px;
+    height:99px; 
+    background-image:url(../images/login_unicom/Login_Logo.png);
+    background-position:center center; 
+    background-repeat:no-repeat;    
+}
+#SystemName
+{
+    width:406px;
+    height:38px;
+    top:50px;
+    left:210px;
+    background-image:url(../images/login_unicom/Login_SystemName.png);
+    background-position:left center; 
+    background-repeat:no-repeat; 
+    position:absolute;
+}
+
+#Main
+{  
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;    
+    position:relative;
+}
+#MainLogin
+{ 
+    margin-left:auto;
+    margin-right:auto;
+    width:422px;
+    height:421px;
+    background-image:url(../images/login_unicom/Login_box.png);
+    background-position:center center; 
+    background-repeat:no-repeat; 
+} 
+
+#MainLogin table
+{
+    margin-left:auto;
+    margin-right:auto; 
+}
+#MainLogin td.login-field-head
+{
+    height:150px; 
+    width:366px; 
+    background-position:center center; 
+    background-repeat:no-repeat;
+}
+#MainLogin td.login-field-label
+{
+    width:140px;
+    font-size:14px;
+    color:black;
+    text-align:right;
+}
+
+#MainLogin td.login-field-username
+{
+    width:358px;
+    height:45px; 
+    padding-left:20px;
+    padding-top:0px; 
+}
+#MainLogin td.login-field-password
+{
+    width:358px;
+    height:45px;  
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td.login-field-ext
+{
+    width:358px;
+    height:45px;   
+    padding-left:20px;
+    padding-top:0px;
+}
+#MainLogin td input
+{
+    width:220px;
+    border:none;
+    height:25px;
+    line-height:25px;
+    border:solid 1px #ccc;
+}  
+
+#RememberUserCodeDiv
+{
+    width:100%;
+}
+#LoginButton
+{
+    margin-left:auto;
+    margin-right:auto;
+    background-image:url(../images/login_unicom/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:76px;
+    height:37px; 
+    margin-bottom:6px;
+}
+
+#Foot
+{
+    width:100%;
+    height:30px; 
+    line-height:30px;
+    bottom:0px;  
+    position:absolute;
+    text-align:center; 
+    clear:both;
+    z-index:99;  
+}
+.copyright
+{
+    color:#e47e02; 
+}
+.copyright a
+{
+    color:#e47e02;
+}

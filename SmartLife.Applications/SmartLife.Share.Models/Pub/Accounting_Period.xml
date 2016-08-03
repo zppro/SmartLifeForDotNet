@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Accounting_Period" type="SmartLife.Share.Models.Pub.Accounting_Period, SmartLife.Share.Models" />
+    <typeAlias alias="Accounting_PeriodPK" type="SmartLife.Share.Models.Pub.Accounting_PeriodPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Accounting_Period_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_Accounting_Period(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AccountingType" >AccountingType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountingTypeObject" >AccountingTypeObject</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PeriodId" >PeriodId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BeginDate" >BeginDate</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndDate" >EndDate</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LockFlag" >LockFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AccountingType" >#AccountingType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountingTypeObject" >#AccountingTypeObject#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PeriodId" >#PeriodId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BeginDate" >#BeginDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndDate" >#EndDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LockFlag" >#LockFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Accounting_Period_Update" parameterClass="StringObjectDictionary" >
+      update Pub_Accounting_Period
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AccountingType" >AccountingType=#AccountingType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccountingTypeObject" >AccountingTypeObject=#AccountingTypeObject#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PeriodId" >PeriodId=#PeriodId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BeginDate" >BeginDate=#BeginDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndDate" >EndDate=#EndDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LockFlag" >LockFlag=#LockFlag#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="Accounting_Period_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_Accounting_Period
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AccountingType" >AccountingType=#AccountingType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountingTypeObject" >AccountingTypeObject=#AccountingTypeObject#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PeriodId" >PeriodId=#PeriodId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BeginDate_Start" >BeginDate>=to_date(#BeginDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BeginDate_End" >BeginDate&lt;=to_date(#BeginDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndDate_Start" >EndDate>=to_date(#EndDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndDate_End" >EndDate&lt;=to_date(#EndDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LockFlag" >LockFlag=#LockFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Accounting_Period_Load" parameterClass="Accounting_PeriodPK" resultClass="Accounting_Period" >
+      select AccountingType,AccountingTypeObject,PeriodId,Id,CheckInTime,BeginDate,EndDate,LockFlag from Pub_Accounting_Period
+      where Id=#Id#
+    </select>
+    <select id="Accounting_Period_List" parameterClass="StringObjectDictionary" resultClass="Accounting_Period" >
+      select AccountingType,AccountingTypeObject,PeriodId,Id,CheckInTime,BeginDate,EndDate,LockFlag from Pub_Accounting_Period
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AccountingType" >AccountingType=#AccountingType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountingTypeObject" >AccountingTypeObject=#AccountingTypeObject#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PeriodId" >PeriodId=#PeriodId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BeginDate_Start" >BeginDate>=to_date(#BeginDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BeginDate_End" >BeginDate&lt;=to_date(#BeginDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndDate_Start" >EndDate>=to_date(#EndDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndDate_End" >EndDate&lt;=to_date(#EndDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LockFlag" >LockFlag=#LockFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

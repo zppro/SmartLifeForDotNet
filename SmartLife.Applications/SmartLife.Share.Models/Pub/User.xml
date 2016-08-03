@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="User" type="SmartLife.Share.Models.Pub.User, SmartLife.Share.Models" />
+    <typeAlias alias="UserPK" type="SmartLife.Share.Models.Pub.UserPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="User_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_User(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="UserId" >UserId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >UserCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserName" >UserName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserType" >UserType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >PasswordHash</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >SystemFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StopFlag" >StopFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedBy" >CreatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedOn" >CreatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area1" >Area1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area2" >Area2</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="UserId" >#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserName" >#UserName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserType" >#UserType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StopFlag" >#StopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedBy" >#CreatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedOn" >#CreatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area1" >#Area1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area2" >#Area2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="User_Update" parameterClass="StringObjectDictionary" >
+      update Pub_User
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserName" >UserName=#UserName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserType" >UserType=#UserType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StopFlag" >StopFlag=#StopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedBy" >CreatedBy=#CreatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CreatedOn" >CreatedOn=#CreatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area1" >Area1=#Area1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Area2" >Area2=#Area2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      where UserId=#UserId#
+    </update>
+    <delete id="User_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_User
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserName" >UserName=#UserName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserType" >UserType=#UserType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StopFlag" >StopFlag=#StopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedBy" >CreatedBy=#CreatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedOn_Start" >CreatedOn>=to_date(#CreatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedOn_End" >CreatedOn&lt;=to_date(#CreatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area1" >Area1=#Area1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area2" >Area2=#Area2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="User_Load" parameterClass="UserPK" resultClass="User" >
+      select UserId,Id,Status,CheckInTime,OperatedBy,OperatedOn,UserCode,UserName,UserType,Gender,PasswordHash,SystemFlag,StopFlag,CreatedBy,CreatedOn,Area1,Area2 from Pub_User
+      where UserId=#UserId#
+    </select>
+    <select id="User_List" parameterClass="StringObjectDictionary" resultClass="User" >
+      select UserId,Id,Status,CheckInTime,OperatedBy,OperatedOn,UserCode,UserName,UserType,Gender,PasswordHash,SystemFlag,StopFlag,CreatedBy,CreatedOn,Area1,Area2 from Pub_User
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserName" >UserName=#UserName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserType" >UserType=#UserType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SystemFlag" >SystemFlag=#SystemFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StopFlag" >StopFlag=#StopFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedBy" >CreatedBy=#CreatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedOn_Start" >CreatedOn>=to_date(#CreatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CreatedOn_End" >CreatedOn&lt;=to_date(#CreatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area1" >Area1=#Area1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Area2" >Area2=#Area2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

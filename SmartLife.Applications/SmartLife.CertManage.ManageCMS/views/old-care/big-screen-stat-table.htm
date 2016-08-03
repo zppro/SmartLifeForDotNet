@@ -1,0 +1,100 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    <div id="all-count-c" data-options="region:'west',collapsed:false,border:false,split:false" >
+        <table>
+            <tr><td colspan="6" class="head-c1">每日各类服务呼叫量统计</td></tr>
+            <tr><td colspan="6" class="stat-time2"></td></tr>
+            <tr  style=" height:30px;"><td rowspan="2">街道\类型</td><td>紧急服务</td><td>生活服务</td><td>政府购买服务</td><!--<td>公共服务</td>--><td>亲情通话</td></tr>
+            <tr style=" height:60px;"><td>（次数）</td><td>（次数）</td><td>（次数）</td><!--<td>（次数）</td>--><td>（次数）</td></tr>
+            <tr id="all-count-total" ><td>小计</td><td id="S1-all-count-total">0</td><td id="S2-all-count-total">0</td><td id="S3-all-count-total">0</td><!--<td id="S4-all-count-total">0</td>--><td id="S5-all-count-total">0</td></tr>
+        </table>
+    </div>
+    <div id="vouch-duration-c" data-options="region:'east',collapsed:false,border:false,split:false">
+        <table>
+            <tr><td colspan="7" class="head-c1">本月政府购买服务统计表</td></tr>
+            <tr><td colspan="7" class="stat-time2"></td></tr>
+            <tr  style=" height:30px;"><td rowspan="2">街道\类型</td><td colspan="3">本月&nbsp;&nbsp;政府购买服务</td><td colspan="3">今日&nbsp;&nbsp;政府购买服务</td></tr>
+            <tr style=" height:60px;"><td>家政<br/>（时长）</td><td>水电<br/>（人次）</td><td>医疗<br/>(人次)</td><td>家政<br/>（时长）</td><td>水电<br/>（人次）</td><td>医疗<br/>（人次）</td></tr>
+            <tr id="vouch-duration-total"><td>小计</td><td id="S1-vouch-duration-total">0</td><td id="S2-vouch-duration-total">0</td><td id="S3-vouch-duration-total">0</td><td id="S4-vouch-duration-total">0</td><td id="S5-vouch-duration-total">0</td><td id="S6-vouch-duration-total">0</td></tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var repeatTime = 20000;
+
+    $(function () {
+
+        getTo(ajaxData_InvokeUrl + "/GetAreaName/" + top.appDeployArea.id, null, function (result) {
+            $('.CurrentAreaName').text(result);
+        });
+
+        $('.stat-time2').text("日期：" + (new Date()).toString('yyyy-MM-dd'));
+
+
+
+        $('#all-count-c').width(getTabWidth() / 2);
+        $('#all-count-c table').width($('#all-count-c').width() - 10);
+        $('#vouch-duration-c').width(getTabWidth() / 2);
+        $('#vouch-duration-c table').width($('#vouch-duration-c').width() - 10);
+
+        autosize('scroll-block');
+
+        loadfiles([
+            { type: "css", url: "../../css/old-care/big-screen.css" }
+            ], function () {
+                var selectedDate = (new Date()).toString('yyyy-MM-dd');
+                //selectedDate = '2014-01-21';
+
+                setTimeout(function () {
+                    getTo(top.callservice_InvokeUrl + '/GetStatDataOfAllCountForBigScreen/' + selectedDate, null, function (result) {
+                        var rows = _.map(result.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+                        $('.all-count-compute-row').remove();
+                        var htmls = [];
+                        var all_count_sum = { S1: 0, S2: 0, S3: 0, S4: 0, S5: 0 };
+                        _.each(rows, function (o) {
+                            all_count_sum.S1 += o.S1;
+                            all_count_sum.S2 += o.S2;
+                            all_count_sum.S3 += o.S3;
+                            //all_count_sum.S4 += o.S4;
+                            all_count_sum.S5 += o.S5;
+                            //htmls.push('<tr class="all-count-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S4 + '</td><td>' + o.S5 + '</td></tr>');
+                            htmls.push('<tr class="all-count-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S5 + '</td></tr>');
+                        });
+
+                        $(htmls.join("")).insertBefore('#all-count-total');
+                        for (var key in all_count_sum) {
+                            $('#' + key + '-all-count-total').text(all_count_sum[key]);
+                        }
+                    });
+
+                    getTo(top.callservice_InvokeUrl + '/GetStatDataOfVouchDurationForBigScreen', null, function (result) {
+                        var rows = _.map(result.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+                        $('.vouch-duration-compute-row').remove();
+                        var htmls = [];
+                        var all_count_sum = { S1: 0, S2: 0, S3: 0, S4: 0, S5: 0, S6: 0 };
+                        _.each(rows, function (o) {
+                            all_count_sum.S1 += o.S1;
+                            all_count_sum.S2 += o.S2;
+                            all_count_sum.S3 += o.S3;
+                            all_count_sum.S4 += o.S4;
+                            all_count_sum.S5 += o.S5;
+                            all_count_sum.S6 += o.S6;
+                            htmls.push('<tr class="vouch-duration-compute-row"><td>' + o.AreaName + '</td><td>' + o.S1 + '</td><td>' + o.S2 + '</td><td>' + o.S3 + '</td><td>' + o.S4 + '</td><td>' + o.S5 + '</td><td>' + o.S6 + '</td></tr>');
+                        });
+
+                        $(htmls.join("")).insertBefore('#vouch-duration-total');
+                        for (var key in all_count_sum) {
+                            $('#' + key + '-vouch-duration-total').text(all_count_sum[key]);
+                        }
+                    });
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+
+            });
+    }); 
+     
+</script>

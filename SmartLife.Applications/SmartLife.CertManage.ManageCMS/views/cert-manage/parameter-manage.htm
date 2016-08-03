@@ -1,0 +1,97 @@
+﻿<div id="toolbar-B110402">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="remove()">
+                删除</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-script" plain="true" onclick="exportScript()">
+                导出SQL</a>
+</div>
+<table id="dg-B110402" >
+</table>
+<div id="dlg-B110402" class="easyui-dialog" style="width: 360px; height: 240px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B110402"  >
+    <div class="ftitle"></div>
+    <form id="fm-B110402" method="post" novalidate>
+    
+    <div class="fitem">
+        <label>
+            参数编号:</label> 
+        <input   name="ParameterId" id="parameterid-B110402" class="easyui-validatebox" required="true" missingMessage="参数编号不能为空" />
+    </div>
+    <div class="fitem">
+        <label>
+            参数名称:</label>
+        <input name="ParameterName" class="easyui-validatebox" required="true" missingMessage="参数名称不能为空">
+    </div> 
+    <div class="fitem">
+        <label >
+            参数说明:</label>
+        <textarea name="Description" style="width:150px;" ></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            参数取值:</label>
+        <input name="ParameterValue" class="easyui-validatebox" >
+    </div>
+    </form>
+</div>
+<div id="btn-B110402">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'parameterid-' + currentMenuCode,
+            pk: 'ParameterId',
+            getPKValueWhenAdd: function () {
+                return "";
+            },
+            exportScriptParams: { tableName: "Sys_Parameter", pkColumnName: "ParameterId" },
+            uiMode: 'list',
+            disabled: ['edit'],
+            entityName: '系统参数',
+            baseModelUrl: baseCMSInvokeUrl + '/Sys/ParameterService/',
+            defaultModel: { Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId); 
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'ParameterId',
+                order: 'asc',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'ParameterId', title: '参数编号', width: 150 },
+        { field: 'ParameterName', title: '参数名称', width: 200 },
+        { field: 'ParameterValue', title: '参数取值', width: 100 },
+        { field: 'Description', title: '描述', width: 400 }
+    ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+    }); 
+    
+</script>

@@ -1,0 +1,268 @@
+<div id="the-custom-location" class="easyui-dialog" style="width: 1024px; height: 488px; background-color:gray;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-custom-location">
+    <div id="toolbar-custom-location" style="padding-top:4px;">
+        <!--<label style="margin-left:10px;"> 街道社区:</label>
+        <input id="AreaOfStreetAndCommunity"   /> 
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+        <label>&nbsp;&nbsp;&nbsp;&nbsp;老人姓名:</label> <input id="OldManName"  />
+        <label>&nbsp;&nbsp;&nbsp;&nbsp;呼叫号码:</label> <input id="CallNo" />-->
+        <a href="javascript:void(0)" class="easyui-linkbutton" style="margin-left:100px;"  iconcls="icon-search"  onclick="query2()">查询</a>
+    </div>
+    <table id="dg-custom-location-oldman" >
+    </table>
+</div>
+<div id="btn-custom-location">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doLocation()">定位</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancelLocation()">关闭</a>
+</div>
+
+<script type="text/javascript">
+
+    var areas;
+    $(function () {
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        
+    });
+
+    function dialogOpen(dialogId, dialogData) {
+
+        $("#dg-custom-location-oldman").height($("#dg-custom-location-oldman").parent().height());
+        alert(23);
+//        $('#dg-custom-location-oldman').datagrid(easyuigrid_settings({
+//            title: "",
+//            pagination: true,
+//            rownumbers: true,
+//            singleSelect: false,
+//            //url: baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/ListForEasyUIgrid',
+//            //method: 'POST',
+////            queryParams: {
+////                sort: 'LocateFlag desc,CallNo desc,isnull(b.OperatedOn,a.OperatedOn)',
+////                order: 'desc',
+////                filterFields: [
+////                        { key: 'OldManStatus', value: 1 },
+////                        { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) }
+////                ]
+////            },
+//            //toolbar: '#toolbar-custom-location',
+//            pageSize: 17,
+//            pageList: [17],
+//            columns: [[
+//                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+//                { field: 'CK', title: '', checkbox: true },
+//                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+//            //{ field: 'IDNo', title: '身份证', width: 150, align: 'center' },
+////                {field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+////                { field: 'Birthday', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_age2Formatter, datefmt: "yyyy-MM-dd" },
+////                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+////                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+////                { field: 'LocateFlag', title: '开通定位', width: 60, align: 'center', formatter: function retGPSFlag(val, row, index) { if (val) { return '是'; } else { return '否'; } } },
+//                { field: 'CallNo', title: '呼叫号码', width: 100, align: 'center' },
+//                { field: 'Address', title: '家庭地址', width: 260 }
+//        ]],
+//            loader: easyuiLoaderForStringObjectDictionary
+//        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+
+    }
+
+//    function query2() {
+//        var AreaId2 = $('#AreaId2').val();
+//        var AreaId3 = $('#AreaId3').val();
+//        var oldManName = $("#OldManName").val();
+//        var callNo = $("#CallNo").val();
+//        var defaultParmsArray = $('#dg-show-oldman').datagrid('options').queryParams;
+//        var queryParmsArray = _.omit(defaultParmsArray, "fuzzyFields");
+//        if (AreaId2) {
+//            queryParmsArray.fuzzyFields = [{ key: 'AreaId2', value: AreaId2}]
+//        }
+//        if (AreaId3) {
+//            queryParmsArray.fuzzyFields.push({ key: 'AreaId3', value: AreaId3 });
+//        }
+//        var bfind = _.has(queryParmsArray, "fuzzyFields");
+//        if (!bfind) {
+//            queryParmsArray.fuzzyFields = [];
+//        }
+//        if (oldManName) queryParmsArray.fuzzyFields.push({ key: 'OldManName', value: oldManName });
+//        if (callNo) queryParmsArray.fuzzyFields.push({ key: 'CallNo', value: callNo });
+
+//        $('#dg-show-oldman').datagrid('load', queryParmsArray);
+
+//    }
+
+    function doCancelLocation() {
+        $('#the-custom-location').dialog('close');
+    }
+
+//    function doLocation() {
+//        if (!map) {
+//            alertInfo('地图初始化未加载成功，请稍后再试...');
+//            return;
+//        }
+
+//        var rows = $('#dg-show-oldman').datagrid('getSelections');
+//        var itype = $("#gpsTypeSelect").val();
+//        if (rows) {
+//            doCancelLocation();
+
+//            if (itype == 0) {
+//                DrawMap(itype, rows)
+//            }
+//            else {
+//                if (rows.length == 1) {
+
+//                    if (itype == 2) {
+//                        var radiu, lat, lng;
+//                        _.each(rows, function (item) {
+//                            radiu = item.FenceRadius;
+//                            lat = item.LatitudeS;
+//                            lng = item.LongitudeS;
+//                        });
+//                        if (!radiu) {
+//                            alertInfo('请先设置报警半径！');
+//                            return;
+//                        }
+//                        if (!lat && !lng) {
+//                            alertInfo("请先设置报警中心点！");
+//                            return;
+//                        }
+//                    }
+//                    DrawMap(itype, rows)
+//                }
+//                else {
+//                    alertInfo('请选中一条要查看的记录！');
+//                }
+//            }
+//        }
+//    }
+
+//    //获取经纬度画图
+//    function DrawMap(itype, rows) {
+//        var url = top.baseCMSInvokeUrl + '/Oca/OldManLocateInfoService/';
+//        var formData = { 'sort': 'LocateTime', 'order': 'desc', 'page': '1', 'rows': '26',
+//            filterFields: [{ 'key': 'OldManId', 'value': ''}]
+//        };
+
+//        if (itype == 2) {
+//            url += 'FenceAlarmListByOldMan';
+//            formData.filterFields.push({ key: 'SourceTable', value: 'Oca_OldManConfigInfo' });
+//            formData.filterFields.push({ key: 'SourceColumn', value: 'OldManId' });
+//            formData.filterFields.push({ key: 'SourceType', value: '004' });
+//        }
+//        else if (itype == 1) {
+//            url += 'ListForEasyUIgrid';
+//        }
+//        else {
+//            url += 'ListForEasyUIgrid';
+//            formData.rows = 1;
+//        }
+
+//        map.clearOverlays();    //清除所有覆盖层
+//        _.each(rows, function (item) {
+//            if (item.CallNo) {
+//                formData.filterFields[0].value = item.OldManId;
+//                postTo(url, $.toJSON(formData)).done(function (result) {
+//                    if (result.Success) {
+//                        var rows = _.map(result.rows, function (o) {
+//                            return xml2json.parser(o, 'StringObjectDictionary');
+//                        });
+
+//                        if (itype == 0) {
+//                            marketlatlng(item.OldManName, rows, item);
+//                        }
+//                        else if (itype == 1) {
+//                            drawHistoryPoint(rows, item);
+//                        }
+//                        else {
+//                            var items = [];
+//                            _.each(rows, function (o, i) {
+//                                var info = { 'Id': String.fromCharCode(65 + i),
+//                                    'LatLng': o.LocateLongitudeS + "," + o.LocateLatitudeS,
+//                                    'Date': (new Date(o.LocateTime)).toLocaleDateString(),
+//                                    'Time': (new Date(o.LocateTime)).toLocaleTimeString()
+//                                };
+//                                items.push(info);
+//                            });
+//                            if (items.length > 0) {
+//                                drawAlarmPoint(rows, item.LongitudeS, item.LatitudeS, item.FenceRadius, item);
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//    }
+
+//    //标记点
+//    function marketlatlng(name, rows, item) {
+//        _.each(rows, function (o, i) {
+//            if (i == 0) {
+//                var point = new BMap.Point(o.LocateLongitudeS, o.LocateLatitudeS);
+//                map.centerAndZoom(point, 16);
+//                var mak = retPointMarker(point);
+//                var txt = name + ": " + o.LocateTime.toString().replace(/\//g, "-");
+//                createPointLabel(mak, point, txt, false);
+//                createPointInfoWindow(mak, point, getnfoWindowContent(item));
+//            }
+//        });
+//    }
+
+//    function drawHistoryPoint(rows, item) {
+//        //map.clearOverlays();     //清除所有覆盖层
+
+//        if (rows && rows.length > 0) {
+//            var points = [];
+//            _.each(rows, function (o, i) {
+//                var point2 = new BMap.Point(o.LocateLongitudeS, o.LocateLatitudeS);
+//                var maker2 = retCustomMarker(point2, i);
+
+//                points.push(point2);
+//                createPointLabel(maker2, point2, (new Date(o.LocateTime)).toLocaleString(), true);
+//                //createPointInfoWindow(maker2, point2, getnfoWindowContent(item));
+//            });
+//            //设置缩放级别
+//            setViewport(points);
+//            addPointLine(points, true);
+//        }
+//    }
+
+//    function drawAlarmPoint(rows, lng, lat, radius, item) {
+//        //map.clearOverlays();     //清除所有覆盖层
+
+//        if (rows && rows.length > 0) {
+//            var start_point = new BMap.Point(lng, lat);
+//            addPointMarker(start_point);
+//            //画圆
+//            addPointCircle(start_point, radius - 20);
+//            //画点
+//            var points = [];
+//            _.each(rows, function (o, i) {
+//                var point2 = new BMap.Point(o.LocateLongitudeS, o.LocateLatitudeS);
+//                var maker2 = retCustomMarker(point2, i);
+
+//                points.push(point2);
+//                createPointLabel(maker2, point2, (new Date(o.LocateTime)).toLocaleString(), true);
+//                //createPointInfoWindow(maker2, point2, getnfoWindowContent(item));
+//            });
+//            points.push(start_point);
+//            //设置缩放级别
+//            setViewport(points);
+//            addPointLine(points, true);
+//        }
+//    }
+
+//    function getnfoWindowContent(item) {
+//        var htm = [];
+//        htm.push("<p style='font-size:16;color:red;'>基本信息:</p>")
+//        htm.push("<p style='line-height:12px'>姓名:" + item.OldManName + "</p>");
+//        htm.push("<p style='line-height:12px'>身份证:" + item.IDNo + "</p>");
+//        if (item.CallNo) htm.push("<p style='line-height:12px'>呼叫号码:" + item.CallNo + "</p>");
+//        if (item.CallNo2) htm.push("<p style='line-height:12px'>呼叫号码2:" + item.CallNo2 + "</p>");
+//        if (item.CallNo3) htm.push("<p style='line-height:12px'>呼叫号码3:" + item.CallNo3 + "</p>");
+//        htm.push("<p style='line-height:12px;word-wrap:break-word; word-break:normal;' >家庭地址:" + item.Address + "</p>");
+//        return htm.join("");
+//    }
+</script>

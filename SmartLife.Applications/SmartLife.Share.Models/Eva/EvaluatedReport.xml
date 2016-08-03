@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Eva" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="EvaluatedReport" type="SmartLife.Share.Models.Eva.EvaluatedReport, SmartLife.Share.Models" />
+        <typeAlias alias="EvaluatedReportPK" type="SmartLife.Share.Models.Eva.EvaluatedReportPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="EvaluatedReport_Create" parameterClass="StringObjectDictionary" >
+            insert into Eva_EvaluatedReport(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ReportId" >ReportId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >RequisitionId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EvaluatedName" >EvaluatedName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportCode" >ReportCode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastReportId" >LastReportId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessType" >AssessType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Assessor" >Assessor</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentUnit" >AssessmentUnit</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentCall" >AssessmentCall</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentScores" >AssessmentScores</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemType" >ServeItemType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityRemark" >CommunityRemark</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityTime" >CommunityTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamine" >StreetExamine</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamineTime" >StreetExamineTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAudit" >CityAudit</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAuditTime" >CityAuditTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessLevel" >AssessLevel</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceBeginTime" >ServiceBeginTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceEndTime" >ServiceEndTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityCheck" >CommunityCheck</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityChecker" >CommunityChecker</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExaminer" >StreetExaminer</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityApproval" >CityApproval</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PrintNo" >PrintNo</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OcaResult" >OcaResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PamResult" >PamResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DccResult" >DccResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentResult" >AssessmentResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceSubsidies" >ServiceSubsidies</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ReportId" >#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EvaluatedName" >#EvaluatedName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportCode" >#ReportCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DoStatus" >#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastReportId" >#LastReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessType" >#AssessType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Assessor" >#Assessor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentUnit" >#AssessmentUnit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentCall" >#AssessmentCall#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentScores" >#AssessmentScores#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemType" >#ServeItemType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityRemark" >#CommunityRemark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityTime" >#CommunityTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamine" >#StreetExamine#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamineTime" >#StreetExamineTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAudit" >#CityAudit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAuditTime" >#CityAuditTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessLevel" >#AssessLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceBeginTime" >#ServiceBeginTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceEndTime" >#ServiceEndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityCheck" >#CommunityCheck#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityChecker" >#CommunityChecker#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExaminer" >#StreetExaminer#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityApproval" >#CityApproval#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PrintNo" >#PrintNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OcaResult" >#OcaResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PamResult" >#PamResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DccResult" >#DccResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentResult" >#AssessmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceSubsidies" >#ServiceSubsidies#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="EvaluatedReport_Update" parameterClass="StringObjectDictionary" >
+            update Eva_EvaluatedReport
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="EvaluatedName" >EvaluatedName=#EvaluatedName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ReportCode" >ReportCode=#ReportCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastReportId" >LastReportId=#LastReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessType" >AssessType=#AssessType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Assessor" >Assessor=#Assessor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentUnit" >AssessmentUnit=#AssessmentUnit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentCall" >AssessmentCall=#AssessmentCall#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentScores" >AssessmentScores=#AssessmentScores#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemType" >ServeItemType=#ServeItemType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityRemark" >CommunityRemark=#CommunityRemark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityTime" >CommunityTime=#CommunityTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamine" >StreetExamine=#StreetExamine#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExamineTime" >StreetExamineTime=#StreetExamineTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAudit" >CityAudit=#CityAudit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityAuditTime" >CityAuditTime=#CityAuditTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessLevel" >AssessLevel=#AssessLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceBeginTime" >ServiceBeginTime=#ServiceBeginTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceEndTime" >ServiceEndTime=#ServiceEndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityCheck" >CommunityCheck=#CommunityCheck#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CommunityChecker" >CommunityChecker=#CommunityChecker#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StreetExaminer" >StreetExaminer=#StreetExaminer#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CityApproval" >CityApproval=#CityApproval#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PrintNo" >PrintNo=#PrintNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OcaResult" >OcaResult=#OcaResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PamResult" >PamResult=#PamResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DccResult" >DccResult=#DccResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AssessmentResult" >AssessmentResult=#AssessmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServiceSubsidies" >ServiceSubsidies=#ServiceSubsidies#</isPropertyAvailable>
+            </dynamic>
+            where ReportId=#ReportId#
+        </update>
+        <delete id="EvaluatedReport_Delete" parameterClass="StringObjectDictionary" >
+            delete Eva_EvaluatedReport
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EvaluatedName" >EvaluatedName=#EvaluatedName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportCode" >ReportCode=#ReportCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastReportId" >LastReportId=#LastReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessType" >AssessType=#AssessType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Assessor" >Assessor=#Assessor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentUnit" >AssessmentUnit=#AssessmentUnit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentCall" >AssessmentCall=#AssessmentCall#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentScores" >AssessmentScores=#AssessmentScores#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemType" >ServeItemType=#ServeItemType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityRemark" >CommunityRemark=#CommunityRemark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_Start" >CommunityTime>=to_date(#CommunityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_End" >CommunityTime&lt;=to_date(#CommunityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamine" >StreetExamine=#StreetExamine#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_Start" >StreetExamineTime>=to_date(#StreetExamineTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_End" >StreetExamineTime&lt;=to_date(#StreetExamineTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAudit" >CityAudit=#CityAudit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_Start" >CityAuditTime>=to_date(#CityAuditTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_End" >CityAuditTime&lt;=to_date(#CityAuditTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessLevel" >AssessLevel=#AssessLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_Start" >ServiceBeginTime>=to_date(#ServiceBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_End" >ServiceBeginTime&lt;=to_date(#ServiceBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_Start" >ServiceEndTime>=to_date(#ServiceEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_End" >ServiceEndTime&lt;=to_date(#ServiceEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityCheck" >CommunityCheck=#CommunityCheck#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityChecker" >CommunityChecker=#CommunityChecker#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExaminer" >StreetExaminer=#StreetExaminer#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityApproval" >CityApproval=#CityApproval#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PrintNo" >PrintNo=#PrintNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OcaResult" >OcaResult=#OcaResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PamResult" >PamResult=#PamResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DccResult" >DccResult=#DccResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentResult" >AssessmentResult=#AssessmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceSubsidies" >ServiceSubsidies=#ServiceSubsidies#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="EvaluatedReport_Load" parameterClass="EvaluatedReportPK" resultClass="EvaluatedReport" >
+            select ReportId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RequisitionId,EvaluatedName,AreaId,AreaId2,AreaId3,ReportCode,DoStatus,LastReportId,AssessType,Assessor,AssessmentUnit,AssessmentCall,AssessmentScores,ServeItemType,CommunityRemark,CommunityTime,StreetExamine,StreetExamineTime,CityAudit,CityAuditTime,AssessLevel,ServiceBeginTime,ServiceEndTime,CommunityCheck,CommunityChecker,StreetExaminer,CityApproval,PrintNo,OcaResult,PamResult,DccResult,AssessmentResult,ServiceSubsidies from Eva_EvaluatedReport
+            where ReportId=#ReportId#
+        </select>
+        <select id="EvaluatedReport_List" parameterClass="StringObjectDictionary" resultClass="EvaluatedReport" >
+            select ReportId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RequisitionId,EvaluatedName,AreaId,AreaId2,AreaId3,ReportCode,DoStatus,LastReportId,AssessType,Assessor,AssessmentUnit,AssessmentCall,AssessmentScores,ServeItemType,CommunityRemark,CommunityTime,StreetExamine,StreetExamineTime,CityAudit,CityAuditTime,AssessLevel,ServiceBeginTime,ServiceEndTime,CommunityCheck,CommunityChecker,StreetExaminer,CityApproval,PrintNo,OcaResult,PamResult,DccResult,AssessmentResult,ServiceSubsidies from Eva_EvaluatedReport
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EvaluatedName" >EvaluatedName=#EvaluatedName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportCode" >ReportCode=#ReportCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastReportId" >LastReportId=#LastReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessType" >AssessType=#AssessType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Assessor" >Assessor=#Assessor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentUnit" >AssessmentUnit=#AssessmentUnit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentCall" >AssessmentCall=#AssessmentCall#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentScores" >AssessmentScores=#AssessmentScores#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemType" >ServeItemType=#ServeItemType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityRemark" >CommunityRemark=#CommunityRemark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_Start" >CommunityTime>=to_date(#CommunityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_End" >CommunityTime&lt;=to_date(#CommunityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamine" >StreetExamine=#StreetExamine#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_Start" >StreetExamineTime>=to_date(#StreetExamineTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_End" >StreetExamineTime&lt;=to_date(#StreetExamineTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAudit" >CityAudit=#CityAudit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_Start" >CityAuditTime>=to_date(#CityAuditTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_End" >CityAuditTime&lt;=to_date(#CityAuditTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessLevel" >AssessLevel=#AssessLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_Start" >ServiceBeginTime>=to_date(#ServiceBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_End" >ServiceBeginTime&lt;=to_date(#ServiceBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_Start" >ServiceEndTime>=to_date(#ServiceEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_End" >ServiceEndTime&lt;=to_date(#ServiceEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityCheck" >CommunityCheck=#CommunityCheck#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityChecker" >CommunityChecker=#CommunityChecker#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExaminer" >StreetExaminer=#StreetExaminer#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityApproval" >CityApproval=#CityApproval#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PrintNo" >PrintNo=#PrintNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OcaResult" >OcaResult=#OcaResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PamResult" >PamResult=#PamResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DccResult" >DccResult=#DccResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentResult" >AssessmentResult=#AssessmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceSubsidies" >ServiceSubsidies=#ServiceSubsidies#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="EvaluatedReport_ListByPage" parameterClass="StringObjectDictionary" resultClass="EvaluatedReport" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ReportId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,RequisitionId,EvaluatedName,AreaId,AreaId2,AreaId3,ReportCode,DoStatus,LastReportId,AssessType,Assessor,AssessmentUnit,AssessmentCall,AssessmentScores,ServeItemType,CommunityRemark,CommunityTime,StreetExamine,StreetExamineTime,CityAudit,CityAuditTime,AssessLevel,ServiceBeginTime,ServiceEndTime,CommunityCheck,CommunityChecker,StreetExaminer,CityApproval,PrintNo,OcaResult,PamResult,DccResult,AssessmentResult,ServiceSubsidies from Eva_EvaluatedReport
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ReportId" >ReportId=#ReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EvaluatedName" >EvaluatedName=#EvaluatedName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ReportCode" >ReportCode=#ReportCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastReportId" >LastReportId=#LastReportId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessType" >AssessType=#AssessType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Assessor" >Assessor=#Assessor#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentUnit" >AssessmentUnit=#AssessmentUnit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentCall" >AssessmentCall=#AssessmentCall#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentScores" >AssessmentScores=#AssessmentScores#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemType" >ServeItemType=#ServeItemType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityRemark" >CommunityRemark=#CommunityRemark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_Start" >CommunityTime>=to_date(#CommunityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityTime_End" >CommunityTime&lt;=to_date(#CommunityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamine" >StreetExamine=#StreetExamine#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_Start" >StreetExamineTime>=to_date(#StreetExamineTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExamineTime_End" >StreetExamineTime&lt;=to_date(#StreetExamineTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAudit" >CityAudit=#CityAudit#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_Start" >CityAuditTime>=to_date(#CityAuditTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityAuditTime_End" >CityAuditTime&lt;=to_date(#CityAuditTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessLevel" >AssessLevel=#AssessLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_Start" >ServiceBeginTime>=to_date(#ServiceBeginTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceBeginTime_End" >ServiceBeginTime&lt;=to_date(#ServiceBeginTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_Start" >ServiceEndTime>=to_date(#ServiceEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceEndTime_End" >ServiceEndTime&lt;=to_date(#ServiceEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityCheck" >CommunityCheck=#CommunityCheck#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CommunityChecker" >CommunityChecker=#CommunityChecker#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StreetExaminer" >StreetExaminer=#StreetExaminer#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CityApproval" >CityApproval=#CityApproval#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PrintNo" >PrintNo=#PrintNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OcaResult" >OcaResult=#OcaResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PamResult" >PamResult=#PamResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DccResult" >DccResult=#DccResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AssessmentResult" >AssessmentResult=#AssessmentResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceSubsidies" >ServiceSubsidies=#ServiceSubsidies#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

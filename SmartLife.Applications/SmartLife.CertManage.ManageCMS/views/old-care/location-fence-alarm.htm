@@ -1,0 +1,318 @@
+﻿<div id="search-sample-B180603" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B180603" method="post">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字：<input name="KeyWord" class="easyui-validatebox" />
+            </td>
+            <td style="text-align: left">
+                街道社区:
+                <input id="StreetAndCommunity" class="easyui-validatebox" />
+                <input type="hidden" name="AreaId2_Start" id="AreaId2_Start" />
+                <input type="hidden" name="AreaId3_Start" id="AreaId3_Start" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="query()">高级查询</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div id="toolbar-B180603" >
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="query()">高级查询</a>-->
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="getalarm()">获取报警记录</a>
+</div>
+<table id="dg-B180603" >
+</table>
+<div id="right-panel" style="width:45%;float:right;position:absolute;z-index:99;right:0; top:32px;">
+    <div id="location-panel">地图载入中...</div>
+    <table id="alarm-panel"></table>
+</div>
+<div id="dlg-search-B180603" class="easyui-dialog" style="width: 420px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B180603"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B180603" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            老&nbsp;&nbsp;人&nbsp;&nbsp;&nbsp;姓&nbsp;&nbsp;名:</label>
+        <input name="OldManName"  >
+    </div>
+    <div class="fitem">
+        <label>
+            起始定位时间:</label>
+        <input name="CheckInTime_Start" class="Wdate" onFocus="WdatePicker()">
+    </div>
+    <div class="fitem">
+        <label>
+            截止定位时间:</label>
+        <input name="CheckInTime_End" class="Wdate" onFocus="WdatePicker()">
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180603">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+        var areas;
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['OldManName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['CallNo'] = formData['KeyWord'];
+                formData['Address'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '老人围栏报警信息',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), OldManStatus: 1 }
+        };
+
+        autosize(models[currentMenuCode].gridId,-30);
+        autoSizeofWidth(models[currentMenuCode].gridId);
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'isnull(b.OperatedOn,a.OperatedOn)',
+                order: 'desc',
+                filterFields: [
+                        { key: 'OldManStatus', value: models[currentMenuCode].defaultModel.OldManStatus },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                    ]
+            },
+            onDblClickRow: function (idx, row) {
+                getalarm(row);
+            },
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Birthday', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_age2Formatter, datefmt: "yyyy-MM-dd" },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'LocateFlag', title: '开通定位', width: 60, align: 'center', formatter: function retGPSFlag(val, row, index) { if (val) { return '是'; } else { return '否'; } } },
+                { field: 'CallNo', title: '呼叫号码', width: 100, align: 'center' },
+                { field: 'Address', title: '家庭地址', width: 260 }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        initTree('easyUIComboTree', 'StreetAndCommunity', {
+            width: 152,
+            panelWidth: 250,
+            panelHeight: 150,
+            editable: false,
+            onLoadSuccess: function () {
+                var node = $('#StreetAndCommunity').combotree('tree').tree('getRoot');
+                $('#StreetAndCommunity').combotree('tree').tree("collapseAll");
+                $('#StreetAndCommunity').combotree('tree').tree('expand', node.target);
+            },
+            onClick: function (treeNode) {
+                $('#AreaId2_Start').val(null);
+                $('#AreaId3_Start').val(null);
+                var areaId = treeNode.id; //选中节点id
+                var areaLevels = treeNode.attributes.Levels; //当前节点的层次
+                if (areaLevels == 3) {
+                    $('#AreaId2_Start').val(areaId);
+                }
+                else if (areaLevels == 4) {
+                    $('#AreaId3_Start').val(areaId);
+                }
+            }
+        }, function (d) {
+            getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+        });
+
+        autoSizeOfHeight("alarm-panel", 0.286);
+        $('#alarm-panel').datagrid(easyuigrid_settings({
+            title: "",
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                sort: 'LocateTime',
+                order: 'desc',
+                filterFields: [
+                        { key: 'SourceTable', value: 'Oca_OldManConfigInfo' },
+                        { key: 'SourceColumn', value: 'OldManId' },
+                        { key: 'SourceType', value: '004' }
+                    ]
+            },
+            onClickRow: function (idx, row) {
+                if (!row) {
+                    row = $('#alarm-panel').datagrid('getSelected');
+                }
+                if (row) {
+                    //定位点
+                    setZoomCenter(row);
+                }
+                else {
+                    alertInfo('请选中要查看实时定位的记录！');
+                }
+            },
+            columns: [[
+                { field: 'Id', title: '编号', width: 40, align: 'center' },
+                { field: 'LatLng', title: '经纬度', width: 180, align: 'center' },
+                { field: 'Date', title: '日期', width: 130, align: 'center' },
+                { field: 'Time', title: '时间', width: 120, align: 'center' }
+        ]],
+            loader: easyuiLoader
+        }));
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            autosize("right-panel");
+            autoSizeOfHeight("location-panel", 0.6);
+            initMap("location-panel", longitude, latitude);
+        });
+    });
+
+
+    //自动调整宽度
+    function autoSizeofWidth(id) {
+        $("#" + id).width(parseFloat($("#" + id).parent().width()) * 0.549);
+    }
+    function autoSizeOfHeight(id, iwidth) {
+        $("#" + id).height(parseFloat($("#" + id).parent().parent().height()) * iwidth);
+    }
+
+    function getalarm(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            getAlarmGrid(row);
+            //alarm_setTimeout(getAlarmGrid, 60000, row, 500);
+        }
+        else {
+            alertInfo('请选中要查看实时定位的记录！');
+        }
+    }
+
+    function getAlarmGrid(row) {
+
+        if (!row.FenceRadius) {
+            alertInfo('请先设置报警半径！');
+            return;
+        }
+        if((!row.LatitudeS)&&(!row.LongitudeS))
+        {
+            alertInfo("请先设置报警中心点！");
+            return;
+        }
+        
+        var queryParamsArray = $('#alarm-panel').datagrid('options').queryParams;
+        _.extend(queryParamsArray, { 'page': '1', 'rows': '26' });
+        queryParamsArray.filterFields.push({ 'key': 'OldManId', 'value': row.OldManId });
+        
+        postTo(top.baseCMSInvokeUrl + '/Oca/OldManLocateInfoService/FenceAlarmListByOldMan', $.toJSON(queryParamsArray)).done(function (result) {
+            if (result.Success) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var items = [];
+                _.each(rows, function (o, i) {
+                    var info = { 'Id': String.fromCharCode(65 + i),
+                        'LatLng': o.LocateLongitudeS + "," + o.LocateLatitudeS,
+                        'Date': (new Date(o.LocateTime)).toLocaleDateString(),
+                        'Time': (new Date(o.LocateTime)).toLocaleTimeString()
+                    };
+                    items.push(info);
+                });
+                if (items.length > 0) {
+                    $('#alarm-panel').datagrid('loadData', items);
+                    addPointsMarker(rows, row.LongitudeS, row.LatitudeS, row.FenceRadius);
+                }
+            }
+        });
+    }
+
+    function addPointsMarker(rows, lng, lat, radius) {
+        if (map) {
+            map.clearOverlays();     //清除所有覆盖层
+
+            if (rows && rows.length > 0) {
+                var start_point = new BMap.Point(lng, lat);
+                addPointMarker(start_point);
+                //画圆
+                addPointCircle(start_point, radius);
+                //画点
+                var points = [];
+                _.each(rows, function (o, i) {
+                    var point2 = new BMap.Point(o.LocateLongitudeS, o.LocateLatitudeS);
+                    var maker2 = retCustomMarker(point2, i);
+
+                    points.push(point2);
+                    createPointLabel(maker2, point2, (new Date(o.LocateTime)).toLocaleString(), true);
+                });
+                points.push(start_point);
+                //设置缩放级别
+                setViewport(points);
+                addPointLine(points, true);
+            }
+        }
+        else {
+            alertInfo("地图初始化未完成...！");
+        }
+    }
+
+    function resetexec() {
+        $('#StreetAndCommunity').combotree('clear');
+        $('#AreaId2_Start').val(null);
+        $('#AreaId3_Start').val(null);
+        resetfm(true);
+    }
+//    //模拟定时获得的数据
+//    function alarm_setTimeout(callback, timeout, parm) {
+//        var args = Array.prototype.slice.call(arguments, 2);
+//        var _cb = function () {
+//            callback.apply(null, args);
+//        }
+//        setInterval(_cb, timeout);
+//    }
+</script>

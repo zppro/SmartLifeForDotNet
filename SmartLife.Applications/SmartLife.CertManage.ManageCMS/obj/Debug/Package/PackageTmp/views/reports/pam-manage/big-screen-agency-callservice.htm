@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>机构即时服务信息</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/site.css" />
+    <script type="text/javascript" src="../../../script/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../../script/xml2json-v1.1.js"></script>
+    <script type="text/javascript" src="../../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../../script/globalVar.js"></script>
+    <script type="text/javascript" src="../../../script/site.js"></script>
+
+
+    <style type="text/css" >
+        #scroll-block{ background:#000; height:100%; width:100%;}
+        #head-c1{font-size:50px; color:#fff; text-align:center; background:#000;height: 60px;} 
+        #head-c2{color:#fff; background:#000; position:relative;height: 40px;}
+        #stat-time{font-size:30px; position:absolute; right:5px; bottom:5px; }
+        #all-c{padding: 0px; background:#000;} 
+        .row-color-red{ color:Red;}  
+        .row-color-yellow{ color:Yellow;}
+        .row-color-green{ color:Green;}
+        .scroll-head{width:96%;margin:0 auto;}
+        .scroll-head span{ font-size:30px; font-weight:bold;color:#fff;}
+        #all-c .field-floor{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+        #all-c .field-sickbedno{width:25%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+        #all-c .field-oldmanname{width:25%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+        #all-c .field-room{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+        #all-c .field-calltime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis} 
+ 
+        ul,li{list-style:none; margin:0; padding:0;}
+        .scroll{ width:96%;overflow:hidden; margin:0 auto;}
+        .scroll li{ width:100%; height:50px; line-height:50px; overflow:hidden;}
+        .scroll li a{ font-size:25px;color:#333; text-decoration:none;}
+        .scroll li a:hover{text-decoration:none;}
+        .scroll li a span{font-size:25px;}
+    </style>
+</head>
+<body style="width:100%; height:100%;">
+    <div id="scroll-block"  >
+    <div style="height: 144px;">
+        <div id="head-block" >
+            <div id="head-c1">
+                即时服务信息 
+            </div>
+            <div  id="head-c2">
+                <span id="stat-time"></span>
+            </div>
+        </div>
+    </div> 
+    <div id="all-c" >
+        <div class="scroll-head">
+            <span class="field-floor">楼层</span><span class="field-room">房间</span>
+            <span class="field-oldmanname">老人</span><span class="field-sickbedno">床位</span>
+                <span class="field-calltime">时间</span>
+        </div>
+        <div id="all-scroll" class="scroll">
+            <ul class="list">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var maxid_all = 0;
+    var repeatTime = 20000;
+    var clearTime = 5 * 60 * 1000; //30秒  
+
+    $(function () {
+        
+        setTimeout(function () {
+            $('#stat-time').text((new Date()).pattern('yyyy-MM-dd HH:mm:ss'));
+            setTimeout(arguments.callee, 1000);
+        }, 0);
+
+        //即时服务
+        setTimeout(function () {
+            load_loadServicesForScroll();
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+
+        //滚动
+        setInterval('autoScroll(".scroll")', 3000);
+
+        //定时将id清零
+        setTimeout(function () {
+            maxid_all = 0;
+            setTimeout(arguments.callee, clearTime);
+        }, clearTime);
+    });
+
+
+    function load_loadServicesForScroll() {
+        _loadServicesForScroll(maxid_all, function (rows) {
+            var isAppend = true;
+            if (maxid_all == 0) {
+                isAppend = false;
+            }
+            //            alert($.toJSON(rows));
+            if (rows.length > 0) {
+                maxid_all = _.max(rows, function (o) {
+                    return o.Id;
+                }).Id;
+
+                var rowclass = "row-color-red"; //"row-color-blue","row-color-yellow","row-color-green","row-color-orange" 
+                var htmlstr = _.map(rows, function (o, index) {
+                    return '<li style="height:25px; line-height:25px;"><a><span class="field-floor ' + rowclass + '" >'
+                    + isempty(o.FloorNo, '&nbsp;') + '</span><span class="field-room ' + rowclass + '" >'
+                    + isempty(o.RoomNo, '&nbsp;') + '</span><span class="field-oldmanname ' + rowclass + '" >'
+                    + isempty(o.OldManNames, '&nbsp;') + '</span><span class="field-sickbedno ' + rowclass + '">'
+                    + isempty(o.SickBedNos, '&nbsp;') + '</span><span class="field-calltime ' + rowclass + '">'
+                    + (new Date(o.CheckInTime)).pattern("HH:mm:ss") + '</span></a></li>';
+                }).join("");
+
+                if (isAppend) {
+                    $('#all-scroll ul').append(htmlstr);
+                }
+                else {
+                    $('#all-scroll ul').html(htmlstr);
+                }
+            }
+            else {
+                if (!isAppend) {
+                    $('#all-scroll ul').html("");
+                }
+            }
+        });
+    }
+
+    function _loadServicesForScroll(id, callback) {
+        var timeSpanOfMinute = 5; //取当前时间5分钟内的数据 
+        getTo(baseCMSInvokeUrl + '/Oca/UnSaveCallService/LoadAgencyCallServicesForScroll/' + timeSpanOfMinute+','+maxid_all, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+
+                if (rows.length > 0) {
+                    callback.apply(this, [rows]);
+                }
+            }
+        });
+    }
+
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-50px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+</script>
+</body>
+</html>

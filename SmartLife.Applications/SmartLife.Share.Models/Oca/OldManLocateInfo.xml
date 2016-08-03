@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="OldManLocateInfo" type="SmartLife.Share.Models.Oca.OldManLocateInfo, SmartLife.Share.Models" />
+        <typeAlias alias="OldManLocateInfoPK" type="SmartLife.Share.Models.Oca.OldManLocateInfoPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="OldManLocateInfo_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_OldManLocateInfo(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLongitudeS" >HomeLongitudeS</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLatitudeS" >HomeLatitudeS</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >LocateTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLongitudeS" >LocateLongitudeS</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLatitudeS" >LocateLatitudeS</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLongitudeS" >#HomeLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLatitudeS" >#HomeLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >#LocateTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLongitudeS" >#LocateLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLatitudeS" >#LocateLatitudeS#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="OldManLocateInfo_Update" parameterClass="StringObjectDictionary" >
+            update Oca_OldManLocateInfo
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLongitudeS" >HomeLongitudeS=#HomeLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="HomeLatitudeS" >HomeLatitudeS=#HomeLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >LocateTime=#LocateTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLongitudeS" >LocateLongitudeS=#LocateLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateLatitudeS" >LocateLatitudeS=#LocateLatitudeS#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="OldManLocateInfo_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_OldManLocateInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLongitudeS" >HomeLongitudeS=#HomeLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLatitudeS" >HomeLatitudeS=#HomeLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLongitudeS" >LocateLongitudeS=#LocateLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLatitudeS" >LocateLatitudeS=#LocateLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="OldManLocateInfo_Load" parameterClass="OldManLocateInfoPK" resultClass="OldManLocateInfo" >
+            select Id,CheckInTime,OldManId,HomeLongitudeS,HomeLatitudeS,LocateTime,LocateLongitudeS,LocateLatitudeS from Oca_OldManLocateInfo
+            where Id=#Id#
+        </select>
+        <select id="OldManLocateInfo_List" parameterClass="StringObjectDictionary" resultClass="OldManLocateInfo" >
+            select Id,CheckInTime,OldManId,HomeLongitudeS,HomeLatitudeS,LocateTime,LocateLongitudeS,LocateLatitudeS from Oca_OldManLocateInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLongitudeS" >HomeLongitudeS=#HomeLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLatitudeS" >HomeLatitudeS=#HomeLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLongitudeS" >LocateLongitudeS=#LocateLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLatitudeS" >LocateLatitudeS=#LocateLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="OldManLocateInfo_ListByPage" parameterClass="StringObjectDictionary" resultClass="OldManLocateInfo" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,OldManId,HomeLongitudeS,HomeLatitudeS,LocateTime,LocateLongitudeS,LocateLatitudeS from Oca_OldManLocateInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLongitudeS" >HomeLongitudeS=#HomeLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HomeLatitudeS" >HomeLatitudeS=#HomeLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLongitudeS" >LocateLongitudeS=#LocateLongitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateLatitudeS" >LocateLatitudeS=#LocateLatitudeS#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

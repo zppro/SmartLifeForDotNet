@@ -1,0 +1,55 @@
+﻿<div id="dgc-Groups" class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',border:false" style="width: 210px; padding: 0 2px 0 2px;">
+        <table id="dg-Groups">
+        </table>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div class="easyui-panel" title="功能权限树" style="background: #fafafa;padding:5px 0 0 5px;" data-options="fit:true">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false" style="height: 30px;"> 
+                    <a id="savePermission" href="javascript:void(0)" class="easyui-linkbutton"  iconcls="icon-save">保存</a>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <ul id="tree-Permission" >
+                    </ul>
+                </div>
+            </div> 
+        </div> 
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#dg-Groups').datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            singleSelect: true,
+            url: ajaxData_InvokeUrl + '/Group',
+            method: 'GET',
+            onSelect: function (rowIndex, rowData) {
+                initTree('easyUITree', 'tree-Permission', {
+                    checkbox: true,
+                    width: 152,
+                    panelWidth: 200,
+                    panelHeight: 260
+                }, function (d) {
+                    getTreeData('00$02$01', null, $.toJSON({ GroupId: rowData.GroupId }), d);
+                }, null, function (treeObj) {
+                    $('#savePermission').unbind('click').bind('click', function () {
+                        var groupId = $('#dg-Groups').datagrid('getSelected').GroupId;
+                        var checked_nodes = _.map(treeObj.tree('getChecked'), function (o) { return o.id });
+                        var indeterminate_nodes = _.map(treeObj.tree('getChecked', 'indeterminate'), function (o) { return o.id });
+                        var postData = $.toJSON(_.union(checked_nodes, indeterminate_nodes));
+                        postTo(ajaxData_InvokeUrl + '/GroupPermission/' + groupId, postData).done(function (ret) {
+                            alertInfo('授权成功！');
+                        });
+                    });
+                });
+            },
+            columns: [[
+        { field: 'GroupId', title: '角色编号', width: 150, hidden: true },
+        { field: 'GroupName', title: '角色名称', width: 200 }
+    ]],
+            loader: easyuiLoader
+        }));
+    }); 
+</script>

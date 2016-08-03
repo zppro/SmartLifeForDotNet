@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="EPay_RechargeRecord" type="SmartLife.Share.Models.Oca.EPay_RechargeRecord, SmartLife.Share.Models" />
+        <typeAlias alias="EPay_RechargeRecordPK" type="SmartLife.Share.Models.Oca.EPay_RechargeRecordPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="EPay_RechargeRecord_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_EPay_RechargeRecord(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeType" >RechargeType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTitle" >RechargeTitle</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeId" >RechargeTypeId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeName" >RechargeTypeName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemBName" >ServeItemBName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectId" >ObjectId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectName" >ObjectName</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AccountNature" >AccountNature</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId1" >PeriodId1</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId2" >PeriodId2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FeeType" >FeeType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ChargeNum" >ChargeNum</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeType" >#RechargeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTitle" >#RechargeTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeId" >#RechargeTypeId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeName" >#RechargeTypeName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemBName" >#ServeItemBName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectId" >#ObjectId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectName" >#ObjectName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AccountNature" >#AccountNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId1" >#PeriodId1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId2" >#PeriodId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FeeType" >#FeeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ChargeNum" >#ChargeNum#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="EPay_RechargeRecord_Update" parameterClass="StringObjectDictionary" >
+            update Oca_EPay_RechargeRecord
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeType" >RechargeType=#RechargeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTitle" >RechargeTitle=#RechargeTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeId" >RechargeTypeId=#RechargeTypeId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RechargeTypeName" >RechargeTypeName=#RechargeTypeName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeItemBName" >ServeItemBName=#ServeItemBName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ObjectName" >ObjectName=#ObjectName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AccountNature" >AccountNature=#AccountNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId1" >PeriodId1=#PeriodId1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PeriodId2" >PeriodId2=#PeriodId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="FeeType" >FeeType=#FeeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ChargeNum" >ChargeNum=#ChargeNum#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="EPay_RechargeRecord_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_EPay_RechargeRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeType" >RechargeType=#RechargeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTitle" >RechargeTitle=#RechargeTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeId" >RechargeTypeId=#RechargeTypeId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeName" >RechargeTypeName=#RechargeTypeName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemBName" >ServeItemBName=#ServeItemBName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectName" >ObjectName=#ObjectName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AccountNature" >AccountNature=#AccountNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId1" >PeriodId1=#PeriodId1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId2" >PeriodId2=#PeriodId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FeeType" >FeeType=#FeeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ChargeNum" >ChargeNum=#ChargeNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="EPay_RechargeRecord_Load" parameterClass="EPay_RechargeRecordPK" resultClass="EPay_RechargeRecord" >
+            select Id,CheckInTime,OperatedBy,OperatedOn,DataSource,RechargeType,RechargeTitle,RechargeTypeId,RechargeTypeName,ServeItemB,ServeItemBName,ObjectId,ObjectName,AccountNature,PeriodId1,PeriodId2,FeeType,ChargeNum from Oca_EPay_RechargeRecord
+            where Id=#Id#
+        </select>
+        <select id="EPay_RechargeRecord_List" parameterClass="StringObjectDictionary" resultClass="EPay_RechargeRecord" >
+            select Id,CheckInTime,OperatedBy,OperatedOn,DataSource,RechargeType,RechargeTitle,RechargeTypeId,RechargeTypeName,ServeItemB,ServeItemBName,ObjectId,ObjectName,AccountNature,PeriodId1,PeriodId2,FeeType,ChargeNum from Oca_EPay_RechargeRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeType" >RechargeType=#RechargeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTitle" >RechargeTitle=#RechargeTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeId" >RechargeTypeId=#RechargeTypeId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeName" >RechargeTypeName=#RechargeTypeName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemBName" >ServeItemBName=#ServeItemBName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectName" >ObjectName=#ObjectName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AccountNature" >AccountNature=#AccountNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId1" >PeriodId1=#PeriodId1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId2" >PeriodId2=#PeriodId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FeeType" >FeeType=#FeeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ChargeNum" >ChargeNum=#ChargeNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="EPay_RechargeRecord_ListByPage" parameterClass="StringObjectDictionary" resultClass="EPay_RechargeRecord" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,OperatedBy,OperatedOn,DataSource,RechargeType,RechargeTitle,RechargeTypeId,RechargeTypeName,ServeItemB,ServeItemBName,ObjectId,ObjectName,AccountNature,PeriodId1,PeriodId2,FeeType,ChargeNum from Oca_EPay_RechargeRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeType" >RechargeType=#RechargeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTitle" >RechargeTitle=#RechargeTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeId" >RechargeTypeId=#RechargeTypeId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RechargeTypeName" >RechargeTypeName=#RechargeTypeName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemB" >ServeItemB=#ServeItemB#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeItemBName" >ServeItemBName=#ServeItemBName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectId" >ObjectId=#ObjectId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ObjectName" >ObjectName=#ObjectName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AccountNature" >AccountNature=#AccountNature#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId1" >PeriodId1=#PeriodId1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PeriodId2" >PeriodId2=#PeriodId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FeeType" >FeeType=#FeeType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ChargeNum" >ChargeNum=#ChargeNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

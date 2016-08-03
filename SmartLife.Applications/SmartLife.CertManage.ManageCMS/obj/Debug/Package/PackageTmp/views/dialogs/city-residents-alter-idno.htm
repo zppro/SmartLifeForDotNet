@@ -1,0 +1,474 @@
+﻿<style type="text/css">
+    .baseinfo tr td
+    {
+        height: 30px;
+    }
+    .baseinfo tr td input
+    {
+         color:#888;
+    }
+    input[type="text"]{ width:150px;}
+</style>
+<div id="city-residents-alter-idno">
+<form id="fm-city-residents-alte-idno" method="post" novalidate>
+    <div class="fitem">
+    <table style=" width:100%">
+        <tr>
+            <td style=" width:50%">
+                 <label >旧身份证号码：</label>
+                 <input id="NameAndIDNo"  required="true" missingmessage="旧身份证号码不能为空"/>
+                 <input name="IDNoOld" id="IDNoOld"   type="hidden"/>
+                 <label id="prompt" style=' color:Red;'>输入姓名或身份证号码</label>
+            </td>
+            <td style=" width:50%">
+                <label >新身份证号码：</label>
+                <input type="text"  name="IDNoNew" id="IDNoNew"  class="easyui-validatebox" onblur="getAgeBirthday(true)"  required="true" missingmessage="新身份证号码不能为空"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' style=" height:40px;">
+                <label >变&nbsp;&nbsp;更&nbsp;&nbsp;原&nbsp;&nbsp;因：</label>
+                <textarea id="Remark" style="width: 630px; " maxlength="400"></textarea>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div class="fitem">
+    <div id="tt" class="easyui-tabs" style="width: 760px; height: 400px;">
+        <div title="基本信息">
+            <input type="hidden" name="ResidentId" id="residentId" />
+            <table class="baseinfo">
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        姓 名:
+                    </td>
+                    <td>
+                        <!--<input id="NameAndIDNo" type="text" type="hidden" />-->
+                    <input  type="text" id="ResidentName" name="ResidentName" readonly="readonly" />
+                    </td>
+                    <td width="80"  style="text-align: center; height: 40px;">
+                        性 别:
+                    </td>
+                    <td>
+                    <input  type="text" id="Gender" name="GenderName" class="easyui-validatebox" readonly="readonly"/>
+                        <!--<input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+                        <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>
+                        <label style="margin-left: 75px;">
+                        </label>-->
+                    </td>
+                    <td rowspan="9">
+                        <table>
+                            <tr>
+                                <td style="text-align: center;">
+                                    <input type="image" id="img" alt="请上传本人照片" style="margin-left: 40px; height: 180px;
+                                        width: 150px;" />
+                                </td>
+                            </tr>
+                            <!--<tr>
+                                <td style="text-align: center;">
+                                    <input type="button" class="easyui-linkbutton" id="img_upload" value="上传照片" style=" margin-left:80px;" />
+                                </td>
+                            </tr>-->
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        身 份 证 :
+                    </td>
+                    <td>
+                        <input type="text"  id="IDNo" name="IDNo" class="easyui-validatebox" readonly="readonly"/>
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        业务身份:
+                    </td>
+                    <td>
+                        <input  type="text" id="ResidentBizIdName" name="ResidentBizIdName" class="easyui-validatebox"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        街道社区:
+                    </td>
+                    <td>
+                        <input type="text"  name="AreaId2" id="AreaId2"  readonly="readonly"/>
+                        <input type="hidden"  name="AreaIdStreet" id="AreaIdStreet" />
+                    </td>
+                    <td colspan="2">
+                        <input  type="hidden" name="AreaIdCommunity" id="AreaIdCommunity" />
+                        <input type="text" name="AreaId3" id="AreaId3" readonly="readonly" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        座 机:
+                    </td>
+                    <td>
+                        <input type="text"  name="Tel"  readonly="readonly"/>
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        手 机:
+                    </td>
+                    <td>
+                        <input type="text"  name="Mobile"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        籍 贯:
+                    </td>
+                    <td>
+                        <input type="hidden" id="NativePlace1" />
+                        <input type="text"   name="NativePlaceName" id="NativePlaceName"  readonly="readonly"/>
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        户口类型:
+                    </td>
+                    <td>
+                        <input type="text"  name="AccountTypeName" id="AccountTypeName"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center; height: 40px;">
+                        户 籍:
+                    </td>
+                    <td>
+                        <input type="hidden" id="HouseholdRegister1" />
+                        <input type="text"  name="HouseholdRegisterName" id="HouseholdRegisterName"  readonly="readonly"/>
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        详细地址:
+                    </td>
+                    <td>
+                        <input type="text"  name="PlaceOfHouseholdRegister" id="PlaceOfHouseholdRegister"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        现居地址:
+                    </td>
+                    <td>
+                        <input type="hidden" id="ResidentialOfHometown1" />
+                        <input type="text"  name="ResidentialOfHometownName" id="ResidentialOfHometownName"  readonly="readonly"/>
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        详细地址:
+                    </td>
+                    <td>
+                        <input type="text"  name="ResidentialAddress" id="ResidentialAddress"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" style="text-align: center;">
+                        邮 编:
+                    </td>
+                    <td>
+                        <input type="text"  name="PostCode" maxlength="6"  readonly="readonly"/>
+                    </td>
+                    <td width="100" style="text-align: center;">
+                        民 族:
+                    </td>
+                    <td>
+                        <input type="text"  name="NationName" id="NationName"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" style="text-align: center;">
+                        文化程度:
+                    </td>
+                    <td>
+                        <input type="text"  name="EducationLevelName" id="EducationLevelName"  readonly="readonly"/>
+                    </td>
+                    <td width="100" style="text-align: center;">
+                        婚姻状况:
+                    </td>
+                    <td>
+                        <input  type="text" name="MarriageName" id="MarriageName"  readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" style="text-align: center;">
+                        收入情况:
+                    </td>
+                    <td>
+                        <input  type="text" name="IncomeStatusName" id="IncomeStatusName" readonly="readonly" />
+                    </td>
+                    <td width="80" style="text-align: center;">
+                        住房情况:
+                    </td>
+                    <td>
+                        <input  type="text" name="HousingStatusName" id="HousingStatusName"  readonly="readonly"/>
+                    </td>
+                    <td rowspan="2">
+                        <table>
+                            <tr>
+                                <td width="80" style="text-align: center;">
+                                    出生日期:
+                                </td>
+                                <td>
+                                    <input  type="text" id="Birthday" name="Birthday" readonly="readonly">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="80" style="text-align: center;">
+                                    年 龄:
+                                </td>
+                                <td>
+                                    <input  type="text" id="age" name="age" class="easyui-validatebox"  readonly="readonly" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" style="text-align: center;">
+                        备 注:
+                    </td>
+                    <td colspan="3">
+                        <textarea name="Remark" style="width: 400px; color:#888;" maxlength="400" readonly="readonly"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--<div title="健康信息" closable="false" style="overflow: auto; padding: 20px;">
+            tab2
+        </div>-->
+    </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var datas;
+
+//        alert(3);
+//        document.getElementById('Gender').focus();
+//        document.getElementById("Gender").focus();
+//        alert(3);
+     //输入姓名 匹配身份证号  选择老人  获得老人的基本信息
+        $('#NameAndIDNo').combogrid({
+            delay: 500,
+            width: 150,
+            panelWidth: 260,
+            panelHeight: 240,
+            required: true,
+            mode: 'local',
+            data: datas,
+            idField: 'IDNo',
+            textField: 'IDNo',
+            //过滤
+            onChange: function (newValue, oldValue) {
+                var queryParams = {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    page: '1',
+                    rows: '20',
+                    fuzzyFieldOP: 'or',
+                    filterFields: [
+                            { key: 'Status', value: 1 },
+                            { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) }
+                            ],
+                    fuzzyFields: []
+                };
+                queryParams.fuzzyFields = [
+                                                { key: 'IDNo', value: $.trim(newValue) },
+                                                { key: 'ResidentName', value: $.trim(newValue) },
+                                                { key: 'InputCode1', value: $.trim(newValue) },
+                                                { key: 'InputCode2', value: $.trim(newValue) }
+                                              ];
+                if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#NameAndIDNo').combobox("getText")))) {
+                    postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/ResidentBaseInfo3/' + baseInfoNode, $.toJSON(queryParams), function (ret) {
+                        var rows = _.map(ret.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+                        $('#NameAndIDNo').combogrid("grid").datagrid("loadData", rows);
+                    });
+                }
+            },
+            filter: function (q, row) {
+                return row["ResidentName"].indexOf(q) != -1 || row["IDNo"].indexOf(q) != -1;
+            },
+            columns: [[
+                                        { field: 'ResidentName', title: '姓名', width: 50, sortable: true },
+                                        { field: 'Gender', title: '性别', width: 30, sortable: true, formatter: easyuigrid_genderFormatter },
+                                        { field: 'IDNo', title: '身份证号', width: 150, sortable: true, formatter: easyuigrid_IDNo }
+                                    ]],
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#NameAndIDNo').combo('getText') == "") {
+                    $('#fm-city-residents-alte-idno').form('clear');
+                    $('#IDNoOld').val(null);
+                    $('#prompt').show();
+                }
+                else {
+                    $('#prompt').hide();
+                }
+            },
+            //选择一个老人之后   把老人的基本信息都填入表单
+            onCheck: function (index, record) {
+                $('#fm-city-residents-alte-idno').form('load', record);
+                $('#Gender').val(record.Gender == "F" ? "女" : (record.Gender == "M" ? "男" : "--"));
+                $('#AreaId2').val(setAreas(record.AreaId2));
+                $('#AreaId3').val(setAreas(record.AreaId3));
+                $('#IDNoOld').val(easyuigrid_IDNo(record.IDNo, null, null));
+                $('#IDNo').val(easyuigrid_IDNo(record.IDNo, null, null)); 
+                getAgeBirthday(false);
+            }
+        });
+    }
+
+
+    function setAreas(areaid) {
+        var areas;
+        var areaname;
+        if (isnull(areaid, '') != '') {
+            getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+                areas = result;
+            }, { async: false });
+            var area = _.find(areas, function (o) { if (o.AreaId.toLowerCase() == areaid.toLowerCase()) { return o.AreaName } });
+            areaname = area.AreaName;
+        }
+        else {
+            areaname = null;
+        }
+        return areaname
+    }
+
+    function checkIDNo() {
+        var newIDNo = $('#IDNoNew').val().NoSpace();
+        var residentId = $("#residentId").val();
+        var message = 'ok';
+        var result = true;
+        if (isnull(newIDNo, '') != '' && isnull(residentId, '') != '') {
+            message = ResidentsIDNoDuplicates(newIDNo, residentId);
+        }
+        if (message != "ok") {//新增和修改之前查看身份证号是否已存在
+            alertError("“" + message + "”在使用此身份证号码");
+            result = false;
+        } else {
+            if ((newIDNo.length != 15) && (newIDNo.length != 18)) {//新增和修改之前查看身份证号位数是否正确
+                strReturn = "输入的身份证号位数错误";
+                alertError(strReturn);
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    function ResidentsIDNoDuplicates(IDNo, residentId) {
+        var r;
+        var res = "ok";
+        var parms = new Object();
+        parms.IDNo = IDNo;
+        parms.Status = 0;
+        var json = JSON.stringify(parms);
+
+        getTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/ResidentsIDNoDuplicates', { parms: json }, function (result) {
+            r = _.map(result.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+        }, { async: false }, { ConnectId: baseInfoNode });
+        var oldmans = [];
+        for (var i = 0; i < r.length; i++) {
+            if (r[i].ResidentId != residentId) {
+                oldmans.push(r[i].ResidentName);
+            }
+        }
+        if (oldmans.length > 0) {
+            res = oldmans.join(',');
+        }
+        return res;
+    }
+
+    //验证身份证号并获取出生日期
+    function getAgeBirthday(f) {
+        var tmpStr = "";
+        var idDate = "";
+        var tmpInt = 0;
+        var strReturn = "";
+        var iIdNo;
+        $("#age").val("");
+        $("#Birthday").val("");
+        if (!f) {
+            iIdNo = $("#IDNo").val();
+        }
+        else {
+            iIdNo = $("#IDNoNew").val().NoSpace();
+        }
+        if (iIdNo != "") {
+            if ((iIdNo.length != 15) && (iIdNo.length != 18)) {
+                strReturn = "输入的身份证号位数错误";
+                alertError(strReturn);
+            } else {
+                if (iIdNo.length == 15) {
+                    tmpStr = iIdNo.substring(6, 12);
+                    tmpStr = "19" + tmpStr;
+                    tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                }
+                else {
+                    tmpStr = iIdNo.substring(6, 14);
+                    tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                }
+                $("#Birthday").val(tmpStr);
+                //获取年龄 
+                var myDate = new Date();
+                var month = myDate.getMonth() + 1;
+                var day = myDate.getDate();
+                var age = myDate.getFullYear() - iIdNo.substring(6, 10);  //- 1;
+                if (iIdNo.substring(10, 12) < month || iIdNo.substring(10, 12) == month && iIdNo.substring(12, 14) <= day) {
+                    age++;
+                }
+                if (age > 0)
+                    $("#age").val(age);
+                else
+                    $("#age").val("");
+            }
+        }
+    }
+    //去掉所有空格
+    String.prototype.NoSpace = function () {
+        return this.replace(/\s+/g, "");
+    }
+
+    function dialogBeforeSubmit() {
+        var idNoOld = $('#IDNoOld').val().NoSpace();
+        var idNoNew = $('#IDNoNew').val().NoSpace();
+        var result = true;
+        if (isnull(idNoOld, '') != '') {
+            if (isnull(idNoOld, '') != isnull(idNoNew, '')) {
+                if (checkIDNo()) {
+                    result = true;
+                }
+                else {
+                    result = false;
+                }
+            }
+            else {
+                alertError('新的身份证号码与旧的相同');
+                result = false;
+            }
+        }
+        else {
+            alertError('旧身份证号码为空');
+            result = false;
+        }
+        return result;
+    }
+
+
+    function dialogClose(dialogId) {
+        var idNoOld = $('#IDNoOld').val().NoSpace();
+        var idNoNew = $('#IDNoNew').val().NoSpace();
+        var residentId = $('#residentId').val();
+        var remark = $('#Remark').val();
+        var dialogData = {
+            RequisitionId: window.contants.guidAutoGenerate,
+            IDNoOld: idNoOld,
+            IDNoNew: idNoNew,
+            ResidentId: residentId,
+            Remark: remark,
+            DoStatus:0
+        };
+        return dialogData;
+    }
+</script>

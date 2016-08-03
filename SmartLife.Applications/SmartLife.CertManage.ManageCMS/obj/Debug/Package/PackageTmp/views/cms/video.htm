@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浙江蓝谷智慧养老</title>
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script> 
+    <script type="text/javascript" src="../../script/cms.js"></script> 
+    <script type="text/javascript">
+        $(function () {
+            loadfiles([
+                { type: "css", url: "../../css/cms/" + appDeployArea.id + ".css" }
+                ], function () { }
+            );
+
+            loadHeadFoot();
+            var filePath = getQueryString("f");
+            var title = getQueryString("title");
+            var author = getQueryString("author");
+            var source = getQueryString("source");
+            var publishDate = getQueryString("publishdate");
+            if (filePath) {
+                createVideoBlock(filePath, title, author, source, publishDate);
+            }
+            else {
+                var articleId, columnName;
+
+                articleId = getQueryString("aid");
+                columnName = getQueryString("cname");
+                //alert(articleId+":"+columnName);
+                if (columnName) {
+                    createlistTitleHtml(columnName);
+                }
+                if (articleId) {
+                    getTo(ServiceUrl + "LoadVideoArticle/" + articleId, null, function (result) {
+                        createArticleHtml(result.instance);
+                    }, { async: false }, { ConnectId: "SmartLife1203" });
+                }
+            }
+        });
+
+        function createlistTitleHtml(columnName) {
+            var html = $(".listTitleDiv").html();
+            html = $.trim(html); //当</div>在下一行时内容末尾会有空格
+            html += "<span>|</span>";
+            html += columnName;
+            $(".listTitleDiv").html(html);
+        }
+
+        function createArticleHtml(article) {
+            createVideoBlock(article.Attachments[0].SaveName, article.Title, article.Author, article.Source, ndateFormatter(article.PublishDate, "yyyy-MM-dd"));
+        }
+        function createVideoBlock(filePath, title, author, source, publishDate) {
+            $(".artTitleDiv").html(isnull(title, '未知'));
+            //文章信息
+            var articleInfo = "<label>作者:" + isnull(author, '匿名') + "</label>";
+            articleInfo += "<label>来源:" + isnull(source, '互联网') + "</label>";
+            articleInfo += "<label>发布日期:" + isnull(publishDate, '未知') + "</label>";
+            $(".artInfoDiv").html(articleInfo);
+            //内容
+            if (filePath) {
+                var html = createVideoHtml(filePath);
+                $(".artContentDiv").html(html);
+            }
+        }
+
+        function createVideoHtml(filePath) {
+            var _html = null; 
+            if (filePath) {
+                _html = [];
+                var suffix = filePath.substr(filePath.lastIndexOf('.') + 1, filePath.length - filePath.lastIndexOf('.')).toLowerCase();
+
+                if (suffix == "mpg") {
+                    _html.push('<object classid="clsid:05589FA1-C356-11CE-BF01-00AA0055595A" id="ActiveMovie1" width="800" height="600">');
+                    _html.push('<param name="Appearance" value="0">');
+                    _html.push('<param name="AutoStart" value="-1">');
+                    _html.push('<param name="AllowChangeDisplayMode" value="-1">');
+                    _html.push('<param name="AllowHideDisplay" value="0">');
+                    _html.push('<param name="AllowHideControls" value="-1">');
+                    _html.push('<param name="AutoRewind" value="-1">');
+                    _html.push('<param name="Balance" value="0">');
+                    _html.push('<param name="CurrentPosition" value="0">');
+                    _html.push('<param name="DisplayBackColor" value="0">');
+                    _html.push('<param name="DisplayForeColor" value="16777215">');
+                    _html.push('<param name="DisplayMode" value="0">');
+                    _html.push('<param name="Enabled" value="-1">');
+                    _html.push('<param name="EnableContextMenu" value="-1">');
+                    _html.push('<param name="EnablePositionControls" value="-1">');
+                    _html.push('<param name="EnableSelectionControls" value="0">');
+                    _html.push('<param name="EnableTracker" value="-1">');
+                    _html.push('<param name="Filename" value="' + window.baseContentUrl + "/" + filePath + '" valuetype="ref">');
+                    _html.push('<param name="FullScreenMode" value="0">');
+                    _html.push('<param name="MovieWindowSize" value="0">');
+                    _html.push('<param name="PlayCount" value="1">');
+                    _html.push('<param name="Rate" value="1">');
+                    _html.push('<param name="SelectionStart" value="-1">');
+                    _html.push('<param name="SelectionEnd" value="-1">');
+                    _html.push('<param name="ShowControls" value="-1">');
+                    _html.push('<param name="ShowDisplay" value="0">');
+                    _html.push('<param name="ShowPositionControls" value="0">');
+                    _html.push('<param name="ShowTracker" value="-1">');
+                    _html.push('<param name="Volume" value="-480">');
+                    _html.push('</object>');
+                }
+                else {
+                    _html.push("<object width=\"800\" height=\"600\" align=\"baseline\" id=\"MediaPlayer1\" classid=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\"" +
+                " codeBase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,5,715\" type=\"application/x-oleobject\"" +
+                " standby=\"Loading Microsoft Windows Media Player components...\" border=\"0\">");
+                    _html.push("<param name='invokeURLs' value='0'/>");
+                    _html.push("<param name='FileName' value='" + window.baseContentUrl + "/" + filePath + "' />"); //文件路径
+                    _html.push("<param name='ShowControls' value='1'/>");
+                    _html.push("<param name='ShowPositionControls' value='0'/>");
+                    _html.push("<param name='ShowAudioControls' value='1'/>");
+                    _html.push("<param name='ShowTracker' value='1'/>");
+                    _html.push("<param name='ShowDisplay' value='0'/>");
+                    _html.push("<param name='ShowStatusBar' value='1'/>");
+                    _html.push("<param name='AutoSize' value='0'/>");
+                    _html.push("<param name='ShowGotoBar' value='0'/>");
+                    _html.push("<param name='ShowCaptioning' value='0'/>");
+                    _html.push("<param name='AutoStart' value='1'/>");
+                    _html.push("<param name='PlayCount' value='0'/>");
+                    _html.push("<param name='AnimationAtStart' value='0'/>");
+                    _html.push("<param name='TransparentAtStart' value='0'/>");
+                    _html.push("<param name='AllowScan' value='0'/>");
+                    _html.push("<param name='EnableContextMenu' value='1'/>");
+                    _html.push("<param name='ClickToPlay' value='0'/>");
+                    _html.push("<param name='DefaultFrame' value='datawindow'/>");
+                    //IE对象
+                    _html.push("<embed src='" + window.baseContentUrl + "/" + filePath + "'"); //文件路径
+                    _html.push(" align='baseline' border='0' width='460' height='68'"
+                + " type='application/x-mplayer2' pluginspage='http://www.microsoft.com/isapi/redir.dll?prd=windows&amp;sbp=mediaplayer&amp;ar=media&amp;sba=plugin&amp;'"
+                + " name='MediaPlayer' showcontrols='1' showpositioncontrols='0' showaudiocontrols='1' showtracker='1' showdisplay='0'"
+                + " showstatusbar='1' autosize='1' showgotobar='0' showcaptioning='0' autostart='1' autorewind='0' animationatstart='0'"
+                + " transparentatstart='0' allowscan='1' enablecontextmenu='1' clicktoplay='0' defaultframe='datawindow' invokeurls='0'>");
+                    _html.push("</embed>");
+                    /*********/
+                    _html.push("</object>");
+
+                }
+
+                _html = _html.join("");
+            }
+            return _html;
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="header"></div>
+<!--body-->
+<div class="contain">
+  <div class="contain_artList">
+    <div class="listTitleDiv"><a href="index.htm">首页</a></div>
+    <div class="artDiv">
+        <div class="artTitleDiv"></div>
+        <div class="artInfoDiv"></div>
+        <div class="artContentDiv"></div>
+    </div>
+  </div>
+</div>
+<!--foot-->
+<div class="footer"></div>
+</body>
+</html>

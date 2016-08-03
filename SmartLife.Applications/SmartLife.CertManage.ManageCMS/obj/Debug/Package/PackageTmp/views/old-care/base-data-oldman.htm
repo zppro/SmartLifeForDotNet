@@ -1,0 +1,97 @@
+﻿<div id="toolbar-B181001">
+    <!--<a id="uploadBaseDataOfOldManBase" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"
+         >上传老人基本资料</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"
+        onclick="uploadBaseDataOfOldManBase('health','老人健康资料')">上传老人健康资料</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"
+        onclick="uploadBaseDataOfOldManBase('family','老人家庭资料')">上传老人家庭资料</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true"
+        onclick="uploadBaseDataOfOldManBase('device','老人绑定设备资料')">上传老人绑定设备资料</a>-->
+</div>
+<table id="dg-B181001" >
+</table>
+<div id="dlg-B181001" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B181001"  >
+    <div class="ftitle"></div>
+    <form id="fm-B181001" method="post" novalidate> 
+    <input type="hidden" name="infoType" id="infoType" /> 
+    <div class="fitem">
+        <label>
+            导出模板:</label>
+        <a  target="_blank" id="aTemplate"  class="easyui-linkbutton"  >点击下载excel模板</a> 
+    </div> 
+    <div class="fitem">
+            <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-B181001">
+     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '老人资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    }
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100, align: 'center' },
+                { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#uploadBaseDataOfOldManBase').bind('click', function () {
+                uploadBaseData("老人基本资料", models[currentMenuCode].defaultModel);
+            });
+        });
+
+
+    }); 
+</script>

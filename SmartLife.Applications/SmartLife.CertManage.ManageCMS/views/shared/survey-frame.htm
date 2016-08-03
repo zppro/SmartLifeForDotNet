@@ -1,0 +1,108 @@
+﻿<div id="div_frame" style=" width:100%; height:100%; overflow:hidden;">
+<table style="width:100%; height:100%;">
+    <tr>
+        <td style=" width:50%; height:100%">
+            <div id="div_info" style="overflow:auto; height:100%; width:100%;">
+            </div>
+        </td>  
+        <td style="width:50%; height:100%">
+            <div id="div_survey" style="width:100%; height:100%; overflow:hidden;">
+                <div id="div_rightTool" style="height:6%; background-color:#61bff3">
+                    <select id="sel_survey" onchange="surveyDateLoad(this.value);">
+                        <option  value="">选择问卷</option>
+                    </select>
+                </div>
+                <div id="div_surveyTitle" style="height:10%; background-color:Green"></div>
+                <div id="div_surveyBody" style="background-color:Yellow; overflow:auto">
+                    <form id="form_survey" ></form>
+                </div>
+                <div id="div_surveyFoot" style="background-color:Black"></div>
+            </div>
+        </td>
+    </tr>
+</table>
+    
+</div>
+
+ <script type="text/javascript">
+     var str_html = "";
+     function dialogOpen(dialogId, dialogData) {
+         $("#div_info").width($("#div_frame").width() * 0.5); //宽度设100%时,加载的页面会撑开(暂用此法解决)
+         getTo(baseCMSInvokeUrl + "/Pub/SurveyService/QuerySurvey", { parms: $.toJSON({ Status: 1 }) }, function (result) {
+             $.each(result.rows, function (i, o) {
+                 $("#sel_survey").append("<option value='" + o.SurveyId + "'>" + o.SurveyTitle + "</option>");
+             });
+         }, { async: false });
+     }
+
+     function dialogBeforeSubmit() {
+         return true;
+     }
+
+
+     function dialogClose(dialogId) {
+         return "";
+
+     }
+
+     function surveyDateLoad(id) {
+         if (null == id || "" == id) return false;
+         var str_param=$.toJSON({ SurveyId: id,OrderByClause:"OrderNo" });
+         getAll([baseCMSInvokeUrl + "/Pub/SurveyService/" + id,
+            baseCMSInvokeUrl + "/Pub/SurveyService/QuerySurveyItem?parms=" + str_param,
+            baseCMSInvokeUrl + "/Pub/SurveyService/QuerySurveyBlockMix?parms=" + str_param
+         ], function (survey, surveyItems, surveyBlocks) {
+             //alert($.toJSON(surveyItems.rows));
+             var _surveyBlocksrows = _.map(surveyBlocks.rows, function (o) {
+                 return xml2json.parser(o, 'StringObjectDictionary');
+             });
+
+             /***生成HTML***/
+             CreateSurveyTitleHtml(survey.instance.SurveyTitle);//标题 
+             CreateSurveyItemHtml(surveyItems.rows); //内容
+             CreateSurveyBlockHtml(_surveyBlocksrows); //查看块
+         }, { async: false });
+     }
+     //标题
+     function CreateSurveyTitleHtml(survey) {
+         if (null != survey && typeof ("undefined") != survey) {
+             $("#div_surveyTitle").html(survey);
+         }
+     }
+     //调查项内容 
+     function CreateSurveyItemHtml(surveyItems) {
+         var strHtml = [];
+         $.each(surveyItems, function (i, t) {
+             strHtml.push('<span>');
+             strHtml.push('<label>' + t.SurveyItemName + '</label><br/>');
+             if (t.SurveyItemType == "00001") { //文本框
+                 strHtml.push('<input type="text" id=survey"'+i+'_tb" />');
+             }
+             strHtml.push('</span>');
+         });
+         if (strHtml.length > 0) {
+             $("#form_survey").html(strHtml.join(''));
+         }
+     }
+     //查看块
+     function CreateSurveyBlockHtml(surveyBlocks) {
+         var strHtml = [];
+         strHtml.push('<div id="div_BlockInfo" class="easyui-tabs">');
+         $.each(surveyBlocks, function (i, t) {
+             strHtml.push('<div id="tab_' + i + '" title="' + t.ItemName + '" href="' + t.TabUrl + '" style="padding: 10px;">');
+             strHtml.push('</div>');
+         });
+         strHtml.push('</div>');
+         if (strHtml.length > 0) {
+             $("#div_info").html(strHtml.join(''));
+             $('#div_BlockInfo').tabs({ border: false,
+                 onSelect: function (title,index) {
+                 }
+             });
+         }
+     }
+
+     function Closed(dialogId) {
+         $("#" + dialogId).dialog('close');
+     }
+</script>

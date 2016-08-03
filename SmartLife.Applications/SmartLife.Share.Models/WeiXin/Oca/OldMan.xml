@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="OldMan" type="SmartLife.Share.Models.WeiXin.Oca.OldMan, SmartLife.Share.Models" />
+    <typeAlias alias="OldManPK" type="SmartLife.Share.Models.WeiXin.Oca.OldManPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="OldMan_Create" parameterClass="StringObjectDictionary">
+      insert into Oca_OldMan(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="OldManId">OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Name">Name</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo">IDNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender">Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UrlHead">UrlHead</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime">CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status">Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile">Mobile</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark">Remark</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Name" >#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UrlHead" >#UrlHead#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+
+    <update id="OldMan_Update" parameterClass="StringObjectDictionary" >
+      update Oca_OldMan 
+      set
+      <dynamic prepend=" ">
+      <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="Name" >Name=#Name#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="UrlHead" >UrlHead=#UrlHead#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+    </dynamic>
+      where OldManId=#OldManId#
+    </update>
+
+    <delete id="OldMan_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_OldMan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Name" >Name=#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UrlHead" >UrlHead=#UrlHead#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      </dynamic>
+    </delete>
+
+    <select id="OldMan_Load" parameterClass="OldManPK" resultClass="OldMan" >
+      select OldManId,Name,IDNo,Gender,UrlHead,CheckInTime,Status,Mobile,Remark from Oca_OldMan
+      where OldManId=#OldManId#
+    </select>
+
+    <select id="OldMan_List" parameterClass="StringObjectDictionary" resultClass="OldMan" >
+      select OldManId,Name,IDNo,Gender,UrlHead,CheckInTime,Status,Mobile,Remark from Oca_OldMan
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Name" >Name=#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UrlHead" >UrlHead=#UrlHead#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

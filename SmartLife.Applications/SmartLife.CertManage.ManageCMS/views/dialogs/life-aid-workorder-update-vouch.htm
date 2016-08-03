@@ -1,0 +1,87 @@
+﻿<div id="workorder-update-vouch" class="easyui-dialog" style="width: 550px; height: 220px;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-workorder-update-vouch">
+     <div class="ftitle"></div>
+    <form id="fm-workorder-update-vouch" method="post" novalidate>
+    <input type="hidden" name="WorkOrderId" id="workorderid-workorder-update-vouch" />
+    <div class="fitem">
+        <label>
+            　服务人姓名:</label>
+        <input name="ServeManName" type="text" class="easyui-validatebox" data-options="required:true"  missingMessage="服务人员姓名不能为空" />
+        <label>
+            服务结束时间:</label>
+        <input name="ServeEndTime" type="text" class="Wdate easyui-validatebox" data-options="required:true"  missingMessage="服务结束日期不能为空" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+    </div>
+    <div class="fitem">
+        <label>
+            政府购买服务:</label>
+        <input id="ServeItemB" name="ServeItemB" class="easyui-validatebox"  missingMessage="坐席队列不能为空" />
+         <label>
+            服务最终结果:</label>
+        <input id="ServeFinalResult" name="ServeFinalResult" class="easyui-validatebox"  missingMessage="坐席队列不能为空" />
+    </div> 
+    <div class="fitem">
+        <label>
+            最终结果备注:</label>
+        <textarea name="ServeFinalResultRemark" style="width: 400px;" rows="3"></textarea>
+    </div> 
+    </form>
+</div>
+<div id="btn-workorder-update-vouch"> 
+    <a id="btnSubmitToVouchWorkOrder" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doSubmitVouchWorkOrder()">
+        提交</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="doCancelVouchWorkOrder()">关闭</a>
+</div>
+<script type="text/javascript">
+    var needCloseParent = false;
+    $(function () {
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11016', ajaxData_InvokeUrl + '/GetDictionaryItem/11013'], function (serveFinalResults, serveItemBs) {
+            $('#ServeFinalResult').combobox({
+                width: 152,
+                panelHeight: 100,
+                required: true,
+                data: serveFinalResults,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+
+            $('#ServeItemB').combobox({
+                width: 152,
+                panelHeight: 100,
+                required: true,
+                data: _.filter(serveItemBs, function (o) {
+                    return o.ItemId.substring(0, 2) == '01';
+                }),
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+        });
+
+    });
+    function doSubmitVouchWorkOrder() {
+        alertConfirm('确定要提交工单信息？', function (ret) {
+            if (ret == true) {
+                if ($('#fm-workorder-update-vouch').form('validate')) {
+                    var formData = $('#fm-workorder-update-vouch').serializeObject();
+                    postTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/SuperviseWorkOrderOfVouchBySeat', $.toJSON(formData), function (ret) {
+                        alertInfo('工单已提交成功', function () {
+                            needCloseParent = true;
+                            closeVouchWorkOrderDialog();
+                        });
+                    });
+                }
+            }
+        });
+    }
+    function doCancelVouchWorkOrder() {
+        needCloseParent = false;
+        closeVouchWorkOrderDialog();
+    } 
+    function loadVouchWorkOrderInfo(workOrderId) {
+        $('#workorderid-workorder-update-vouch').val(workOrderId);
+    }
+    function closeVouchWorkOrderDialog() {
+        $('#workorder-update-vouch').dialog('close'); 
+    }
+</script>

@@ -1,0 +1,306 @@
+﻿/* reset.css*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+/* Eric Meyer's Reset Stylesheet: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ */
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+font-weight: inherit;
+font-style: inherit;
+font-size: 12px;
+font-family:Arial,'宋体';
+}
+
+fieldset 
+{
+    margin: 1em 0;
+    padding: 0.5em;
+    border-top: 1px solid #CCC;
+}
+hr{ height:1px; width:92%; margin: 5 0 5 0}
+
+
+
+/* remember to define focus styles! */
+:focus {
+outline: 0;
+} 
+ol, ul {
+list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+border-collapse: separate;
+border-spacing: 0;
+}
+caption, th, td {
+text-align: left;
+font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+content: "";
+}
+blockquote, q {
+quotes: "" "";
+}
+
+.clear {
+clear: both;
+}
+				
+.align-left {
+float: left;
+}
+				
+.align-right {
+float: right;
+}
+
+/************** site.css******************/
+html {
+font-size: 100%;
+height: 100%; 
+}
+
+body 
+{
+/*line-height: 1;*/
+font-family: Arial, Helvetica, sans-serif;
+color: #555;
+font-family:'宋体','微软雅黑', Verdana, Arial, sans-serif;
+font-size: 12px;
+overflow:hidden; 
+
+/*滚动条条棒的颜色*/
+/* scrollbar-face-color: #686868;*/
+
+/*滚动条高光的颜色*/
+/* scrollbar-highlight-color: #767676;*/
+
+/*滚动条3D的颜色*/
+/* scrollbar-3dlight-color: #0B0E2F;*/
+
+/*滚动条深阴影的颜色*/
+/* scrollbar-darkshadow-color: #0B0E2F;*/
+
+/*滚动条阴影的颜色*/
+/* scrollbar-shadow-color: #686868;*/
+
+/*滚动条箭头的颜色
+*/
+/* scrollbar-arrow-color: #515151;*/
+
+/*滚动条背景的颜色*/
+/* scrollbar-track-color: #313131;*/
+}
+
+#body-wrapper {
+/* background: url('../images/index/bg-radial-gradient.gif') fixed 235px top no-repeat;*/
+}    
+
+
+h1, h2, h3, h4, h5, h6 {
+font-family: Helvetica, Arial, sans-serif;
+color: #222;
+font-weight: bold;
+}
+
+h1{ font-family: Calibri, Helvetica, Arial, sans-serif; font-size: 31px; font-weight: bold; color: #fff; 
+	position: absolute; top: -1000px;  /* Remove this line and delete the logo (in the HTML) if you don't want an image as a logo */
+}
+				
+h2{ font-size: 26px; padding: 0 0 10px 0; }
+h3{ font-size: 17px; padding: 0 0 10px 0; }
+h4{ font-size: 16px; padding: 0 0 5px 0; }
+h5{ font-size: 14px; padding: 0 0 5px 0; }
+h6{ font-size: 12px; padding: 0 0 5px 0; }
+
+
+a{ color: blue; text-decoration: none; }
+/*a:hover{ color: blue; }
+a:active{ color: #777; }*/
+a:focus{ outline: 1px; }
+
+strong{ font-weight: bold; color: #333; }
+small{ font-size: 0.85em; }
+pre{ font-family: monospace; }
+p {
+padding: 5px 0 10px 0;
+line-height: 1.6em;
+}
+
+/**invald.css***/
+.button,
+#main-content table tfoot td .bulk-actions select,
+.pagination a.number,
+.form input.text-input,
+.form textarea,
+.form .wysiwyg,
+.form select,
+.search-form input.text-input,
+.search-form textarea,
+.search-form .wysiwyg,
+.search-form select,
+.dp-popup {
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+}
+
+.button:hover {
+text-decoration: underline;
+}
+                
+				
+a.remove-link {
+color: #bb0000;
+}
+
+a.remove-link:hover {
+color: #000;
+}
+.selectbutton{
+padding:0px !important;
+background:url(../images/public/buttonSubmit.png) no-repeat!important;
+width:62px;
+height:27px;
+line-height:27px;
+border-radius:0px!important;
+color:#000!important;
+text-align:center;
+border:none !important;
+}	
+.content-box,
+.content-box-header,
+ul.content-box-tabs li a.current,
+.shortcut-button,
+.notification {
+
+}
+.content-box-header {
+-moz-border-radius-bottomleft: 0;
+-moz-border-radius-bottomright: 0;
+-webkit-border-bottom-left-radius: 0;
+-webkit-border-bottom-right-radius: 0;
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+}
+				
+.closed-box .content-box-header {
+-moz-border-radius-bottomleft: 6px;
+-moz-border-radius-bottomright: 6px;
+-webkit-border-bottom-left-radius: 6px;
+-webkit-border-bottom-right-radius: 6px;
+border-bottom-left-radius: 6px;
+border-bottom-right-radius: 6px;
+}
+ul.content-box-tabs li a.current {
+-moz-border-radius-bottomleft: 0;
+-moz-border-radius-bottomright: 0;
+-webkit-border-bottom-left-radius: 0;
+-webkit-border-bottom-right-radius: 0;
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+}   
+.placeholder { color: #ccc; }
+
+.enter-to-tab{}/**支持回车切换**/
+
+#loading
+{
+    z-index:999999;
+    position:absolute;
+    top:45%;
+    left:50%; 
+    width:80px;
+    height:64px;
+    background:transparent;
+    color:#1b1b1b;
+    border-radius:4px;
+    filter: alpha(opacity=70);
+    -moz-opacity:0.7;
+    opacity: 0.7;
+    display:none;
+    text-align:center;
+}
+#loading #loadingImage
+{
+    width: 32px;
+    height:32px;
+    background: url('../images/public/loading.gif') top left no-repeat;
+    margin: 0 auto;
+    margin-top:16px;
+    margin-bottom:5px;
+}
+
+/**dark-hive theme change**/
+.ui-jqgrid .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  { border: 1px solid #0b93d5; background: #003147 url(dark-hive/images/ui-bg_highlight-soft_33_003147_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; }
+
+.toolbar
+{
+    padding:1px 0px;
+    height:36px;
+}
+.toolbar button{
+	margin: 4px 4px;  
+}
+.toolbar div.split
+{
+    width:3px;
+    height:36px;
+    background: url('../images/public/toolbar-split.png') top center no-repeat;
+    display:inline-block;
+    vertical-align: top;
+    padding:0; 
+}
+input.autogen,input.disabled
+{
+   font-style:italic;
+}
+
+.tree-container
+{
+    float:left;position: relative; margin: 0em;padding: 0em; overflow-x: hidden; overflow-y: hidden; border-left: 0px none !important; border-top : 0px none !important; border-right : 0px none !important;
+}
+.tree-container .tree-header
+{
+    color:White;
+    font-size:12px;
+    height:100%;
+    line-height:1.0;
+}
+.tree-container .tree-header td span
+{
+    cursor:pointer;
+}
+.tree-container .tree-search input
+{
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    float:left;
+} 
+.checks{vertical-align: -2px;_vertical-align: -1px;margin-right: 2px;}
+
+.processHistory_span
+{
+    margin:5px;
+    border:solid 1px #708090; 
+    width:150px; 
+    overflow:hidden;
+    background-color: White;
+    float:left;
+    padding:3px;
+}
+.processHistory_span label
+{
+     font-size:12px;
+}

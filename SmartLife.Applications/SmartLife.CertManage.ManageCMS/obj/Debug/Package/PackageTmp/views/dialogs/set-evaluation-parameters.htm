@@ -1,0 +1,1137 @@
+﻿<style type="text/css">
+.table{ width:100%;border:0;background-color:#000000;border-spacing:1px;}
+.table tr{ text-align:center; }
+.table td {  height:50px; background-color:#FFFFFF; text-align:center; vertical-align:middle;}
+.tb2 { display:none; width:100%;}
+
+.title { width:100%; height:40px; line-height:40px; float:left; font-size:20px; font-weight:bold; }
+.title_1 { font-size:18px; font-weight:bold; word-spacing:10px; letter-spacing:10px; }
+.title_2 { font-size:16px; word-spacing:8px; letter-spacing:8px; }
+.title_3 { font-size:16px; word-spacing:5px; letter-spacing:5px; }
+.title_4 { font-size:16px; font-weight:bold; }
+.title_5 { font-size:16px; line-height:28px;}
+.title_6 { font-size:14px; font-weight:bold;}
+.title_7 { display:block; width:80%; margin:0 auto;font-size:16px;line-height:24px;}
+.vertical_txt{margin:0 auto; width:20px; line-height:24px; font-size:16px;}
+.text { line-height:22px; font-size:20px;}
+.txt { width:120px; height:30px; line-height:30px; border:none; margin-left:14px; border-bottom:1px solid #000; font-size:16px; text-align:center;}
+.txt_02 { width:60px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:16px;}
+.xs_txt_03 { width:120px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:16px;}
+.txt_bg_01 {width: 25%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.txt_bg_02 {width: 90%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.txt_bg_03 {width: 60%;height: 30px;line-height: 30px;border: none;text-align:center; font-size: 16px; margin-left:5px;}
+.txt_bg_04 {width: 50%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.txt_check_top{height:100px;margin-left:10px; margin-top:10px; text-align:left;font-size:16px; vertical-align:middle; }
+.txt_date_bottom{height:68px; text-align:right; margin-right:10px;font-size:16px; line-height:28px;}
+
+</style>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'center',border:false">
+        <div style=" height:100%;"  >
+            <div id="evaluationitem-tree" style=" float:left; width:20%; height:99%;">
+                <ul id="tree-evaluation-params">
+                </ul>
+            </div>
+            <div id="evaluationitem-Content" style=" float:right; width:79%;overflow-y:auto;" >
+                <form id="fm-settings-evaluation-params" method="post" novalidate>
+                    <input type="hidden" name="Id" id="evaluation-id" value="-1"/> 
+                    <input type="hidden" name="ReportId" /> 
+                    <input type="hidden" name="RequisitionId"/>
+                    <input type="hidden" name="ResidentId"/>
+                    <input type="hidden" name="DoStatus" value="1"/>
+                    <input type="hidden" name="AssessLevel"/>
+                    <div id="evaluationitem-block"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var uiDictionaryItem = { "uiTree": 12005, "uiTable": 12006 };
+    var toServerStations; //去往居家机构日照的站点数据
+    var bNextToSave = false;    //是否可保存数据
+
+    function dialogOpen(dialogId, dialogData) {
+        $('#evaluationitem-Content').height($('#evaluationitem-tree').height());    //调整高度--已方便出内滚动条
+        showTR(dialogData.FlowSetp);
+        bNextToSave = dialogData.NextToSave;
+
+        initTree('easyUITree', 'tree-evaluation-params', {
+            onSelect: function (treeNode) {
+                $('#fm-settings-evaluation-params .tb2').hide();
+                $('#tb-' + treeNode.id).show();
+            },
+            onLoadSuccess: function () {
+                var rootNode = $('#tree-evaluation-params').tree('getRoot');
+                var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+                getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/' + uiDictionaryItem.uiTable,
+                top.ajaxData_InvokeUrl + '/GetDictionaryItem/12002',
+                baseCMSInvokeUrl + "/Pub/ServiceStationService/Query?parms=" + $.toJSON({ AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, WhereClause: " StationType='00002' And (StationType2='00001' or StationType2='00007')" })], function (ret, serverTypeTo, stationInfo) {
+                    //获取扩展信息
+                    var urlAndDatas = _.map(_.filter(childNodes, function (m) { return m.attributes.UIColumn }), function (o) {
+                        var itemCode = o.attributes.Code;
+                        var uiColumn = o.attributes.UIColumn;
+                        var cols = _.map(uiColumn.split(";"), function (i) {
+                            var strExtInfo = i.split("|");
+                            return { ExtendCol: strExtInfo[0], ExtendColType: strExtInfo[1] };
+                        });
+
+                        var paramDatas = { DictionaryId: uiDictionaryItem.uiTable, "ItemCode": itemCode, Cols: cols };
+                        return [baseCMSInvokeUrl + '/Sys/DictionaryItemService/EvaluationDictionaryItemWithExtendInfo', $.toJSON(paramDatas)];
+                    });
+
+                    postAll(urlAndDatas, function () {
+                        //创建评估ui
+                        buildEvaluationItemUi(arguments, ret, dialogData.AssessType);
+                        //创建报告UI
+                        buildReportItemUi(childNodes, dialogData.AssessType, serverTypeTo, dialogData);
+                        //初始化评估去向
+                        toServerStations = stationInfo.rows;
+                        InitComboboxServerStation(true, dialogData.ServeItemType);
+
+                        //默认选择第一项
+                        $('#tree-evaluation-params').tree("select", childNodes[0].target);
+
+                        //填充数据
+                        var evaluationFormData = { "ReportId": dialogData.ReportId, "RequisitionId": dialogData.RequisitionId }
+                        getTo(top.baseCMSInvokeUrl + '/Eva/EvaluationInfoService/Query?parms=' + $.toJSON(evaluationFormData), null, function (EvaluationInfo) {
+                            if (EvaluationInfo.Success && EvaluationInfo.rows && EvaluationInfo.rows.length > 0) {
+                                //填充评估数据
+                                var item = EvaluationInfo.rows[0];
+
+                                $("#fm-settings-evaluation-params").form("load", item);
+                                //uitype=1的类型要重新组合 
+                                var rootNode = $('#tree-evaluation-params').tree('getRoot');
+                                var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+                                _.each(childNodes, function (o) {
+                                    var uiType = o.attributes.UIType;
+                                    var uiResultKey = o.attributes.UIResultKey.split("|");
+                                    if (uiType == 1) {
+                                        var tmpret = $("input[type='hidden'][name='" + uiResultKey[0] + "']").val();
+                                        if (tmpret) {
+                                            _.each($("." + uiResultKey[0]), function (m) {
+                                                if (tmpret.indexOf($(m).val()) > -1) $(m).prop("checked", "checked");
+                                            });
+                                        }
+
+                                        var iscoures = $('input[name="' + uiResultKey[1] + '"]').val();
+                                        $("input[name='rdResult-" + uiResultKey[0] + "'][value='" + retCrossTabResult(iscoures, o) + "']").prop("checked", "checked");
+                                    }
+                                });
+
+                                //象山专用
+                                calculateReportResult();
+                            }
+
+                            //填充报告数据
+                            $("#fm-settings-evaluation-params").form("load", dialogData);
+
+                            //避免EvaluationInfo.Id 被覆盖
+                            if (EvaluationInfo.Success && EvaluationInfo.rows && EvaluationInfo.rows.length > 0) {
+                                //再次赋值
+                                $("#evaluation-id").val(EvaluationInfo.rows[0].Id);
+                            }
+                            else {
+                                $("#evaluation-id").val("-1"); //保存评估参数的为新增
+                            }
+                            //填充报告信息开始
+                            //填充时间
+                            _.each($(".wdate"), function (o) {
+                                if ($(o).next().size() > 0) {
+                                    var strtime = $(o).next().val();
+                                    if (strtime) {
+                                        $(o).next().val(ndateFormatter(strtime, "yyyy-MM-dd"));
+                                        $(o).val((new Date(strtime)).pattern("yyyy年MM月dd日"));
+                                    }
+                                }
+                                else {
+                                    if ($(o).val()) $(o).val((new Date($(o).val())).pattern("yyyy年MM月dd日"));
+                                }
+                            });
+                            //填充审查人
+                            _.each($('.g_checker'), function (o) {
+                                if ($(o).val()) {
+                                    var url = baseCMSInvokeUrl + '/Pub/UserService/' + $(o).val();
+                                    getTo(url, null, function (result) {
+                                        $(o).val(result.instance.UserName)
+                                    });
+                                }
+                            });
+                            //填充评估去向结果
+                            var tmpret = dialogData.ServeItemType;
+                            InitComboboxServerStation(false, (tmpret == '00001' ? '00007' : (tmpret == '00002' ? '00001' : tmpret)));
+                            //填充报告信息结束
+
+                            //是否有机构运营补贴
+                            if (dialogData.ServiceSubsidies) {
+                                $('#isHaveServiceSubsidies').attr('checked', 'checked');
+                            }
+
+                        }, null, { ConnectId: baseInfoNode });
+
+                    }, null, { ConnectId: baseInfoNode });
+
+                }, null, { ConnectId: baseInfoNode });
+            }
+        }, function (d) {
+            getTreeData('12$01$01', "OrderNo asc", '{"DictionaryId":' + uiDictionaryItem.uiTree + ',"ExtendCol":"UIType"}', d, { ConnectId: baseInfoNode });
+        }, null, function (treeObj) {
+            //选择根
+            var defaultNode = $(treeObj).tree('getRoot');
+            if (defaultNode) {
+                $(treeObj).tree("select", defaultNode.target);
+            }
+        });
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        $('#' + dialogId).dialog('close');
+        return true;
+    }
+
+    function toAudit(callback) {
+        var formData = retFilterForm();
+        if ($('#evaluationitem-block input[name="ServeItemType"]:checked').val() == "00002") {
+            _.extend(formData, { ServiceSubsidies: $('#evaluationitem-block input[name="ServiceSubsidies"]:checked').val() });
+        }
+        alertConfirm("确定已完成评分！", function (ret) {
+            if (ret == true) {
+                //保存评估项目信息
+                saveTo(baseCMSInvokeUrl + '/Eva/EvaluationInfoService/', formData, function (ret) {
+                    formData.Status = 2;
+                    var formData2 = _.omit(formData, ['Id', 'PK', 'isCreate']);
+                    //保存评估报告信息
+                    putTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/' + formData.ReportId, $.toJSON(formData2), function (result) {
+                        if (result.Success) {
+                            formData2.Status = undefined;
+                            //保存评估申请结果信息
+                            postTo(baseCMSInvokeUrl + '/Eva/EvaluatedRequisitionService/EvaluationFinalResults', $.toJSON(formData2), function (result) {
+                                if (result.Success) {
+                                    //关闭 刷新
+                                    dialogClose('set-evaluation-parameters');
+                                    if (callback) callback.apply(this);
+
+                                }
+                            }, null, { ConnectId: baseInfoNode });
+                        }
+                    }, null, { ConnectId: baseInfoNode });
+
+                }, { ConnectId: baseInfoNode });
+            }
+        });
+    }
+    //撤销已提交的估报告
+    function toUnAudit(callback) {
+        alertConfirm("确定撤销已提交的估报告吗？", function (ret) {
+            if (ret == true) {
+                dialogClose('set-evaluation-parameters');
+                if (callback) callback.apply(this);
+            }
+        });
+    }
+    function eDialogClose() {
+        $('#set-evaluation-parameters').dialog('close');
+        $('#dg-B140102').datagrid('reload');
+    }
+
+    function toggleTreeSelected(bNext) {
+        var selectOldNode = $('#tree-evaluation-params').tree('getSelected');
+        var findId = bNext ? parseInt(selectOldNode.id.substr(0, 4) + selectOldNode.id) + 1 : parseInt(selectOldNode.id) - 1;
+
+        var toTreeId = "00000".substr(0, 5 - findId.toString().length) + findId.toString();
+        var selectNewNode = $('#tree-evaluation-params').tree('find', toTreeId);
+
+        var formData = retFilterForm();
+        if (selectNewNode) {
+            if (bNextToSave && bNext) {
+                saveTo(baseCMSInvokeUrl + '/Eva/EvaluationInfoService/', formData, function (ret) {
+                    //返回评估记录信息的Id
+                    if (!ret.Id && formData.Id == -1) {
+                        getTo(baseCMSInvokeUrl + '/Eva/EvaluationInfoService/Query?parms=' + $.toJSON({ ReportId: formData.ReportId }), null, function (result) {
+                            if (result.rows.length > 0 && result.rows[0].Id) {
+                                $("#evaluation-id").val(result.rows[0].Id);
+                            }
+                        }, { async: false }, { ConnectId: baseInfoNode });
+                    }
+
+                    //保存评估报告信息
+                    putTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/' + formData.ReportId, $.toJSON(_.omit(formData, ['Id', 'PK', 'isCreate'])), function (result) {
+                        if (result.Success) {
+                            $("#tree-evaluation-params").tree("select", selectNewNode.target);
+                        }
+                    }, null, { ConnectId: baseInfoNode });
+
+                }, { ConnectId: baseInfoNode });
+            }
+            else {
+                $("#tree-evaluation-params").tree("select", selectNewNode.target);
+            }
+        }
+        else {
+            alertInfo("是否完成评分，请点击完成评分按钮！");
+        }
+    }
+
+    //为空的input过滤掉
+    function retFilterForm() {
+        var formData = $("#fm-settings-evaluation-params").serializeObject();
+
+        var isCreate = formData.Id == -1;
+        if (!isCreate) {
+            _.extend(formData, { PK: formData.Id });
+        }
+        _.extend(formData, { isCreate: isCreate });
+
+        var retFilterFormData = {};
+        for (var key in formData) {
+            if (formData[key] != '') retFilterFormData[key] = formData[key];
+        }
+        //转换时间格式
+        _.each($('#fm-settings-evaluation-params .wdate'), function (o) {
+            var tmpDate = $(o).next().val();
+            var tmpId = $(o).next().attr("id");
+            if (tmpDate && retFilterFormData[tmpId]) retFilterFormData[tmpId] = toJsonDate(tmpDate);
+        });
+
+        return retFilterFormData;
+    }
+
+    //创建UI
+    function buildEvaluationItemUi(evaluationItemX, evaluationItemY) {
+        if (!evaluationItemX || !evaluationItemY) return;
+
+        $("#evaluationitem-block").html("");
+
+        var rootNode = $('#tree-evaluation-params').tree('getRoot');
+        var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+
+        //创建UI
+        _.each(childNodes, function (k) {
+            var uiCode = k.attributes.Code;
+            var uiType = k.attributes.UIType;
+
+            //获取当前评估项目X轴数据
+            var xUiData = _.filter(evaluationItemX, function (o) {
+                return uiCode == _.first(o).ItemId.substr(0, 2);
+            });
+            //获取当前评估项目Y轴数据
+            var yUiData = _.filter(evaluationItemY, function (i) {
+                return uiCode == i.ItemId.substr(0, 2);
+            });
+
+            if (xUiData && yUiData) {
+                if (uiType == 1) {
+                    $("#evaluationitem-block").append(createCrossTab(xUiData[0], yUiData, k));
+                }
+                else if (uiType == 2) {
+                    $("#evaluationitem-block").append(createListTab(xUiData[0], yUiData, k));
+                }
+            }
+        });
+
+        //绑定事件
+        //绑定radio事件
+        $('#evaluationitem-block :radio').bind('click', function () {
+            var iscoures = 0;
+
+            var optb = $(this).closest(".tb2");
+            if (optb) {
+                var treeid = $(optb).attr("id").split("-")[1];
+                var treeobj = $('#tree-evaluation-params').tree('find', treeid);
+                var uiType = treeobj.attributes.UIType;
+                var uiResultKey = treeobj.attributes.UIResultKey.split("|");
+                if (uiType == 1) {
+                    var tmpResult = [];
+                    _.each($("." + uiResultKey[0]), function (o) {
+                        if ($(o).prop("checked")) {
+                            tmpResult.push($(o).val());
+                            iscoures += parseInt($(o).next('span').text());
+                        }
+                    });
+
+                    $('input[name="' + uiResultKey[0] + '"]').val(tmpResult.join("|"));
+                    $('input[name="' + uiResultKey[1] + '"]').val(iscoures);
+                    $("input[name='rdResult-" + uiResultKey[0] + "'][value='" + retCrossTabResult(iscoures, treeobj) + "']").prop("checked", "checked");
+
+                    //象山专用
+                    calculateReportResult();
+                }
+                else if (uiType == 2) {
+                    if ($(this).next('span').length > 0) {
+                        iscoures = parseInt($(this).next('span').text());
+                        $('input[name="' + uiResultKey[1] + '"]').val(iscoures);
+                    }
+                }
+
+                //计算总分
+                calculateEvaluationItemTotalScore();
+            }
+        });
+    }
+
+    //创建交叉表
+    function createCrossTab(xUiData, yUiData, treeobj) {
+        var uiTh = treeobj.attributes.UIColHead;
+        var uiTd = treeobj.attributes.UIColumn;
+        var uiResultKey = treeobj.attributes.UIResultKey.split("|");
+
+        var html = [];
+        html.push("<table cellpadding='0' id='tb-" + treeobj.id + "' class='tb2'>");
+        html.push("<tr><td>");
+        html.push("<table cellpadding='0' cellspacing='1' class='table' >");
+        html.push("<tr><td colspan='6' height='60' style='background-color:#CCCCCC'><span class='title_4'>" + treeobj.text + "</td></tr>");
+        html.push("<tr>");
+        html.push(_.map(uiTh.split(";"), function (o, i) {
+            if (i == 0) {
+                return "<td " + (uiTd.substr(0, 4) == "Node" ? "colspan='2'" : "") + " class='title_5'>" + o + "</td>";
+            }
+            else {
+                return "<td class='title_6'>" + o + "</td>";
+            }
+        }).join(""));
+        html.push("</tr>");
+        html.push(_.map(xUiData, function (o, i) {
+            var tmpTr = [];
+            tmpTr.push("<tr>");
+            if (uiTd.substr(0, 4) == "Node") {
+                tmpTr.push("<td  width='5%' height='150' class='title_5'><div style='margin:0 auto; width:20px; line-height:24px '>" + "(" + (i + 1).toString() + ")" + o.ItemName + "</div></td>");
+                tmpTr.push("<td  width='15%' ><span class='title_7'>" + _.findWhere(o.ExtendInfos, { "ExtendCol": "Node" }).ExtendValue + "<span></td>");
+            }
+            else {
+                tmpTr.push("<td width='20%' class='title_5'>(" + (i + 1).toString() + ")" + o.ItemName + "</td>");
+            }
+
+            var extscores = _.findWhere(o.ExtendInfos, { "ExtendCol": "NormalScores" }).ExtendValue;
+            var extnodes = _.findWhere(o.ExtendInfos, { "ExtendCol": "NormalNodes" }).ExtendValue;
+            tmpTr.push("<td width='20%' class='title_5'>" + (extscores != '' ? ("<input name='" + uiResultKey[0] + "-" + o.ItemId + "' type='radio' class='" + uiResultKey[0] + "' value='" + o.ItemId + "-NormalScores' checked='checked'/><span>" + extscores + "</span>分") : "-") + "<br/>" + extnodes + "</td>");
+            extscores = _.findWhere(o.ExtendInfos, { "ExtendCol": "MildDScores" }).ExtendValue;
+            extnodes = _.findWhere(o.ExtendInfos, { "ExtendCol": "MildDNodes" }).ExtendValue;
+            tmpTr.push("<td width='20%' class='title_5'>" + (extscores != '' ? ("<input name='" + uiResultKey[0] + "-" + o.ItemId + "' type='radio' class='" + uiResultKey[0] + "' value='" + o.ItemId + "-MildDScores'/><span>" + extscores + "</span>分") : "-") + "<br/>" + extnodes + "</td>");
+            extscores = _.findWhere(o.ExtendInfos, { "ExtendCol": "ModerateDScores" }).ExtendValue;
+            extnodes = _.findWhere(o.ExtendInfos, { "ExtendCol": "ModerateDNodes" }).ExtendValue;
+            tmpTr.push("<td width='20%' class='title_5'>" + (extscores != '' ? ("<input name='" + uiResultKey[0] + "-" + o.ItemId + "' type='radio' class='" + uiResultKey[0] + "' value='" + o.ItemId + "-ModerateDScores'/><span>" + extscores + "</span>分") : "-") + "<br/>" + extnodes + "</td>");
+            extscores = _.findWhere(o.ExtendInfos, { "ExtendCol": "SevereDScores" }).ExtendValue;
+            extnodes = _.findWhere(o.ExtendInfos, { "ExtendCol": "SevereDNodes" }).ExtendValue;
+            tmpTr.push("<td width='20%' class='title_5'>" + (extscores != '' ? ("<input name='" + uiResultKey[0] + "-" + o.ItemId + "' type='radio' class='" + uiResultKey[0] + "' value='" + o.ItemId + "-SevereDScores' /><span>" + extscores + "</span>分") : "-") + "<br/>" + extnodes + "</td>");
+            //新加列行
+            //extscores = _.findWhere(o.ExtendInfos, { "ExtendCol": "新加列的分数" }).ExtendValue;
+            //extnodes = _.findWhere(o.ExtendInfos, { "ExtendCol": "新加列的备注" }).ExtendValue;
+            //tmpTr.push("<td width='20%' class='title_5'>" + (extscores != '' ? ("<input name='" + uiResultKey[0] + "-" + o.ItemId + "' type='radio' class='" + uiResultKey[0] + "' value='" + o.ItemId + "-新加列分数' /><span>" + extscores + "</span>分") : "-") + "<br/>" + extnodes + "</td>");
+            tmpTr.push("</tr>")
+            return tmpTr.join("");
+        }).join(""));
+        html.push("<tr><td colspan='2' width='20%' class='title_3'>总分</td>");
+        html.push("<td colspan='4'  width='80%'  style='text-align: left'>");
+        html.push("<input name='" + uiResultKey[1] + "' readonly='true' class='txt' value='0' />&nbsp;分");
+        html.push("<input type='hidden' name='" + uiResultKey[0] + "' />");
+        html.push("</td></tr>");
+        html.push("<tr><td colspan='2'  class='title_3'>结论</td>");
+        html.push("<td colspan='4'  width='80%' class='title_5' style='text-align: left' >");
+        html.push(_.map(_.filter(uiTh.split(";"), function (m, n) { return n > 0; }), function (o, i) {
+            return "&nbsp;&nbsp;<input name='rdResult-" + uiResultKey[0] + "' id='rdResult-" + (uiResultKey[0] + "-" + (i + 1).toString()) + "' type='radio' value='" + (i + 1).toString() + "' disabled='disabled' " + (i > 0 ? "" : " checked='checked'") + " /><label for='rdResult-" + (uiResultKey[0] + "-" + (i + 1).toString()) + "' style='font-size:16px;'>" + o + "</label>";
+        }).join(""));
+        html.push("</td></tr>");
+        html.push("</table></td></tr><tr> ");
+        html.push("<td height='80'class='title_4' > ");
+        html.push(retCrossTabRemark(treeobj));
+        html.push("</td></tr></table> ");
+
+        return html.join("");
+    }
+
+    //创建列表
+    function createListTab(xUiData, yUiData, treeobj) {
+        var uiTh = treeobj.attributes.UIColHead;
+        var uiTd = treeobj.attributes.UIColumn;
+        var uiResultKey = treeobj.attributes.UIResultKey.split("|");
+
+        var htm = [];
+        htm.push("<table cellpadding='0' id='tb-" + treeobj.id + "' class='tb2' >");
+        htm.push("<tr><td>");
+        htm.push("<table  cellpadding='0' cellspacing='1' class='table' >");
+        htm.push("<tr><td colspan='4' height='60' style='background-color:#CCCCCC'> <span class='title_4'>" + treeobj.text + "</span></td></tr>");
+        htm.push("<tr>");
+        htm.push("<td rowspan='" + (xUiData.length + 1) + "' class='title_4'>" + treeobj.text + "</td>");
+        htm.push(_.map(uiTh.split(";"), function (o, i) { return "<td class='title_4'>" + o + "</td>"; }).join(""));
+        htm.push("</tr>");
+        htm.push(_.map(xUiData, function (i) {
+            var ss = [];
+            ss.push("<tr>");
+            var thCnt = uiTh.split(";").length;
+            var tdWidth = parseInt(80 / thCnt);
+            _.each(uiTd.split(";"), function (m, n) {
+                var tdUiType = m.split("|");
+                if (n == 0) {
+                    ss.push("<td  width='" + tdWidth + "%' class='title_5'>" + i.ItemName + "</td>");
+                }
+                if (tdUiType && tdUiType.length > 1) {
+                    var extinfo = _.findWhere(i.ExtendInfos, { "ExtendCol": tdUiType[0] }).ExtendValue;
+                    if (tdUiType[1] == "b") {
+                        ss.push("<td width='" + tdWidth + "%' class='title_5'><input name='b-" + i.ItemId + "' type='radio' " + (extinfo ? "checked='checked'" : "") + " value='1' />&nbsp;是&nbsp;&nbsp;<input name='b-" + i.ItemId + "' type='radio' " + (extinfo ? "" : "checked='checked'") + " value='0'/>&nbsp;否</td>");
+                    }
+                    else if(tdUiType[1] == "i") {
+                        ss.push("<td width='" + tdWidth + "%' class='title_5'><input name='" + uiResultKey[0] + "' type='radio' value='" + i.ItemId + "'/><span>" + extinfo + "</span>分</td>");
+                    }
+                    else{
+                        ss.push("<td width='" + tdWidth + "%' class='title_5'><span>" + extinfo + "</span></td>");
+                    }
+                }
+            })
+            ss.push("</tr>")
+            return ss.join("");
+        }).join(""));
+        htm.push("</table></td> </tr> <tr> ");
+        htm.push("<td class='title_4' style='text-align:left;height:100px;'> ");
+        htm.push("");
+        htm.push("</td></tr></table> ");
+        return htm.join("");
+    }
+
+
+    //创建报告ui
+    function buildReportItemUi(childRoots, assessType, serverTypeTo, requisitionInfo) {
+        if (childRoots) {
+            var trItems = _.filter(childRoots, function (k) { return k.attributes.UIColumn });
+            _.each(_.filter(childRoots, function (m) { return !m.attributes.UIColumn }), function (o) {
+                var uiType = o.attributes.UIType;
+                if (uiType == 20) {
+                    $("#evaluationitem-block").append(createReportTab1(o.id, o.text, trItems));
+                }
+                else if (uiType == 21) {
+                    $("#evaluationitem-block").append(createReportTab2(o.id, o.text));
+                }
+                else if (uiType == 22) {
+                    $("#evaluationitem-block").append(createReportTab3(o.id, o.text, assessType));
+                }
+                else if (uiType == 30) {
+                    $("#evaluationitem-block").append(createReportResultTab(o.id, o.text, serverTypeTo, requisitionInfo));
+                }
+            });
+
+            //绑定评估建议去向
+            $('#evaluationitem-block input[name="ServeItemType"]').bind('click', function () {
+                _.each($('#evaluationitem-block input[name="ServeItemType"]'), function (o) {
+                    var id = $(o).attr("id");
+                    $('#evaluationitem-block #txt-' + id).val('').prop("disabled", true);
+                });
+
+                var tmpid = $(this).attr("id");
+                var tmpret = $(this).val();
+
+                InitComboboxServerStation(false, (tmpret == '00001' ? '00007' : (tmpret == '00002' ? '00001' : tmpret)));
+                $('#ServerStationId').combobox('setValue', null);
+                $('#evaluationitem-block #txt-' + tmpid).prop("disabled", false).val(0);
+
+                if (tmpret == "00002") {
+                    $('#isHaveServiceSubsidies').attr('canHaveServiceSubsidies',tmpret).prop('disabled', false);
+                }
+                else {
+                    $('#isHaveServiceSubsidies').attr('canHaveServiceSubsidies', '').removeAttr('checked').prop('disabled', true);
+                }
+
+                _.each($('#evaluationitem-block input[name="ServiceSubsidies"]'), function (i) {
+                    $(i).removeAttr('checked');
+                });
+
+            });
+
+            //机构运营补贴事件
+            $('#isHaveServiceSubsidies').unbind("change").bind('change', function () {
+                var serviceStationCode = $(this).attr('canHaveServiceSubsidies');
+                var bChecked = $(this).attr('checked');
+                //机构-补贴
+                var tmpRdAssessmentResultNodes = $("#evaluationitem-block input[name='rdAssessmentResultNodes']:checked").val().toString();
+                _.each($('#evaluationitem-block input[name="ServiceSubsidies"]'), function (i) {
+                    if (bChecked) {
+                        var txtValue = $(i).attr("textValue").toString();
+                        if (tmpRdAssessmentResultNodes.indexOf(txtValue) > -1 && serviceStationCode == "00002") {
+                            $(i).attr("checked", true);
+                        }
+                        else {
+                            $(i).removeAttr('checked');
+                        }
+                    }
+                    else {
+                        $(i).removeAttr('checked');
+                    }
+                });
+            });
+
+            //绑定计算事件
+            $('#btnCalculate').unbind("click").bind('click', function () {
+                //是否有评估去向
+                var serveItemType = $('#evaluationitem-block input[name="ServeItemType"]:checked');
+                if ($(serveItemType).length <= 0) {
+                    serveItemType = $('#evaluationitem-block input[name="ServeItemType"]');
+                }
+
+                var tmpIncome = 0;
+                var txtIncome = $(this).prev().val();
+                if (txtIncome) {
+                    var reg = /(^[0-9]+(.[0-9]{1,2})?$)/;
+                    if (reg.test(txtIncome)) {
+                        tmpIncome = txtIncome;
+                    }
+                    else { $(this).prev().val(0); }
+                }
+
+                var tmpCalculateRet = parseFloat($('#AssessmentResultNodes').val() - parseFloat(tmpIncome));
+                _.each(serveItemType, function (o) {
+                    var itemResultType = $(o).attr("id");
+                    $('#evaluationitem-block #txt-' + itemResultType).val(tmpCalculateRet);
+                });
+
+            });
+        }
+    }
+
+    //评估报告1
+    function createReportTab1(tbid, tbtext, cnodes) {
+        var html = [];
+        html.push('<table class="table tb2" id="tb-' + tbid + '" >');
+        html.push('<tr><td colspan="3" class="title_4" style=" background-color:#CCCCCC">' + tbtext + '</td></tr>');
+        html.push('<tr><td height="70" colspan="3" class="title_4" style=" text-align:left;">&nbsp;&nbsp;&nbsp;' + tbtext + '：评估总分计算</td></tr>');
+        html.push('<tr>');
+        html.push('<td width="50%" colspan="2" class="title_4">主要参数</td>');
+        html.push('<td width="50%"class="title_4">评估分值</td>');
+        html.push('</tr>');
+        html.push(_.map(cnodes, function (o, i) {
+            var uiResultKey = o.attributes.UIResultKey.split("|");
+            var htm = [];
+            htm.push('<tr>');
+            htm.push('<td width="20%" class="title_4">评估分值' + (i + 1).toString() + '</td>');
+            htm.push('<td width="30%" class="title_5">' + o.text + '</td>');
+            htm.push('<td width="50%" class="title_5">');
+            htm.push('<input name="' + uiResultKey[1] + '" readonly="readonly" type="text" value="0" class="txt_bg_01 iscore" />分');
+            htm.push('</td>');
+            htm.push('</tr>');
+
+            return htm.join("");
+        }).join(""));
+        html.push('<tr>');
+        html.push('<td width="20%" class="title_4">评价总分</td>');
+        html.push('<td width="30%" class="title_5" >');
+        html.push('=' + _.map(cnodes, function (o, i) { return "评估分值" + (i + 1).toString(); }).join("+"));
+        html.push('</td>');
+        html.push('<td width="50%" class="title_5">');
+        html.push('<input name="AssessmentScores" type="text" readonly="readonly" class="txt_bg_01" value="0" />分');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td  width="20%" class="title_4">备注</td>');
+        html.push('<td width="30%" colspan="2" style=" text-align:left;" >');
+        html.push('<textarea name="RecommendedserviceType" cols="52" rows=12 class="text" style=" font-size:16px;"></textarea>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('</table>');
+
+        return html.join("");
+    }
+
+    //评估报告2
+    function createReportTab2(tbid, tbtext) {
+        var html = [];
+        html.push('<table class="table tb2" id="tb-' + tbid + '">');
+        html.push('<tr>');
+        html.push('<td height="60" colspan="5" style="background-color:#CCCCCC" class="title_4">'+tbtext+'</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td height="70" colspan="5" style="text-align:left" class="title_4">&nbsp;&nbsp;&nbsp;&nbsp;');
+        html.push(tbtext+'：评估报告确认');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td height="70" colspan="5" class="title_4">评估表基本信息</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td width="20%" colspan="2" class="title_5">评估表编号</td>');
+        html.push('<td  width="30%" style="text-align:left;">');
+        html.push('<input name="ReportCode" class="txt_bg_02" disabled="disabled"/>');
+        html.push('</td>');
+        html.push('<td width="20%"  class="title_5">完成时间</td>');
+        html.push('<td width="30%" class="title_5">');
+        html.push('<input name="OperatedOn" class="txt_bg_02 wdate" disabled="disabled"/>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td rowspan="5" width="5%"  class="title_4">');
+        html.push('<div class="vertical_txt">');
+        html.push('(1)评估员确认完成</div>');
+        html.push('</td>');
+        html.push('<td width="15%" class="title_5">评估员姓名(2名)</td>');
+        html.push('<td width="30%" style="text-align:left;">');
+        html.push('<input name="OperatedBy" class="txt_bg_02 g_checker" disabled="disabled"/>');
+        html.push('</td>');
+        html.push('<td width="20%" rowspan="2" class="title_5">确认完成</td>');
+        html.push('<td width="30%" rowspan="2" class="title_5">');
+        html.push(' &nbsp;<input name="AssessType" type="radio" value="00001" disabled="disabled"/>首次评估<br/>');
+        html.push('&nbsp;<input name="AssessType" type="radio" value="00002" disabled="disabled"/>复检评估<br/>');
+        html.push('&nbsp;<input name="AssessType" type="radio" value="00003" disabled="disabled"/>变更评估');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td width="15%"  class="title_5">联系电话</td>');
+        html.push('<td width="30%" style="text-align:left;">');
+        html.push('<input name="AssessmentCall" class="txt_bg_02" />');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td width="15%"  class="title_5">所属单位</td>');
+        html.push('<td colspan="3" style="text-align:left;">');
+        html.push('<input name="AssessmentUnit" class="txt_bg_02" />');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td width="15%" class="title_5">评估分值</td>');
+        html.push('<td style="text-align:left;" >');
+        html.push('<input name="AssessmentScores" class="txt_bg_02" readonly="readonly"/>');
+        html.push('</td>');
+        html.push('<td width="20%" class="title_5">建议服务形式</td>');
+        html.push('<td width="30%" class="title_5">');
+        html.push('&nbsp;<input name="ServeItemType" type="radio" value="00001" />居家养老(计时服务)<br/>');
+        html.push('&nbsp;<input name="ServeItemType" type="radio" value="00002" />机构养老(计费服务)');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td width="15%" class="title_5">评估员签字</td>');
+        html.push('<td style="text-align:left;" >');
+        html.push('<input name="Assessor" class="txt_bg_02" disabled="disabled"/>');
+        html.push('</td>');
+        html.push('<td width="20%" class="title_5">日期</td>');
+        html.push('<td width="30%" class="title_5">');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr id="tr_Community" >');
+        html.push('<td width="5%" class="title_4" >');
+        html.push('<div class="vertical_txt">');
+        html.push('(2)村(社区)意见</div>');
+        html.push('</td>');
+        html.push('<td colspan="4" class="title_5">');
+        html.push('<div class="txt_check_top">');
+        html.push('<input name="CommunityCheck" type="radio" value="0" disabled="disabled"/>符合评估标准&nbsp;&nbsp;&nbsp;');
+        html.push('<input name="CommunityCheck" type="radio" value="1" disabled="disabled"/>要求再次评估');
+        html.push('<br />');
+        html.push('<textarea name="CommunityRemark" cols="50"  rows="3" class="text"  disabled="disabled"/>');
+        html.push('</div>');
+        html.push('<div class="txt_date_bottom" >');
+        html.push('确认人:<input name="CommunityChecker" class="txt_bg_02 g_checker" style="width:150px;" disabled="disabled"/><br />');
+        html.push('<input name="CommunityTime" class="txt_bg_02 wdate" style="width:150px;" disabled="disabled"/>');
+        html.push('</div>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr id="tr_Street" >');
+        html.push('<td width="5%" class="title_4">');
+        html.push('<div class="vertical_txt">');
+        html.push('(3)镇(街道)审查</div>');
+        html.push('</td>');
+        html.push('<td colspan="4">');
+        html.push('<div class="txt_check_top">');
+        html.push('<input name="StreetExamine" type="radio" value="0" disabled="disabled"/>符合评估标准');
+        html.push('&nbsp;&nbsp;&nbsp;<input name="StreetExamine" type="radio" value="1" disabled="disabled"/>建议再次评估');
+        html.push('</div>');
+        html.push('<div class="txt_date_bottom">');
+        html.push('审查人:<input name="StreetExaminer" class="txt_bg_02 g_checker" style="width:150px;" disabled="disabled"/><br />');
+        html.push('<input name="StreetExamineTime" class="txt_bg_02 wdate" style="width:150px;" disabled="disabled"/>');
+        html.push('</div>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr id="tr_City">');
+        html.push('<td width="5%" class="title_4">');
+        html.push('<div class="vertical_txt">');
+        html.push('(4)市民政局审核</div>');
+        html.push('</td>');
+        html.push('<td colspan="4" class="title_5">');
+        html.push('<div  class="txt_check_top">');
+        html.push('<input name="CityAudit" type="radio" value="0" disabled="disabled"/>确认评估结果');
+        html.push('&nbsp;&nbsp;&nbsp;<input name="CityAudit" type="radio" value="1" disabled="disabled"/>要求再次评估');
+        html.push('&nbsp;&nbsp;&nbsp;<input name="CityAudit" type="radio" value="2" disabled="disabled"/>市评估组抽查');
+        html.push('</div>');
+        html.push('<div class="txt_date_bottom">');
+        html.push('审核人:<input name="CityApproval" class="txt_bg_02 g_checker" style="width:150px;" disabled="disabled"/><br />');
+        html.push('<input name="CityAuditTime" class="txt_bg_02 wdate" style="width:150px;" disabled="disabled"/>');
+        html.push(' </div>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('</table>');
+
+        return html.join("");
+    }
+
+    //创建评估报告1-象山
+    function createReportTab3(tbid, tbtext, assessType) {
+        var rootNode = $('#tree-evaluation-params').tree('getRoot');
+        var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+
+        var html = [];
+        html.push('<table class="table tb2" id="tb-' + tbid + '">');
+        html.push('<tr>');
+        html.push('<td height="60" colspan="4" style="background-color:#CCCCCC" class="title_4">' + tbtext + '</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td colspan="4" class="title_5" style="text-align:left">&nbsp;&nbsp;&nbsp;&nbsp;评估表编号：<input name="ReportCode" class="txt_bg_03" style="text-align:left;" disabled="disabled"/></td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5" style="width:20%;">评估对象姓名</td>');
+        html.push('<td class="title_5"><input name="EvaluatedName" class="txt_bg_03" disabled="disabled"/></td>');
+        html.push('<td class="title_5">家庭经济状况</td>');
+        html.push('<td class="title_5"><input name="IncomeStatusName" class="txt_bg_03" disabled="disabled"/></td>');
+        html.push('</tr>');
+        html.push('<td height="70" colspan="4" style="text-align:center" class="title_4">评估主要情况</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5">评估内容</td>');
+        html.push('<td class="title_5">评估分值</td>');
+        html.push('<td colspan="2" class="title_5">评估结果</td>');
+        html.push('</tr>');
+        html.push(_.map(_.filter(childNodes, function (i) { return i.attributes.UIColumn }), function (o) {
+            var uiResultKey = o.attributes.UIResultKey.split("|");
+            var htm = [];
+            htm.push("<tr>");
+            htm.push('<td class="title_5">' + o.text + '</td>');
+            htm.push('<td class="title_5"><input class="txt_bg_03" disabled="disabled" name="' + uiResultKey[1] + '" value="0" /></td>');
+            htm.push('<td colspan="2" class="title_5" ><input class="txt_bg_03" disabled="disabled" name="text-' + uiResultKey[1] + '" /></td>');
+            htm.push("</tr>");
+
+            return htm.join("");
+        }).join(""));
+        html.push('<tr>');
+        html.push('<td class="title_5">评估结论(注1)</td>');
+        html.push('<td colspan="3" class="title_5">');
+        html.push("&nbsp;&nbsp;<input name='rdAssessmentResult'  type='radio' value='正常' disabled='disabled' checked='checked' />正常");
+        html.push("&nbsp;&nbsp;<input name='rdAssessmentResult'  type='radio' value='轻度依赖' disabled='disabled' />轻度依赖");
+        html.push("&nbsp;&nbsp;<input name='rdAssessmentResult'  type='radio' value='中度依赖' disabled='disabled' />中度依赖");
+        html.push("&nbsp;&nbsp;<input name='rdAssessmentResult' type='radio' value='重度依赖' disabled='disabled'  />重度依赖");
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5" style="height:160px;" >评估结论2</td>');
+        html.push('<td colspan="3" style="text-align:left;" >');
+        html.push('<div style="font-size:16px; height:160px; line-height:40px;text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;' + (assessType == "00002" ? "根据复评结果" : "根据评估结果") + '，<input name="EvaluatedName" class="xs_txt_03" disabled="disabled" />家庭经济状况为<input name="IncomeStatusName" class="xs_txt_03" disabled="disabled" />，');
+        html.push(_.map(_.filter(childNodes, function (i) { return i.attributes.UIColumn }), function (o) {
+            var uiResultKey = o.attributes.UIResultKey.split("|");
+            var htm = [];
+            htm.push("其" + o.text + "为");
+            htm.push('<input name="text-' + uiResultKey[1] + '" class="xs_txt_03" disabled="disabled" />');
+            return htm.join("");
+        }).join("，"));
+        html.push('，综合评估结论为<input name="AssessmentResult" class="xs_txt_03" readonly="readonly" />。</div>');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5" style="height:160px;" >街道(乡镇)评估意见</td>');
+        html.push('<td colspan="3" style="text-align:left;" >');
+        html.push('<div style="font-size:16px; height:60px; line-height:60px;text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;');
+        html.push('<input name="StreetExamine" type="radio" value="0" disabled="disabled"/>符合评估标准');
+        html.push('&nbsp;&nbsp;&nbsp;<input name="StreetExamine" type="radio" value="1" disabled="disabled"/>建议再次评估');
+        html.push('</div>');
+        html.push('<div style="font-size:16px; height:40px; line-height:40px; text-align:right; margin-right:50px;">镇乡(街道)评估组负责人:<input name="StreetExaminer" class="txt_bg_02 g_checker" style="width:150px;" disabled="disabled"/></div></div>');
+        html.push('<div style="font-size:16px; height:40px;line-height:40px; text-align:right;margin-right:20px;"><input name="StreetExamineTime" class="txt_bg_02 wdate" style="width:150px;" disabled="disabled"/></div>');
+        html.push('</td>');
+        html.push('</tr>');
+        if (assessType == "00002") {
+            html.push('<tr>');
+            html.push('<td class="title_5" style="height:160px;" >县指导组意见</td>');
+            html.push('<td colspan="3" style="text-align:left;" >');
+            html.push('<div style="font-size:16px; height:60px; line-height:60px;text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;');
+            html.push('<input name="CityAudit" type="radio" value="0" disabled="disabled"/>确认评估结果');
+            html.push('&nbsp;&nbsp;&nbsp;<input name="CityAudit" type="radio" value="1" disabled="disabled"/>要求再次评估');
+            html.push('</div>');
+            html.push('<div style="font-size:16px; height:40px; line-height:40px; text-align:right; margin-right:50px;">县指导组负责人:<input name="CityApproval" class="txt_bg_02 g_checker" style="width:150px;" disabled="disabled"/></div>');
+            html.push('<div style="font-size:16px; height:40px;line-height:40px; text-align:right;margin-right:20px;"><input name="CityAuditTime" class="txt_bg_02 wdate" style="width:150px;" disabled="disabled"/></div>');
+            html.push('</td>');
+            html.push('</tr>');
+        }
+        html.push('<tr>');
+        html.push('<td colspan="4" class="title_5" style="text-align:left;">&nbsp;&nbsp;&nbsp;&nbsp;注1：评估结论以生活能力评估和认知能力评估两者中较重者为准，如重度失能或重度缺失对应重度依赖，依次类推。</td>');
+        html.push('</tr>');
+        html.push('</table>');
+
+        return html.join("");
+    }
+
+    //创建评估结果表
+    function createReportResultTab(tbid, tbtext, serverTypeTo, requisitionInfo) {
+        var html = [];
+        html.push('<table class="table tb2" border="0" id="tb-' + tbid + '">');
+        html.push('<tr>');
+        html.push('<td height="60" colspan="4" style="background-color:#CCCCCC" class="title_4">' + tbtext + ' <input name="AssessmentScores" type="hidden" /></td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5">建议服务类型</td>');
+        html.push('<td colspan="2">');
+        html.push(_.map(serverTypeTo, function (o) { return '<input type="radio" name="ServeItemType" id="ServeItemType-' + o.ItemId + '" value="' + o.ItemId + '" /><label style="font-size:16px;" for="ServeItemType-' + o.ItemId + '">' + o.ItemName + '</label>'; }).join("&nbsp;&nbsp;&nbsp;&nbsp;"));
+        html.push('</td>');
+        html.push('<td class="title_5"><input name="StationId" id="ServerStationId" style="display:none;" /></td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5" style="width:20%;">服务起始时间</td>');
+        html.push('<td class="title_5" style="width:30%;">');
+        html.push('<input name="ServiceBeginTime_show" id="ServiceBeginTime_show" class="txt_bg_02 wdate" onfocus="WdatePicker({dateFmt:\'yyyy年MM月dd日\',maxDate:\'#F{$dp.$D(\\\'ServiceEndTime_show\\\');}\',vel:\'ServiceBeginTime\'})"/>');
+        html.push('<input name="ServiceBeginTime" id="ServiceBeginTime" type="hidden" />');
+        html.push('</td>');
+        html.push('<td class="title_5" style="width:20%;">服务截止时间</td>');
+        html.push('<td class="title_5" style="width:30%;">');
+        html.push('<input name="ServiceEndTime_show" id="ServiceEndTime_show" class="txt_bg_02 wdate" onfocus="WdatePicker({dateFmt:\'yyyy年MM月dd日\',minDate:\'#F{$dp.$D(\\\'ServiceBeginTime_show\\\')}\',vel:\'ServiceEndTime\'})" />');
+        html.push('<input name="ServiceEndTime" id="ServiceEndTime" type="hidden" />');
+        html.push('</td>');
+        html.push('</tr>');
+        html.push('<tr style="height:160px;">');
+        html.push('<td class="title_5" >补助标准(元/月)</td>');
+        html.push('<td class="title_5" >');
+        html.push("<input name='rdAssessmentResultNodes'  type='radio' value='正常' ServerSubsidies='0' disabled='disabled' checked='checked' />正常(0元/月)<br/>");
+        html.push("<input name='rdAssessmentResultNodes'  type='radio' value='轻度依赖' ServerSubsidies='810' disabled='disabled'  />轻度依赖(810元/月)<br/>");
+        html.push("<input name='rdAssessmentResultNodes'  type='radio' value='中度依赖' ServerSubsidies='1080' disabled='disabled' />中度依赖(1080元/月)<br/>");
+        html.push("<input name='rdAssessmentResultNodes' type='radio' value='重度依赖' ServerSubsidies='1350' disabled='disabled'  />重度依赖(1350元/月)");
+        html.push("<input name='AssessmentResultNodes' id='AssessmentResultNodes' type='hidden' value='0' />");
+        html.push('</td>');
+        html.push('<td class="title_5">低保金(元/月)</td>');
+        var incomeStatusNodes = 0;
+        if (requisitionInfo.IncomeStatusNodes) {
+            incomeStatusNodes = requisitionInfo.IncomeStatusNodes;
+        }
+        html.push('<td class="title_5">' + (requisitionInfo.IncomeStatus == '00001' ? '<input name="IncomeStatusNodes" id="IncomeStatusNodes" class="txt_bg_04"  value="' + incomeStatusNodes + '" />&nbsp;&nbsp;<input type="button" id="btnCalculate" value="计  算" style="width:80px; height:30px; line-height:15px; font-size:14px;" />' : '') + '</td>');
+        html.push('</tr>');
+        html.push('<tr>');
+        html.push('<td class="title_5" ><input id="isHaveServiceSubsidies" type="checkbox" > 机构运营补贴</td>');
+        html.push('<td class="title_5" colspan="3" >');
+        html.push("<input name='ServiceSubsidies'  type='radio' value='0' textValue='正常' disabled='disabled' />正常(0元/月)");
+        html.push("&nbsp;&nbsp;<input name='ServiceSubsidies'  type='radio' textValue='轻度' value='100' disabled='disabled' />轻度(100元/月)");
+        html.push("&nbsp;&nbsp;<input name='ServiceSubsidies'  type='radio' textValue='中度' value='200' disabled='disabled' />中度(200元/月)");
+        html.push("&nbsp;&nbsp;<input name='ServiceSubsidies'  type='radio' textValue='重度' value='300' disabled='disabled' />重度(300元/月)");
+        html.push("</td>");
+        html.push('</tr>');
+        html.push(_.map(serverTypeTo, function (o) {
+            var htm = [];
+            htm.push('<tr>');
+            htm.push('<td colspan="2" class="title_5">' + o.ItemName + '</td>');
+            htm.push('<td colspan="2" class="title_5">');
+            htm.push('<input name="' + (o.ItemId == "00003" ? "DccResult" : (o.ItemId == "00002" ? "PamResult" : "OcaResult")) + '" id="txt-ServeItemType-' + o.ItemId + '"  disabled="disabled" class="txt_bg_02" />')
+            htm.push('</td>');
+            htm.push('</tr>');
+            return htm.join("");
+        }).join(""));
+        html.push('</table');
+
+        return html.join("");
+    }
+
+    //初始化服务站信息
+    function InitComboboxServerStation(bInit, strterm) {
+        var data = _.filter(toServerStations, function (o) { return o.StationType2 == strterm });
+
+        if (bInit) {
+            $('#ServerStationId').combobox({
+                mode: 'local',
+                width: 152,
+                panelHeight: 80,
+                data: data,
+                valueField: 'StationId',
+                textField: 'StationName',
+                filter: function (q, row) {
+                    var str = q.toUpperCase();
+                    var bRet = false;
+                    var tmpstr = row["StationName"];
+                    if (tmpstr && tmpstr.indexOf(str) > -1) {
+                        bRet = true;
+                    }
+                    var tmpstr = row["InputCode1"];
+                    if (tmpstr && tmpstr.indexOf(str) > -1) {
+                        bRet = true;
+                    }
+                    var tmpstr = row["InputCode2"];
+                    if (tmpstr && tmpstr.indexOf(str) > -1) {
+                        bRet = true;
+                    }
+                    return bRet;
+                }
+            });
+        }
+        else {
+            $('#ServerStationId').combobox('loadData', data);
+        }
+
+        //隐藏
+        if (strterm) {
+            $('#ServerStationId').combobox("enable");
+        } else {
+            $('#ServerStationId').combobox("disable");
+        }
+    }
+
+    //计算总分
+    function calculateEvaluationItemTotalScore() {
+        var rootNode = $('#tree-evaluation-params').tree('getRoot');
+        var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+
+        var iTotalScore = 0;
+        _.each(_.filter(childNodes, function (i) { return i.attributes.UIColumn }), function (o) {
+            var resultKey = o.attributes.UIResultKey.split("|");
+            var strItemScore = $('input[name="' + resultKey[1] + '"').val();
+
+            if (strItemScore) iTotalScore += parseInt(strItemScore);
+        });
+
+        $('input[name="AssessmentScores"]').val(iTotalScore);
+    }
+
+
+    //返回交叉表评估结果
+    function retCrossTabResult(iscoures, treeNodeObj) {
+        var igrade = 1; //返回结果
+
+        var crossTabResultKeyWord = treeNodeObj.attributes.UIResultKey.split("|");
+        if(crossTabResultKeyWord&&crossTabResultKeyWord.length>0){
+            if (crossTabResultKeyWord[0] == "LifeSkills") {
+                if (uiDictionaryItem.uiTree == 12003) {
+                    switch (true) {
+                        case iscoures == 0:
+                            igrade = 1;
+                            break;
+                        case iscoures > 0 && iscoures < 10:
+                            igrade = 2;
+                            break;
+                        case iscoures >= 10 && iscoures <= 30:
+                            igrade = 3;
+                            break;
+                        case iscoures > 30 && iscoures < 51:
+                            igrade = 4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (uiDictionaryItem.uiTree == 12005) {
+                    switch (true) {
+                        case iscoures == 0:
+                            igrade = 1;
+                            break;
+                        case iscoures > 0 && iscoures <= 10:
+                            igrade = 2;
+                            break;
+                        case iscoures > 10 && iscoures <= 50:
+                            igrade = 3;
+                            break;
+                        case iscoures > 50 && iscoures <= 100:
+                            igrade = 4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if (crossTabResultKeyWord[0] == "CognitiveSkills") {
+                if (uiDictionaryItem.uiTree == 12005) {
+                    switch (true) {
+                        case iscoures == 0:
+                            igrade = 1;
+                            break;
+                        case iscoures > 0 && iscoures <= 5:
+                            igrade = 2;
+                            break;
+                        case iscoures > 5 && iscoures <= 10:
+                            igrade = 3;
+                            break;
+                        case iscoures > 10 && iscoures <= 20:
+                            igrade = 4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        return igrade;
+    }
+
+    //返回交叉表评估备注
+    function retCrossTabRemark(treeNodeObj) {
+        var strRemark = ""; //返回结果
+
+        var crossTabResultKeyWord = treeNodeObj.attributes.UIResultKey.split("|");
+        if (crossTabResultKeyWord && crossTabResultKeyWord.length > 0) {
+            if (crossTabResultKeyWord[0] == "LifeSkills") {
+                if (uiDictionaryItem.uiTree == 12003) {
+                    strRemark = "注：正常(0分)、轻度依赖(0＜X≤9分)、中度依赖(9＜X≤30分)、重度依赖(30＜X≤50分)";
+                }
+                else if (uiDictionaryItem.uiTree == 12005) {
+                    strRemark = "注：正常(0分)、轻度失能(0＜X≤10分)、中度失能(10＜X≤50分)、重度失能(50＜X≤100分)";
+                }
+            }
+            else if (crossTabResultKeyWord[0] == "CognitiveSkills") {
+                if (uiDictionaryItem.uiTree == 12005) {
+                    strRemark = "注：正常(0分)、轻度缺失(0＜X≤5分)、中度缺失(5＜X≤10分)、重度缺失(10＜X≤20分)";
+                }
+            }
+        }
+
+        return strRemark;
+    }
+
+
+    //象山专用--计算评估结果
+    function calculateReportResult() {
+        if (uiDictionaryItem.uiTree != 12005) return;
+
+        var rootNode = $('#tree-evaluation-params').tree('getRoot');
+        var childNodes = $('#tree-evaluation-params').tree('getChildren', rootNode.target);
+
+        var txtReportResult = _.map(_.filter(childNodes, function (i) { return i.attributes.UIColumn }), function (o) {
+            var resultKey = o.attributes.UIResultKey.split("|");
+
+            var strtxt = $('input[name="rdResult-' + resultKey[0] + '"]:checked').next().html();
+            $('input[name="text-' + resultKey[1] + '"').val(strtxt);
+
+
+            return strtxt;
+        }).join("|");
+
+        var ret;
+        if (txtReportResult) {
+            if (txtReportResult.indexOf("重度") > -1) {
+                ret = "重度依赖"
+            }
+            else if (txtReportResult.indexOf("中度") > -1) {
+                ret = "中度依赖";
+            }
+            else if (txtReportResult.indexOf("轻度") > -1) {
+                ret = "轻度依赖";
+            }
+            else {
+                ret = "正常";
+            }
+        }
+
+        $("input[name='rdAssessmentResult'][value='" + ret + "']").prop("checked", "checked");
+        $("input[name='AssessmentResult']").val(ret);
+
+        var btnRadio = $("input[name='rdAssessmentResultNodes'][value='" + ret + "']");
+        $(btnRadio).prop("checked", "checked");
+        $("#AssessmentResultNodes").val($(btnRadio).attr('ServerSubsidies'));
+    }
+
+
+    function showTR(flowSetp) { 
+        switch (flowSetp) {
+            case '1':
+                $('#tr_Community').hide();
+                $('#tr_Street').hide();
+                $('#tr_City').hide();
+                break;
+            case '2':
+                $('#tr_Street').hide();
+                $('#tr_City').hide();
+                break;
+            case '3':
+                $('#tr_City').hide();
+                break;
+            default:
+                break;
+        }
+    }
+</script>

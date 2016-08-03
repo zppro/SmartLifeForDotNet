@@ -1,0 +1,62 @@
+﻿<div id="service-B180101" class="1024X768">
+    <div class="oldman-info-panel">&nbsp;</div>
+    <div class="service-middle">
+        <!--<iframe class="location-panel"  scrolling="no" frameborder="0"  ></iframe>-->
+        <div id="location-panel" class="location-panel">地图载入中...</div>
+        <div class="service-process-panel" >&nbsp;
+        </div>
+    </div>
+    <div id="emergency-aid-panel" class="right-panel" >
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize('service-B180101');
+            var urlRoot;
+            var outside = getQueryString('outside');
+            if (outside == "1") {
+                urlRoot = getUrlRootFromOutside('views/');
+            }
+            else {
+                urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+            }
+            //$('#oldman-info-panel').get('../shared/oldman-info-panel.htm');
+            getHtml(urlRoot + 'shared/oldman-info-panel.htm', function (str) {
+                $('#service-B180101 .oldman-info-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'shared/service-process-panel.htm', function (str) {
+                $('#service-B180101 .service-process-panel').html(str);
+            });
+
+            getHtml(urlRoot + 'old-care/emergency-aid-panel.htm', function (str) {
+                $('#service-B180101 #emergency-aid-panel').html(str);
+            });
+
+            //地图
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            if (pageData) { 
+                if (pageData.LongitudeS) {
+                    longitude = pageData.LongitudeS;
+                }
+                if (pageData.LatitudeS) {
+                    latitude = pageData.LatitudeS;
+                }
+            }
+
+            //$('#service-B180101 .location-panel').attr('src', '../shared/location-panel.htm?longitude=' + longitude + '&latitude=' + latitude);
+            initMap("location-panel", longitude, latitude);
+
+
+        });
+    });
+
+</script>

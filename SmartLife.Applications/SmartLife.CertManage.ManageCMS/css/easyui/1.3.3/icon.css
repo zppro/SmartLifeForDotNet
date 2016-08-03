@@ -1,0 +1,152 @@
+.icon-prev
+{
+    background: url('icons/back.gif') no-repeat center center;
+}
+.icon-next
+{
+    background: url('icons/next.gif') no-repeat center center;
+}
+.icon-blank
+{
+    background: url('icons/blank.gif') no-repeat center center;
+}
+.icon-add
+{
+    background: url('icons/edit_add.png') no-repeat center center;
+}
+.icon-edit
+{
+    background: url('icons/pencil.png') no-repeat center center;
+}
+.icon-remove
+{
+    background: url('icons/edit_remove.png') no-repeat center center;
+}
+.icon-save
+{
+    background: url('icons/filesave.png') no-repeat center center;
+}
+.icon-cut
+{
+    background: url('icons/cut.png') no-repeat center center;
+}
+.icon-ok
+{
+    background: url('icons/ok.png') no-repeat center center;
+}
+.icon-no
+{
+    background: url('icons/no.png') no-repeat center center;
+}
+.icon-cancel
+{
+    background: url('icons/cancel.png') no-repeat center center;
+}
+.icon-reload
+{
+    background: url('icons/reload.png') no-repeat center center;
+}
+.icon-search
+{
+    background: url('icons/search.png') no-repeat center center;
+}
+.icon-print
+{
+    background: url('icons/print.png') no-repeat center center;
+}
+.icon-help
+{
+    background: url('icons/help.png') no-repeat center center;
+}
+.icon-undo
+{
+    background: url('icons/undo.png') no-repeat center center;
+}
+.icon-redo
+{
+    background: url('icons/redo.png') no-repeat center center;
+}
+.icon-back
+{
+    background: url('icons/back.png') no-repeat center center;
+}
+.icon-sum
+{
+    background: url('icons/sum.png') no-repeat center center;
+}
+.icon-tip
+{
+    background: url('icons/tip.png') no-repeat center center;
+}
+.icon-loud
+{
+    background: url('icons/loud.png') no-repeat center center;
+}
+.icon-script
+{
+    background: url('icons/script.gif') no-repeat center center;
+}
+.icon-copy
+{
+    background: url('icons/copy.gif') no-repeat center center;
+}
+.icon-mini-add
+{
+    background: url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit
+{
+    background: url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh
+{
+    background: url('icons/mini_refresh.png') no-repeat center center;
+}
+
+.ui-icon
+{
+    width: 16px;
+    height: 16px;
+    background-image: url(../../ui-lightness/images/ui-icons_222222_256x240.png);
+}
+.ui-icon-extlink
+{
+    background-position: -32px -80px;
+}
+
+.icon-max1
+{
+    width: 16px;
+    height: 16px;
+    background: url('icons/max1.gif') no-repeat center center;
+}
+.icon-max2
+{
+    width: 16px;
+    height: 16px;
+    background: url('icons/max2.gif') no-repeat center center;
+}
+.icon-selectall
+{
+    background: url('icons/select.gif') no-repeat;
+    background-position: 0 -18px;
+    height: 16px;
+}
+.icon-selectone
+{
+    background: url('icons/select.gif') no-repeat;
+    background-position: 0 0;
+    height: 16px;
+}
+.icon-deselectall
+{
+    background: url('icons/select.gif') no-repeat;
+    background-position: 0 -54px;
+    height: 16px;
+}
+.icon-deselectone
+{
+    background: url('icons/select.gif') no-repeat;
+    background-position: 0 -36px;
+    height: 16px;
+}

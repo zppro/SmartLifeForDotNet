@@ -1,0 +1,443 @@
+﻿<div id="service-process-archive-history"></div>
+<div class="service-process-title">
+    服务过程记录</div>
+<div id="service-process-content-life" style="margin-left: 15px;">
+</div>
+<div id="do-process-box-c0">
+    <table style="width: 100%;">
+        <tr id="trHeader1" class="Query">
+            <th>
+                服务类型
+            </th>
+            <th>
+                服务项目
+            </th>
+            <th>
+                关键字
+            </th>
+            <th>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+        <tr id="trHeader2" class="MatchAll">
+            <th>
+                服务大类
+            </th>
+            <th>
+                服务小类
+            </th>
+            <th>
+                服务方式
+            </th>
+            <th>
+                <div id="service-radius">
+                    服务半径</div>
+                <div id="result-Message">
+                    结余信息</div>
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <select id="life-service-item-A">
+                </select>
+            </td>
+            <td>
+                <select id="life-service-item-B" >
+                </select>
+            </td>
+            <td>
+                <input type="text" id="keyword" class="Query" style="float: left;" />
+                <select id="life-service-mode" class="MatchAll" style="display: none;">
+                </select>
+            </td>
+            <td>
+                <select id="life-service-radius" style="float: left;">
+                </select>
+                <label id="life-result-Message">本月0小时
+                </label>
+            </td>
+            <td>
+                <a id="btnQuery" class="button-red-0 Query" style="float: left;">查询</a> 
+                <a id="btnMatch" class="button-match MatchAll" style="float: right; "></a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="do-process-box-c1">
+    <div style="float: left; padding-top: 5px;">
+        处理过程录入:&nbsp;&nbsp;</div>
+    <input type="text" id="do-process-box" style="float: left" /><a id="btnSendTrackLog"
+        class="button-red-sendlog" style="float: right">发送</a>
+</div>
+<div id="do-process-box-c2">
+    <div class="servcietype">
+        <select id="ServcieType">
+            <option>紧急救助</option>
+            <option>亲人通话</option>
+            <option>娱乐资讯</option>
+            <option>生活服务</option>
+        </select>
+    </div>
+    <div class="servcieaidprocess">
+        <a id="btnHoldRetreive" class="button-red-0 shield" >呼叫保持</a>
+        <a id="btnCallsTransfer" class="button-red-0 shield"  >转接班长</a>
+        <a id="btnGovernmentService" class="button-red-0" >即时服务</a> 
+        <a id="btnSaveAndClose" class="button-red-0" >保存关闭</a> 
+        <a id="btnFinishCallService" class="button-red-0" >完成派单</a>
+        <input type="hidden" id="gov-ServiceCatalog"/>
+    </div>
+</div>
+<div id="life-aid-panel-Service" style="width: 800px; height: 400px;">
+</div>
+<div id="calltransfer-block"></div>
+<div id="service-history-block"></div>
+
+<script type="text/javascript">
+    var fromWhere = "life-aid-process-panel.htm";
+    var urlRoot;
+    var outside = getQueryString('outside');
+    if (outside == "1") {
+        urlRoot = getUrlRootFromOutside('views/');
+    }
+    else {
+        urlRoot = $('#tt').size() == 0 ? "../" : "views/";
+    }
+    var linkageSel;
+    var govTurnkeyFlag;
+    $(function () {
+
+        var linkageselData = {};
+
+        if (pageData) {
+            if (window.parent.location.href.toString().indexOf("fromGov") < 0) {
+                getTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + pageData.OldManId, null, function (ret) {
+                    if (ret.instance) {
+                        govTurnkeyFlag = ret.instance["GovTurnkeyFlag"];
+                    }
+                }, { async: false });
+            }
+            if (govTurnkeyFlag) {
+                putTo(baseCMSInvokeUrl + '/Oca/CallService/' + pageData.CallServiceId, $.toJSON({ ServiceCatalog: '00002' }), function (ret) {
+                    if (ret.Success) {
+                        $('#gov-ServiceCatalog').val("00002");
+
+                    }
+                });
+
+            }
+        }
+
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItemWithExtendInfo/11012,[{"ExtendCol":"ProcessType","ExtendColType":"s"}]',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItem/11013',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItem/11014',
+                top.ajaxData_InvokeUrl + '/GetDictionaryItemWithExtendInfo/11015,[{"ExtendCol":"Radius","ExtendColType":"i"}]'], function (ServeItemAs, ServeItemBs, serviceModes, serviceRadiuses) {
+                    _.each(ServeItemAs, function (o) {
+                        linkageselData[o.ItemId] = { name: o.ItemName, value: o.ItemId, processType: _.findWhere(o.ExtendInfos, { "ExtendCol": "ProcessType" }).ExtendValue, cell: {}
+                        };
+                        _.each(ServeItemBs, function (o2) {
+                            if (o2.ItemId.indexOf(o.ItemCode) == 0) {
+                                linkageselData[o.ItemId].cell[o2.ItemId] = { name: o2.ItemName, value: o2.ItemId };
+                            }
+                        });
+                    });
+                    if (top.pageData == undefined) {
+
+                    }
+                    var ops;
+                    if ($('#gov-ServiceCatalog').val() == "00002") {
+                        var beSelected = '00001';
+                        ops = {
+                            data: linkageselData,
+                            select: ['#life-service-item-A', '#life-service-item-B'],
+                            defVal: beSelected,
+                            head: false
+                        };
+                        $('#life-service-item-A').val(beSelected).attr("disabled", true);
+                        $('#life-service-mode').val(beSelected).attr("disabled", true);
+                        $('#service-radius').hide();
+                        $('#life-service-radius').hide();
+                        //$('#life-service-item-B').trigger('change');
+
+                        $('#life-service-item-B').unbind('change').bind('change', function () {
+                            //根据服务小类改变结余信息
+                            var selectedServeItemB = $("#life-service-item-B  option:selected").val();
+                            getRemains(selectedServeItemB);
+
+                            //自动匹配到商家
+                            if (govTurnkeyFlag) {
+                                //点击事件
+                                $('#btnMatch').trigger('click');
+                            }
+                        });
+                    }
+                    else {
+                        linkageselData = _.omit(linkageselData, "00001");
+                        ops = {
+                            data: linkageselData,
+                            select: ['#life-service-item-A', '#life-service-item-B'],
+                            defVal: '00003',
+                            head: false
+                        };
+                        $('#result-Message').hide();
+                        $('#life-result-Message').hide();
+                        $('#btnGovernmentService').hide();
+                    }
+                    $('#life-service-mode').html(_.map(serviceModes, function (o) {
+                        return '<option value="' + o.ItemId + '">' + o.ItemName + '</option>';
+                    }).join(""));
+                    $('#life-service-radius').html(_.map(serviceRadiuses, function (o) {
+                        var val = _.findWhere(o.ExtendInfos, { "ExtendCol": "Radius" }).ExtendValue;
+                        return '<option value="' + val + '" id="' + o.ItemId + '">' + o.ItemName + '</option>';
+                    }).join(""));
+
+                    $('#life-service-radius option[id=99999]').attr("selected", true);
+
+                    linkageSel = new LinkageSel(ops);
+                    linkageselData = ops = null;
+
+                    var bInitArchive = false;   //默认初次生活服务归档 
+                    linkageSel.onChange(function () {
+                        var d = this.getSelectedDataArr('name'), zip = this.getSelectedData('value');
+                        var processType = this.getSelectedDataArr('processType')[0];
+                        if (processType == "Query") {
+                            $('.Query').show();
+                            $('.MatchAll').hide();
+                        }
+                        else if (processType == "BuyAndMatch" || processType == "Match") {
+                            $('.Query').hide();
+                            $('.MatchAll').show();
+                        }
+
+                        if ($('#gov-ServiceCatalog').val() == "00002") {
+                            var selectedServeItemB = $("#life-service-item-B  option:selected").val();
+                            getRemains(selectedServeItemB);
+                            if (govTurnkeyFlag) {
+                                //点击事件
+                                $('#btnMatch').trigger('click');
+                            }
+                        }
+                        //alert(this.getSelectedDataArr('value')[0]);
+                        //初次服务归档
+                        if (!bInitArchive && pageData.CallServiceId) {
+                            putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON({ ServiceArchive: zip }), function (result) {
+                            });
+                            bInitArchive = true;
+                        }
+                    });
+
+                }); //get-all
+
+        $('#btnQuery').unbind('click').bind('click', function () {
+            var serviceItemA = linkageSel.getSelectedDataArr('value')[0];
+            var serviceItemB = linkageSel.getSelectedDataArr('value')[1];
+            getHtml(urlRoot + 'old-care/life-aid-panel-query.htm', function (str) {
+                var scriptJs = '<script>var serviceItemA="' + serviceItemA + '";var serviceItemB="' + serviceItemB + '";<' + '/script>';
+                $('#life-aid-panel').html(str);
+            });
+            if (top.pageData) {
+                if (recordLog(pageData.CallServiceId, 1, "坐席[11:0:查询]　" + $('#life-service-item-A  option:selected').text() + '　' + $('#life-service-item-B  option:selected').text())) {
+                    fetchServiceTrackLog('service-process-content-life');
+                }
+
+
+            }
+        });
+        $('#btnMatch').unbind('click').bind('click', function () {
+            var oldManId = "5B06502F-956F-469E-9AD0-01B1EAB03293"; //测试用
+            if (top.execMode == "CS") {
+                oldManId = pageData.OldManId;
+            }
+
+            var processType = linkageSel.getSelectedDataArr('processType')[0];
+            var serviceItemA = linkageSel.getSelectedDataArr('value')[0];
+            var serviceItemB = linkageSel.getSelectedDataArr('value')[1];
+            var txtServiceItemB = linkageSel.getSelectedDataArr('name')[1];
+            var serviceMode = $('#life-service-mode').val();
+            var serviceRadius = $('#life-service-radius').val();
+            var serviceRadiusId = $('#life-service-radius option:selected').attr('id');
+
+            getHtml(urlRoot + 'old-care/life-aid-panel-match-all.htm', function (str) {
+                var scriptJs = '<script>var oldManId="' + oldManId + '";var serviceItemA="' + serviceItemA + '";var serviceItemB="' + serviceItemB + '";var txtServiceItemB="' + txtServiceItemB + '";var serviceMode="' + serviceMode + '";var serviceRadius=' + serviceRadius + ';var serviceRadiusId="' + serviceRadiusId + '";<' + '/script>';
+                $('#life-aid-panel').html(scriptJs + str);
+                $('#do-process-box-c1-1').css({ 'margin-top': '0px' });
+                $.parser.parse('#life-aid-panel');
+            });
+            if (top.pageData) {
+                var oldManId = top.pageData.OldManId;
+                var txtRadius = $('#life-service-radius option:selected').text();
+                //if ($('#life-service-item-A').val() == "00001") txtRadius = "不限";
+                if (recordLog(pageData.CallServiceId, 1, "坐席[11:0:匹配]　" + $('#life-service-item-A option:selected').text() + '　' + $('#life-service-item-B option:selected').text() + '　' + $('#life-service-mode option:selected').text() + '　距离' + txtRadius)) {
+                    fetchServiceTrackLog('service-process-content-life');
+                }
+            }
+
+        });
+
+        fetchServiceTrackLog('service-process-content-life');
+        setInterval(function () {
+            fetchServiceTrackLog('service-process-content-life');
+        }, 3000);
+        $('#do-process-box').unbind('keypress').bind('keypress', function (event) {
+            if (event.which == 13) {
+                $('#btnSendTrackLog').trigger('click');
+            }
+        });
+        fetchServiceArchiveHistory('service-process-archive-history');
+        $('#btnSendTrackLog').unbind('click').bind('click', function () {
+            //发送处理日志
+            if (pageData) {
+                var $txt = $('#do-process-box');
+                if ($.trim($txt.val()) == "") {
+                    alertError('请输入处理日志');
+                    $txt.focus();
+                    return;
+                }
+                if (recordLog(pageData.CallServiceId, 1, $txt.val())) {
+                    $txt.val("");
+                    fetchServiceTrackLog('service-process-content-life');
+                }
+            }
+        });
+
+        //新版本屏蔽呼叫保持和呼叫转移功能
+        if (top.execMode == "ForSeat") {
+            $(".shield").hide();
+        }
+        //呼叫保持
+        $('#btnHoldRetreive').unbind('click').bind('click', function () {
+            if (top.execMode == "CS") {
+                toggleHoldRetreive();
+            }
+        });
+        $('#btnSetBusyFree').unbind('click').bind('click', function () {
+            if (top.execMode == "CS") {
+                toggleDialStatus();
+            }
+        });
+
+        function toggleHoldRetreive() {
+            if ($('#btnHoldRetreive').text() == "呼叫保持") {
+                //正常->呼叫保持
+                window.external.SetCallHold();
+            }
+            else if ($('#btnHoldRetreive').text() == "恢复") {
+                //呼叫保持->正常
+                window.external.SetCallRetreive();
+            }
+        }
+
+        //服务类型
+        editServiceTypeSelect(window.location.href.toString(), serviceTypeData, $("#ServcieType"));
+        $("#ServcieType").unbind('change').bind('change', function () {
+            alertConfirm('确定要切换成当前所选择的服务吗？', function (ret) {
+                if (ret == true) {
+                    switchAidServiceType(window.location.href.toString(), pageData, $("#ServcieType"));
+                }
+            });
+        });
+        $('#btnGovernmentService').unbind('click').bind('click', function () {
+            alertConfirm('确定切换即时服务？', function (ret) {
+                if (ret == true) {
+                    var url = window.parent.location.href;
+                    putTo(baseCMSInvokeUrl + '/Oca/CallService/' + pageData.CallServiceId, $.toJSON({ ServiceCatalog: '00001' }), function (result) {
+                        if (result.Success) {
+                            url += "&&fromGov=1";
+                            OpenNewWinAsCallService(url, pageData.CallServiceId);
+                        }
+                    });
+                }
+            });
+        });
+        //呼叫转移
+        $("#btnCallsTransfer").unbind('click').bind('click', function () {
+            getHtml(baseUrl + '/views/dialogs/set-calls-transfer.htm', function (str) {
+
+                $("#calltransfer-block").html(str);
+                $.parser.parse('#fm-calls-transfer,#btn-calls-transfer');
+                $("#dlg-calls-transfer").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () {
+                        onLoadCallsTransfer(pageData);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '转接-对话框');
+            });
+        });
+        $('#btnSaveAndClose').unbind('click').bind('click', function () {
+            if (pageData) {
+                //saveCallService(pageData.CallServiceId, "{}");
+                window.external.CloseWin(false);
+            }
+        });
+        $('#btnFinishCallService').unbind('click').bind('click', function () {
+            //完成
+            if (pageData) {
+                if ($('a', "#workorder-container").size() == 0) {
+                    openDialog2('set-callservice-archive', 'callservice-archive.htm', function (callback, dialogData) {
+                        if (dialogData) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成：此服务属于 ' + dialogData.ArchiveName);
+                            if (success) {
+                                var formData = { DoStatus: 3, DoResults: '处理完成', ServiceArchive: dialogData.ArchiveId, CallBackFlag: dialogData.CallBackFlag };
+                                if (dialogData.EvaluateToOldMan) {
+                                    formData = _.extend(formData, { EvaluateToOldMan: dialogData.EvaluateToOldMan })
+                                }
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON(formData), function (result) {
+                                    //调用CS关闭窗口
+                                    if (window.execMode == "ForSeat") {
+                                        window.external.CloseWin(true);
+                                    }
+                                });
+                            }
+                            else {
+                                callback();
+                            }
+                        }
+                    }, { dialogData: pageData, title: '设置参数', width: 350, height: 450, padding: 5, mergeDefault: true });
+                }
+                else {
+                    alertConfirm('确定此次服务已经完成派单？', function (ret) {
+                        if (ret == true) {
+                            var success = recordLog(pageData.CallServiceId, 0, '处理完成');
+                            if (success) {
+                                putTo(top.callservice_InvokeUrl + '/' + pageData.CallServiceId, $.toJSON({ DoStatus: 3, DoResults: '处理完成' }), function (result) {
+                                    //调用CS关闭窗口
+                                    window.external.CloseWin(true);
+                                }, { async: false });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        //如果是回访，则隐藏完成服务处理按钮
+        if (pageData && pageData.CallBackFlag == 1) {
+            $('#btnFinishCallService').hide();
+        }
+
+        //读取工单列表
+        getWorkOrders('workorder-container', 'workorder-block', pageData.CallServiceId, urlRoot + 'old-care/life-aid-workorder.htm');
+    });   
+
+    function getRemains(serveItemB) {
+        getTo(baseCMSInvokeUrl + '/Oca/EPay_PackageService/GetRemains/' + pageData.OldManId + ',' + serveItemB, null, function (result) {
+            if (result.ret && result.ret.FeeType) {
+                if (result.ret.FeeType == '00001') {
+                    $("#life-result-Message").text("本月" + result.ret.Remain + "次");
+                }
+                else if (result.ret.FeeType == '00002') {
+                    $("#life-result-Message").text("本月" + result.ret.Remain + "小时");
+                }
+            }
+        });
+    }
+</script>

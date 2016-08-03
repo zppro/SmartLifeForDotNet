@@ -1,0 +1,1 @@
+﻿window.parameterData_InvokeUrl = baseCMSInvokeUrl + "/Share/ParameterData";

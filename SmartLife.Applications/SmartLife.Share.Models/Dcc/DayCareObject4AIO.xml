@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Dcc" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="DayCareObject4AIO" type="SmartLife.Share.Models.Dcc.DayCareObject4AIO, SmartLife.Share.Models" /> 
+  </alias>
+  <statements>
+    <select id="DayCareObject4AIO_ListByDCCNo" parameterClass="StringObjectDictionary" resultClass="DayCareObject4AIO" >
+      select IDNo,OldManName as Name,dbo.Func_Tol_GetGenderName(Gender) as Gender
+      from Dcc_OldManBaseInfo_V
+      where ResidentStatus=1 and StationCode=#DCCNo#
+    </select>
+  </statements>
+</sqlMap>

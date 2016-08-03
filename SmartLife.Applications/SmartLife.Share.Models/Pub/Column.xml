@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Column" type="SmartLife.Share.Models.Pub.Column, SmartLife.Share.Models" />
+        <typeAlias alias="ColumnPK" type="SmartLife.Share.Models.Pub.ColumnPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="Column_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_Column(
+            <dynamic prepend=" ">
+                  <isPropertyAvailable prepend=" , " property="ColumnName" >ColumnName</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ColumnCName" >ColumnCName</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="TableName" >TableName</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueType" >ValueType</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueOption" >ValueOption</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="GenericDataType" >GenericDataType</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="DefaultValue" >DefaultValue</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="PrimaryKeyFlag" >PrimaryKeyFlag</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="NullFlag" >NullFlag</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                  <isPropertyAvailable prepend=" , " property="ColumnName" >#ColumnName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ColumnCName" >#ColumnCName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="TableName" >#TableName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueType" >#ValueType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueOption" >#ValueOption#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="GenericDataType" >#GenericDataType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="DefaultValue" >#DefaultValue#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="PrimaryKeyFlag" >#PrimaryKeyFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="NullFlag" >#NullFlag#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="Column_Update" parameterClass="StringObjectDictionary" >
+            update Pub_Column 
+            set 
+            <dynamic prepend=" ">
+                  <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ColumnCName" >ColumnCName=#ColumnCName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueType" >ValueType=#ValueType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="ValueOption" >ValueOption=#ValueOption#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="GenericDataType" >GenericDataType=#GenericDataType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="DefaultValue" >DefaultValue=#DefaultValue#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="PrimaryKeyFlag" >PrimaryKeyFlag=#PrimaryKeyFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" , " property="NullFlag" >NullFlag=#NullFlag#</isPropertyAvailable>
+            </dynamic>     
+            where ColumnName=#ColumnName# and TableName=#TableName#
+        </update>
+        <delete id="Column_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_Column 
+            <dynamic prepend=" WHERE ">
+                  <isPropertyAvailable prepend=" AND " property="ColumnName" >ColumnName=#ColumnName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ColumnCName" >ColumnCName=#ColumnCName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueType" >ValueType=#ValueType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueOption" >ValueOption=#ValueOption#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="GenericDataType" >GenericDataType=#GenericDataType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="DefaultValue" >DefaultValue=#DefaultValue#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="PrimaryKeyFlag" >PrimaryKeyFlag=#PrimaryKeyFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="NullFlag" >NullFlag=#NullFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="Column_Load" parameterClass="ColumnPK" resultClass="Column" >
+            select ColumnName,Id,CheckInTime,Status,OperatedBy,OperatedOn,ColumnCName,TableName,ValueType,ValueOption,GenericDataType,DefaultValue,PrimaryKeyFlag,NullFlag from Pub_Column 
+            where ColumnName=#ColumnName# and TableName=#TableName#
+        </select>
+        <select id="Column_List" parameterClass="StringObjectDictionary" resultClass="Column" >
+            select ColumnName,Id,CheckInTime,Status,OperatedBy,OperatedOn,ColumnCName,TableName,ValueType,ValueOption,GenericDataType,DefaultValue,PrimaryKeyFlag,NullFlag from Pub_Column 
+            <dynamic prepend=" WHERE ">
+                  <isPropertyAvailable prepend=" AND " property="ColumnName" >ColumnName=#ColumnName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ColumnCName" >ColumnCName=#ColumnCName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueType" >ValueType=#ValueType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueOption" >ValueOption=#ValueOption#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="GenericDataType" >GenericDataType=#GenericDataType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="DefaultValue" >DefaultValue=#DefaultValue#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="PrimaryKeyFlag" >PrimaryKeyFlag=#PrimaryKeyFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="NullFlag" >NullFlag=#NullFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                  <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="Column_ListByPage" parameterClass="StringObjectDictionary" resultClass="Column" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ColumnName,Id,CheckInTime,Status,OperatedBy,OperatedOn,ColumnCName,TableName,ValueType,ValueOption,GenericDataType,DefaultValue,PrimaryKeyFlag,NullFlag from Pub_Column 
+            <dynamic prepend=" WHERE ">
+                  <isPropertyAvailable prepend=" AND " property="ColumnName" >ColumnName=#ColumnName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ColumnCName" >ColumnCName=#ColumnCName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueType" >ValueType=#ValueType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="ValueOption" >ValueOption=#ValueOption#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="GenericDataType" >GenericDataType=#GenericDataType#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="DefaultValue" >DefaultValue=#DefaultValue#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="PrimaryKeyFlag" >PrimaryKeyFlag=#PrimaryKeyFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="NullFlag" >NullFlag=#NullFlag#</isPropertyAvailable>
+                  <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap> 

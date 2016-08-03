@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Application" type="SmartLife.Share.Models.Sys.Application, SmartLife.Share.Models" />
+    <typeAlias alias="ApplicationPK" type="SmartLife.Share.Models.Sys.ApplicationPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Application_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Application(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationCode" >ApplicationCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationName" >ApplicationName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >Version</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DownloadUrl" >DownloadUrl</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationCode" >#ApplicationCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationName" >#ApplicationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DownloadUrl" >#DownloadUrl#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Application_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Application
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationCode" >ApplicationCode=#ApplicationCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationName" >ApplicationName=#ApplicationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DownloadUrl" >DownloadUrl=#DownloadUrl#</isPropertyAvailable>
+      </dynamic>
+      where ApplicationId=#ApplicationId#
+    </update>
+    <delete id="Application_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Application
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationCode" >ApplicationCode=#ApplicationCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationName" >ApplicationName=#ApplicationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DownloadUrl" >DownloadUrl=#DownloadUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Application_Load" parameterClass="ApplicationPK" resultClass="Application" >
+      select ApplicationId,Id,Status,ApplicationCode,ApplicationName,AliasName,Version,Picture,OrderNo,Description,DownloadUrl from Sys_Application
+      where ApplicationId=#ApplicationId#
+    </select>
+    <select id="Application_List" parameterClass="StringObjectDictionary" resultClass="Application" >
+      select ApplicationId,Id,Status,ApplicationCode,ApplicationName,AliasName,Version,Picture,OrderNo,Description,DownloadUrl from Sys_Application
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationCode" >ApplicationCode=#ApplicationCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationName" >ApplicationName=#ApplicationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DownloadUrl" >DownloadUrl=#DownloadUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

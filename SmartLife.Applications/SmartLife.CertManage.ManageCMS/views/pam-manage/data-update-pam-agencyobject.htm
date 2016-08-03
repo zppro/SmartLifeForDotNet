@@ -1,0 +1,1112 @@
+﻿<style type="text/css">
+    .baseinfo tr td {  height: 30px; }
+    
+    .baseinfo .rtd { text-align:right; }
+    .baseinfo .ctd { width:30px; text-align:center; }
+    .baseinfo .ctd a {cursor:pointer;}
+    /*.baseinfo .ctd a:hover{ border:1px solid blue;}*/
+    .baseinfo .ltd { text-align:left; }
+    .baseinfo .ntd { width:80px; }
+    
+    /*.agencyinfo { padding:1px;}*/
+    .bed-mot{width:103px; height:40px;margin:10px; float:left; text-align:center; border:solid 1px #006699; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; }
+    .bed-mot1{width:203px; height:30px; line-height:30px;font-size:14px; margin:6px; float:left; text-align:center; border:solid 1px #006699; background:#9ACD32; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; }
+    .bed-mot-body{ margin:4px; text-align:center; vertical-align:middle;}
+
+</style>
+
+<div id="the-navigation-block" class="easyui-dialog" style="width: 930px; height: 490px; 
+    padding: 0px;" closed="true" cache="false" buttons="#btn-navigation-block">
+    <div style=" height:99%; width:100%;" >
+            <div style=" float:left; width:20%; height:100%; border:1px solid grey;">
+                <ul id="tree-pam-admission-params">
+                </ul>
+            </div>
+            <div id="navigation-block" style=" float:right; width:79%;height:100%;border:1px solid grey;" >
+                <div id="Navigation-1301" class="agencyinfo">
+                    <form id="fm-B130302AA" method="post" novalidate>
+                    <input type="hidden" name="ResidentId" id="residentId-B130302AA" />
+                    <input type="hidden" name="DataSource" id="dataSource-B130302AA" />
+                    <table class="baseinfo">
+                        <tr>
+                            <td class="rtd ntd">
+                                姓 名 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="ResidentName" id="ResidentName" class="easyui-validatebox kdown" >
+                            </td>
+                            <td class="ctd">
+                                <a title="查询" searchType="ResidentName" class="someAgencyObject alink nicon-blue nicon-R5C13" ></a>
+                            </td>
+                            <td class="rtd ntd">
+                                性 别 ： 
+                            </td>
+                            <td >
+                                <input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>
+                                <span id="infoReminder" style="color:Red;"></span>
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                身 份 证 ： 
+                            </td>
+                            <td class="ltd">
+                                <input id="IDNo" name="IDNo"    class="easyui-validatebox kdown"  />
+                            </td>
+                            <td class="ctd">
+                                <a title="查询" searchType="IDNo" class="someAgencyObject alink nicon-blue nicon-R5C13" ></a>
+                            </td>
+                            <td class="rtd ntd">
+                                年龄 ：
+                            </td>
+                            <td class="ltd">
+                                <input id="Age" name="Age" class="easyui-validatebox" disabled="true" />
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                街道社区 ： 
+                            </td>
+                            <td colspan="4" class="ltd">
+                                <input name="AreaIdStreet" id="AreaIdStreet" />
+                                <input name="AreaIdCommunity" id="AreaIdCommunity" />
+                                <input type="hidden" name="AreaId2" id="AreaId2" />
+                                <input type="hidden" name="AreaId3" id="AreaId3" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                座 机 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="Tel" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                手 机 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="Mobile" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                籍 贯 ： 
+                            </td>
+                            <td class="ltd">
+                                <input id="NativePlace1" />
+                                <input type="hidden" name="NativePlace" id="NativePlace" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                户口类型 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="AccountType" id="AccountType" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                户 籍 ： 
+                            </td>
+                            <td class="ltd">
+                                <input id="HouseholdRegister1" />
+                                <input type="hidden" name="HouseholdRegister" id="HouseholdRegister" />
+                            </td>
+                            <td class="ctd"></td>
+                            <td class="rtd ntd">
+                                详细地址 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="PlaceOfHouseholdRegister" id="PlaceOfHouseholdRegister" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                现居地址 ： 
+                            </td>
+                            <td class="ltd">
+                                <input id="ResidentialOfHometown1" />
+                                <input type="hidden" name="ResidentialOfHometown" id="ResidentialOfHometown" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                详细地址 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="ResidentialAddress" id="ResidentialAddress"  required="true" missingmessage="详细地址不能为空"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                邮 编 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="PostCode" maxlength="6" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                民 族 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="Nation" id="Nation" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                文化程度 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="EducationLevel" id="EducationLevel" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                婚姻状况 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="Marriage" id="Marriage" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                收入情况 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="IncomeStatus" id="IncomeStatus" />
+                            </td>
+                            <td class="ctd">
+                            </td>
+                            <td class="rtd ntd">
+                                住房情况 ： 
+                            </td>
+                            <td class="ltd">
+                                <input name="HousingStatus" id="HousingStatus" />
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td class="rtd ntd">
+                                备 注 ：
+                            </td>
+                            <td colspan="4" class="ltd">
+                                <textarea name="Remark" style="width: 370px;" maxlength="400"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+                <div id="Navigation-1302" class="agencyinfo">
+                    <form id="fm-B130302AAA" method="post" novalidate>
+                        <table class="baseinfo">
+                            <tr>
+                                <td class="rtd ntd">呼叫号码 ：</td>
+                                <td colspan="4" class="ltd"><input name="CallNo3" /></td>
+                            </tr>
+                         </table>
+                    </form>
+                </div>
+                <div id="Navigation-1303" class="agencyinfo">
+                    <div style=" float:left; width:25%;border-right:1px solid grey; height:415px;">
+                        <ul id="tree-B130302AAAA"></ul>
+                    </div>
+                    <div id="room-beds" style="float:right; width:74%;height:415px;">
+                        <div style="width:100%;height:46px;">
+                            <div style=" float:left;width:20%;height:100%;line-height:46px;font-size:14px;"> 当前房间床位：</div>
+                            <div id="oldman-room-bed" style="float:left;width:79%;height:100%;"></div>
+                        </div>
+                        <div style="width:100%;height:34px; line-height:34px; font-size:14px;">剩余房间床位：</div>
+                        <div id="room-empty-beds" style=" width:100%;height:335px;overflow-y:auto"></div>
+                    </div>
+                    <form id="fm-B130302AAAA" method="post" novalidate>
+                        <input type="hidden" name="RoomId" id="RoomId" />
+                        <input type="hidden" name="SickBedNo" id="SickBedNo" />
+                    </form>
+                </div>
+                <div id="Navigation-1304" class="agencyinfo" style="width:100%;height:100%;">
+                    <table id="dg-Navigation-WorkItems"></table>
+                </div>
+            </div>
+    </div>
+
+    <div id="dlg-search-B130302AA-c" style="display:none;">
+    <div id="dlg-search-B130302AA" class="easyui-dialog" style="width: 930px; height: 490px; padding: 0px;"
+    closed="true" cache="false" buttons="#btn-search-B130302AA"  >
+        <div id="toolbar-B130302AA">
+            <table width="100%">
+                <tr>
+                    <td style="width: 90px;">
+                    </td>
+                    <td style="text-align:left">
+                        关键字：<input name="KeyWord-B130302AA" id="KeyWord-B130302AA" class="easyui-validatebox" />
+                    </td> 
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton moreAgencyObject" iconcls="icon-ok">
+                            查询</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="emptyMoreAgencyObject()">
+                            清空</a>
+                    </td>
+                    <td style="width: 90px;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="dg-B130302AA">
+        </table>
+    </div>
+    <div id="btn-search-B130302AA">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="choiceSearchDlg()">确定</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="closeSearchDlg()">取消</a>
+    </div>
+    </div>
+</div>
+<div id="btn-navigation-block">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo" onclick="toggleTreeSelected(false)">上一步</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-redo" onclick="toggleTreeSelected(true);">下一步</a>
+    <a id="btnSaveAdmission" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="toSaveAdmission(this)" style=" display:none;">完成</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancelAdmission()">关闭</a>
+</div>
+
+
+
+<script type="text/javascript">
+    var CurrentAgencyStationId; //当前机构站点id
+    var editIndex;  //编辑行号
+    var areas, allJQAreaDatas, allSQAreaDatas;
+    var strRStatus;
+
+    function loadAdmissionContent(dialogData) {
+        CurrentAgencyStationId = dialogData.StationId;
+        allJQAreaDatas = dialogData.JDAreaDatas;
+        allSQAreaDatas = dialogData.SQAreaDatas;
+        strRStatus = dialogData.RStatus;
+
+        //初试化
+        initTree('easyUITree', 'tree-pam-admission-params', {
+            onSelect: function (treeNode) {
+                $('#navigation-block .agencyinfo').hide();
+                $('#Navigation-' + treeNode.id).show();
+
+                if (treeNode.id == '1304') {
+                    $('#dg-Navigation-WorkItems').datagrid('resize');
+                }
+            }
+        }, function (d) {
+            var nodes = [{ "attributes": "{PId:\"_\",Levels:\"1\",EndFlag:\"0\",OrderNo:\"0\"}", "id": "13", "isParent": false, "levels": 1, "name": "机构入院", "pId": "_" },
+                         { "attributes": "{PId:\"13\",Levels:\"2\",EndFlag:\"0\",OrderNo:\"1301\"}", "id": "1301", "isParent": false, "levels": 2, "name": "基本信息", "pId": "13" },
+                         { "attributes": "{PId:\"13\",Levels:\"2\",EndFlag:\"0\",OrderNo:\"1302\"}", "id": "1302", "isParent": false, "levels": 2, "name": "配置信息", "pId": "13" },
+                         { "attributes": "{PId:\"13\",Levels:\"2\",EndFlag:\"0\",OrderNo:\"1303\"}", "id": "1303", "isParent": false, "levels": 2, "name": "入住房间", "pId": "13" },
+                         { "attributes": "{PId:\"13\",Levels:\"2\",EndFlag:\"0\",OrderNo:\"1304\"}", "id": "1304", "isParent": false, "levels": 2, "name": "服务项目", "pId": "13"}]
+            if (d) {
+                d.apply(this, [nodes]);
+            }
+        }, null, function (treeObj) {
+            //默认选择一项
+            var defaultNode = $(treeObj).tree('find', '1301');
+            if (defaultNode) {
+                $(treeObj).tree("select", defaultNode.target);
+            }
+
+            //街道
+            $('#AreaIdStreet').combobox({
+                width: 152,
+                panelHeight: 80,
+                data: allJQAreaDatas,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    return row['ItemName'].indexOf(q) > -1;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if (!$('#AreaIdStreet').combo('getText')) {
+                        $('#AreaIdCommunity').combobox('setValue', '');
+                        $('#AreaId2').val('');
+                        $('#AreaId3').val('');
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaId2').val(d.ItemId);
+
+                    var tmpSQAreaDatas = _.filter(dialogData.SQAreaDatas, function (o) { return o.ParentId == d.ItemId; });
+                    //筛选当前街道下的社区
+                    $('#AreaIdCommunity').combobox('loadData', tmpSQAreaDatas);
+                    //如果该街道下有社区，则自动填充
+                    if (tmpSQAreaDatas && tmpSQAreaDatas.length > 0) {
+                        $('#AreaIdCommunity').combobox('setValue', tmpSQAreaDatas[0].ItemId);
+                        $('#AreaId3').val(tmpSQAreaDatas[0].ItemId);
+                    }
+                    else {//否则为空
+                        $('#AreaIdCommunity').combobox('setValue', '');
+                        $('#AreaId3').val('');
+                    }
+                }
+            });
+            //社区
+            $('#AreaIdCommunity').combobox({
+                width: 152,
+                panelHeight: 80,
+                data: allSQAreaDatas,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    return row['ItemName'].indexOf(q) > -1;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if (!$('#AreaIdCommunity').combo('getText')) {
+                        $('#AreaId3').val('');
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                    $('#AreaId2').val(d.ParentId);
+                    $('#AreaId3').val(d.ItemId);
+                }
+            });
+
+            setCombobox("ResidentBizId", dialogData.ResidentBizIds);
+            setCombobox("AccountType", dialogData.AccountTypes);
+            setCombobox("EducationLevel", dialogData.EducationLevels)
+            setCombobox("Marriage", dialogData.Marriages);
+            setCombobox("HousingStatus", dialogData.HousingStatus);
+            setCombobox("IncomeStatus", dialogData.IncomeStatus);
+            setCombobox("Nation", dialogData.Nations);
+
+            //筛选
+            SetCombogrid("/GetDictionaryItemByKeyword/00005,", "NativePlace1", "NativePlace");
+            SetCombogrid("/GetDictionaryItemByKeyword/00005,", "ResidentialOfHometown1", "ResidentialOfHometown");
+            SetCombogrid('/GetAreaVByKeyWord/', 'HouseholdRegister1', 'HouseholdRegister', { key: 'AreaId', value: 'AreaName' });
+
+            //填充表单
+            fillAgencyObjectBaseInfo(dialogData.RowData);
+            //填充呼叫号码
+            if (dialogData.RowData) {
+                $('#fm-B130302AAA').form('load', dialogData.RowData);
+            }
+
+            //初始化机构房间树
+            $('#tree-B130302AAAA').tree({ data: dialogData.treeData,
+                onClick: function (treeNode) {
+                    var strParams = {};
+                    if (treeNode.attributes.PId != "_") {
+                        if (treeNode.attributes.PId == CurrentAgencyStationId.toUpperCase()) {
+                            strParams = _.extend(strParams, { 'FloorNo': treeNode.id });
+                        }
+                        else {
+                            strParams = _.extend(strParams, { 'RoomId': treeNode.id });
+                        }
+                    }
+
+                    //获取剩余床位
+                    loadPamEmptyBeds(strParams);
+                },
+                onLoadSuccess: function () {
+                    //左边的树，默认展开一级
+                    var node = $('#tree-B130302AAAA').tree('getRoot');
+                    $('#tree-B130302AAAA').tree("collapseAll");
+                    $('#tree-B130302AAAA').tree('expand', node.target);
+                }
+            });
+
+            //加载空余房间
+            loadPamEmptyBeds('', dialogData.RowData);
+
+            //加载机构预设服务项
+            $('#dg-Navigation-WorkItems').datagrid(easyuigrid_settings({
+                title: "",
+                fit: true,
+                rownumbers: true,
+                singleSelect: false,
+                onClickRow: function (index, row) {
+                    if (editIndex != index && editIndex > -1) {
+                        $('#dg-Navigation-WorkItems').datagrid('endEdit', editIndex);
+                    }
+
+                    $('#dg-Navigation-WorkItems').datagrid('beginEdit', index);
+                    editIndex = index;
+                },
+                onLoadSuccess: function (data) {
+                    _.each(data.rows, function (o, idx) {
+                        if (o.Preferred > 0) {
+                            $("#dg-Navigation-WorkItems").datagrid("selectRow", idx);
+                        }
+                    });
+                },
+                columns: [[
+                    { field: 'WorkItem', title: '项目编号', width: 80, align: 'center', hidden: true },
+                    { field: 'CK', title: '', align: 'center', checkbox: true },
+                    { field: 'ItemName', title: '工作项', width: 120, align: 'center' },
+                    { field: 'CheckFlag', title: '确认服务', width: 60, align: 'center', formatter: function (value, row) {
+                        return value == '1' ? "是" : "否";
+                    },
+                        editor: {
+                            type: 'combobox',
+                            options: {
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                data: [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}],
+                                editable: false
+                            }
+                        }
+                    },
+                    { field: 'WorkSchedule', title: '工作计划', align: 'center', width: 80, editor: 'text' },
+                    { field: 'Workload', title: '工作量(分)', align: 'center', width: 70, editor: 'numberbox' },
+                    { field: 'RemindFlag', title: '提醒标识', align: 'center', width: 60, formatter: function (value, row) {
+                        return value == '1' ? "是" : "否";
+                    },
+                        editor: {
+                            type: 'combobox',
+                            options: {
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                data: [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}],
+                                editable: false
+                            }
+                        }
+                    },
+                    { field: 'RemindRepeats', title: '提醒次数', align: 'center', width: 60, editor: 'numberbox' },
+                    { field: 'PlayRepeats', title: '播放次数', width: 60, align: 'center', editor: 'numberbox' },
+                    { field: 'CheckDescription', title: '备注', align: 'center', width: 120, editor: 'text' }
+                ]]
+            }));
+
+            loadPamWorkItems(dialogData.RowData);
+
+        }); //end loadTree
+
+
+        //获取区域
+        getTo(baseCMSInvokeUrl + '/Sys/DictionaryItemService/Query?parms=' + $.toJSON({ 'DictionaryId': '00005', 'ItemId': (top.objectId == '*' ? '00000' : top.appDeployArea.id) }), null, function (result) {
+            getTo(ajaxData_InvokeUrl + '/GetCityAndAreaInProvince/' + result.rows[0].ParentId, null, function (result) {
+                areas = result;
+            }, { async: false });
+        }, { async: false });
+
+        //阻止粘贴事件引发的二次验证
+        var strIDNo;
+        //输入过滤
+        $('#IDNo').unbind("input propertychange").bind("propertychange input", function () {
+            var tmpIDNo = $(this).val();
+            var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if (reg.test(tmpIDNo) && strIDNo != tmpIDNo) {
+                $('#btnSaveAdmission').hide();
+                strIDNo = tmpIDNo;
+                //查询身份证
+                admission("IDNo", tmpIDNo);
+            }
+        });
+
+        //查询事件--精确查询
+        $("#Navigation-1301 .kdown").unbind("keydown").bind("keydown", function (e) {
+            if (e.keyCode == 13) {
+                //赋值
+                var keyIdName = $(this).attr("id");
+                admission(keyIdName, $(this).val());
+            }
+        });
+        $("#Navigation-1301 .someAgencyObject").unbind("click").bind("click", function (e) {
+            var keyFlag = $(this).attr("searchType");
+            var keyWord = $("#Navigation-1301 #" + keyFlag).val();
+
+            admission(keyFlag, keyWord);
+        });
+
+        //查询事件-模糊查询
+        $("#dlg-search-B130302AA #KeyWord-B130302AA").unbind("keydown").bind("keydown", function (e) {
+            if (e.keyCode == 13) {
+                admission('', $(this).val());
+            }
+        });
+        $("#dlg-search-B130302AA .moreAgencyObject").unbind("click").bind("click", function () {
+            var keyWord = $("#dlg-search-B130302AA #KeyWord-B130302AA").val();
+            admission('', keyWord);
+        });
+
+        
+        //有值-编辑
+        if (dialogData.RowData) {
+            $('#IDNo').prop("disabled", "disabled");
+            $('#btnSaveAdmission').attr("isAdd", "no").show();
+
+            $("#Navigation-1301 .kdown,#dlg-search-B130302AA #KeyWord-B130302AA").unbind("keydown");
+            $("#Navigation-1301 .someAgencyObject,#dlg-search-B130302AA .moreAgencyObject").unbind("click");
+        }
+
+    }
+
+    function clearAdmissionContent() {
+        //判断是否初始化过 datagrid 判断dlg-search-B130302AA对话框
+        var iInit = $('#dg-B130302AA').closest('.datagrid-view').length;
+        if (iInit) {
+            $('#dlg-search-B130302AA').dialog('destroy');
+        }
+    }
+
+    function doCancelAdmission() {
+        $('#the-navigation-block').dialog('close');
+    }
+
+
+    //导航
+    function toggleTreeSelected(bNext) {
+        var selectOldNode = $('#tree-pam-admission-params').tree('getSelected');
+        var findId = bNext ? parseInt(selectOldNode.id) + 1 : parseInt(selectOldNode.id) - 1;
+        var selectNewNode = $('#tree-pam-admission-params').tree('find', findId);
+        if (selectNewNode) {
+            if (bNext) {
+                
+            }
+            $("#tree-pam-admission-params").tree("select", selectNewNode.target);
+        }
+    }
+
+    function toSaveAdmission(obj) {
+        //表单信息
+        var formData = $('#navigation-block form').serializeObject();
+        //入院信息
+        var admissionParams = { 'OldManId': formData.ResidentId, 'CallNo': formData.CallNo3 };
+        //验证呼叫号码是否为数字
+        reg = /^\d+$/;
+        if (admissionParams.CallNo && !reg.test(admissionParams.CallNo)) {
+            alertInfo("配置信息，请输入正确的呼叫号码格式!");
+            return;
+        }
+        //--房间
+        if (formData.RoomId) {
+            admissionParams = _.extend(admissionParams, { 'RoomId': formData.RoomId, 'SickBedNo': formData.SickBedNo });
+        }
+        //--工作项
+        var WorkItems = $('#dg-Navigation-WorkItems').datagrid('acceptChanges').datagrid('getSelections');
+        if (WorkItems) {
+            //验证时间
+            var r = /^([0-1]\d{1}|2[0-3]):([0-5]\d{1})$/;
+            var tmpWorkItems = [];
+            _.each(WorkItems, function (o) {
+                if (r.test(o.WorkSchedule)) {
+                    tmpWorkItems.push({ WorkItem: o.WorkItem, WorkSchedule: o.WorkSchedule, Workload: o.Workload, RemindFlag: o.RemindFlag,
+                        RemindRepeats: o.RemindRepeats, PlayRepeats: o.PlayRepeats, CheckFlag: o.CheckFlag, CheckDescription: o.CheckDescription
+                    });
+                }
+                else {
+                    return true;
+                }
+            });
+            if (WorkItems.length > tmpWorkItems.length) {
+                alertInfo("服务项目，请输入正确的工作计划格式! 例：08:05");
+                return;
+            }
+            admissionParams = _.extend(admissionParams, { 'AssessmentResults': tmpWorkItems });
+        }
+
+        //同步信息
+        var formData2 = { "ResidentIds": formData.ResidentId, "StationId": CurrentAgencyStationId, "Atype": 1, "RStatus": strRStatus };
+        postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/SynOrganizationBaseInfo', $.toJSON(formData2), function (ret) {
+            if (ret.Success) {
+                //插入信息
+                postTo(baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/OrgOldManAdmission', $.toJSON(admissionParams), function (ret) {
+                    if (ret.Success) {
+                        alertInfo("保存成功!");
+                        doCancelAdmission();
+                    }
+                });
+            }
+        }, null, { ConnectId: baseInfoNode });
+    }
+
+
+
+    //保存-旧版本
+    function toSaveAdmission2(obj) {
+        //操作
+        var strAction = $(obj).attr("isAdd") == "no" ? false : true;
+
+        //表单信息
+        var formData = $('#navigation-block form').serializeObject();
+        if (!formData.ResidentName) {
+            alertInfo("基本信息，请输入老人姓名!");
+            return;
+        }
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (strAction && !reg.test(formData.IDNo)) {
+            alertInfo("基本信息，身份证格式不正确!");
+            return;
+        }
+
+        //入院信息
+        var admissionParams = { 'OldManId': formData.ResidentId, 'CallNo3': formData.CallNo3 };
+        //验证呼叫号码是否为数字
+        reg = /^\d+$/;
+        if (admissionParams.CallNo3 && !reg.test(admissionParams.CallNo3)) {
+            alertInfo("配置信息，请输入正确的呼叫号码格式!");
+            return;
+        }
+        //--房间
+        if (formData.RoomId) {
+            admissionParams = _.extend(admissionParams, { 'RoomId': formData.RoomId, 'SickBedNo': formData.SickBedNo });
+        }
+        //--工作项
+        var WorkItems = $('#dg-Navigation-WorkItems').datagrid('acceptChanges').datagrid('getSelections');
+        if (WorkItems) {
+            //验证时间
+            var r = /^([0-1]\d{1}|2[0-3]):([0-5]\d{1})$/;
+            var tmpWorkItems = [];
+            _.each(WorkItems, function (o) {
+                if (r.test(o.WorkSchedule)) {
+                    tmpWorkItems.push({ WorkItem: o.WorkItem, WorkSchedule: o.WorkSchedule, Workload: o.Workload, RemindFlag: o.RemindFlag,
+                        RemindRepeats: o.RemindRepeats, PlayRepeats: o.PlayRepeats, CheckFlag: o.CheckFlag, CheckDescription: o.CheckDescription
+                    });
+                }
+                else {
+                    return true;
+                }
+            });
+            if (WorkItems.length > tmpWorkItems.length) {
+                alertInfo("服务项目，请输入正确的工作计划格式! 例：08:05");
+                return;
+            }
+            admissionParams = _.extend(admissionParams, { 'AssessmentResults': tmpWorkItems });
+        }
+        
+        //同步信息
+        var formData2 = { "ResidentIds": formData.ResidentId, "StationId": CurrentAgencyStationId, "Atype": 1 };
+        //非机构进入的信息直接同步
+        if (formData.DataSource != '00006' && formData.ResidentId != window.contants.guidAutoGenerate) {
+            postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/SynAgencyBaseInfo', $.toJSON(formData2), function (ret) {
+                if (ret.Success) {
+                    //插入信息
+                    postTo(baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/OldManAdmission', $.toJSON(admissionParams), function (ret) {
+                        if (ret.Success) {
+                            alertInfo("保存成功!");
+                            doCancelAdmission();
+                        }
+                    });
+                }
+            }, null, { ConnectId: baseInfoNode });
+        }
+        else {
+            //新增加
+            formData.AreaId = top.objectId == '*' ? '00000' : top.appDeployArea.id;
+
+            postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/AgencyResidentBaseInfo/' + formData.ResidentId, $.toJSON(formData), function (ret) {
+                if (ret.Success) {
+                    formData2.ResidentIds = ret.instance.ResidentId;
+                    admissionParams.OldManId = ret.instance.ResidentId;
+
+                    postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/SynAgencyBaseInfo', $.toJSON(formData2), function (ret) {
+                        if (ret.Success) {
+                            //插入信息
+                            postTo(baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/OldManAdmission', $.toJSON(admissionParams), function (ret) {
+                                if (ret.Success) {
+                                    alertInfo("保存成功!");
+                                    doCancelAdmission();
+                                }
+                            });
+                        }
+                    }, null, { ConnectId: baseInfoNode });
+                }
+            }, null, { ConnectId: baseInfoNode });
+        }
+    }
+
+
+
+    //查询
+    function admission(keyFlag, keyWord) {
+        //判断是否已经初始化 查询grid
+        var iInit = $('#dg-B130302AA').closest('.datagrid-view').length;
+
+        var queryParams = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            filterFields: [{ key: 'Status', value: 1}],
+            fuzzyFieldOP: ' or '
+        };
+
+        if (keyWord) {
+            if (keyFlag == "ResidentName") {
+                queryParams = _.extend(queryParams, { fuzzyFields: [{ key: 'ResidentName', value: keyWord}] });
+            }
+            else if (keyFlag == "IDNo") {
+                queryParams = _.extend(queryParams, { fuzzyFields: [{ key: 'IDNo', value: keyWord}] });
+            }
+            else {
+                queryParams = _.extend(queryParams, { fuzzyFields: [{ key: 'ResidentName', value: keyWord },
+                { key: 'IDNo', value: keyWord },
+                { key: 'Tel', value: keyWord },
+                { key: 'Mobile', value: keyWord },
+                { key: 'InputCode1', value: keyWord },
+                { key: 'InputCode2', value: keyWord}]
+                });
+            }
+        }
+
+        if (!iInit) {
+            $.parser.parse('#btn-search-B130302AA,#dlg-search-B130302AA');
+            $('#dlg-search-B130302AA').dialog({
+                onClose: function () {
+                    $('#KeyWord-B130302AA').val("");
+                },
+                //onOpen: function () {
+                //$("#dlg-search-B130302AA #KeyWord-B130302AA").val(_.first($('#dg-B130302AA').datagrid("options").queryParams.fuzzyFields).value);
+                //},
+                modal: true
+            }).dialog('close').dialog('setTitle', '查询老人基本信息');
+
+            //初始化-查询
+            $('#dg-B130302AA').datagrid(easyuigrid_settings({
+                title: "",
+                fit: true,
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/AgencyResidentBaseInfoList/' + baseInfoNode,
+                method: 'POST',
+                toolbar: '#toolbar-B130302AA',
+                queryParams: queryParams,
+                onLoadSuccess: function (data) {
+                    var iRows = data.rows.length;
+                    if (iRows > 1) {
+                        ////判断是否打开
+                        var bHidden = $("#dlg-search-B130302AA").parent().is(":hidden");
+                        if (bHidden) {
+                            $('#dlg-search-B130302AA').dialog('open');
+                        }
+                    }
+                    else if (iRows == 1) {
+                        if (data.rows[0].StationId) { //进入机构
+                            $('#btnSaveAdmission').hide();
+                            alertInfo("已进入机构!");
+                        }
+                        else { //未入机构
+                            fillAgencyObjectBaseInfo(data.rows[0]);
+                            $('#btnSaveAdmission').show();
+                        }
+                    }
+                    else {
+                        alertInfo("不存在此信息，请重新查找!");
+                        //旧版本
+                        //$('#btnSaveAdmission').show();
+                        //$('#fm-B130302AA').form('load', { Gender: 'M', ResidentId: window.contants.guidAutoGenerate });
+                        $('#infoReminder').html("");
+                    }
+                },
+                onClickRow: function (idx, row) {
+                    if (row.StationId) {
+                        $(this).datagrid('unselectRow', idx);
+                    }
+                },
+                onCheck: function (idx, row) {
+                    if (row.StationId) {
+                        $(this).datagrid('uncheckRow', idx);
+                        alertInfo('已进入机构');
+                    }
+                },
+                onCheckAll: function (rows) {
+                    var tmpNames = [];
+                    _.each(rows, function (o, i) {
+                        if (o.StationId) {
+                            $('#dg-B130302AA').datagrid('uncheckRow', i);
+                            tmpNames.push(o.ResidentName);
+                        }
+                    });
+                    if (tmpNames.length > 0) {
+                        alertInfo(tmpNames.join(" ; ") + "  已进入机构!");
+                    }
+                },
+                frozenColumns: [[
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                    { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                    { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                    { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+            ]],
+                columns: [[
+                //{ field: 'ResidentAge', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                    {field: 'NationName', title: '民族', width: 80, align: 'center' },
+                    { field: 'Tel', title: '座机', align: 'center', width: 100 },
+                    { field: 'Mobile', title: '手机', align: 'center', width: 100 },
+                    { field: 'AreaId', title: '所属辖区', width: 100, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "ItemName", valueField: "ItemId" },
+                    { field: 'NativePlaceName', title: '籍贯', align: 'center', width: 150 },
+                    { field: 'AccountTypeName', title: '户口类型', width: 80, align: 'center', width: 80 },
+                    { field: 'HouseholdRegisterName', title: '户籍', align: 'center', width: 150 },
+                    { field: 'PlaceOfHouseholdRegister', title: '户籍(详)', width: 100, align: 'center' },
+                    { field: 'ResidentialOfHometownName', title: '现居地', align: 'center', width: 150 },
+                    { field: 'ResidentialAddress', title: '现居(详)', width: 100, align: 'center' },
+                    { field: 'EducationLevelName', title: '文化程度', align: 'center', width: 80 },
+                    { field: 'MarriageName', title: '婚姻状况', align: 'center', width: 60 },
+                    { field: 'IncomeStatusName', title: '收入情况', align: 'center', width: 80 },
+                    { field: 'HousingStatusName', title: '住房情况', align: 'center', width: 80 },
+                    { field: 'PostCode', title: '邮编', width: 80, align: 'center' },
+                    { field: 'Remark', title: '备注', align: 'center', width: 250 }
+        ]],
+                loader: easyuiLoaderForStringObjectDictionary
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+        }
+        else {
+            $('#dg-B130302AA').datagrid('load', queryParams);
+        }
+    }
+
+    //清空查询信息
+    function emptyMoreAgencyObject() {
+        $("#dlg-search-B130302AA #KeyWord-B130302AA").val("");
+    }
+
+    function choiceSearchDlg() {
+        var rows = $('#dg-B130302AA').datagrid('getSelections');
+        if (rows) {
+            if (rows.length == 1) {
+                fillAgencyObjectBaseInfo(rows[0]);
+
+                closeSearchDlg();
+                $('#btnSaveAdmission').show();
+            }
+            else {
+                alertConfirm('确定选择多个老人入院吗，选择多个老人入院时，其余的信息请去一览表进行修改？', function (r) {
+                    if (r) {
+                        var strResidentIds = _.map(rows, function (o) { return o.ResidentId }).join(",");
+                        var formData = { "ResidentIds": strResidentIds, "StationId": CurrentAgencyStationId, "Atype": 1, "RStatus": strRStatus };
+                        postTo(baseCMSInvokeUrl + '/Bas/ResidentBaseInfoService/SynOrganizationBaseInfo', $.toJSON(formData), function (ret) {
+                            if (ret.Success) {
+                                alertInfo("新增成功");
+
+                                doCancelAdmission();
+                            }
+                        }, null, { ConnectId: baseInfoNode });
+                    }
+                });
+            }
+        }
+        else {
+            alertInfo("请选中一条记录!"); 
+        }
+    }
+
+    function closeSearchDlg() {
+        $('#dlg-search-B130302AA').dialog('close');
+    }
+
+    //加载空余房间
+    function loadPamEmptyBeds(strParams,agencyObjectInfo) {
+        $('#room-empty-beds').html(""); //清空
+        var queryParams = { "StationId": CurrentAgencyStationId };
+
+        if (strParams) {
+            queryParams = _.extend(queryParams, strParams);
+        }
+
+        //载入老人所拥有的房间床位
+        if (agencyObjectInfo && agencyObjectInfo.RoomId) {
+            $('#oldman-room-bed').html('<ul><li class="bed-mot1" >' + agencyObjectInfo.FloorNo + '=>' + agencyObjectInfo.RoomNo + '=>' + agencyObjectInfo.SickBedNo + '床</li></ul>');
+        }
+
+        postTo(baseCMSInvokeUrl + '/Pam/RoomService/RoomEmptyBedList', $.toJSON(queryParams), function (ret) {
+            if (ret.Success && ret.rows.length > 0) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+
+                var html = [];
+                var row, tmpRoomId;
+                for (var i = 0; i < rows.length; i++) {
+                    row = rows[i];
+                    if (tmpRoomId != row.RoomId) {
+                        var sickBedNos = _.map(_.where(rows, { "RoomId": row.RoomId }), function (k) {
+                            return k.SickBedNo;
+                        });
+
+                        //补全床位 
+                        for (var j = 1; j <= row.BedNo; j++) {
+                            if (sickBedNos.indexOf(j) < 0) {
+                                html.push('<li class="bed-mot" RoomId="' + row.RoomId + '"  SickBedNo="' + j + '"><div class="bed-mot-body">' + row.FloorNo + '=>' + row.RoomNo + '</div><div class="bed-mot-body">' + j + '床</div></li>');
+                            }
+                        }
+                    }
+                    tmpRoomId = row.RoomId;
+                }
+                $('#room-empty-beds').html("<ul>" + html.join("") + "</ul>");
+
+                $('#room-beds .bed-mot,.bed-mot1').mouseover(function () {
+                    $(this).css("border-color", '#FF0000');
+                }).mouseout(function () {
+                    $(this).css("border-color", '#006699');
+                }).click(function () {
+                    $(this).css("background", '#9ACD32');   //选中
+                    var tmpbed = $(this);
+
+                    alertConfirm('确认所选或者更换当前床位号？', function (r) {
+                        if (r) {
+                            $('#room-beds .bed-mot,.bed-mot1').css("background", '#fff');
+                            $(tmpbed).css("background", '#9ACD32');
+
+                            $('#Navigation-1303 #RoomId').val($(tmpbed).attr("RoomId"));
+                            $('#Navigation-1303 #SickBedNo').val($(tmpbed).attr("SickBedNo"));
+                        }
+                        else {
+                            $(tmpbed).css("background", '#fff');
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    //加载机构服务项目和老人服务项目
+    function loadPamWorkItems(row) {
+        var queryParams = { StationId: CurrentAgencyStationId };
+        if (row && row.OldManId) {
+            queryParams = _.extend(queryParams, { 'OldManId': row.OldManId });
+        }
+
+        postTo(baseCMSInvokeUrl + '/Pam/AssessmentItemService/AdmissionServiceItems', $.toJSON(queryParams), function (ret) {
+            if (ret.Success) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+
+                $('#dg-Navigation-WorkItems').datagrid('loadData', rows);
+            }
+        });
+    }
+
+    //初始化工具
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 152,
+            panelHeight: 80,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    function SetCombogrid(url, combogridId, hiddenId, options) {
+        var dSettings = { key: "ItemId", value: "ItemName" }
+        dSettings = _.extend(dSettings, options || {});
+
+        $('#' + combogridId).combogrid({
+            delay: 500,
+            width: 153,
+            height: 24,
+            panelWidth: 153,
+            panelHeight: 240,
+            mode: 'local',
+            //data: data,
+            idField: dSettings.key,
+            textField: dSettings.value,
+            //过滤
+            onChange: function (newValue, oldValue) {
+                //输入一个字符，做一次查询
+                if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#' + combogridId).combobox("getText")))) {
+                    getTo(ajaxData_InvokeUrl + url + $.trim(newValue), null, function (ret) {
+                        $('#' + combogridId).combogrid("grid").datagrid("loadData", ret);
+                    });
+                }
+            },
+            filter: function (q, row) {
+                return row[dSettings.value].indexOf(q) != -1;
+            },
+            columns: [[
+                { field: dSettings.value, title: '选择区/县级地址', width: 135, sortable: true }
+            ]],
+            onSelect: function (index, record) {
+                if (dSettings.key == 'AreaId') {
+                    $('#' + combogridId).val(record.AreaId.toUpperCase());
+                    $('#' + hiddenId).val(record.AreaId.toUpperCase());
+                    SetCombogridValue(combogridId, record.AreaId);
+                } else {
+                    $('#' + combogridId).val(record.ItemId.toUpperCase());
+                    $('#' + hiddenId).val(record.ItemId.toUpperCase());
+                    SetCombogridValue(combogridId, record.ItemId);
+                }
+            }
+        });
+    }
+
+    function SetCombogridValue(Combogrid, ItemId) {
+        if ($.trim(ItemId) != "") {
+            getTo(ajaxData_InvokeUrl + '/GetAreaFullName/' + ItemId, null, function (ret) {
+                $("#" + Combogrid).combogrid('setValue', ret);
+            });
+        }
+    }
+
+    //填充机构对象基本信息表单
+    function fillAgencyObjectBaseInfo(row) {
+        $('#fm-B130302AA').form('clear');
+        $('#fm-B130302AA').form('load', { Gender: 'M', ResidentId: window.contants.guidAutoGenerate });
+
+        if (row) {
+            $('#fm-B130302AA').form('load', row);
+            if (row.DataSource != "00006") {//非机构老人未入院
+                $('#infoReminder').html("此信息不可更改！");
+            }
+            else {
+                $('#infoReminder').html("");
+            }
+
+            //数据来源，市级还是区级
+            if (_.has(row, 'ResidentId')) {
+                $('#residentId-B130302AA').val(row.ResidentId);
+                $('#ResidentName').val(row.ResidentName);
+            }
+            else {
+                $('#residentId-B130302AA').val(row.OldManId);
+                $('#ResidentName').val(row.OldManName);
+            }
+
+            var AreaId2 = $('#AreaId2').val();
+            $('#AreaIdStreet').combobox('setValue', AreaId2);
+            //筛选当前街道下的社区
+            var tmpSQAreaDatas = _.filter(allSQAreaDatas, function (o) { return o.ParentId == AreaId2; });
+            $('#AreaIdCommunity').combobox('loadData', tmpSQAreaDatas);
+            $('#AreaIdCommunity').combobox('setValue', $('#AreaId3').val());
+
+            $("#NativePlace1").combogrid("setValue", row.NativePlaceName);
+            $("#HouseholdRegister1").combogrid("setValue", row.HouseholdRegisterName);
+            $("#ResidentialOfHometown1").combogrid("setValue", row.ResidentialOfHometownName);
+            $("#EducationLevel").val(row.EducationLevelName);
+            $("#Marriage").val(row.MarriageName);
+            $("#IncomeStatus").val(row.IncomeStatusName);
+            $("#HousingStatus").val(row.HousingStatusName);
+
+            $("#fm-B130302AA #Age").val(IDNoFormatToAge(row.IDNo));
+        }
+        else {
+            $('#infoReminder').html("");
+        }
+    }
+
+    //辅助工具
+    //验证身份证号并获取出生日期
+    function IDNoFormatToAge(strIDNo) {
+        var tmpIDNo = strIDNo.match(/(\d{15}$)|(\d{17}([0-9]|(X|x)))/g).toString();
+        var myAge;
+        if (tmpIDNo) {
+            var ilength = tmpIDNo.length;
+            if (ilength == 15 || ilength == 18) {
+                var strData;
+                if (ilength == 15) {
+                    strData = "19" + tmpIDNo.substr(6, 2) + "/" + tmpIDNo.substr(8, 2) + "/" + tmpIDNo.substr(10, 2);
+                }
+                else {
+                    strData = tmpIDNo.substr(6, 4) + "/" + tmpIDNo.substr(10, 2) + "/" + tmpIDNo.substr(12, 2);
+                }
+                myAge = DateDiff('y', new Date(strData), new Date());
+            }
+        }
+        return myAge;
+    }
+
+
+</script>

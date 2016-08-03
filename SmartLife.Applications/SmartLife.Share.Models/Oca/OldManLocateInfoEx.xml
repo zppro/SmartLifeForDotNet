@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <statements>
+        <select id="OldManLocateInfo_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select top 26 * from Oca_OldManLocateInfo
+            <dynamic prepend=" Where ">
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="OldManLocateInfo_By_Reminder_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select top 26 b.*,a.RemindContent from Pub_Reminder a,Oca_OldManLocateInfo b
+            where a.SourceKey=b.OldManId and a.RemindTime=b.LocateTime
+            <isPropertyAvailable prepend=" AND " property="OldManId" >b.OldManId=#OldManId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="SourceColumn" >a.SourceTable=#SourceTable#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="SourceColumn" >a.SourceColumn=#SourceColumn#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="SourceType" >a.SourceType=#SourceType#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+       <select id="OldManLocateInfo_By_CallNo_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+           select top 1  c.* ,b.OldManId as OlderId,b.LatitudeS, b.LongitudeS from Oca_OldManConfigInfo a left join
+           Oca_OldManBaseInfo b on a.OldManId=b.OldManId left join (select * from Oca_OldManLocateInfo
+           <dynamic prepend=" Where ">
+               <isPropertyAvailable prepend=" AND " property="LocateTime" >LocateTime >= #LocateTime#</isPropertyAvailable>
+           </dynamic>
+           ) c on a.OldManId=c.OldManId
+           <dynamic prepend=" Where ">
+               <isPropertyAvailable prepend=" AND " property="CallNo" >a.CallNo=#CallNo#</isPropertyAvailable>
+           </dynamic>
+           <dynamic prepend=" ORDER BY ">
+               <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+           </dynamic>
+       </select>
+   </statements>
+</sqlMap>

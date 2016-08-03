@@ -1,0 +1,6 @@
+﻿.street-zone{clear:left;}
+.street-name{margin:0px 0px 0px 0px;}
+.street-name label{font-size:16px; font-weight:bold; cursor:pointer;}
+.community-zone{ clear:left; margin-bottom:25px; }
+.community-name{margin:2px 5px 10px 5px;font-size:12px; float:left;}
+.community-name label{ color:#666; cursor:pointer;}

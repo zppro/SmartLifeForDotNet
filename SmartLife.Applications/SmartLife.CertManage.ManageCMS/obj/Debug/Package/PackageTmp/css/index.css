@@ -1,0 +1,51 @@
+﻿.session-out-mask{display:none;position:fixed;width:100%;height:100%;background:#666;z-index:7990;top:0;left:0;opacity:0.7;}
+.session-out-mask-content{display:none;width:300px;height:170px;position:fixed;top:50%;margin-top:-150px;background:#fff;z-index:7991;left:50%;margin-left:-150px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+#main-north div.bg1{ background: url('../images/public/menu78-bg1.jpg') bottom repeat-x; }
+/***yellow skin***/
+#main-north div.bg2{ background: url('../images/public/menu78-bg2.jpg') bottom repeat-x; }
+#main-north div.bg3{background: #FFFF4E;  position:relative;}
+#main-south div.bg4{background: #FC4B15; }
+#logined-panel{position:absolute;top:65px;left:0px;height:30px; border-bottom:solid 1px #f5f5f5;background:#FFFF4E;z-index:99}
+#logined-user{text-align:center;color:#666;padding:5px 0px;font-size:13px; display:inline;}
+#logined-action{display:inline;}
+#logined-action a{height:24px; line-height:24px; color:#666;cursor:pointer;margin-left:5px; margin-right:5px;}
+#applications-in-platform a{font-size:14px; height:30px; line-height:30px; color:#333;margin-left:10px; padding:0 5px 0 5px; display:inline-block; text-align:center; }
+#applications-in-platform a.on{color:#FEFF91; background-color:#D72E07;}
+#platform-oper{ position:absolute;  padding:0px; right:2px;height:30px;line-height:30px;z-index:799; display:none;}
+.navigation-head-bg{ width:215px; height:48px; background: url('../images/public/navigation-head-bg.jpg') no-repeat; text-align:center; line-height:40px; font-size:16px; color:White;}
+/***blue skin***/
+#main-north div.bg2{ background: url('../images/public/menu78-bg-blue.png') bottom repeat-x; }
+#main-north div.bg3{background: #0b75c6; }
+#main-south div.bg4{background: #098ad2; }
+#logined-panel{position:absolute;top:65px;left:0px;height:30px; border-bottom:solid 1px #f5f5f5;background:#0b75c6;z-index:99}
+#logined-user{text-align:center;color:#fff;padding-left:5px;padding-right:8px;font-size:13px;display:inline;}
+#logined-action{display:inline;}
+#logined-action a{height:30px; line-height:30px; color:#333;cursor:pointer;margin-left:5px; margin-right:5px;}
+#applications-in-platform a{font-size:14px; height:30px; line-height:30px; color:#fff;margin-left:10px; padding:0 5px 0 5px; display:inline-block; text-align:center; }
+#applications-in-platform a.on{color:#12659e; background-color:#86c5ef;}
+.navigation-head-bg{ width:215px; height:48px; background: url('../images/public/navigation-head-bg-blue.jpg') no-repeat; text-align:center; line-height:40px; font-size:16px; color:White;}
+#platforms{float:right;}
+#platforms-more{ position:absolute; right:2px; top:65px; z-index:5999; display:none;}
+#main-west { background:#FFFFDF;}
+#applications-in-platform{vertical-align:bottom;float:left;}
+
+
+.copyright{ width:500px;font-size:12px;color:#555;margin:0 auto;text-align:center;}
+.copyright a,.copyright span{color:#FEFF91;}
+
+#CurrentArea {margin:0 auto; width:450px; height:100%;text-indent:15px; font-size:30px; color:#fff; line-height:60px;float:left;}
+#CurrentArea a{ margin:0 0 0 5px; cursor:pointer; text-decoration:none; color:#000; width:40px;}
+
+#logined-user a{ margin:0 5px 0 5px; cursor:pointer;}
+#logined-action{width:100%; padding-top:8px; height:35px; color:#000; text-align:center; }
+
+.login-icon-settings{display:inline-block; width:40px;height:30px; line-height:30px; background: url('../images/public/logined-icon-settings.png') center no-repeat;}
+.login-icon-exit{ display:inline-block; width:40px;height:30px; line-height:30px;background: url('../images/public/logined-icon-exit.png') center no-repeat;}
+.menuIdFrameMax,.menuCodeFrameMax{ position:absolute; top: 0; left: 0; right: 0;bottom: 0;z-index:7989;}
+
+.area-bg1{background-color:#333;}
+.city-zone{clear:left;}
+.city-name{margin:5px 0px 5px 0px;font-size:16px; font-weight:bold; float:left;}
+.area-zone{ clear:left;}
+.area-name{margin:5px;font-size:12px; border:solid 1px #333; text-align:center;height:30px; line-height:30px; background-color:green; float:left; width:150px; white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;}
+.area-name a{ text-decoration:none;color:#fff;  }

@@ -1,0 +1,309 @@
+﻿<table id="cc-B11040802" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd;  border-right: solid 1px #ddd;background-color: #fafafa;">
+                流转定义名称
+            </div>
+            <div id="div_tree" style="border: solid 1px #ddd; width: 100%; float: left; overflow: auto;">
+                <ul id="tree-B11040802">
+                </ul>
+                <input type="hidden"  id="_MappingType" />
+                <input type="hidden"  id="_FlowName" />
+            </div>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B11040802">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                    onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                        plain="true" onclick="edit()">编辑</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                            iconcls="icon-remove" plain="true" onclick="nullify()">作废</a>
+            </div>
+            <div id="search-sample-B11040802" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B11040802" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right">
+                            关键字：
+                        </td>
+                        <td style="text-align:left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="配置类型、流转定义编码"/> 
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B11040802">
+            </table>
+        </td>
+    </tr>
+</table> 
+<div id="dlg-B11040802" class="easyui-dialog" style="width: 660px; height: 300px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B11040802"> 
+    <form id="fm-B11040802" method="post" novalidate>
+    <input type="hidden" name="Id" id="id-B11040802" /> 
+    <div class="fitem">
+        <label>
+           配置类型:</label>
+        <input name="MappingType" class="easyui-validatebox" required="true" missingmessage="流转名称不能为空">
+        <label>
+             流转定义名称:</label>
+        <input name="FlowName" id="FlowName" class="easyui-validatebox" />
+    </div>
+    <div class="fitem">
+        <label>
+            配置列名:</label>
+        <input name="MappingColumn" id="MappingColumn" class="easyui-validatebox" readonly="readonly" style=" color:#888;">
+        <label>
+            配&nbsp; 置&nbsp; 社&nbsp; 区&nbsp;  :</label>
+            <input id="MappingIdArea" required="true" missingmessage="配置社区不能为空" />
+        <input name="MappingId" Id="MappingId"  type="hidden"   />
+    </div> 
+    </form>
+</div>
+<div id="btn-B11040802">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B11040802" class="easyui-dialog" style="width: 530px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B11040802"> 
+    <form id="fm-search-B11040802" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            流转名称:</label>
+        <input name="FlowName" class="easyui-validatebox" > 
+        <label>
+            流转表名:</label>
+        <input name="TableName" class="easyui-validatebox" >
+    </div> 
+    </form>
+</div>
+<div id="btn-search-B11040802">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a> 
+</div>
+<script type="text/javascript">
+    var areas;
+    var arrFlowName = [];
+    var isConnect = 0; //不启用市级库数据库连接
+    getTo(baseCMSInvokeUrl + '/Sys/ParameterService/Query?parms=' + $.toJSON({ ParameterId: 'Sys_ConnectId', Status: 1 }), null, function (ret) {
+        if (ret.Success && ret.rows.length > 0) {
+            isConnect = ret.rows[0].ParameterValue;
+        }
+    }, { async: false }); 
+    placeholder(); //占位符初始化
+    $(function () {
+        validateUI();
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            treeId: 'tree-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'id-' + currentMenuCode,
+            pk: 'Id',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) { 
+                if (formData['isCreate']) {
+                    formData['Id'] = undefined;
+                    formData['PK'] = undefined;
+                }
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['FlowName'] = formData['KeyWord'];
+                formData['TableName'] = formData['KeyWord'];
+                formData['TableColumn'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onAfterDialogOpen: function (row) {
+                flowName = [];
+                if (!row) {
+                    $('#MappingColumn').val(models[currentMenuCode].defaultModel.MappingColumn);
+                }
+                else {
+                    $('#MappingIdArea').combotree('setValue', row.MappingId);
+                }
+            },
+            uiMode: 'list',
+            entityName: '流程配置',
+            headers: { ConnectId: isConnect == 1 ? baseInfoNode : '' },  
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/FlowDefineMappingService/',
+            defaultModel: { Status: 1, MappingColumn: 'AreaId3' }
+        };
+        autoSizeOfHeight("cc-B11040802", -30); //datagrid收缩30个像素点;
+        autosize("div_tree", -34);
+
+        getAreasAndFlowName();
+        createTree();
+        createComboTree();
+    });
+
+    function getAreasAndFlowName() { 
+        //获得街道、社区信息
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        getTo(baseCMSInvokeUrl + '/Pub/FlowDefineService/GetFlowNameItem', null, function (result) {
+            var rows = _.map(result.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            var arr = [];
+            _.each(rows, function (o) {
+                delete o.value;
+                delete o.xmlns;
+                arrFlowName.push(o)
+            });
+            setCombobox('FlowName', arrFlowName, 182);
+        }, { async: false }, models[currentMenuCode].headers);
+    }
+
+    function createTree() {
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNode.attributes.Levels == 4) {
+                    $("#_FlowName").val(treeNodeId);
+                    $("#_MappingType").val(treeNode.attributes.PId);
+                }
+                else if (treeNode.attributes.Levels == 3) {
+                    $("#_FlowName").val(null);
+                    $("#_MappingType").val(treeNodeId);
+                }
+                else {
+                    $("#_FlowName").val(null);
+                    $("#_MappingType").val(null);
+                };
+
+                $('#' + models[currentMenuCode].gridId).datagrid('load', getParam());
+            }
+        },
+            function (d) {
+                getTreeData('01$01$12', null, '{"MappingColumn":"' + models[currentMenuCode].defaultModel.MappingColumn + '" }', d, models[currentMenuCode].headers);
+            },
+            null,
+            function (treeObj) {
+                var str_url = models[currentMenuCode].baseModelUrl +(isConnect == 1 ?'ListForEasyUIgridPage/' + models[currentMenuCode].headers.ConnectId:'ListForEasyUIgrid');
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: str_url,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: getParam(),
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                                { field: 'Id', title: '编号', width: 150, hidden: true },
+                                { field: 'CK', title: '', checkbox: true },
+                                { field: 'MappingType', title: '配置类型', width: 200, align: 'center' },
+//                                { field: 'FlowName', title: '流转定义名称', width: 200, align: 'center' },
+                                { field: 'FlowName', title: '流转定义名称', width: 200, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: arrFlowName },
+                                { field: 'MappingColumn', title: '配置列名', width: 100, align: 'center' },
+                                { field: 'MappingId', title: '配置社区', width: 200, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+                        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree    
+    }
+
+    function createComboTree() {
+        initTree('easyUIComboTree', 'MappingIdArea', {
+            width: 300,
+            panelWidth: 300,
+            panelHeight: 260,
+            onlyLeafCheck: true,
+            required: true,
+            onClick: function (treeNode) {
+                if (!$(this).tree('isLeaf', treeNode.target)) {
+                    $('#MappingIdArea').combotree('clear');
+                    $('#MappingId').val(null);
+                }
+                else {
+                    if (treeNode.attributes.Code.length == 11) {
+                        $('#MappingIdArea').combotree('setValue', treeNode.text);
+                        $('#MappingId').val(treeNode.id);
+                    }
+                    else {
+                        $('#MappingIdArea').combotree('clear');
+                        $('#MappingIdArea').combotree('setValue', "未选择到社区，请重新选择！");
+                        $('#MappingId').val(null);
+                    }
+                }
+            },
+            onLoadSuccess: function () {
+                var node = $('#MappingIdArea').combotree('tree').tree('getRoot');
+                $('#MappingIdArea').combotree('tree').tree("collapseAll");
+                $('#MappingIdArea').combotree('tree').tree('expand', node.target); 
+            }
+        },
+            function (d) {
+                getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+            });
+    }
+
+    function getParam() {
+        var params = {
+            sort: ' MappingType,FlowName,MappingId ',
+            order: ' asc ',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: models[currentMenuCode].defaultModel.Status,
+                MappingColumn: models[currentMenuCode].defaultModel.MappingColumn
+            }
+        }
+        var flowName = $("#_FlowName").val();
+        var mappingType = $("#_MappingType").val();
+        if (flowName && flowName != '') {
+            params.instance.FlowName = flowName;
+        }
+        if (mappingType && mappingType != '') {
+            params.instance.MappingType = mappingType;
+        }
+        return params;
+    }
+
+    //设置下拉框
+    function setCombobox(controlsId, data, hight) { 
+        $('#' + controlsId + '').combobox({
+            width: 302,
+            panelHeight: hight,
+            method: 'get',
+            required: true,
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    //自动调高
+    function autoSizeOfHeight(id, iwidth) {
+        autosize(id, iwidth);
+        $("#" + models[currentMenuCode].gridId).height($("#" + id).height());
+    }
+
+    
+</script>

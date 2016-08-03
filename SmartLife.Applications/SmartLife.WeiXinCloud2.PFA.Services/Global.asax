@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="SmartLife.WeiXinCloud2.PFA.Services.Global" Language="C#" %>

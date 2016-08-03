@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Bas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ResidentActivityLog" type="SmartLife.Share.Models.Bas.ResidentActivityLog, SmartLife.Share.Models" />
+    <typeAlias alias="ResidentActivityLogPK" type="SmartLife.Share.Models.Bas.ResidentActivityLogPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ResidentActivityLog_Create" parameterClass="StringObjectDictionary" >
+      insert into Bas_ResidentActivityLog(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >ResidentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityTime" >ActivityTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityType" >ActivityType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityData" >ActivityData</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityDescription" >ActivityDescription</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityTime" >#ActivityTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityType" >#ActivityType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityData" >#ActivityData#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityDescription" >#ActivityDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ResidentActivityLog_Update" parameterClass="StringObjectDictionary" >
+      update Bas_ResidentActivityLog
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityTime" >ActivityTime=#ActivityTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityType" >ActivityType=#ActivityType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityData" >ActivityData=#ActivityData#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ActivityDescription" >ActivityDescription=#ActivityDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="ResidentActivityLog_Delete" parameterClass="StringObjectDictionary" >
+      delete Bas_ResidentActivityLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_Start" >ActivityTime>=to_date(#ActivityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_End" >ActivityTime&lt;=to_date(#ActivityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityType" >ActivityType=#ActivityType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityData" >ActivityData=#ActivityData#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityDescription" >ActivityDescription=#ActivityDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ResidentActivityLog_Load" parameterClass="ResidentActivityLogPK" resultClass="ResidentActivityLog" >
+      select Id,CheckInTime,ResidentId,ActivityTime,ActivityType,ActivityData,ActivityDescription,Remark from Bas_ResidentActivityLog
+      where Id=#Id#
+    </select>
+    <select id="ResidentActivityLog_List" parameterClass="StringObjectDictionary" resultClass="ResidentActivityLog" >
+      select Id,CheckInTime,ResidentId,ActivityTime,ActivityType,ActivityData,ActivityDescription,Remark from Bas_ResidentActivityLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_Start" >ActivityTime>=to_date(#ActivityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_End" >ActivityTime&lt;=to_date(#ActivityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityType" >ActivityType=#ActivityType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityData" >ActivityData=#ActivityData#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityDescription" >ActivityDescription=#ActivityDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ResidentActivityLog_ListByPage" parameterClass="StringObjectDictionary" resultClass="ResidentActivityLog" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,ResidentId,ActivityTime,ActivityType,ActivityData,ActivityDescription,Remark from Bas_ResidentActivityLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_Start" >ActivityTime>=to_date(#ActivityTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityTime_End" >ActivityTime&lt;=to_date(#ActivityTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityType" >ActivityType=#ActivityType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityData" >ActivityData=#ActivityData#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ActivityDescription" >ActivityDescription=#ActivityDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="DictItem" type="SmartLife.Share.Models.Sys.DictItem, SmartLife.Share.Models" />
+    <typeAlias alias="DictItemPK" type="SmartLife.Share.Models.Sys.DictItemPK, SmartLife.Share.Models" />
+    <typeAlias alias="DictItemEx" type="SmartLife.Share.Models.Sys.DictItemEx, SmartLife.Share.Models" />
+    <typeAlias alias="DictItemExPK" type="SmartLife.Share.Models.Sys.DictItemExPK, SmartLife.Share.Models" />
+    <typeAlias alias="DictItemEx2" type="SmartLife.Share.Models.Sys.DictItemEx2, SmartLife.Share.Models" />
+    <typeAlias alias="DictItemEx2PK" type="SmartLife.Share.Models.Sys.DictItemEx2PK, SmartLife.Share.Models" />
+  </alias>
+  <parameterMaps>
+    <parameterMap id="SP_Sys_AdjustDictionaryItemParam" class="StringObjectDictionary">
+      <parameter  property="DictionaryId" column="DictionaryId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ItemId" column="ItemId" direction="Input" type="string" dbType="char" />
+      <parameter  property="Action" column="Action" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldParentId" column="OldParentId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Sys_AdjustDictionaryItem" parameterMap="SP_Sys_AdjustDictionaryItemParam" resultClass="StringObjectDictionary">
+      SP_Sys_AdjustDictionaryItem
+    </procedure>
+    <select id="CTE_DeployNode_List" parameterClass="StringObjectDictionary" resultClass="DictItemEx2" >
+      with CTE_Sys_Dictionary_00005 as (
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,cast('_    ' as varchar(40)) as PId,OrderNo
+      from Sys_DictionaryItem a where a.Status=1 and a.DictionaryId='00005' and a.ParentId = '$ParentId$'
+      union all
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,cast(isnull(a.ParentId,'_') as varchar(40)) as PId,a.OrderNo
+      from Sys_DictionaryItem a inner join CTE_Sys_Dictionary_00005 b on a.ParentId = b.ItemId where a.Status=1 and a.DictionaryId='00005'
+      )
+      select distinct m.*,case when len(n.ObjectId)=LEN(m.ItemCode) then  n.AccessPoint else '' end as Extend1 from CTE_Sys_Dictionary_00005 m
+      inner join (select ObjectId,AccessPoint from Cer_DeployNode where ApplicationIdFrom='BP001' and ApplicationIdTo='IP002' and RunMode=0)n
+      on n.ObjectId like  m.ItemCode + '%'
+      order by OrderNo
+    </select>
+    <select id="CTE_CityAndArea_List" parameterClass="StringObjectDictionary" resultClass="DictItem" >
+      with CTE_Sys_Dictionary_00005 as (
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,cast('_    ' as varchar(40)) as PId,OrderNo
+      from Sys_DictionaryItem a where a.Status=1 and a.DictionaryId='00005' and a.ParentId = '$ParentId$'
+      union all
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,cast(isnull(a.ParentId,'_') as varchar(40)) as PId,a.OrderNo
+      from Sys_DictionaryItem a inner join CTE_Sys_Dictionary_00005 b on a.ParentId = b.ItemId where a.Status=1 and a.DictionaryId='00005'
+      )
+      select m.* from CTE_Sys_Dictionary_00005 m  order by OrderNo
+    </select>
+    <select id="CTE_StreetAndCommunitiy_List" parameterClass="StringObjectDictionary" resultClass="DictItemEx" >
+      with CTE_StreetAndCommunitiy as (
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area_Biz_V a where a.Status=1 and a.ParentId = #ParentId#
+      union all
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area_Biz_V a inner join CTE_StreetAndCommunitiy b on a.ParentId = b.ItemId where a.Status=1
+      )
+      select m.* from CTE_StreetAndCommunitiy m  order by OrderNo
+    </select>
+    <select id="CTE_StreetAndCommunitiyAuthority_List" parameterClass="StringObjectDictionary" resultClass="DictItemEx" >
+      with CTE_StreetAndCommunitiy as (
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area_Biz_V a where a.Status=1 and a.ParentId = #ParentId#
+      union all
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area_Biz_V a inner join CTE_StreetAndCommunitiy b on a.ParentId = b.ItemId where a.Status=1
+      )
+      select m.* from CTE_StreetAndCommunitiy m  left join Pub_UserArea b on m.ItemId=b.AreaId
+      where b.UserId = #UserId#  order by OrderNo
+    </select>
+    <select id="CTE_AreaCityProvice_List" parameterClass="StringObjectDictionary" resultClass="DictItemEx" >
+      with CTE_Sys_Dictionary_00005 as (
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Sys_DictionaryItem a where a.Status=1 and a.DictionaryId='00005' and a.ItemId = '$ItemId$'
+      union all
+      select cast(a.ItemId as varchar(40)) as ItemId,a.ItemCode,a.ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Sys_DictionaryItem a inner join CTE_Sys_Dictionary_00005 b on a.ItemId = b.ParentId where a.Status=1 and a.DictionaryId='00005'
+      )
+      select m.* from CTE_Sys_Dictionary_00005 m  order by OrderNo
+    </select>
+
+    <select id="GetDBType" parameterClass="StringObjectDictionary" resultClass="DictItem" >
+      select name as ItemId, name as ItemName from sys.types;
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TypeName" >name like '%#TypeName#%'</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

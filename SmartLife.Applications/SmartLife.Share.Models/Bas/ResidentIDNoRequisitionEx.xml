@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Bas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Count_ResidentIDNoRequisitionAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select RequisitionId,r.Id Id_IDNo,r.CheckInTime CheckInTime_IDNo,r.OperatedBy OperatedBy_IDNo,r.OperatedOn OperatedOn_IDNo,
+      SubmitBy,SubmitOn,
+      ConfirmBy,ConfirmOn,IDNoOld,IDNoNew,r.Remark Remark_IDNo,DoStatus,
+      bas.ResidentId,r.Id,bas.CheckInTime,Status,bas.OperatedBy,bas.OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,bas.Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      (select top 1 FlowFrom from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowFrom,
+      (select top 1 FlowTo from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowTo,
+      (select top 1 ProcessActionName from pub_flow a inner join Pub_FlowDefine b	on a.TableName=b.TableName and bas.ResidentId=BIZ_ID  and a.FlowFrom=b.CurrentState and a.FlowTo=b.FlowTo  where b.Status =1 and FlowName='FlowStep_40'  order by a.CheckInTime desc ) FlowFromName
+      from Bas_ResidentBaseInfo bas right join Bas_ResidentIDNoRequisition r on bas.ResidentId=r.ResidentId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >r.ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNoOld" >IDNoOld=#IDNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNoNew" >IDNoNew=#IDNoNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NonFlowFrom" >FlowFrom!=#NonFlowFrom#  or FlowFrom is null</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ResidentIDNoRequisitionAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select RequisitionId,r.Id Id_IDNo,r.CheckInTime CheckInTime_IDNo,r.OperatedBy OperatedBy_IDNo,r.OperatedOn OperatedOn_IDNo,
+      SubmitBy,SubmitOn,
+      ConfirmBy,ConfirmOn,'unescape'+IDNoOld as IDNoOld,'unescape'+IDNoNew as IDNoNew,r.Remark Remark_IDNo,DoStatus,
+      bas.ResidentId,r.Id,bas.CheckInTime,Status,bas.OperatedBy,bas.OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,bas.Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      (select top 1 FlowFrom from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowFrom,
+      (select top 1 FlowTo from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowTo,
+      (select top 1 ProcessActionName from pub_flow a inner join Pub_FlowDefine b	on a.TableName=b.TableName and bas.ResidentId=BIZ_ID  and a.FlowFrom=b.CurrentState and a.FlowTo=b.FlowTo  where b.Status =1 and FlowName='FlowStep_40'  order by a.CheckInTime desc ) FlowFromName
+      from Bas_ResidentBaseInfo bas right join Bas_ResidentIDNoRequisition r on bas.ResidentId=r.ResidentId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="RequisitionId" >RequisitionId=#RequisitionId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >r.ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNoOld" >IDNoOld=#IDNoOld#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNoNew" >IDNoNew=#IDNoNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NonFlowFrom" >FlowFrom!=#NonFlowFrom#  or FlowFrom is null</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

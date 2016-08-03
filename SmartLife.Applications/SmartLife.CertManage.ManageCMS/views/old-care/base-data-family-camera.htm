@@ -1,0 +1,82 @@
+﻿<div id="toolbar-B181003">
+    <!--<a id="uploadBaseDataOfFamilyCamera" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true" >上传家庭摄像头资料</a>-->
+</div>
+<table id="dg-B181003" >
+</table>
+<div id="dlg-B181003" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-B181003"  >
+    <div class="ftitle"></div>
+    <form id="fm-B181003" method="post" novalidate>   
+    <div class="fitem">
+        <label>
+            导出模板:</label>
+        <a  target="_blank" id="aTemplate"  class="easyui-linkbutton"  >点击下载excel模板</a> 
+    </div> 
+    <div class="fitem">
+            <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    </form>
+</div>
+<div id="btn-B181003">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload()">关闭</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'stationid-' + currentMenuCode,
+            pk: 'StationId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '家庭摄像头资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/FamilyCameraService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    }
+                },
+                columns: [[
+                { field: 'DeviceId', title: '设备编号', width: 150, hidden: true },
+                { field: 'DeviceCode', title: '设备编码', width: 160, align: 'center' },
+                { field: 'DeviceName', title: '设备名称', width: 200, align: 'center' }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#uploadBaseDataOfFamilyCamera').bind('click', function () {
+                uploadBaseData(models[currentMenuCode].entityName, models[currentMenuCode].defaultModel)
+            });
+        });
+
+    }); 
+</script>

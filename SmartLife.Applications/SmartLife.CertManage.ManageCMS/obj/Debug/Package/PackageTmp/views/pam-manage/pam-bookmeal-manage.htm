@@ -1,0 +1,619 @@
+﻿<div >
+    <table width="100%;"  height="30px">
+        <tr>            
+                <!--<input id="SelectedRoom" />
+                <input id="RoomId" type="hidden" />
+                <input id="FloorNo" type="hidden" />-->
+            <td style="text-align: left;">
+            <table>
+                <tr> 
+                <td id="CurrentAgencys-cc" style="text-align: left; padding-left:5px; padding-right:5px;">
+                   <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div> 
+                </td>
+                <td style=" border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                从<input id="PlanDate_Start" name="PlanDate_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input id="PlanDate_End" name="PlanDate_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="queryLastWeek()">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="queryNextWeek()">
+                            下周</a></td>
+                    <td style=" padding-left:10px; padding-right:5px;"><input id="oldManName" style=" width:120px;" placeholder="老人姓名"/></td>
+                    <td >
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="queryData()">查询</a> </td>
+                </tr>
+            </table>
+                   
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="toolbar-B13070602">
+    <table>        
+        <tr>
+            <td style="text-align: left; width:350px; ">
+                <input id="MealList"  style="  width:115px;"/>
+                <input id="MealTypeList" style=" width:115px;"/>
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="setBookMeal()">
+                            选择套餐</a>
+            </td>
+           <!-- <td>
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="addMealInfo(true)">
+                            保存</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="queryData()">刷新</a>  
+            </td>-->
+            <td style="text-align:right; width:180px;">
+                <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" plain="true" onclick="copyMealInfo()">
+                            复制配餐</a> 
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="dg-B13070602" class="main-area">
+</table> 
+<div id="dlg-copyBookmeal" class="easyui-dialog" style="width: 450px; height: 400px; padding: 10px;"
+    closed="true"  cache="false" buttons="#btn-copyBookmeal" >  
+    <div style=" font-size:18px; text-align:center;  width:100%;">选择老人 </div>
+    <div style="height:25px; padding-left:10px;"><input type="checkbox" id="checkAll" onclick="checkAll()"/><label for="checkAll">全选</label></div>
+    <div style=" width:100%; height:180px; overflow:auto;">
+        <table id="copyOldManList" style=" margin-left:10px;" >  
+        </table>    
+    </div>
+        <div style=" margin-top:20px;">
+           <a> 原 时 间 段 ：</a>
+           从<input disabled="disabled" id="CopyFrom_Start" name="CopyFrom_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;"   />
+                至<input disabled="disabled" id="CopyFrom_End" name="CopyFrom_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="copyLastWeek('CopyFrom')">上周</a> <a href="javascript:void(0)"
+                           id='copyNextWeek' class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="copyNextWeek('CopyFrom')">
+                            下周</a>
+        </div>
+        <div >
+           <a>目标时间段：</a>
+           从<input disabled="disabled" id="CopyTo_Start" name="CopyTo_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input disabled="disabled" id="CopyTo_End" name="CopyTo_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                       id='copyLastWeek' iconcls="icon-prev"   plain="true" onclick="copyLastWeek('CopyTo')">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="copyNextWeek('CopyTo')">
+                            下周</a>
+        </div>
+         
+</div>
+<div id="btn-copyBookmeal">
+            <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" onclick="copyOK()">
+                            仅保存</a> 
+            <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-copy" onclick="copyOKEx()">
+                            保存并关闭</a> 
+      <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancelEx('dlg-copyBookmeal')">关闭</a>
+</div>
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    var orgData;
+    var isAgencys = false;
+    if (isAgencys) {
+        orgData = top.gUserInfo.MappingAgencys;
+    }
+    else {
+        orgData = [{ "StationCode": "4612030003001001",
+            "StationId": "6203DD5C-C480-436F-8CA3-1672055EA5C7",
+            "StationName": "浙江蓝谷养老日照中心演示",
+            "StationType": "00006",
+            "StationType2": "00006"
+        }];
+    }
+    var mouseClickDown = false;
+    var templateOfMealInfoForView = '<li class="meal-info-item-save" id="[Id]" oldManId="[OldManId]" mealType="[MealType]"  mealTypeName="[MealTypeName]"  setMealId="[SetMealId]" setMealName="[SetMealName]"  fetchFlag="[FetchFlag]" fetchFlagName="[FetchFlagName]" remark="[Remark]"   ><a style="display:[DisplayStyleOfRemoveMealInfoItem]" title="删除此配餐" onclick="removeMealInfo(this)" class="removeMealInfo actionMealInfo nicon-blue nicon-R2C13"></a><a style="display:[DisplayStyleOfRemoveMealInfoItemEx]" title="此配餐已领取"  class="removeMealInfo actionMealInfo nicon-blue nicon-R2C14"></a><span  title="[[MealTypeName]]&nbsp;[[FetchFlagName]]&nbsp;[[SetMealName]] " class="[MealinfoClass]" >[[MealTypeName]]&nbsp;[[SetMealName]]</span></li>';
+    var daysBeforehand = -1; //今天之前的不能修改
+    placeholder(); //占位符初始化
+    $(function () {
+        loadfiles([
+            { type: "css", url: "../../css/pam/set-bookmeal.css" }
+            ], function () {
+                var fristload = true;
+                //加载机构 
+                $('#CurrentAgencys').combobox({
+                    width: 180,
+                    panelWidth: 300,
+                    data: orgData,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onLoadSuccess: function () {
+                        if (orgData.length > 0) {
+                            $('#CurrentAgencys').combobox('setValue', orgData[0].StationId);
+                            if (fristload) {
+                                buildPage(); //加载页面
+                                fristload = false; //第一次加载
+                            }
+                            if (orgData.length == 1) {
+                                $('#CurrentAgencys-c').hide(); //隐藏
+                            }
+                            else {
+                                $('#CurrentAgencys-cc').css('border-right', '1px solid #ddd'); //显示样式
+                            }
+                        }
+                        else {
+                            alertInfo('当前帐号没有绑定任何机构');
+                            $('#toolbar-Schedule').hide();
+                        }
+                    },
+                    onSelect: function (record) {
+                        buildPage(); //选择机构之后加载页面
+                    }
+                });
+            });
+        });
+
+        //加载页面的方法
+        function buildPage() {
+            getAll([baseCMSInvokeUrl + '/Pam/SetMealService/Query?parms=' + $.toJSON({ StationId: $('#CurrentAgencys').combobox('getValue'),Status:1, OrderByClause: ' SetMealName asc ' }), //加载套餐
+                        ajaxData_InvokeUrl + '/GetDictionaryItem/13003' //加载配餐类别
+                        ], function (mealList, mealTypeList) {
+                            allMealList = mealList;
+                            allMealTypeList = mealTypeList;
+                            $('#MealList').combobox({
+                                width: 120,
+                                panelHeight: 250,
+                                panelWidth: 120,
+                                data: mealList.rows,
+                                valueField: 'SetMealId',
+                                textField: 'SetMealName',
+                                editable: false
+                            });
+                            $('#MealTypeList').combobox({
+                                width: 120,
+                                panelHeight: 80,
+                                panelWidth: 120,
+                                data: mealTypeList,
+                                valueField: 'ItemId',
+                                textField: 'ItemName',
+                                editable: false
+                            });
+                            if (mealList.rows.length > 0) {
+                                $('#MealList').combobox('setValue', mealList.rows[0].SetMealId);
+                            }
+                            if (mealTypeList.length > 0) {
+                                $('#MealTypeList').combobox('setValue', mealTypeList[0].ItemId);
+                            }
+
+                            autosize('dg-' + currentMenuCode, -34);
+                            var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+                            var sunday = Date.today().moveToDayOfWeek(0);
+                            queryFromTo(monday, sunday);
+                        }); 
+                    }
+
+    //按当前条件查询结果
+    function queryData() {
+        var beginDateStr = $('#PlanDate_Start').val();
+        if (!beginDateStr) {
+            alertInfo('请选择一个开始日期');
+            return;
+        }
+        var endDateStr = $('#PlanDate_End').val();
+        if (!endDateStr) {
+            alertInfo('请选择一个结束日期');
+            return;
+        }
+        var isRefresh = false; //是否是刷新
+        var d = new Date();
+        var today=d.toString('yyyy-MM-dd');
+        if (beginDateStr <= today && today <= endDateStr) {
+            isRefresh = true; 
+        } 
+        var currentDate = Date.parse(beginDateStr);
+        var days = DateDiff('d', currentDate, Date.parse(endDateStr));
+        var frozenColumns = [[
+                    { field: 'OldManId', title: '对象编号', width: 150, hidden: true },
+                    { field: 'OldManName', title: '老人姓名', align: 'center', width: 100, styler: function () { return 'background-color:#098AD2;color:#fff'; } }
+            ]];
+        var columns = [[]];
+        for (var i = 0; i <= days; i++) {
+            var spanDays = DateDiff('d', Date.today(), currentDate);
+            var changeFlag = true;
+            if (spanDays <= daysBeforehand) {
+                changeFlag = false;
+            }
+            var theColumn = { changeFlag: changeFlag, field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 200, formatter: mealInfoFormatter, styler: cellStyler };
+            columns[0].push(theColumn);
+            currentDate = currentDate.addDays(1);
+        } 
+
+        var queryParams = {
+            instance: { StationId: $('#CurrentAgencys').combobox('getValue'),   BeginDateStr: beginDateStr, EndDateStr: endDateStr, OldManName: $('#oldManName').val() }
+        }
+        $('#dg-' + currentMenuCode).datagrid({
+            url: baseCMSInvokeUrl + '/Pam/BookMealService/ListBookMeal',
+            rownumbers: true,
+            singleSelect: false,
+            toolbar: '#toolbar-B13070602',
+            method: 'POST',
+            autoRowHeight: false,
+            queryParams: queryParams,
+            loader: easyuiLoaderForStringObjectDictionary,
+            frozenColumns: frozenColumns,
+            columns: columns,
+            onLoadSuccess: function (data) {
+                //设置标题可以点击  选中当列
+                var $headerCell = $('.datagrid-header-row td');
+                _.each($headerCell, function ($cell) {
+                    $cell.setAttribute('onclick', 'selectColumn(this)');
+                });
+                //自动移到当天 
+                if (isRefresh) {
+                    var int = d.getDay() - 1;
+                    var i = int >= 0 ? int : 6;
+                    $('.datagrid-view2 .datagrid-body').attr('id', 'scroll-body');
+                    $('#scroll-body ').scrollLeft(200 * i); 
+                }
+            }
+        }).datagrid('freezeRow', 1).datagrid('attachCellSelect', {
+            onmousedown: function (e) {
+                if (e.button == 0 || e.button == 1) {
+                    if (!e.ctrlKey) {
+                        if ($('.selectedCell').size() > 0) {
+                            $('.selectedCell').removeClass('selectedCell');
+                        }
+                    }
+                    mouseClickDown = true;
+                    var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+                    }
+                }
+            },
+            onmouseup: function (e) {
+                var userSelection;
+                if (window.getSelection) { //现代浏览器
+                    userSelection = window.getSelection();
+                } else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面
+                    userSelection = document.selection.createRange();
+                }
+                mouseClickDown = false;
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        try {
+                            window.getSelection().removeAllRanges();
+                        }
+                        catch (e) { }
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            },
+            onmouseover: function (e) {
+                if (mouseClickDown) {
+                    var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption && columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+                    }
+                }
+            },
+            onbodyclick: function (e) {
+                if (e.target.className == 'datagrid-body') {
+                    if ($('.selectedCell').size() > 0) {
+                        $('.selectedCell').removeClass('selectedCell');
+                    }
+                }
+            }
+        });
+    }
+    //组合单元格里的配餐信息
+    function mealInfoFormatter(value, row, index) {
+        var formallis = ''; 
+        var bookDate = this.title.substr(0, 10);
+        var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', this.field);
+
+        var arrMealInfos = [];
+        if (value) {
+        _.each(value.split(','), function (o) {
+            var arrMealInfo = o.split('|');
+            arrMealInfos.push({
+                Id: arrMealInfo[0],
+                MealType: arrMealInfo[1],
+                MealTypeName: arrMealInfo[2],
+                OldManId: arrMealInfo[3],
+                SetMealId: arrMealInfo[4],
+                SetMealName: arrMealInfo[5], 
+                FetchFlag: arrMealInfo[6],
+                FetchFlagName: arrMealInfo[7],
+                Remark: arrMealInfo[8] == '' ? '____' : arrMealInfo[8] 
+            });
+        }); 
+        arrMealInfos = _.sortBy(arrMealInfos, 'MealType');
+        formallis = _.map(arrMealInfos, function (o) {
+            return replaceWithKeys(templateOfMealInfoForView, { DisplayStyleOfRemoveMealInfoItem: o.FetchFlag == 0 ? 'inline-block' : 'none', DisplayStyleOfRemindMealInfoItemByWX: o.FetchFlag == 0 ? 'inline-block' : 'none', DisplayStyleOfRemoveMealInfoItemEx: o.FetchFlag == 1 ? 'inline-block' : 'none', DisplayStyleOfRemoveMealInfoItemExByWX: o.FetchFlag == 1 ? 'inline-block' : 'none', ItemClickFunc: 'editMealInfoRemark(this,' + columnOption.changeFlag + ')', MealinfoClass: o.FetchFlag == 0 ? 'meal-info-item-unfetch' : 'meal-info-item-fetch', Id: o.Id, OldManId: o.OldManId, MealType: o.MealType, MealTypeName: o.MealTypeName, SetMealId: o.SetMealId, SetMealName: o.SetMealName, FetchFlag: o.FetchFlag, FetchFlagName: o.FetchFlagName, Remark: o.Remark
+            });
+        }).join("");
+    } 
+        var htmls = [];
+        htmls.push('<div class="mealInfo"><ul class="formal">' + formallis + '</ul><ul class="tmp" oldManId="' + row.OldManId + '" bookDate="' + bookDate + '"></ul></div>');
+        if (columnOption.changeFlag) { 
+            htmls.push('<a title="作废当天所有配餐" onclick="removeMealInfos(this)" class="nullifyBookMeal nicon-blue nicon-R6C13"></a>');
+                
+        }
+        return htmls.join('');
+    } 
+    //按照周对配餐信息进行复制
+    function copyMealInfo() {
+        var rows = $('#dg-' + currentMenuCode).datagrid('getRows');
+        var oldMans = [];
+        _.each(rows, function (o) {
+            oldMans.push({ 'OldManId': o.OldManId, 'OldManName': o.OldManName });
+        });
+        if (oldMans.length > 0) {
+            $('#dlg-copyBookmeal').dialog(_.extend({
+                onBeforeOpen: function () {
+                    var htmls = [];
+                    var i = 1;
+                    _.each(oldMans, function (o) {
+                        if (i == 1) { htmls.push('<tr style="height:30px;">'); }
+                        htmls.push('<td style=" text-align:center;  width:20px;"><input type="checkbox" class="copyOldMan"  name="copyOldMan" id="' + o.OldManId + '"  onclick="checkOne()"/> </td><td style="  text-align:left; width:80px;"><label for="' + o.OldManId + '" onclick="checkOne()">' + o.OldManName + '</label></td>');
+                        if (i == 4) { htmls.push('</tr>'); i = 0; }
+                        i++;
+                    });
+                    $('#copyOldManList').html(htmls.join(''));
+
+                    var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+                    var sunday = Date.today().moveToDayOfWeek(0);
+                    copyTime(monday, sunday, 'CopyFrom');
+                    copyTime(monday, sunday, 'CopyTo');
+                    copyNextWeek('CopyTo'); 
+                },
+                modal: true
+            }, null)).dialog('open').dialog('setTitle', '复制配餐信息');
+        }
+        else {
+            alert('当前没有可做复制配餐信息的老人');
+        }
+    }
+
+    function copyTime(beginDate, endDate, id) {
+        $('#' + id + '_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#' + id + '_End').val(endDate.toString('yyyy-MM-dd'));
+    }
+
+    function copyNextWeek(id) {
+        var beginDate = Date.parse($('#' + id + '_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#' + id + '_End').val()).moveToDayOfWeek(0, 1);
+        copyTime(beginDate, endDate, id);
+    }
+    function copyLastWeek(id) {
+        var isalert = false;
+        if (id == 'CopyTo') {
+            var copyTo_Start = Date.parse($('#CopyTo_Start').val()).toString('yyyy-MM-dd');
+            var monday = (Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, 1)).moveToDayOfWeek(1, 1).toString('yyyy-MM-dd');
+            if (copyTo_Start <= monday) {
+                isalert = true;
+            }
+        }
+        if (!isalert) {
+            var beginDate = Date.parse($('#' + id + '_Start').val()).moveToDayOfWeek(1, -1);
+            var endDate = Date.parse($('#' + id + '_End').val()).moveToDayOfWeek(0, -1);
+            copyTime(beginDate, endDate, id);
+        }
+        else {
+            alert('目标时间段从下周一开始');
+        }
+    }
+    //复制配餐信息时选择老人的单击复选框的事件
+    function checkOne() {
+        if ($('input:checked[name="copyOldMan"]').size() == $('input[name="copyOldMan"]').size()) {
+            $('#checkAll').prop('checked', true);
+        }
+        else {
+            $('#checkAll').prop('checked', false);
+        }
+    }
+    //复制配餐信息时选择全部的单击复选框的事件 
+    function checkAll() {
+        if ($('#checkAll').prop("checked")) {
+            $('#copyOldManList .copyOldMan').prop('checked', true);
+        }
+        else {
+            $('#copyOldManList .copyOldMan').prop('checked', false);
+        }
+    }
+    //复制配餐信息时  保存并关闭按钮
+    function copyOKEx() {
+        copyOK();
+        cancelEx('dlg-copyBookmeal');
+    }
+    //复制配餐信息时  保存按钮
+    function copyOK() {
+        var $allCopyMan = $('#copyOldManList .copyOldMan');
+        var arrOldManIds = [];
+        _.each($allCopyMan, function (check) {
+            if ($(check).prop("checked")) {
+                arrOldManIds.push($(check).attr('Id'));
+            }
+        });
+        if (arrOldManIds.length > 0) {
+            var param = {
+                OldManIds: arrOldManIds.join('|'),
+                CopyFrom_Start: $('#CopyFrom_Start').val() + ' 00:00',
+                CopyFrom_End: $('#CopyFrom_End').val() + ' 23:59',
+                CopyTo_Start: $('#CopyTo_Start').val() + ' 00:00',
+                CopyTo_End: $('#CopyTo_End').val() + ' 23:59'
+            };
+            postTo(baseCMSInvokeUrl + '/Pam/BookMealService/CopyBookMealByWeek', $.toJSON(param), function (ret) {
+                if (ret.Success) {
+                    alert('复制成功');
+                    queryFromTo($('#CopyTo_Start').val(), $('#CopyTo_End').val());
+                }
+            });
+        }
+        else {
+            alert('请选择复制对象');
+        }
+    } 
+    //根据dialogID关闭窗口
+    function cancelEx(id) {
+        $('#' + id).dialog('close');
+    }
+    //选择配餐之后  自动保存
+    function setBookMeal() {
+        _setBookMeal($('.selectedCell'));
+    }
+    //选择配餐之后  自动保存
+    function _setBookMeal(selectedCell) {
+        var setMealId = $('#MealList').combobox('getValue');
+        var setMealName = $('#MealList').combobox('getText');
+        var mealTypeId = $('#MealTypeList').combobox('getValue');
+        var mealTypeName = $('#MealTypeList').combobox('getText');  
+        if (!setMealId || !mealTypeId) {
+            alertInfo('请选择套餐和类型');
+            return;
+        }
+        var columnOption = $('#dg-' + currentMenuCode).datagrid('getColumnOption', selectedCell.attr('field'));
+        selectedCell.find('.mealInfo').each(function () {
+            var mealInfoContainer = $(this).find('ul.tmp');
+            mealInfoContainer.append(replaceWithKeys(templateOfMealInfoForView, { DisplayStyleOfRemoveMealInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindMealInfoItemByWX: columnOption.changeFlag ? 'inline-block' : 'none', ItemClickFunc: 'editMealInfoRemark(this,' + columnOption.changeFlag + ')', MealinfoClass: 'meal-info-item-unfetch', Id: '', OldManId: '', MealType: mealTypeId, MealTypeName: mealTypeName, SetMealId: setMealId, SetMealName: setMealName, FetchFlag: 0, FetchFlagName: '未取', Remark: '____' }));
+             
+            $.parser.parse(mealInfoContainer);
+        }).end().find('.saveMealInfo').each(function () {
+            $(this).show();
+        }).end().focus();
+        saveDB();//立即保存数据
+    }
+    //立即保存数据时的方法调用
+    function saveDB() {
+        var bookMealReserves = _.map($('ul.tmp li'), function (li) {
+            var oldManId = $(li).parent('.tmp').attr('oldManId');
+            var bookDate = $(li).parent('.tmp').attr('bookDate');
+            var mealType = $(li).attr('mealType');
+            var setMealId = $(li).attr('setMealId');
+            var fetchFlag = $(li).attr('fetchFlag'); 
+            return { StationId: $('#CurrentAgencys').combobox('getValue'), OldManId: oldManId, BookDate: toJsonDate(Date.parseExact(bookDate, 'yyyy-MM-dd')), FetchFlag: fetchFlag, SetMealId: setMealId, MealType: mealType };
+        });
+        if (bookMealReserves.length > 0) {
+            postTo(baseCMSInvokeUrl + '/Pam/BookMealService/CreateAll', $.toJSON(bookMealReserves), function (ret) {
+                if (ret.Success) {
+                    queryData();
+                }
+            });
+        }
+        else {
+            alert('请选择老人需要配餐的日期');
+        }
+    }
+
+    //作废单条配餐记录
+    function removeMealInfo(obj) {
+        var strId = $(obj).closest("li").attr("id").trim(); //获取记录ID
+        var strFetchFlag = $(obj).closest("li").attr("FetchFlag").trim(); //获取领取标志
+        var formal = $(obj).closest("li").parent('.formal');
+        var bookDate = formal.next('.tmp').attr("bookDate"); 
+        var d = new Date();
+        var dateNow = d.toString('yyyy-MM-dd');
+        if (bookDate >= dateNow) {
+            if (strId != '') {
+                if (strFetchFlag == 0) {//未领取的可以删除
+                    alertConfirm('确定将此信息作废吗？', function (r) {
+                        if (r) {
+                            _removeMealInfo(strId);
+                        }
+                    });
+                }
+                else {
+                    alert('已领取，不允许作废');
+                }
+            }
+        }
+        else {
+            alert('时间已过，不允许作废');
+        }
+    }
+    //作废当天的配餐记录
+    function removeMealInfos(obj) {
+        var strIds = '';
+        var isFetchFlag = false;
+        var $lisToAdd = $('.selectedCell ul li');
+        //获取当天所有配餐记录的ＩＤ
+        strIds = _.map($lisToAdd, function (li) {
+            var strFetchFlag = $(li).attr("FetchFlag").trim(); //领取标志
+            if (strFetchFlag == 0) {//未领取的可以作废
+                return $(li).attr('id').trim();
+            }
+            else {
+                isFetchFlag = true;
+            }
+        }).join('|');
+        if (strIds != '') {
+            alertConfirm('确定将当天的信息作废吗？', function (r) {
+                if (r) {
+                    //如果存在已领取的记录  提示不允许作废
+                    if (isFetchFlag) {
+                        alert('无法作废已领取的');
+                    }
+                    _removeMealInfo(strIds);
+                }
+            });
+        }
+    }
+    //作废配餐记录的后台调用方法
+    function _removeMealInfo(strIds) {
+        putTo(baseCMSInvokeUrl + '/Pam/BookMealService/NullifySelected/' + strIds, null, function (ret) {
+            if (ret.Success) {
+                queryData();
+                alert('成功删除');
+            }
+        });
+    }
+    //点击标题，选择当整前列
+    function selectColumn(obj) {
+        var strField = obj.getAttribute('field');
+        var $datagridRow = $('.datagrid-view2 .datagrid-btable td');
+        _.each($datagridRow, function ($row) {
+            var row_field = $row.getAttribute('field');
+            var row_class = $row.getAttribute('class'); 
+            if (strField == row_field && row_class != 'cantchangeday') {
+                $row.setAttribute('class', 'selectedCell');
+            }
+        });
+    }
+    //复制配餐之后跳转到复制之后的日期
+    function queryFromTo(beginDate, endDate) {
+        $('#PlanDate_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#PlanDate_End').val(endDate.toString('yyyy-MM-dd'));
+        queryData();
+    }
+    function queryLastWeek() {
+        var beginDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(1, -1);
+        var endDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(0, -1);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryNextWeek() {
+        var beginDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#PlanDate_Start').val()).moveToDayOfWeek(0, 1).addDays(7);
+        queryFromTo(beginDate, endDate);
+    }
+    //周六周日的样式
+    function cellStyler(value, row, index) {
+        if (this.title.indexOf('六') != -1 || this.title.indexOf('日') != -1) {
+            return { "class": 'restday' };
+        }
+        else if (!this.changeFlag) {
+            return { "class": 'cantchangeday' };
+        }
+    }
+</script>

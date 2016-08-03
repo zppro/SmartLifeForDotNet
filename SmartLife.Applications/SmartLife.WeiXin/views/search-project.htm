@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"> <!-- 不能放大 -->
+    <title></title>
+</head>
+<body>
+   <div data-role="page" id="search-project">
+
+   <script type="text/javascript">
+           function jsonstr() {
+               var Request = new Object();
+               Request = GetRequest();
+               var openid = Request['openid'];
+               var type = Request['type'];
+               var followToIDNo = Request['FollowToIDNo'];
+               var startTime = $("#startTime").val();
+               var endTime = $("#endTime").val();
+
+               var params = new Object();
+               params.openid = openid;
+               params.type = type;
+               params.startTime = startTime;
+               params.endTime = endTime;
+               params.followToIDNo = followToIDNo;
+               var json = JSON.stringify(params);
+               alert(json);
+               return json;
+           }
+
+           $(function () {
+               alert(window.location.href);
+               alert(window.location.href.length);
+               jsonstr();
+           })
+    </script>
+
+       <div data-role="header" data-theme="f">
+         <a href="#" data-role="button" data-rel="back" data-transition="flip" data-iocn="arrow-l">返回</a>
+         <h1>服务项目</h1>
+       </div>
+
+       <div data-role="content">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><h1>服务类别</h1></div>
+            <div class="ui-block-b"><h1>剩余</h1></div>
+
+            <div class="ui-block-a">打扫卫生</div>
+            <div class="ui-block-b">8次</div>
+
+            <div class="ui-block-a">家电维修</div>
+            <div class="ui-block-b">3次</div>
+
+         </div> 
+       </div>
+   </div>
+</body>
+</html>

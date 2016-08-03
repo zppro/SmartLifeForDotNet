@@ -1,0 +1,85 @@
+﻿.mainDiv_area_show
+{
+    width: 100%; 
+    height: 100%;
+    overflow:auto;
+}
+.area-panel
+{
+    width: 92%; 
+    height: 100%; 
+    margin-top: 0px; 
+    margin-right: auto; 
+    margin-bottom: 0px; 
+    margin-left: auto; 
+    float:left;
+}
+.area-name
+{
+    margin:5px 10px 5px 10px; 
+    border:solid 1px #000; 
+    height:30px; 
+    line-height:30px; 
+    background-color:#aaa; 
+    text-align:center; 
+    font-size:16px;
+    float:left; 
+    width:180px; 
+    white-space:nowrap;
+    word-break:keep-all;
+    overflow:hidden;
+    text-overflow:ellipsis;
+} 
+.overTool
+{
+    top:0;
+    left:90%;
+    width: 70px; 
+    height: 70px; 
+    position:absolute;
+    overflow:hidden;
+    z-index:99;
+}
+.overTool a
+{
+   width: 70px; 
+   height: 70px;  
+}
+.rightSideTool
+{
+    width: 7%; 
+    height: 100%;
+    overflow:hidden;
+    padding:0px;
+}
+.rightSideTool a
+{
+   width: 70px; 
+   height: 70px;  
+}
+/**街道信息统计**/
+.streetCount
+{
+     text-align:center; 
+     height:50px; 
+     background-color:Green; 
+     color: White; 
+     line-height:50px;/*line-height文字居中*/
+}
+/**街道信息统计**/
+.communityCount
+{
+     text-align:center; 
+     height:50px; 
+     background-color:Gray; 
+     color:White; 
+     line-height:50px;/*line-height文字居中*/
+}
+/**社区简介**/
+#communityIntroduction
+{
+    width:30%; 
+    height:100%; 
+    float:left ; 
+    overflow:scroll; 
+}

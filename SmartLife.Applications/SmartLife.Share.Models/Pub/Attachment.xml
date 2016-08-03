@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Attachment" type="SmartLife.Share.Models.Pub.Attachment, SmartLife.Share.Models" />
+    <typeAlias alias="AttachmentPK" type="SmartLife.Share.Models.Pub.AttachmentPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Attachment_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_Attachment(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AttachmentId" >AttachmentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >SourceId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentTag" >AttachmentTag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentSize" >AttachmentSize</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Suffix" >Suffix</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OriginName" >OriginName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveName" >SaveName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveThumbName" >SaveThumbName</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AttachmentId" >#AttachmentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentTag" >#AttachmentTag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentSize" >#AttachmentSize#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Suffix" >#Suffix#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OriginName" >#OriginName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveName" >#SaveName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveThumbName" >#SaveThumbName#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Attachment_Update" parameterClass="StringObjectDictionary" >
+      update Pub_Attachment
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentTag" >AttachmentTag=#AttachmentTag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AttachmentSize" >AttachmentSize=#AttachmentSize#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Suffix" >Suffix=#Suffix#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OriginName" >OriginName=#OriginName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveName" >SaveName=#SaveName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SaveThumbName" >SaveThumbName=#SaveThumbName#</isPropertyAvailable>
+      </dynamic>
+      where AttachmentId=#AttachmentId#
+    </update>
+    <delete id="Attachment_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_Attachment
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AttachmentId" >AttachmentId=#AttachmentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AttachmentTag" >AttachmentTag=#AttachmentTag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AttachmentSize" >AttachmentSize=#AttachmentSize#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Suffix" >Suffix=#Suffix#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OriginName" >OriginName=#OriginName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SaveName" >SaveName=#SaveName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SaveThumbName" >SaveThumbName=#SaveThumbName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Attachment_Load" parameterClass="AttachmentPK" resultClass="Attachment" >
+      select AttachmentId,Id,Status,CheckInTime,SourceTable,SourceId,AttachmentTag,AttachmentSize,Suffix,OriginName,SaveName,SaveThumbName from Pub_Attachment
+      where AttachmentId=#AttachmentId#
+    </select>
+    <select id="Attachment_List" parameterClass="StringObjectDictionary" resultClass="Attachment" >
+      select AttachmentId,Id,Status,CheckInTime,SourceTable,SourceId,AttachmentTag,AttachmentSize,Suffix,OriginName,SaveName,SaveThumbName from Pub_Attachment
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AttachmentId" >AttachmentId=#AttachmentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AttachmentTag" >AttachmentTag=#AttachmentTag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AttachmentSize" >AttachmentSize=#AttachmentSize#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Suffix" >Suffix=#Suffix#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OriginName" >OriginName=#OriginName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SaveName" >SaveName=#SaveName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SaveThumbName" >SaveThumbName=#SaveThumbName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

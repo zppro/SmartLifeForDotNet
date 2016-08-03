@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="DatabaseConnect" type="SmartLife.Share.Models.Sys.DatabaseConnect, SmartLife.Share.Models" />
+    <typeAlias alias="DatabaseConnectPK" type="SmartLife.Share.Models.Sys.DatabaseConnectPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="DatabaseConnect_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_DatabaseConnect(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ConnectId" >ConnectId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ConnectName" >ConnectName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Provider" >Provider</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >UserCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserPassword" >UserPassword</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DatabaseName" >DatabaseName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IBatisMapId" >IBatisMapId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileRefer" >IbatisConfigFileRefer</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileValue" >IbatisConfigFileValue</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ConnectId" >#ConnectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ConnectName" >#ConnectName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Provider" >#Provider#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserPassword" >#UserPassword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DatabaseName" >#DatabaseName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IBatisMapId" >#IBatisMapId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileRefer" >#IbatisConfigFileRefer#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileValue" >#IbatisConfigFileValue#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="DatabaseConnect_Update" parameterClass="StringObjectDictionary" >
+      update Sys_DatabaseConnect
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ConnectName" >ConnectName=#ConnectName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Provider" >Provider=#Provider#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserPassword" >UserPassword=#UserPassword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DatabaseName" >DatabaseName=#DatabaseName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IBatisMapId" >IBatisMapId=#IBatisMapId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileRefer" >IbatisConfigFileRefer=#IbatisConfigFileRefer#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IbatisConfigFileValue" >IbatisConfigFileValue=#IbatisConfigFileValue#</isPropertyAvailable>
+      </dynamic>
+      where ConnectId=#ConnectId#
+    </update>
+    <delete id="DatabaseConnect_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_DatabaseConnect
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ConnectId" >ConnectId=#ConnectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ConnectName" >ConnectName=#ConnectName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Provider" >Provider=#Provider#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserPassword" >UserPassword=#UserPassword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DatabaseName" >DatabaseName=#DatabaseName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IBatisMapId" >IBatisMapId=#IBatisMapId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IbatisConfigFileRefer" >IbatisConfigFileRefer=#IbatisConfigFileRefer#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IbatisConfigFileValue" >IbatisConfigFileValue=#IbatisConfigFileValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="DatabaseConnect_Load" parameterClass="DatabaseConnectPK" resultClass="DatabaseConnect" >
+      select ConnectId,Id,ConnectName,Provider,ServerName,UserCode,UserPassword,DatabaseName,IBatisMapId,IbatisConfigFileRefer,IbatisConfigFileValue from Sys_DatabaseConnect
+      where ConnectId=#ConnectId#
+    </select>
+    <select id="DatabaseConnect_List" parameterClass="StringObjectDictionary" resultClass="DatabaseConnect" >
+      select ConnectId,Id,ConnectName,Provider,ServerName,UserCode,UserPassword,DatabaseName,IBatisMapId,IbatisConfigFileRefer,IbatisConfigFileValue from Sys_DatabaseConnect
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ConnectId" >ConnectId=#ConnectId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ConnectName" >ConnectName=#ConnectName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Provider" >Provider=#Provider#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserCode" >UserCode=#UserCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="UserPassword" >UserPassword=#UserPassword#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DatabaseName" >DatabaseName=#DatabaseName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IBatisMapId" >IBatisMapId=#IBatisMapId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IbatisConfigFileRefer" >IbatisConfigFileRefer=#IbatisConfigFileRefer#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IbatisConfigFileValue" >IbatisConfigFileValue=#IbatisConfigFileValue#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

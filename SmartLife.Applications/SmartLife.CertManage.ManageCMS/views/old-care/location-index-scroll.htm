@@ -1,0 +1,52 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    <div  style="height:32px; background:#efefef;border:1px solid #ccc; margin:0 auto; padding-top:6px;">
+        <label style="margin-left:10px;">定位类型:</label>
+        <select id="gpsTypeSelect"  style="width:120px;">
+            <option value="0">实时定位</option>
+            <option value="1">历史轨迹</option>
+            <option value="2">围栏报警</option>
+        </select>
+        <a  href="javascript:void(0);" class="easyui-linkbutton location" style=" margin-left:10px;" data-options="iconCls:'icon-ok'" >搜索</a>
+    </div>
+    <div id="location-panel" >地图载入中...</div>
+</div>
+<div id="oldman-location-block"></div>
+<script type="text/javascript">
+    $(function () {
+        autosize('scroll-block');
+
+        $(".location").unbind('click').bind('click', function () {
+            //搜索
+            getHtml(baseUrl + '/views/dialogs/data-oldman-configinfo-show.htm', function (str) {
+                $("#oldman-location-block").html(str);
+                $.parser.parse('#btn-location');
+                $("#the-location").dialog({
+                    inline: false,
+                    onClose: function () {
+                        $(this).dialog('destroy');
+                    },
+                    onBeforeOpen: function () {
+                        dialogOpen(null, areas);
+                    },
+                    modal: true
+                }).dialog('open').dialog('setTitle', '查看-定位设备');
+            });
+        });
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" }
+        ], function () {
+            autosize("location-panel");
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            initMap("location-panel", longitude, latitude);
+        });
+
+    });
+
+    
+
+</script>

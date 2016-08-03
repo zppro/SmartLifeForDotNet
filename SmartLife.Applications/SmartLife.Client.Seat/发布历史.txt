@@ -1,0 +1,6 @@
+﻿2.0.4.0:需要win.core.dll一起发布
+2.0.5.0:需要win.core.dll,win.tools.dll一起发布
+2.0.6.0:需要win.core.dll,win.tools.dll一起发布
+2.1.0.0:需要win.core.dll,win.tools.dll一起发布
+2.1.1.0:需要win.core.dll,win.tools.dll一起发布
+2.1.2.0:需要win.core.dll,win.tools.dll一起发布

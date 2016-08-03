@@ -1,0 +1,1112 @@
+﻿<table id="cc-B120102" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd;  border-right: solid 1px #ddd;background-color: #fafafa;">
+                所属栏目
+            </div>
+        <div id="div_tree" style="border: solid 1px #ddd; width: 100%; float: left; overflow: auto;">
+            <ul id="tree-B120102">
+
+            </ul>
+        </div>
+        </td>
+        <td valign="top">
+            <div id="toolbar-B120102">
+                <a behaviorcode="01" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="add()">新增</a> <a behaviorcode="02" href="javascript:void(0)" id="edit"
+                        class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+                <a behaviorcode="03" href="javascript:void(0)"  id="nullify" class="easyui-linkbutton" iconcls="icon-remove"
+                    plain="true" onclick="nullify()">作废</a> <a href="javascript:void(0)"  id="openApprovalDialog" class="easyui-linkbutton"
+                        iconcls="icon-ok" plain="true" onclick="openApprovalDialog()">提交审核</a>
+                        <a href="javascript:void(0)"  id="unOpenApprovalDialog" class="easyui-linkbutton"
+                        iconcls="icon-undo" plain="true" onclick="openApprovalDialog()">撤销审核</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-ok" plain="true" onclick="rowsApprova()" id="rowsApprova" operation="bulk">
+                        批量提交审核</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                    onclick="upload()">附件管理</a>
+            </div>
+            <div id="search-sample-B120102" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B120102" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align: right">
+                            关键字：
+                        </td>
+                        <td style="text-align: left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="标题、关键字、摘要、作者"/>
+                        </td>
+                        <td style="text-align: right">
+                            提交状态：
+                        </td>
+                        <td style="text-align: left"> 
+                            <input id="CC-FlowTo" name="FlowTo_Start" class="combobox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                                plain="true" onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B120102">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B120102" class="easyui-dialog" style="width: 800px; height: 540px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-B120102">
+    <div id="tt" class="easyui-tabs" style="width: 770px; height: 440px;">
+        <div title="基本信息">
+            <form id="fm-B120102" method="post" novalidate  style=" width:670px; height: 340px;margin:20px auto auto auto;" >
+            <input type="hidden" name="ArticleId" id="articleId-B120102" />
+            <input type="hidden"  id="_Status" /> 
+            <div class="fitem">
+                <label>
+                    文章标题:</label>
+                <input name="Title" class="easyui-validatebox" style="width: 575px" required="true"
+                    missingmessage="标题不能为空" />
+            </div>
+            <div class="fitem">
+                <label>
+                    副&nbsp;&nbsp;标&nbsp;&nbsp;题:</label>
+                <input name="SubTitle" class="easyui-validatebox" />
+                <label>
+                    关&nbsp;&nbsp;键&nbsp;&nbsp;词:</label>
+                <input name="Tags" id="Tags" />
+            </div>
+            <div class="fitem">
+                <label>
+                    作　　者:</label>
+                <input name="Author" id="Author" />
+                <label>
+                    来　　源:</label>
+                <input name="Source" id="Source" />
+                <label>
+                    摘　　要:</label>
+                <input name="Abstract" id="Abstract" />
+            </div>
+            <div class="fitem">
+                <label>
+                    街　　道:</label>
+                    <input name="AreaIdStreet" id="AreaIdStreet" />
+                <input type="hidden" name="AreaId2" id="AreaId2" />
+                <label>
+                    社　　区:</label>
+                    <input name="AreaIdCommunity" id="AreaIdCommunity" />
+                <input type="hidden" name="AreaId3" id="AreaId3" />
+                <label>
+                    附件数量:</label>
+                <input name="Attachments" id="Attachments" disabled="disabled" />
+            </div>
+            <div class="fitem">
+                <label>
+                    所属栏目:</label>
+                <input name="ColumnId" id="ColumnId" />
+                <label>
+                    发布日期:</label>
+                <input name="PublishDate" id="PublishDate" style="width: 150px" class="Wdate easyui-validatebox"
+                    required="true" onfocus="var ExpiredDate=$dp.$('ExpiredDate');WdatePicker({onpicked:function(){ExpiredDate.focus();},maxDate:'#F{$dp.$D(\'ExpiredDate\')}'})" />
+                <label>
+                    过期日期:</label>
+                <input name="ExpiredDate" id="ExpiredDate" style="width: 150px" class="Wdate easyui-validatebox"
+                    required="true" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'PublishDate\')}'})" />
+            </div>
+            <div class="fitem">
+                <label>
+                    附件方式:</label>
+                <input name="PreviewMode" id="PreviewMode" />
+                <label>
+                    显示方式:</label>
+                <input name="ShowMode" id="ShowMode" />
+                <label>
+                    首页显示:</label>
+                <input name="HomeShowFlag" id="HomeShowFlag" />
+            </div>
+            <div class="fitem">
+                <label>
+                    图片新闻:</label>
+                <input name="PicFlag" id="PicFlag" />
+                <label>
+                    视频新闻:</label>
+                <input name="VideoFlag" id="VideoFlag" />
+                <label>
+                    动态新闻:</label>
+                <input name="NewsFlag" id='NewsFlag' />
+            </div> 
+            <div class="fitem">
+                <label>
+                    文章类别:</label>
+                <input name="Category" id="Category" />
+                <label>
+                    是否置顶:</label>
+                <input name="TopFlag" id="TopFlag" />
+                <label>
+                    置顶天数:</label>
+                <input name="TopDays" id="TopDays" />
+                <input type="hidden" name="Content" id="hContent" />
+            </div>
+            <div id="div_artPicUpload" style=" display:none" class="fitem" >
+                <input type="file" name="file_artPicUpload" id="file_artPicUpload" />
+                <input type="hidden" id="AddAttachmentId" />
+                <ul id="artPicZone"></ul>
+            </div>
+            </form>
+        </div>
+        <div title="正文内容" style="overflow:visible">
+            <textarea name="Content" id="Content" style="width: 580px;height:260px;"></textarea>
+        </div>
+            <form id="postContent" method="post"  action="" > 
+                <input type="hidden" name="Content" id="pContent" />
+                <input type="hidden" name="ArticleId" id="pArticleId" />
+                <input type="hidden" name="ConnectId" id="pConnectId" />
+            </form>
+    </div>
+    </div>
+<div id="btn-B120102">
+<label id="message" style="color: Red">
+        已提交审核，不能编辑</label>
+    <a href="javascript:void(0)" id="edit_btn"  class="easyui-linkbutton" iconcls="icon-ok" onclick="onBeforeSave()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<!--高级查询 dlg 预留 -->
+<div id="dlg-search-B120102" class="easyui-dialog" style="width: 420px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B120102"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B120102" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            标　题:</label>
+        <input name="Title"  />
+    </div>
+    <div class="fitem">
+        <label>
+            副标题:</label>
+        <input name="SubTitle" />
+    </div>
+    <div class="fitem">
+        <label>
+            作　者:</label>
+        <input name="Author" />
+    </div>
+    </form>
+</div>
+<div id="btn-search-B120102">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<div id="dlg-upload-B120102" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-upload-B120102"  >
+    <div class="fitem">
+        <input type="file" name="file_upload" id="file_upload" /> 
+    </div>
+    <div style="padding:10px; height:70%; border:1px solid red;overflow:auto;">
+        <ul id="img-Content-B120102">
+        </ul>
+    </div>
+</div>
+<!--<div id="btn-upload-B120102">
+     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload2(true)">关闭</a>
+</div>--> 
+<div id="article-iframe-block" style=" display:none;"></div>
+<script type="text/javascript">
+    var flowName; //流转名称
+    var flowSetp; //流转名称中取出需要几步审核
+    placeholder(); //占位符初始化  
+    var areas;
+    var article;
+    var editor1;
+    var isConnect = 0; //不启用市级库数据库连接
+    getTo(baseCMSInvokeUrl + '/Sys/ParameterService/Query?parms=' + $.toJSON({ ParameterId: 'Sys_ConnectId', Status: 1 }), null, function (ret) {
+        if (ret.Success && ret.rows.length > 0) {
+            isConnect = ret.rows[0].ParameterValue;
+        }
+    }, { async: false });
+    $(function () {
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js" },
+            { type: "css", url: "../../css/old-care/base-data.css" },
+            { type: "js", url: "../../script/old-care/base-data.js"}], function () {
+            });
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'articleId-' + currentMenuCode,
+            pk: 'ArticleId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+                formData["Attachments"] == "" ? formData["Attachments"] = 0 : formData["Attachments"] = formData["Attachments"];
+                formData["Content"] = '';
+                formData["TopFlag"] == 0 ? formData["TopDays"] = 0 : formData["TopDays"] = formData["TopDays"];
+
+                formData["PublishDate"] = '\/Date(' + Date.parse(formData["PublishDate"]).getTime() + '+0800)\/';
+                formData["ExpiredDate"] = '\/Date(' + Date.parse(formData["ExpiredDate"]).getTime() + '+0800)\/';
+
+                formData["ColumnId"] = window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['Title'] = formData['KeyWord'];
+                formData['SubTitle'] = formData['KeyWord'];
+                formData['Author'] = formData['KeyWord'];
+                formData['Abstract'] = formData['KeyWord'];
+                //                formData['Category'] = formData['KeyWord'];
+                formData['Tags'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onAfterDialogOpen: function (row) {
+                Keditor();
+                if (row) {
+                    //                    editor1.sync();
+                    KindEditor.html('#Content', $('#hContent').val());
+                    var areaId2 = $('#AreaId2').val();
+                    var areaId3 = $('#AreaId3').val();
+                    $('#_Status').val(row.Status); //业务数据当前的状态
+                    if (areaId2 != "") {
+                        $('#AreaIdStreet').combobox('setValue', areaId2);
+                    }
+                    if (areaId3 != "") {
+                        $('#AreaIdCommunity').combobox('setValue', areaId3);
+                    }
+                    $('#PublishDate').val(ndateFormatter(row.PublishDate, 'yyyy-MM-dd'));
+                    $('#ExpiredDate').val(ndateFormatter(row.ExpiredDate, 'yyyy-MM-dd'));
+
+                    getTo(baseCMSInvokeUrl + '/Pub/ArticleColumn_RelationService/Query?parms=' + $.toJSON({ ArticleId: row.ArticleId }), null, function (result) {
+                        var ret = result.rows;
+                        var retList = [];
+                        for (var item in ret) {
+                            retList.push(ret[item].ColumnId.toUpperCase());
+                        }
+                        $('#ColumnId').combotree('setValues', retList);
+                        var queryParams = { 'SourceId': row.ArticleId, 'SourceTable': 'Pub_Article', 'AttachmentTag': 'Article', 'Status': 1, OrderByClause: 'CheckInTime desc' };
+                        getTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {
+                            $('#Attachments').val(ret.rows.length);
+                        }, { async: false }, models[currentMenuCode].headers);
+                    }, { async: false }, models[currentMenuCode].headers);
+
+                    $("#lab_message").hide();
+                    if (row.Status == 1 || (row.Status == 2 && row.FlowTo == 10)) {
+                        $("#edit_btn").show();
+                        $("#message").hide();
+                    }
+                    else {
+                        //如果处于流转中的不允许编辑
+                        $("#edit_btn").hide();
+                        $("#message").show();
+                    }
+                }
+                else {
+                    $('#PreviewMode,#Category,#ShowMode,#PicFlag,#VideoFlag,#NewsFlag,#AnonCommentsFlag,#VoteFlag,#Anonymous_Vote_FLAG,#TopFlag').combobox('setValue', '0');
+                    $('#HomeShowFlag').combobox('setValue', '1');
+                    $("#message").hide();
+                    KindEditor.html('#Content', '');
+                }
+
+                //图片新闻
+                var picartFlag = $("#PicFlag").combobox("getValue");
+                if (1 == picartFlag) {
+                    $("#div_artPicUpload").show();
+                } else {
+                    $("#div_artPicUpload").hide();
+                }
+
+                //主题图片上传
+                var _artId = $("#articleId-B120102").val();
+                if (_artId) {
+                    var queryParams = { SourceId: _artId, SourceTable: 'Pub_Article', AttachmentTag: 'ArticlePic', Status: 1, OrderByClause: 'CheckInTime desc' };
+                    var _postData = { ArticleId: _artId, SourceTable: 'Pub_Article', AttachmentTag: 'ArticlePic', virPath: 'CMU', ConnectId: models[currentMenuCode].headers.ConnectId };
+                    var _uploaderUrl = baseCMSInvokeUrl + '/AppShare/uploadify.ashx';
+
+                    $('#file_artPicUpload').uploadify({
+                        formData: _postData,
+                        multi: false,
+                        buttonText: '上传主题图片',
+                        fileTypeDesc: window.fileTypeDesc,
+                        fileTypeExts: window.fileTypeExts,
+                        swf: '../../script/uploadify/uploadify.v3.2.swf',
+                        uploader: _uploaderUrl,
+                        cancelImg: 'http://115.236.175.109:5833/share/css/uploadify/cancel.png',
+                        onQueueComplete: function () {
+                        },
+                        onUploadSuccess: function (file, data, response) {
+                            $('#AddAttachmentId').val(data);
+                            refreshArtImgList(queryParams);
+                        }
+                    });
+
+                    //加载主题图片
+                    refreshArtImgList(queryParams);
+                }
+            },
+            actionDone: function (action, pks) {
+                var status = $("#_Status").val();
+                var mappingId = models[currentMenuCode].defaultModel.AreaId;
+                var flowTo = 10;
+                if (action == "insert") {
+                    execFlowAction(pks.ArticleId, mappingId, flowTo, 0, 0); //新增操作，插入一条流程记录 
+
+                    var addAttachmentId = $('#AddAttachmentId').val();
+                    //新增加返回修改附件的SourceId
+                    if (addAttachmentId && addAttachmentId != '') {
+                        putTo(baseCMSInvokeUrl + '/Pub/AttachmentService/' + $('#AddAttachmentId').val(), $.toJSON({ SourceId: pks.ArticleId }), function (ret) {
+
+                        }, null, models[currentMenuCode].headers);
+                    }
+                }
+                else if (action == "update" && status == 1) {//如果是审批通过的，修改之后改变流程表中的状态  
+                    execFlowAction(pks.ArticleId, mappingId, flowTo, 0, 0);
+                }
+                if (flowSetp == 1 && (action == "update" || action == "insert")) {//如果只需一步就产生有效数据，数据回到10-10之后立刻转到11-20  
+                    execFlowAction(pks.ArticleId, mappingId, flowTo, 1, 0);
+                }
+                var columnid = $('#ColumnId').combotree('getValues'); 
+                CreatArticleColumn_RelationService(columnid, pks.ArticleId);
+                $('#pContent').val($('#Content').val());
+                $('#pArticleId').val(pks.ArticleId);
+                $('#pConnectId').val(models[currentMenuCode].headers.ConnectId); 
+                submitForm(); //新增和修改文章之后，单独把文章内容添加上
+                $('#' + models[currentMenuCode].gridId).datagrid('reload');
+            },
+            beforeClose: function (event, ui) {
+                // 关闭Dialog前移除编辑器
+                KindEditor.remove('textarea[name="Content"]');
+            },
+            headers: { ConnectId: isConnect == 1 ? baseInfoNode : '' },
+            uiMode: 'list',
+            entityName: '文章管理',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ArticleService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 2, MappingType: 'Article' }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+
+        validateUI();
+        autosize("cc-" + currentMenuCode, -32);
+        autosize("div_tree", -34);
+
+
+        $('#CC-FlowTo').combobox({
+            width: 140,
+            panelHeight: 63,
+            data: [{ ItemId: '10', ItemName: '待提交' },
+                   { ItemId: '010', ItemName: '已提交' },
+                   { ItemId: '1', ItemName: '完成'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 10
+        });
+
+        getFlowStep(models[currentMenuCode].defaultModel.AreaId); //取流转名称
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        var queryParams = {
+            sort: 'OperatedOn',
+            order: 'desc',
+            instance: { 'Status': models[currentMenuCode].defaultModel.Status,
+                'AreaId': models[currentMenuCode].defaultModel.AreaId
+            }
+        };
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleColumnService/Query', { parms: $.toJSON(queryParams) }, function (result) {
+            article = result.rows;
+        }, { async: false }, models[currentMenuCode].headers);
+
+        //创建树
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'MappingType', value: models[currentMenuCode].defaultModel.MappingType },
+                            { key: 'FlowTo_Start', value: $("#CC-FlowTo").combobox("getValue") }
+                            ],
+                    fuzzyFields: [{ key: 'Code', value: treeNode.attributes.Code}]
+                });
+            },
+            onLoadSuccess: function () {
+                loadDataGrid(''); //加载DataGrid
+            }
+        },
+        function (d) {
+            if (top.gUserInfo.isSuperAdmin) {
+                getTreeData('01$01$07', null, '{"AreaId":"' + models[currentMenuCode].defaultModel.AreaId + '"}', d, models[currentMenuCode].headers);
+            } else {
+                getTo(models[currentMenuCode].baseModelUrl + '/QueryGroupMember', { parms: $.toJSON({ UserId: top.window.gUserId }) }, function (result) {
+                    var groupId = [];
+                    for (var i in result.rows) {
+                        groupId.push("'" + result.rows[i].GroupId + "'");
+                        if (i < result.rows.length - 1) {
+                            groupId.push(",");
+                        }
+                    }
+                    getTreeData('01$02$07', null, '{"AreaId":"' + models[currentMenuCode].defaultModel.AreaId + '","OBJ_ID":"' + groupId.join("") + '"}', d, models[currentMenuCode].headers);
+                });
+            }
+        },
+        null,
+        function (treeObj) {
+            initTree('easyUIComboTree', 'ColumnId', {
+                width: 152,
+                panelWidth: 200,
+                panelHeight: 260,
+                cascadeCheck: false,
+                required: true,
+                editable: false,
+                onCheck: function (node, checked) {
+                    if (checked) {
+                        var childrenNode = getTreeNode('getChildren', node.target);
+                        if (childrenNode.length > 0) {
+                            for (var i = 0; i < childrenNode.length; i++) {
+                                getTreeNode('check', childrenNode[i].target);
+                            }
+                        }
+                    }
+                    else {
+                        var pNode = getTreeNode('find', node.attributes.PId);
+                        if (pNode) {
+                            getTreeNode('uncheck', pNode.target);
+                        }
+                    }
+                }
+            }, function (d) {
+                getTreeData('01$01$07', null, '{"AreaId":"' + models[currentMenuCode].defaultModel.AreaId + '"}', d, models[currentMenuCode].headers);
+            });
+
+            setCombobox('PreviewMode', [{ ItemId: "0", ItemName: "不预览" }, { ItemId: "1", ItemName: "预览不下载" }, { ItemId: "2", ItemName: "预览并下载"}]);
+            setCombobox('Category', [{ ItemId: "0", ItemName: "正文" }, { ItemId: "1", ItemName: "通知"}]);
+            setCombobox('ShowMode', [{ ItemId: "0", ItemName: "默认" }, { ItemId: "1", ItemName: "弹出" }, { ItemId: "2", ItemName: "漂浮"}]);
+            setCombobox('AnonCommentsFlag', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+            setCombobox('Anonymous_Vote_FLAG', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+            setCombobox('TopFlag', [{ ItemId: "0", ItemName: "允许" }, { ItemId: "1", ItemName: "不允许"}]);
+
+            $('#HomeShowFlag,#PicFlag,#VideoFlag,#NewsFlag,#TopFlag,#VoteFlag').combobox({
+                width: 153,
+                panelHeight: 40,
+                data: top.shareOptions.YesOrNo,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+            //街道
+            $('#AreaIdStreet').combobox({
+                width: 152,
+                panelHeight: 80,
+                method: 'get',
+                data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据不加权限
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    var opts = $(this).combobox('options');
+                    return row[opts.textField].indexOf(q) == 0;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if ($('#AreaIdStreet').combo('getText') == "") {
+                        $('#AreaIdCommunity').combobox('setValue', null);
+                        $('#AreaId2').val(null);
+                        $('#AreaId3').val(null);
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaId2').val(d.ItemId);
+                    var community = GetStreetAndCommunityInAreaAuthority(d.ItemId, top.window.gUserId, "5"); //获取社区数据加权限
+                    $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                    //如果该街道下有社区，则自动填充
+                    if (community.length > 0) {
+                        $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                        $('#AreaId3').val(community[0].ItemId);
+                    }
+                    //否则为空
+                    else {
+                        $('#AreaIdCommunity').combobox('setValue', null);
+                        $('#AreaId3').val(null);
+                    }
+                }
+            });
+            //社区
+            $('#AreaIdCommunity').combobox({
+                width: 152,
+                panelHeight: 80,
+                method: 'get',
+                data: GetStreetAndCommunityInAreaAuthority(top.appDeployArea.id, top.window.gUserId, "5"), //获取社区数据加权限
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    var opts = $(this).combobox('options');
+                    return row[opts.textField].indexOf(q) == 0;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if ($('#AreaIdCommunity').combo('getText') == "") {
+                        $('#AreaId3').val(null);
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                    $('#AreaId2').val(d.ParentId);
+                    $('#AreaId3').val(d.ItemId);
+                }
+            });
+
+            $("#PicFlag").combobox({
+                onSelect: function (record) {
+                    var _val = record.ItemId;
+                    if (1 == _val) {
+                        $("#div_artPicUpload").show();
+                    } else {
+                        $("#div_artPicUpload").hide();
+                    }
+                }
+            });
+        }); //end loadTree
+
+    });
+    //新增和修改文章之后，单独把文章内容添加上
+    function submitForm() { 
+        $('#article-iframe-block').html('');
+
+        var iframe = document.createElement("iframe");
+        iframe.src = baseUrl + '/views/dialogs/article-box.htm';
+        iframe.scrolling = "no";
+        iframe.frameBorder = 0;
+        $('#article-iframe-block').html(iframe); 
+    }
+    //新增和修改文章之后，单独把文章内容添加上
+    function submitContent() {
+        var qureryData = { "ArticleId": $('#pArticleId').val(), "Content": $('#pContent').val(), "ConnectId": $('#pConnectId').val() }; 
+        var formData = {
+            actionUrl: baseCMSInvokeUrl + '/Pub/_ArticleUpdateContent.ashx', 
+            actionData: qureryData
+        }; 
+        return formData;
+    }
+
+    //取流转名称
+    function getFlowStep(_areaId) {
+        getTo(baseCMSInvokeUrl + '/Pub/FlowDefineMappingService/Query?parms=' + $.toJSON({ "MappingType": models[currentMenuCode].defaultModel.MappingType, "MappingId": _areaId, "MappingColumn": "AreaId" }), null, function (result) {
+            if (result.Success) { 
+                if (result.rows.length > 0) {
+                    flowName = result.rows[0].FlowName; //流转名称 
+                }
+                else {
+                    flowName = "ArticleId_FlowStep_2"; //流转名称 (查不到，默认一步审核)
+                }
+                flowSetp = flowName.substring(flowName.length - 1); //流转名称中取出需要几步审核（最后一位是1、2、3） 
+            }
+        }, { async: false }, { ConnectId: baseInfoNode });
+        show_hide(flowSetp);
+    }
+
+    function show_hide(flowSetp) {
+        if (flowSetp > 1) {
+            $('#openApprovalDialog').show();
+            $('#unOpenApprovalDialog').show();
+            $('#rowsApprova').show();
+            $('#CC-FlowTo').combobox('getValue', '10');
+            $('#CC-FlowTo').combobox('enable');
+        }
+        else {//如果是一步通过的，隐藏状态和提交审核按钮 
+            $('#openApprovalDialog').hide();
+            $('#unOpenApprovalDialog').hide();
+            $('#rowsApprova').hide();
+            $('#CC-FlowTo').combobox('setValue', '1');
+            $('#CC-FlowTo').combobox('disable');
+        }
+    }
+    function loadDataGrid(code) {
+        var str_url = models[currentMenuCode].baseModelUrl + (isConnect == 1 ? 'ListForEasyUIgridForFlow_ConnectId/' + models[currentMenuCode].headers.ConnectId : 'ListForEasyUIgridForFlow');
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: str_url,
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                filterFields: [
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'MappingType', value: models[currentMenuCode].defaultModel.MappingType },
+                            { key: 'FlowTo_Start', value: $("#CC-FlowTo").combobox("getValue") }
+                            ],
+                fuzzyFields: [{ key: 'Code', value: code}]
+            },
+            onLoadSuccess: function () {
+                var flowTo = $("#CC-FlowTo").combobox("getValue");
+                if (flowTo.length == 1) {
+                    $('#openApprovalDialog').hide();
+                    $('#unOpenApprovalDialog').hide();
+                    $('#rowsApprova').hide();
+                    $('#nullify').show();
+                    $('#edit').show();
+                }
+                else if (flowTo.length == 3) {
+                    $('#openApprovalDialog').hide();
+                    $('#unOpenApprovalDialog').show();
+                    $('#rowsApprova').hide();
+                    $('#nullify').hide();
+                    $('#edit').hide();
+                }
+                else {
+                    $('#openApprovalDialog').show();
+                    $('#unOpenApprovalDialog').hide();
+                    $('#rowsApprova').show();
+                    $('#nullify').show();
+                    $('#edit').show();
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            rowStyler: function (index, row) {
+                var flowFromStr = row.FlowFrom.toString();
+                var status = row.Status;
+                if (status == 1) {
+                    return 'background-color:#00CC66';
+                }
+                else if (flowFromStr) {
+                    if (flowFromStr.substring(flowFromStr.length - 1, flowFromStr.length) == 2) {
+                        return 'background-color:#FF6347'; //不通过的为红色
+                    }
+                    else if (flowFromStr.substring(flowFromStr.length - 1, flowFromStr.length) == 1) {//通过的为蓝色
+                        return 'background-color:#63B8FF';
+                    }
+                }
+            },
+            frozenColumns: [[
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'ActionName', title: '审核状态', width: 70, align: 'center', formatter: easyuigrid_ActionName },
+                    { field: 'Title', title: '标题', width: 250, align: 'left' }
+                ]],
+            columns: [[
+                    { field: 'ArticleId', title: '文章序号', width: 150, hidden: true },
+                    { field: 'SubTitle', title: '副标题', width: 150, align: 'left' },
+            //                    { field: 'ColumnId', title: '所属栏目', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+            //                        var ret = "";
+            //                        if (row.OperatedBy) {
+            //                            var url = baseCMSInvokeUrl + '/Pub/ArticleColumnService/Query?parms=' + $.toJSON({ ColumnId: row.ColumnId });
+
+            //                            getTo(url, null, function (result) {
+            //                                ret = result.instance;
+            //                            }, { async: false }, { ConnectId: models[currentMenuCode].headers.ConnectId });
+            //                        }
+            //                        return ret;
+            //                    }, textField: "COL_Name", valueField: "ColumnId"
+            //                    },
+                    {field: 'Author', title: '作者', width: 100 },
+                    { field: 'Tags', title: '关键字', width: 100 },
+                    { field: 'Abstract', title: '摘要', width: 100 },
+                    { field: 'OperatedBy', title: '操作人', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter2, url: function (row) {
+                        var ret = "";
+                        if (row.OperatedBy) {
+                            var url = baseCMSInvokeUrl + '/Pub/UserService/' + row.OperatedBy;
+
+                            getTo(url, null, function (result) {
+                                ret = result.instance;
+                            }, { async: false });
+                        }
+                        return ret;
+                    }, textField: "UserName", valueField: "UserId"
+                    },
+                    { field: 'OperatedOn', title: '创建时间', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                    { field: 'PublishDate', title: '发布日期', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd " },
+                    { field: 'ExpiredDate', title: '过期日期', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                    { field: 'Category', title: '内容类别', width: 60, formatter: easyuigrid_bool2Formatter, vals: '正文:0~t通知:1' },
+                    { field: 'TopDays', title: '置顶天数', width: 60 }
+            ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function onBeforeSave(_status) {
+        if (!_status) {
+            _status = $('#_Status').val();
+        } 
+        if (_status == 1 && flowSetp > 1) {//如果是审批通过的，修改时提示
+            alertConfirm("修改后需要重新审核，确定要修改？", function (r) {
+                if (r) {
+                    save();
+                }
+            });
+        }
+        else {
+            save();
+        }
+    }
+
+    function rowsApprova() {
+        var bizids;
+        var mappingId = models[currentMenuCode].defaultModel.AreaId;
+        var selectedRows = $('#' + models[currentMenuCode].gridId).datagrid('getSelections'); //取选中的多个记录
+        if (selectedRows && selectedRows.length > 0) {//把多个主键拼接
+            bizids = _.map(selectedRows, function (o) {
+                return o.ArticleId;
+            }).join("|");
+            alertConfirm("确定批量提交选择项吗？", function (r) {
+                if (r) {
+                    execFlowAction(bizids, mappingId, 10, 1, 1);
+                }
+            });
+        }
+        else {
+            bizids = '';
+            alertConfirm("确定批量提交所有项吗？", function (r) {
+                if (r) {
+                    execFlowAction(bizids, mappingId, 10, 1, 1);
+                }
+            });
+        }
+    }
+
+    function execFlowAction(bizids, mappingId, processState, processAction, alert_flog) {
+        var flowAction = {
+            "FlowName": flowName,
+            "TableName": 'Pub_Article',
+            "TableColumn": 'ArticleId',
+            "BIZ_IDs": bizids,
+            "MappingType": models[currentMenuCode].defaultModel.MappingType,
+            "MappingId": mappingId,
+            "MappingColumn": 'AreaId',
+            "ProcessState": processState,
+            "ProcessAction": processAction, //处理动作 
+            "WhereClause": " a.Status=2 "
+        }
+        postTo(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo", $.toJSON(flowAction), function (ret) {
+            if (ret.Success) {
+                if (alert_flog == 1) {
+                    alertInfo("操作成功！");
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+                if (ret.ErrorMessage == 'true') {//判断流程是否结束 
+                    synBaseInfo(bizids);
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+            }
+        }, null, models[currentMenuCode].headers);
+    }
+
+    function synBaseInfo(ids) {//如果是流程走完，同步业务数据 
+        putTo(models[currentMenuCode].baseModelUrl + 'UpdateArticleStatus/1,' + ids, null, function (ret) {
+
+        }, null, models[currentMenuCode].headers);
+    }
+
+    //审核流程
+    function openApprovalDialog(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) { 
+            var flowModels = {
+                dialogId: "dg-flow-process",
+                dialogPage: 'views/shared/approval-process-frame.htm',
+                formId: "fm-B12010401",
+                formData: row,
+                processLevel: row.FlowTo, //当前流转状态
+                formUrl: "views/cmu-manage/article-audit-form.htm",
+                OrderByClause: "CheckInTime desc",
+                headers: models[currentMenuCode].headers,
+                bizid: row.ArticleId, //主键
+                flowName: flowName,     //流转名称
+                tableName: "Pub_Article", //表名
+                primaryKey: "ArticleId", //表的主键
+                mappingType: models[currentMenuCode].defaultModel.MappingType, //映射类型
+                mappingId: models[currentMenuCode].defaultModel.AreaId, //映射类型Id
+                mappingColumn: "AreaId", //映射列名
+                processState: row.FlowTo, //当前流转状态
+                title: "提交审核", //标题
+                flowData: null,
+                buttons: null,
+                beforeFlowDialogClose: function (callback, dialogData) {
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload'); //刷新
+                    callback();
+                },
+                actionDone: function (ret) {
+                    if (ret == 'true') {//判断流程是否结束 
+                        synBaseInfo(row.ArticleId);
+                    }
+                }
+            };
+            //取历史记录
+            flowModels.flowData = getCirculationHistory(flowModels);
+            //生成按钮 
+            var _buttons = createButtons(flowModels);
+
+            openFlowDialog(flowModels, _buttons);
+        }
+        else {
+            alertError('请选中要审核的记录');
+        }
+    }
+
+    function createButtons(flowModels) {
+        var flowAction = {
+            "FlowName": flowModels.flowName,
+            "TableName": flowModels.tableName,
+            "TableColumn": flowModels.primaryKey,
+            "BIZ_IDs": flowModels.bizid,
+            "MappingType": flowModels.mappingType,
+            "MappingId": flowModels.mappingId,
+            "ProcessState": flowModels.processState,
+            "MappingColumn": flowModels.mappingColumn,
+            "WhereClause": " a.Status=2 "//当前操作的业务数据的状态
+        }
+        var latestFlowData = flowModels.flowData[0];
+        var _buttons = [];
+        //为社区菜单 且 没有记录(新建流程的时候)或者不通过(退回修改)  (状态为未提交或??)
+        if (latestFlowData.FlowTo == 10) {
+            _buttons.push({
+                text: '提交',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    flowAction["ProcessAction"] = 1; //处理动作
+                    top.flowAction(flowAction, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+        }
+        else if (latestFlowData.FlowTo == 20) {
+            _buttons.push({
+                text: '撤销提交',
+                iconCls: 'icon-undo',
+                handler: function () {
+                    flowAction["ProcessAction"] = 0; //处理动作
+                    top.flowAction(flowAction, flowModels.headers, flowModels.actionDone);
+                    if (flowModels.beforeFlowDialogClose) {
+                        flowModels.beforeFlowDialogClose.apply(this, [function () { top.Closed(flowModels.dialogId) }, top.dialogClose(flowModels.dialogId)]);
+                    }
+                }
+            });
+        }
+        _buttons.push({
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () {
+                top.Closed(flowModels.dialogId); //直接无法调用要加top
+            }
+        });
+        return _buttons;
+    }
+    //Status=1的  直接显示“完成”
+    function easyuigrid_ActionName(val, row, idx) {
+        var status = row.Status;
+        if (status == 1) {
+            val = "完成";
+        }
+        else {
+            val = row.ActionName;
+        }
+        return val;
+    };
+    function getTreeNode(methods, target) {
+        var treeId = "ColumnId";
+        return $('#' + treeId).combotree('tree').tree(methods, target);
+    }
+    function CreatArticleColumn_RelationService(columnIds, articleId) {
+        var postData;
+        if (typeof (columnIds) == 'string') {
+            postData = $.toJSON(columnIds.split(","));
+        } else if (typeof (columnIds) == 'object') {
+            postData = $.toJSON(columnIds);
+        }
+        postTo(baseCMSInvokeUrl + '/Pub/ArticleColumn_RelationService/Create2/' + articleId, postData, function (result) {
+            if (result.Success) {
+//                alertInfo('授权成功！');
+            }
+        }, null, models[currentMenuCode].headers);
+    }
+    function Keditor() {
+        editor1 = KindEditor.create('textarea[name="Content"]', {
+            langType: 'zh_CN',
+            imageTabIndex: 1,
+            //            imageSizeLimit: '2MB',无效
+            //            imageUploadLimit:10,无效
+            //改变站内本地URL.relative为相对路径，absolute为绝对路径，domain为带域名的绝对路径。
+            urlType: "domain",
+            designMode: true,
+            //文件管理     
+            uploadJson: baseCMSInvokeUrl + '/Pub/_ArticleUploadify.ashx',
+            //获取空间文件管理
+            //            fileManagerJson: baseCMSInvokeUrl + '/Pub/_ArticleUploadify.ashx',
+            //文件空间管理
+            allowFileManager: false,
+            //网络图片上传
+            allowFlashUpload: false,
+            allowImageRemote: false,
+            allowImageUpload: true,
+            allowPreviewEmoticons: false,
+            //编辑器高度                
+            width: '766px',
+            //编辑器宽度                
+            height: '427px',
+            //配置编辑器的工具栏  显示html代码source              
+            items: ['undo', 'redo', '|', 'preview', 'print', 'template', 'cut', 'copy', 'paste', 'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'subscript', 'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage', 'table', 'hr', 'emoticons', 'baidumap', 'link', 'unlink'],
+            //上传图片后触发的事件 
+
+            afterChange: function () {
+                this.sync();
+            },
+            afterBlur: function () {
+                this.sync();
+            },
+            afterUpload: function (url) {
+                //                uploadimgsrc.push(url.split('uploadfiles')[1]);
+            },
+            //保存新上传的图片路径 
+            afterCreate: function () {
+                //            oldimgsrc = pickimg(editor.html());
+            },
+            //上传后的回调函数
+            afterUpload: function (url) {
+            },
+            afterError: function (str) {
+                alert('上传错误：' + str);
+            }
+        });
+       editor1.hideDialog();
+   }
+
+   function upload() {
+       var row;
+       if (!row) {
+           row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+       }
+       if (row) {
+           var queryParams = { 'SourceId': row.ArticleId, 'SourceTable': 'Pub_Article', 'AttachmentTag': 'Article', 'Status': 1, OrderByClause: 'CheckInTime desc' };
+           
+           uploadAttachment(models[currentMenuCode].dialogUploadId, 'file_upload', '上传' + models[currentMenuCode].entityName,
+            { ArticleId: row.ArticleId, SourceTable: 'Pub_Article', AttachmentTag: 'Article', virPath: 'CMU', ConnectId: models[currentMenuCode].headers.ConnectId },
+            {
+                onQueueComplete: function () {
+                    refreshFileList(queryParams);
+                },
+                onBeforeDialogOpen: function () {
+                    refreshFileList(queryParams);
+                }
+            });
+       }
+       else {
+           alertInfo("请选择要上传的文章附件！");
+       }
+   }
+
+   function refreshFileList(queryParams) {
+       getTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {//<img src="' + baseCMSInvokeUrl + o.SaveThumbName + '" width="80" height="80" />
+           $("#img-Content-B120102").html(_.map(ret.rows, function (o) {
+               return '<li><a class="icon" Suffix="' + o.Suffix + '"></a><a class="iconshowImg" href="' + baseContentInvokeUrl + o.SaveName + '"  target="_blank" >' + retImgName(o.SaveName) + '</a><a href="javascript:void(0)" class="iconhidenImg" AttachmentId ="' + o.AttachmentId + '"></a></li>';
+           }).join(""));
+
+           $('#img-Content-B120102 .bgSuffix').each(function () {
+               var suffix = $(this).attr("Suffix");
+               var tmpCss = "icon ";
+               if (suffix) {
+                   tmpCss += ' icon-file-' + suffix;
+               }
+               else {
+                   tmpCss += ' icon-file-unknow';
+               }
+               $(this).append("<span class='" + tmpCss + "' style='vertical-align: middle'></span>");
+               //$(this).before("<span class='" + tmpCss + "' style='vertical-align: middle'></span>");
+           }).linkbutton({ plain: true });
+           $('#img-Content-B120102 .iconshowImg').linkbutton({ plain: true });
+           $('#img-Content-B120102 .iconhidenImg').linkbutton({ plain: true, iconCls: 'icon-cancel' }).unbind('click').bind('click', function () {
+               var attachmentId = $(this).attr("AttachmentId");
+               var pli = $(this).closest("li");
+               if (attachmentId) {
+                   putTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Nullify/' + attachmentId, null, function (ret) {
+                       if (ret.Success) { $(pli).remove(); }
+                   }, { async: false },models[currentMenuCode].headers);
+               }
+           });
+       }, { async: false }, models[currentMenuCode].headers);
+   }
+
+   function refreshArtImgList(queryParams) {
+       getTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {
+           //alert($.toJSON(ret.rows));
+           if (ret.rows) {
+               $("#artPicZone").html(_.map(ret.rows, function (o) {
+                   return '<li><a class="bgSuffix" Suffix="' + o.Suffix + '"></a><a class="iconshowImg" href="' + baseContentInvokeUrl + o.SaveName + '"  target="_blank" >' + retImgName(o.SaveName) + '</a><a href="javascript:void(0)" class="iconhidenImg" AttachmentId ="' + o.AttachmentId + '"></a></li>';
+               }).join(""));
+
+               $('#artPicZone .bgSuffix').each(function () {
+                   var suffix = $(this).attr("Suffix");
+                   var tmpCss = "icon ";
+                   if (suffix) {
+                       tmpCss += ' icon-file-' + suffix;
+                   }
+                   else {
+                       tmpCss += ' icon-file-unknow';
+                   }
+                   $(this).append("<span class='" + tmpCss + "' style='vertical-align: middle'></span>");
+               }).linkbutton({ plain: true });
+               $('#artPicZone .iconshowImg').linkbutton({ plain: true });
+               $('#artPicZone .iconhidenImg').linkbutton({ plain: true, iconCls: 'icon-cancel' }).unbind('click').bind('click', function () {
+                   var attachmentId = $(this).attr("AttachmentId");
+                   var pli = $(this).closest("li");
+                   if (attachmentId) {
+                       putTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Nullify/' + attachmentId, null, function (ret) {
+                           if (ret.Success) { $(pli).remove(); }
+                       }, { async: false }, models[currentMenuCode].headers);
+                   }
+               });
+           }
+       }, { async: false }, models[currentMenuCode].headers);
+   }
+
+   function retImgName(imgname) {
+       var imgName = "";
+       if (imgname) {
+           imgName = right(imgname, imgname.length - imgname.lastIndexOf('/') - 1);
+           imgName = imgName.substring(0, imgName.lastIndexOf('.'));
+       } 
+       return imgName;
+   }
+   function setCombobox(controlsId, data) {
+       $('#' + controlsId + '').combobox({
+           width: 153,
+           panelHeight: 70,
+           method: 'get',
+           data: data,
+           valueField: 'ItemId',
+           textField: 'ItemName',
+           editable: false
+       });
+   }
+</script>

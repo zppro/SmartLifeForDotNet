@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pub_ExecFlowActionParam" class="StringObjectDictionary">
+      <parameter  property="BIZ_IDs" column="BIZ_IDs" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="TableName" column="TableName" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="TableColumn" column="TableColumn" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="StatusColumn" column="StatusColumn" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="StatusValuse" column="StatusValuse" direction="Input" type="int" dbType="int" />
+      <parameter  property="ServiceType" column="ServiceType" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="MappingType" column="MappingType" direction="Input" type="string" dbType="nvarchar" />      
+      <parameter  property="MappingId" column="MappingId" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="WhereClause" column="WhereClause" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ProcessState" column="ProcessState" direction="Input" type="int" dbType="int" />
+      <parameter  property="ProcessAction" column="ProcessAction" direction="Input" type="int" dbType="int" />
+      <parameter  property="ProcessComment" column="ProcessComment" direction="Input" type="string" dbType="nvarchar" />      
+      <parameter  property="ProcessComment2" column="ProcessComment2" direction="Input" type="string" dbType="nvarchar" /> 
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>  
+  <statements>
+    <procedure id="SP_Pub_ExecFlowAction" parameterMap="SP_Pub_ExecFlowActionParam" resultClass="StringObjectDictionary">
+      SP_Pub_ExecFlowAction
+    </procedure>
+    <select id="GetFlow_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.ProcessActionName From Pub_Flow a left join Pub_FlowDefine b on a.FlowDefineId=b.FlowDefineId 
+      <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="FlowId" >a.FlowId=#FlowId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BIZ_ID" >a.BIZ_ID=#BIZ_ID#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="TableName" >a.TableName=#TableName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowFrom" >a.FlowFrom=#FlowFrom#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowTo" >a.FlowTo=#FlowTo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ProcessResult" >a.ProcessResult=#ProcessResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ProcessComment" >a.ProcessComment=#ProcessComment#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ProcessComment2" >a.ProcessComment2=#ProcessComment2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ProcessTitle" >a.ProcessTitle=#ProcessTitle#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FlowName" >b.FlowName=#FlowName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select> 
+  </statements>
+</sqlMap>

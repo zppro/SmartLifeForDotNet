@@ -1,0 +1,14 @@
+﻿.titl{font-size:16px; font-weight:bolder;}
+.complaincontent{width:450px; height:50px; margin-bottom:10px;}
+.complainhistory{border:1px solid;width:450px; height:200px;}
+.thead{ height:25px;  background-color:#f5f5f5;}
+.th_man{width:90px; text-align:center; border-right:1px solid; border-bottom:1px solid;}
+.th_time{width:90px; text-align:center; border-right:1px solid; border-bottom:1px solid;}
+.th_content{width:270px;text-align:center; border-bottom:1px solid;}
+
+.sp_man{ width:90px; text-align:center;  border-right:1px dashed; border-bottom:1px dashed;}
+.sp_time{  width:90px; text-align:center; border-right:1px dashed; border-bottom:1px dashed;}
+.sp_content{  width:248px; text-align:left; border-bottom:1px dashed; padding-left:5px;}
+.sp_content1{  width:268px; text-align:left; border-bottom:1px dashed; padding-left:5px;}
+
+.div_tb{height:175px; width:450; overflow:auto;}

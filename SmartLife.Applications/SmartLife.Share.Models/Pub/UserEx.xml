@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_DBA_SyncAuth_LisenceUserParam" class="StringObjectDictionary">
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_DBA_SyncAuth_LisenceUser" parameterMap="SP_DBA_SyncAuth_LisenceUserParam" resultClass="StringObjectDictionary">
+      SP_DBA_SyncAuth_LisenceUser
+    </procedure>
+    <select id="ServiceStation_Light_ListAll" parameterClass="StringObjectDictionary" resultClass="ServiceStation_Light" >
+      select a.StationId,StationCode,StationName,StationType,StationType2 from Pub_ServiceStation a
+      where a.Status=1 and a.StationType = #StationType#
+    </select>
+    <select id="ServiceStation_Light_ListAsMerchantByUser" parameterClass="StringObjectDictionary" resultClass="ServiceStation_Light" >
+      select a.StationId,StationCode,StationName,StationType,StationType2 from Pub_ServiceStation a inner join Pub_MerchantUser b on a.StationId=b.StationId
+      where a.Status=1 and a.StationType = '00003' and b.UserId=#UserId#
+    </select>
+    <select id="ServiceStation_Light_ListAsAgencyByUser" parameterClass="StringObjectDictionary" resultClass="ServiceStation_Light" >
+      select a.StationId,StationCode,StationName,StationType,StationType2 from Pub_ServiceStation a inner join Pub_PensionAgencyUser b on a.StationId=b.StationId
+      where a.Status=1 and a.StationType = '00006' and b.UserId=#UserId#
+    </select>
+    <select id="CheckIsCCSeat" parameterClass="StringObjectDictionary" resultClass="System.Boolean" >
+      select cast((case when count(distinct a.userName) > 0 then 1 else 0 end) as bit) from pub_user a
+      inner join pub_groupmember b  on a.userid= b.userid
+      inner join pub_group c on b.groupid = c.groupid
+      where c.grouptype in ('10000','10001','10002','10003','10009')
+      and a.UserId=#UserId#
+    </select>
+    <select id="CheckIsMonitor" parameterClass="StringObjectDictionary" resultClass="System.Boolean" >
+        select cast((case when count(distinct a.userName) > 0 then 1 else 0 end) as bit) from pub_user a
+        inner join pub_groupmember b  on a.userid= b.userid inner join pub_group c on b.groupid = c.groupid
+        where c.grouptype = '10009' and a.UserId=#UserId#
+    </select>
+    <select id="CheckIsMerchantUser" parameterClass="StringObjectDictionary" resultClass="System.Boolean" >
+      select cast((case when count(distinct a.userName) > 0 then 1 else 0 end) as bit) from pub_user a
+      inner join pub_groupmember b  on a.userid= b.userid
+      where SUBSTRING(cast(b.GroupId as CHAR(36)),1,5)  = '00001' and SUBSTRING(cast(b.GroupId as CHAR(36)),10,4) = '0002'
+      and UserType = '00003'
+      and a.UserId=#UserId#
+    </select>
+    <select id="CheckIsAgencyUser" parameterClass="StringObjectDictionary" resultClass="System.Boolean" >
+      select cast((case when count(distinct a.userName) > 0 then 1 else 0 end) as bit) from pub_user a
+      inner join pub_groupmember b  on a.userid= b.userid
+      where SUBSTRING(cast(b.GroupId as CHAR(36)),1,5)  = '00001' and SUBSTRING(cast(b.GroupId as CHAR(36)),10,4) = '0006'
+      and UserType = '00004'
+      and a.UserId=#UserId#
+    </select>
+    <select id="CheckIsDayCareUser" parameterClass="StringObjectDictionary" resultClass="System.Boolean" >
+      select cast((case when count(distinct a.userName) > 0 then 1 else 0 end) as bit) from pub_user a
+      inner join pub_groupmember b  on a.userid= b.userid
+      where SUBSTRING(cast(b.GroupId as CHAR(36)),1,5)  = '00001' and SUBSTRING(cast(b.GroupId as CHAR(36)),10,4) = '0006'
+      and UserType = '00005'
+      and a.UserId=#UserId#
+    </select>
+    <select id="User_ListAsServeMan" parameterClass="StringObjectDictionary" resultClass="User" >
+      select UserId,Id,Status,CheckInTime,OperatedBy,OperatedOn,UserCode,UserName,UserType,Gender,PasswordHash,SystemFlag,StopFlag,CreatedBy,CreatedOn,Area1,Area2 from Pub_User
+      where Status=1 and UserType=#UserType# and  UserId in (select a.UserId from Pub_MerchantUser a inner join Pub_GroupMember
+      b on a.UserId=b.UserId where a.StationId=#StationId# and b.GroupId=#GroupId#)
+      Order By UserName asc
+    </select>
+    <select id="User_ListAsServeManForAgency" parameterClass="StringObjectDictionary" resultClass="User" >
+      select UserId,Id,Status,CheckInTime,OperatedBy,OperatedOn,UserCode,UserName,UserType,Gender,PasswordHash,SystemFlag,StopFlag,CreatedBy,CreatedOn,Area1,Area2 from Pub_User
+      where Status=1 and UserType=#UserType# and  UserId in (select a.UserId from Pub_PensionAgencyUser a inner join Pub_GroupMember
+      b on a.UserId=b.UserId where a.StationId=#StationId# and b.GroupId=#GroupId#)
+      Order By UserName asc
+    </select>
+    <select id="User_ListAsServeManForInput" parameterClass="StringObjectDictionary" resultClass="User" >
+      select UserId,Id,Status,CheckInTime,OperatedBy,OperatedOn,UserCode,UserName,UserType,Gender,PasswordHash,SystemFlag,StopFlag,CreatedBy,CreatedOn,Area1,Area2 from Pub_User
+      where Status=1
+      <dynamic prepend=" AND ">
+        <isPropertyAvailable prepend=" " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      Order By UserName asc
+    </select>
+    <update id="UpdateUserForMerchantBatch" parameterClass="StringObjectDictionary" >
+      Update Pub_User
+      set Status=#Status#,StopFlag=#StopFlag#
+      where UserId in (select UserId from Pub_MerchantUser where StationId= #StationId#)
+    </update>
+    <update id="UpdateUserForAgencyBatch" parameterClass="StringObjectDictionary" >
+      Update Pub_User
+      set Status=#Status#,StopFlag=#StopFlag#,OperatedOn=GETDATE(),OperatedBy=#OperatedBy#
+      where UserId in (select UserId from Pub_PensionAgencyUser where StationId= #StationId#)
+    </update>
+  </statements>
+</sqlMap>

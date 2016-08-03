@@ -1,0 +1,55 @@
+﻿
+<div id="dgc-Behaviors" class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',border:false" style="width: 210px; padding: 0 2px 0 2px;">
+        <table id="dg-Behaviors">
+        </table>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div class="easyui-panel" title="功能权限树" style="background: #fafafa;padding:5px 0 0 5px;" data-options="fit:true">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false" style="height: 30px;"> 
+                    <a id="saveBinding" href="javascript:void(0)" class="easyui-linkbutton"  iconcls="icon-save">保存</a>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <ul id="tree-Binding" >
+                    </ul>
+                </div>
+            </div> 
+        </div> 
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#dg-Behaviors').datagrid(easyuigrid_settings({
+            title: "",
+            fit: true,
+            singleSelect: true,
+            url: ajaxData_InvokeUrl + '/Behavior',
+            method: 'GET',
+            onSelect: function (rowIndex, rowData) {
+                initTree('easyUITree', 'tree-Binding', {
+                    checkbox: true,
+                    width: 152,
+                    panelWidth: 200,
+                    panelHeight: 260
+                }, function (d) {
+                    getTreeData('00$02$02', null, $.toJSON({ BehaviorCode: rowData.BehaviorCode }), d);
+                }, null, function (treeObj) {
+                    $('#saveBinding').unbind('click').bind('click', function () {
+                        var behaviorCode = $('#dg-Behaviors').datagrid('getSelected').BehaviorCode;
+                        var checked_nodes = _.map(_.filter(treeObj.tree('getChecked'), function (o) { return o.attributes.Levels > 1 }), function (o) { return o.id }); //前面2级不保存
+
+                        postTo(ajaxData_InvokeUrl + '/BehaviorBindMenu/' + behaviorCode, $.toJSON(checked_nodes)).done(function (ret) {
+                            alertInfo('绑定成功！');
+                        });
+                    });
+                });
+            },
+            columns: [[
+        { field: 'BehaviorCode', title: '行为编码', width: 80, align: 'center' },
+        { field: 'BehaviorName', title: '行为名称', width: 120, align: 'center' }
+    ]],
+            loader: easyuiLoader
+        }));
+    }); 
+</script>

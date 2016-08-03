@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="ArticleColumn" type="SmartLife.Share.Models.Pub.ArticleColumn, SmartLife.Share.Models" />
+        <typeAlias alias="ArticleColumnPK" type="SmartLife.Share.Models.Pub.ArticleColumnPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="ArticleColumn_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_ArticleColumn(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ColumnId" >ColumnId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Code" >Code</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Name" >COL_Name</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Genre" >COL_Genre</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ParentId" >ParentId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LoginFlag" >LoginFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Logo" >COL_Logo</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OpenMode" >OpenMode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >ShowMode</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DES_ShowFlag" >DES_ShowFlag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode3" >InputCode3</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode4" >InputCode4</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Path" >COL_Path</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_URL" >COL_URL</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Menu_Flag" >Menu_Flag</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SiteType" >SiteType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StatistType" >StatistType</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="ColumnId" >#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Code" >#Code#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Name" >#COL_Name#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Genre" >#COL_Genre#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ParentId" >#ParentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LoginFlag" >#LoginFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Logo" >#COL_Logo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OpenMode" >#OpenMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DES_ShowFlag" >#DES_ShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode3" >#InputCode3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode4" >#InputCode4#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Path" >#COL_Path#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_URL" >#COL_URL#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Menu_Flag" >#Menu_Flag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SiteType" >#SiteType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StatistType" >#StatistType#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="ArticleColumn_Update" parameterClass="StringObjectDictionary" >
+            update Pub_ArticleColumn
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Code" >Code=#Code#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Name" >COL_Name=#COL_Name#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Genre" >COL_Genre=#COL_Genre#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LoginFlag" >LoginFlag=#LoginFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Logo" >COL_Logo=#COL_Logo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OpenMode" >OpenMode=#OpenMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="DES_ShowFlag" >DES_ShowFlag=#DES_ShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode3" >InputCode3=#InputCode3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="InputCode4" >InputCode4=#InputCode4#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_Path" >COL_Path=#COL_Path#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="COL_URL" >COL_URL=#COL_URL#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Menu_Flag" >Menu_Flag=#Menu_Flag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SiteType" >SiteType=#SiteType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="StatistType" >StatistType=#StatistType#</isPropertyAvailable>
+            </dynamic>
+            where ColumnId=#ColumnId#
+        </update>
+        <delete id="ArticleColumn_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_ArticleColumn
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Code" >Code=#Code#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Name" >COL_Name=#COL_Name#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Genre" >COL_Genre=#COL_Genre#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LoginFlag" >LoginFlag=#LoginFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Logo" >COL_Logo=#COL_Logo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OpenMode" >OpenMode=#OpenMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DES_ShowFlag" >DES_ShowFlag=#DES_ShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode3" >InputCode3=#InputCode3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode4" >InputCode4=#InputCode4#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Path" >COL_Path=#COL_Path#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_URL" >COL_URL=#COL_URL#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Menu_Flag" >Menu_Flag=#Menu_Flag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SiteType" >SiteType=#SiteType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StatistType" >StatistType=#StatistType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="ArticleColumn_Load" parameterClass="ArticleColumnPK" resultClass="ArticleColumn" >
+            select ColumnId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Code,COL_Name,COL_Genre,ParentId,AreaId,AreaId2,AreaId3,Description,OrderNo,LoginFlag,COL_Logo,OpenMode,ShowMode,DES_ShowFlag,InputCode1,InputCode2,InputCode3,InputCode4,COL_Path,COL_URL,Menu_Flag,SiteType,StatistType from Pub_ArticleColumn
+            where ColumnId=#ColumnId#
+        </select>
+        <select id="ArticleColumn_List" parameterClass="StringObjectDictionary" resultClass="ArticleColumn" >
+            select ColumnId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Code,COL_Name,COL_Genre,ParentId,AreaId,AreaId2,AreaId3,Description,OrderNo,LoginFlag,COL_Logo,OpenMode,ShowMode,DES_ShowFlag,InputCode1,InputCode2,InputCode3,InputCode4,COL_Path,COL_URL,Menu_Flag,SiteType,StatistType from Pub_ArticleColumn
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Code" >Code=#Code#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Name" >COL_Name=#COL_Name#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Genre" >COL_Genre=#COL_Genre#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LoginFlag" >LoginFlag=#LoginFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Logo" >COL_Logo=#COL_Logo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OpenMode" >OpenMode=#OpenMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DES_ShowFlag" >DES_ShowFlag=#DES_ShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode3" >InputCode3=#InputCode3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode4" >InputCode4=#InputCode4#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Path" >COL_Path=#COL_Path#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_URL" >COL_URL=#COL_URL#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Menu_Flag" >Menu_Flag=#Menu_Flag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SiteType" >SiteType=#SiteType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StatistType" >StatistType=#StatistType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="ArticleColumn_ListByPage" parameterClass="StringObjectDictionary" resultClass="ArticleColumn" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ColumnId,Id,CheckInTime,Status,OperatedBy,OperatedOn,Code,COL_Name,COL_Genre,ParentId,AreaId,AreaId2,AreaId3,Description,OrderNo,LoginFlag,COL_Logo,OpenMode,ShowMode,DES_ShowFlag,InputCode1,InputCode2,InputCode3,InputCode4,COL_Path,COL_URL,Menu_Flag,SiteType,StatistType from Pub_ArticleColumn
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ColumnId" >ColumnId=#ColumnId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Code" >Code=#Code#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Name" >COL_Name=#COL_Name#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Genre" >COL_Genre=#COL_Genre#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LoginFlag" >LoginFlag=#LoginFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Logo" >COL_Logo=#COL_Logo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OpenMode" >OpenMode=#OpenMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DES_ShowFlag" >DES_ShowFlag=#DES_ShowFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode3" >InputCode3=#InputCode3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode4" >InputCode4=#InputCode4#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_Path" >COL_Path=#COL_Path#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="COL_URL" >COL_URL=#COL_URL#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Menu_Flag" >Menu_Flag=#Menu_Flag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SiteType" >SiteType=#SiteType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="StatistType" >StatistType=#StatistType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

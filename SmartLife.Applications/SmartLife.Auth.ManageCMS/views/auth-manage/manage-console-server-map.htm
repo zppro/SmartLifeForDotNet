@@ -1,0 +1,123 @@
+﻿ 
+<div id="server-panel" style="width: 99%; margin: 0 auto; overflow:auto; background:#F2F2F2">
+<div   id="server-panel-map" class="server-panel-map" style="background-image: url('../../images/map/map_zj.jpg');" >
+   <!-- <div class="server-panel-point" style=" top: 240px; left: 370px;">
+     <div  class="server-panel-point-top">
+        <div  class="server-panel-point-color-ok">
+        </div>
+        </div>
+     <div class="server-panel-point-bottom">
+        <div class="server-panel-point-ctiy" >
+            <label id="cityname" > 杭州市</label></div>
+            </div>
+    </div>-->
+</div>
+</div>
+<script type="text/javascript">
+    autosize('server-panel');
+    var nodeUrl = getQueryString("nodeUrl"); //紧跟页面的为getQueryStringInTab
+    var codePrefix = getQueryString("codePrefix"); //其他用getQueryString
+    var repeatTime = 15000; //15秒
+    var namePrefix = ''; //因为js中文的问题无法用querystring,只能在各自方法里赋值
+    $(function () {
+        if (window.execMode == 'ForGov' || window.execMode == 'ForMer') {
+            currentMenuCode = queryParams.currentMenuCode;
+            nodeUrl = queryParams.nodeUrl;
+            codePrefix = queryParams.codePrefix;
+        }
+
+        if (!nodeUrl) {
+            nodeUrl = "views/auth-manage/job-manage-node.htm";
+        }
+        if (!codePrefix) {
+            codePrefix = "Job";
+        }
+
+        loadfiles([
+        { type: "css", url: "../../css/auth-manage/console.css" }
+        ], function () {
+            autosize('server-panel', -10);
+
+            if (codePrefix == "Mot") {
+                setTimeout(function () {
+                    loadMotServers();
+                    setTimeout(arguments.callee, repeatTime);
+                }, 0);
+            }
+            else if (codePrefix == "Sum") {
+                loadSumServers();
+            }
+            else {
+                loadJobServers();
+            }
+        });
+    });
+    var intervalId;
+    function loadMotServers() {
+        namePrefix = '监控';
+        getAll([ajaxData_InvokeUrl + '/Servers'], function (servers) {
+            var htmls = [];
+            _.each(_.filter(servers, function (o) {
+                return o.ServerId.indexOf(codePrefix) == 0 && (o.ServerId != 'Mot-96345-120000-01');
+            }), function (o) {
+                var stateStr = state(o);
+                htmls.push('<div class="server-panel-point" style=" ' + localpoint(o) + '"><div  class="server-panel-point-top">' + '<div  class="server-panel-point-color server-panel-point-color-' + stateStr + ' ' + stateStr + '"></div>' +
+                               '</div><div class="server-panel-point-bottom"><div class="server-panel-point-ctiy" ><label id="cityname"> ' + o.ServerName + '</label></div></div></div>');
+            });
+            htmls.push('');
+            $('#server-panel-map').html(htmls.join(""));
+
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+            intervalId = setInterval(function () {
+                $('.error').toggleClass('server-panel-point-color-error');
+            }, 500);
+        });
+    }
+
+    function localpoint(o) {
+        //        alert($.toJSON(o));
+        var serverCode = o.ServerCode;
+        var str;
+        var pstring_int;
+        var point_int;
+        var left_point;
+        var top_point;
+
+        pstring_int = serverCode.lastIndexOf('-');
+        str = serverCode.substring(pstring_int + 1);
+        str = str.substring(0, str.lastIndexOf(','));
+        point_int = str.indexOf(',');
+        //        alert(str.indexOf(','));
+        top_point = str.substring(0, point_int);
+        //        alert(top_point );
+        left_point = str.substring(point_int + 1);
+        //        alert(left_point);
+        return 'top: ' + top_point + 'px; left: ' + left_point + 'px;';
+    }
+
+    function state(o) {
+        //        alert($.toJSON(o));
+        var bg_color;
+        var serverCode = o.ServerCode;
+        var pstring_int;
+        var str;
+        var state;
+
+        pstring_int = serverCode.lastIndexOf('-');
+        str = serverCode.substring(pstring_int + 1);
+        state = str.substring(str.lastIndexOf(',') + 1);
+        if (state == 1) {
+            bg_color = 'ok';
+        }
+        else if (state == 2) {
+            bg_color = 'error';
+        }
+        else if (state == 3) {
+            bg_color = 'warning';
+        }
+        return bg_color;
+    }
+
+</script>

@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="WorkExecute" type="SmartLife.Share.Models.Pam.WorkExecute, SmartLife.Share.Models" />
+        <typeAlias alias="WorkExecutePK" type="SmartLife.Share.Models.Pam.WorkExecutePK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="WorkExecute_Create" parameterClass="StringObjectDictionary" >
+            insert into Pam_WorkExecute(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UserId" >UserId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoomId" >RoomId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >ServeManArriveTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >ServeManLeaveTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >RemindTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlanEndTime" >PlanEndTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastScanTime" >LastScanTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Reminded" >Reminded</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindMax" >RemindMax</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlayRepeats" >PlayRepeats</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UserId" >#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoomId" >#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WorkItem" >#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >#ServeManArriveTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >#ServeManLeaveTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >#RemindTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlanEndTime" >#PlanEndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastScanTime" >#LastScanTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Reminded" >#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindMax" >#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlayRepeats" >#PlayRepeats#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="WorkExecute_Update" parameterClass="StringObjectDictionary" >
+            update Pam_WorkExecute
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManArriveTime" >ServeManArriveTime=#ServeManArriveTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ServeManLeaveTime" >ServeManLeaveTime=#ServeManLeaveTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >RemindTime=#RemindTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlanEndTime" >PlanEndTime=#PlanEndTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LastScanTime" >LastScanTime=#LastScanTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="WorkExecute_Delete" parameterClass="StringObjectDictionary" >
+            delete Pam_WorkExecute
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_Start" >PlanEndTime>=to_date(#PlanEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_End" >PlanEndTime&lt;=to_date(#PlanEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_Start" >LastScanTime>=to_date(#LastScanTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_End" >LastScanTime&lt;=to_date(#LastScanTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="WorkExecute_Load" parameterClass="WorkExecutePK" resultClass="WorkExecute" >
+            select Id,CheckInTime,UserId,RoomId,OldManId,WorkItem,ServeManArriveTime,ServeManLeaveTime,RemindTime,PlanEndTime,LastScanTime,Reminded,RemindMax,PlayRepeats from Pam_WorkExecute
+            where Id=#Id#
+        </select>
+        <select id="WorkExecute_List" parameterClass="StringObjectDictionary" resultClass="WorkExecute" >
+            select Id,CheckInTime,UserId,RoomId,OldManId,WorkItem,ServeManArriveTime,ServeManLeaveTime,RemindTime,PlanEndTime,LastScanTime,Reminded,RemindMax,PlayRepeats from Pam_WorkExecute
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_Start" >PlanEndTime>=to_date(#PlanEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_End" >PlanEndTime&lt;=to_date(#PlanEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_Start" >LastScanTime>=to_date(#LastScanTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_End" >LastScanTime&lt;=to_date(#LastScanTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="WorkExecute_ListByPage" parameterClass="StringObjectDictionary" resultClass="WorkExecute" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,UserId,RoomId,OldManId,WorkItem,ServeManArriveTime,ServeManLeaveTime,RemindTime,PlanEndTime,LastScanTime,Reminded,RemindMax,PlayRepeats from Pam_WorkExecute
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="UserId" >UserId=#UserId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RoomId" >RoomId=#RoomId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_Start" >ServeManArriveTime>=to_date(#ServeManArriveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManArriveTime_End" >ServeManArriveTime&lt;=to_date(#ServeManArriveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_Start" >ServeManLeaveTime>=to_date(#ServeManLeaveTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServeManLeaveTime_End" >ServeManLeaveTime&lt;=to_date(#ServeManLeaveTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_Start" >PlanEndTime>=to_date(#PlanEndTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlanEndTime_End" >PlanEndTime&lt;=to_date(#PlanEndTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_Start" >LastScanTime>=to_date(#LastScanTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LastScanTime_End" >LastScanTime&lt;=to_date(#LastScanTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Reminded" >Reminded=#Reminded#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindMax" >RemindMax=#RemindMax#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

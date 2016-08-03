@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Bas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ResidentMigrateLog" type="SmartLife.Share.Models.Bas.ResidentMigrateLog, SmartLife.Share.Models" />
+    <typeAlias alias="ResidentMigrateLogPK" type="SmartLife.Share.Models.Bas.ResidentMigrateLogPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ResidentMigrateLog_Create" parameterClass="StringObjectDictionary" >
+      insert into Bas_ResidentMigrateLog(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ResidentDynamicMoveId" >ResidentDynamicMoveId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EventTime" >EventTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >ResidentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdFrom" >AreaIdFrom</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2From" >AreaId2From</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3From" >AreaId3From</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdTo" >AreaIdTo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2To" >AreaId2To</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3To" >AreaId3To</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ResidentDynamicMoveId" >#ResidentDynamicMoveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EventTime" >#EventTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdFrom" >#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2From" >#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3From" >#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdTo" >#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2To" >#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3To" >#AreaId3To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ResidentMigrateLog_Update" parameterClass="StringObjectDictionary" >
+      update Bas_ResidentMigrateLog
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EventTime" >EventTime=#EventTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+      </dynamic>
+      where ResidentDynamicMoveId=#ResidentDynamicMoveId#
+    </update>
+    <delete id="ResidentMigrateLog_Delete" parameterClass="StringObjectDictionary" >
+      delete Bas_ResidentMigrateLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveId" >ResidentDynamicMoveId=#ResidentDynamicMoveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_Start" >EventTime>=to_date(#EventTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_End" >EventTime&lt;=to_date(#EventTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ResidentMigrateLog_Load" parameterClass="ResidentMigrateLogPK" resultClass="ResidentMigrateLog" >
+      select ResidentDynamicMoveId,Id,CheckInTime,EventTime,ResidentId,AreaIdFrom,AreaId2From,AreaId3From,AreaIdTo,AreaId2To,AreaId3To,OperatedBy,OperatedOn from Bas_ResidentMigrateLog
+      where ResidentDynamicMoveId=#ResidentDynamicMoveId#
+    </select>
+    <select id="ResidentMigrateLog_List" parameterClass="StringObjectDictionary" resultClass="ResidentMigrateLog" >
+      select ResidentDynamicMoveId,Id,CheckInTime,EventTime,ResidentId,AreaIdFrom,AreaId2From,AreaId3From,AreaIdTo,AreaId2To,AreaId3To,OperatedBy,OperatedOn from Bas_ResidentMigrateLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveId" >ResidentDynamicMoveId=#ResidentDynamicMoveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_Start" >EventTime>=to_date(#EventTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_End" >EventTime&lt;=to_date(#EventTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ResidentMigrateLog_ListByPage" parameterClass="StringObjectDictionary" resultClass="ResidentMigrateLog" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ResidentDynamicMoveId,Id,CheckInTime,EventTime,ResidentId,AreaIdFrom,AreaId2From,AreaId3From,AreaIdTo,AreaId2To,AreaId3To,OperatedBy,OperatedOn from Bas_ResidentMigrateLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveId" >ResidentDynamicMoveId=#ResidentDynamicMoveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_Start" >EventTime>=to_date(#EventTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EventTime_End" >EventTime&lt;=to_date(#EventTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

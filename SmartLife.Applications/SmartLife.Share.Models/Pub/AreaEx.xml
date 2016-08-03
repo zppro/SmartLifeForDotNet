@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Pub_AdjustAreaParam" class="StringObjectDictionary">
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Action" column="Action" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldParentId" column="OldParentId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Pub_AdjustArea" parameterMap="SP_Pub_AdjustAreaParam" resultClass="StringObjectDictionary">
+      SP_Pub_AdjustArea
+    </procedure>
+    <select id="GetAreaByUser" parameterClass="StringObjectDictionary" resultClass="System.Object" >
+      with cte_pub_area_v as (
+      select cast(b.AreaId as varchar(40)) as AreaId,AreaName,ParentId,Levels,orderNo from pub_userarea a inner join pub_area b on a.AreaId = b.AreaId
+      where  a.UserId=#UserId#
+      union all
+      select  b.AreaId,b.AreaName,b.ParentId,b.Levels,b.orderNo from cte_pub_area_v a join pub_area_V b on a.ParentId = b.AreaId
+      )
+      select   stuff((
+      select  '/'+AreaName from cte_pub_area_v  order by Levels,orderNo for xml path('')
+      ),1,1,'')
+    </select>
+    <select id="GetNextAreaIdAsStreet" parameterClass="StringObjectDictionary" resultClass="System.Object" >
+      select 'AAA'+#ParentId#+'-'+
+      isnull(Substring(cast(cast('9'+Substring(max(cast(AreaId as char(36))),10,4) as int)+1 as char(5)),2,4),'0001')
+      +'-0000-0000-000000000000'
+      as StreeSequence
+      from pub_area Where ParentId=#ParentId#
+    </select>
+    <select id="GetNextAreaIdAsCommunity" parameterClass="StringObjectDictionary" resultClass="System.Object" >
+      select Substring(#ParentId#,1,14)+
+      isnull(Substring(cast(cast('9'+Substring(max(cast(AreaId as char(36))),15,4) as int)+1 as char(5)),2,4),'0001')
+      +'-0000-000000000000'
+      as StreeSequence
+      from pub_area Where ParentId=#ParentId#
+    </select>
+    <select id="GetAreaFullName" parameterClass="StringObjectDictionary" resultClass="System.Object" >
+      with cte_pub_area_v as (
+      select cast(a.AreaId as varchar(40)) as AreaId,AreaName,ParentId,Levels,orderNo from   pub_area_v a
+      where a.AreaId=#AreaId#
+      union all
+      select  b.AreaId,b.AreaName,b.ParentId,b.Levels,b.orderNo from cte_pub_area_v a join pub_area_V b on a.ParentId = b.AreaId
+      )
+      select   stuff((
+      select  ''+AreaName from cte_pub_area_v  order by Levels,orderNo for xml path('')
+      ),1,0,'') as AreaFullName
+    </select>
+  </statements>
+</sqlMap>

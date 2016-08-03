@@ -1,0 +1,132 @@
+﻿<style type="text/css">
+    .baseinfo{ margin-top:20px; padding:5px;}
+    .baseinfo tr td { height: 40px;}
+    .title{ text-align:right; vertical-align:top; }
+    .content{ text-align:left; vertical-align:top;}
+</style>
+<div id="city-residents-emigrating"  >
+<form id="fm-residentsinfo" method="post" novalidate>
+    <input name="ResidentId" type="hidden" /> 
+    <table class="baseinfo">
+        <tr>
+            <td class="title" style=" width:80px;">
+                姓　　名：
+            </td>
+            <td class="content">
+                <input name="ResidentName"   type="hidden"  />
+                <label id="ResidentName"></label>
+            </td>
+        </tr> 
+        <tr>
+            <td class="title">
+                变更前地址：
+            </td>
+            <td class="content">
+                <input name="AreaIdFrom" type="hidden" />
+                <input name="AreaId2From"  type="hidden" />
+                <input name="AreaId3From" type="hidden"  />
+                <label id="AreaFrom"></label>
+            </td> 
+        </tr>
+        <tr>
+            <td class="title">
+                变更后地址：
+            </td>
+            <td class="content">
+                <input name="AreaIdTo" type="hidden"  />
+                <input name="AreaId2To"  type="hidden" />
+                <input name="AreaId3To"  type="hidden" />
+                <label id="AreaTo"></label> 
+            </td> 
+        </tr> 
+        <tr>
+            <td class="title">
+                操作说明：
+            </td>
+            <td  class="content"> 
+                 <textarea  name="ResidentDynamicMoveRemark" id="ResidentDynamicMoveRemark" style=" width:350px; height:50px;" placeholder="操作说明必须填写"  ></textarea>               
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) { 
+        $('#fm-residentsinfo').form('clear');
+        $('#fm-residentsinfo').form('load', dialogData); 
+
+        $('#ResidentName').text(dialogData.ResidentName);
+        $('#AreaFrom').text(getAreaFullName(dialogData,'from'));
+        $('#AreaTo').text(getAreaFullName(dialogData, 'to'));
+    }
+
+    function dialogBeforeSubmit() {
+        var residentDynamicMoveRemark = $('#ResidentDynamicMoveRemark').val();
+        if (residentDynamicMoveRemark && residentDynamicMoveRemark.trim() != '') {
+            return true;
+        }
+        else {
+            alert("操作说明不能为空");
+            return false;
+        }
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = getJQO('#fm-residentsinfo').serializeObject();
+//        var residentId = $('#ResidentId').val();
+
+//        var areaIdFrom = $('#AreaIdFrom').val();
+//        var areaId2From = $('#AreaId2From').val();
+//        var areaId3From = $('#AreaId3From').val();
+
+//        var areaIdTo = $('#AreaIdTo').val();
+//        var areaId2To = $('#AreaId2To').val();
+//        var areaId3To = $('#AreaId3To').val();
+
+        //        var remark = $('#Remark').val(); 
+        var dialogData = {
+            ResidentId: formData.ResidentId,
+            AreaIdFrom: formData.AreaIdFrom,
+            AreaId2From: formData.AreaId2From,
+            AreaId3From: formData.AreaId3From,
+            AreaIdTo: formData.AreaIdTo,
+            AreaId2To: formData.AreaId2To,
+            AreaId3To: formData.AreaId3To,
+            Remark: formData.ResidentDynamicMoveRemark
+        };
+        return dialogData;
+    }
+    function getAreaFullName(row, type) {
+        var areaid;
+        var areaFullName;
+        if (type == "from") {
+            if (row.AreaId3From) {
+                areaid = row.AreaId3From;
+            }
+            else if (row.AreaId2From) {
+                areaid = row.AreaId2From;
+            }
+            else {
+                areaid = row.AreaIdFrom;
+            }
+        }
+        else {
+            if (row.AreaId3To) {
+                areaid = row.AreaId3To;
+            }
+            else if (row.AreaId2To) {
+                areaid = row.AreaId2To;
+            }
+            else {
+                areaid = row.AreaIdTo;
+            }
+        } 
+        getTo(ajaxData_InvokeUrl + '/GetAreaFullName/' + areaid, null, function (ret) {
+            //            alert($.toJSON(ret));
+            areaFullName = ret;
+        }, { async: false });
+        return areaFullName;
+    }
+     
+</script>

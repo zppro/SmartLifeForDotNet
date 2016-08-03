@@ -1,0 +1,78 @@
+﻿<table id="cc-B11070201" >
+        <td style="width: 100px;" valign="top">
+            <ul id="tree-B11070201">
+            </ul>
+        </td>
+</table>
+<lable>//实现代码如下：</lable>
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            headers: { ConnectId: baseInfoNode }, //数据库名
+        };
+        //获得街道、社区信息
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        //根据左边的树获得相应的数据
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+        },
+        //根据不同的用户权限查询
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/BuildingBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false }, models[currentMenuCode].headers);
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, models[currentMenuCode].headers);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d, models[currentMenuCode].headers);
+                }
+            });
+    });
+</script>
+<pre class="prettyprint  linenums" style=" height:253px; overflow:scroll; padding: 2px; border: 1px solid #000">
+<xmp>
+<table id="cc-B11070201" style="width: 100%; height: 100%;"><!--此处的Id是根据菜单管理中设置的ID来改动每个页面的Id是唯一的-->
+    <tr>
+        <td style="width: 100px;" valign="top">
+            <ul id="tree-B11070201"><!--此处Id的设置同上-->
+            </ul>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            headers: { ConnectId: baseInfoNode }, //数据库名
+        };
+        //获得街道、社区信息
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        //根据左边的树获得相应的数据
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+         
+        },
+        //根据不同的用户权限查询
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/BuildingBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false }, models[currentMenuCode].headers);
+                if (res) {
+                //getTreeData('01$01$此处修改之后可以改变获取到的树的末节点', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, models[currentMenuCode].headers);
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d, models[currentMenuCode].headers);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d, models[currentMenuCode].headers);
+                }
+            });
+    });
+    
+</script>
+</xmp>
+</pre>
+

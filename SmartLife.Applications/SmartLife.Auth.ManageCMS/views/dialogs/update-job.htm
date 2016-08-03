@@ -1,0 +1,75 @@
+﻿<div class="ftitle"></div>
+<form id="fm-update-job" method="post" novalidate>
+<div class="fitem">
+    <label>作业名称:</label>  
+        <input id="job_name" name="new_name" class="easyui-validatebox" required="true" style="width:300px;"  missingmessage="作业名称不能为空" />
+</div>
+<div class="fitem">
+    <input id="freq_type" type="hidden"  name="freq_type" value="4"  />
+    <input id="freq_interval" type="hidden"  name="freq_interval" value="1"  />
+    <input id="freq_subday_type" type="hidden"  name="freq_subday_type" value="2"  />
+    <input id="schedule_name" type="hidden"  name="schedule_name"  />
+    <label>作业计划:</label>  
+        每<input id="freq_subday_interval" name="freq_subday_interval" class="easyui-numberbox" required="true" missingmessage="作业计划不能为空，且必须>=10和<3600*24"  style="width:60px;"  />秒执行一次 【10-3600*24】
+</div>
+<div class="fitem">
+    <label>作业描述:</label> 
+    <textarea id="description"   name="description" style="width:300px;height:60px;" rows="3"></textarea> 
+</div>  
+</form>
+
+<script type="text/javascript">
+    var job_id;
+    function dialogOpen(dialogId, dialogData) {
+        job_id = dialogData.row_data.job_id;
+        $('#job_name').val(dialogData.row_data.name);
+        $('#description').val(dialogData.row_data.description);
+
+        if (dialogData.schedule) { 
+            $('#schedule_name').val(dialogData.schedule.schedule_name);
+            $('#freq_type').val(dialogData.schedule.freq_type);
+            $('#freq_interval').val(dialogData.schedule.freq_interval);
+            $('#freq_subday_type').val(dialogData.schedule.freq_subday_type);
+            if (dialogData.schedule.freq_subday_type == 4) {
+                $('#freq_subday_interval').numberbox('setValue', parseInt(dialogData.schedule.freq_subday_interval) * 60);
+            }
+            else if (dialogData.schedule.freq_subday_type == 8) {
+                $('#freq_subday_interval').numberbox('setValue', parseInt(dialogData.schedule.freq_subday_interval) * 3600);
+            }
+            else {
+                $('#freq_subday_interval').numberbox('setValue', parseInt(dialogData.schedule.freq_subday_interval));
+            }
+        }
+        $.parser.parse('#fm-update-job');
+    }
+
+    function dialogBeforeSubmit(dialogId) { 
+        if ($('#fm-update-job').form('validate')) {
+            var freq_subday_interval = parseInt($('#freq_subday_interval').val());
+            if (freq_subday_interval < 10 || freq_subday_interval >= 3600 * 24) {
+                alertError('作业计划不能为空，且必须>=10和<3600*24');
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function dialogClose(dialogId) {
+        var formData = $('#fm-update-job').serializeObject();
+        if (formData.freq_subday_interval >= 10 && formData.freq_subday_interval < 60) {
+            formData.freq_subday_type = 2;
+        }
+        else if (formData.freq_subday_interval >= 60 && formData.freq_subday_interval < 3600) {
+            formData.freq_subday_type = 4;
+            formData.freq_subday_interval = Math.ceil(formData.freq_subday_interval / 60.0);
+        }
+        else if (formData.freq_subday_interval >= 3600 && formData.freq_subday_interval < 3600 * 24) {
+            formData.freq_subday_type = 8;
+            formData.freq_subday_interval = Math.ceil(formData.freq_subday_interval / 3600.0);
+        }
+        return formData;
+    } 
+</script>

@@ -1,0 +1,376 @@
+﻿<table id="cc-B130404" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 150px; " valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd; border-right: solid 1px #ddd; background-color: #fafafa;">
+                楼层房间
+            </div>
+            <div id="treeH-B130404" style="border: solid 1px #ddd; width: 100%;   overflow: auto;">
+            <ul id="tree-B130404">
+            </ul> 
+                <input id="RoomNo" name="RoomNo"  type="hidden"/>
+                <input id="FloorNo" name="FloorNo" type="hidden"/>
+            </div>
+        </td>
+        <td valign="top"> 
+            <table id="dg-old-B130404">
+            </table>
+        </td>
+        <td  style="width: 320px; ">
+            <div id='div_oldManMappingServeMan-B130404' class="easyui-panel" title="已经分配的服务人员" style="background: #fafafa; padding: 5px 0 0 5px;
+                  float: left;">
+                <div class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'north',border:false" style="height: 30px;"> 
+                        <a   href="javascript:void(0)" class="easyui-linkbutton" onclick="addMapping()" iconcls="icon-add">
+                            新增服务人员</a> 
+                    </div>
+                    <div data-options="region:'center',border:false"> 
+                    <table id="dg-servie-B130404">
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table> 
+<div id="toolbar-B130404" > 
+    <table width="100%">
+        <tr>
+            <td style="text-align:right;width: 80px;">
+                姓名/身份证：
+            </td>
+            <td style="text-align:left">
+                <input id="keyWord" class="easyui-validatebox"   /> 
+            </td>
+            <td style="text-align:right;width: 80px;"> 
+                <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfmEx()">
+                    清空</a>
+            </td> 
+        </tr>
+    </table >
+</div>
+
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    $(function () {
+        //加载机构 
+        $('#CurrentAgencys').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {     
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                    $('#toolbar-Schedule').hide();
+                }
+            },
+            onSelect: function (record) { 
+                _loading();
+            }
+        });
+        _loading(); 
+    });
+
+    function _loading() {
+        var areas; 
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            treeHId: 'treeH-' + currentMenuCode, 
+            divId: 'div_oldManMappingServeMan-' + currentMenuCode,
+            gridOldId: 'dg-old-' + currentMenuCode,
+            gridServiceId: 'dg-servie-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            baseModelUrl: baseCMSInvokeUrl + '/Pam/ServeManService/',
+            baseOldModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00004", GroupId: window.contants.GuidAsGroup_PensionAgencyServeMan, Status: 1,ResidentStatus:7, StationId: $('#CurrentAgencys').combobox('getValue').toUpperCase() }
+        };
+        autoSizeOfHeight("cc-B130404", -30); //datagrid收缩30个像素点;
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var _filterFields = [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                { key: 'isMapping', value: 0 }
+                ];
+
+                if (treeNode.attributes.PId == "_") {
+                    $('#FloorNo').val(null);
+                    $('#RoomNo').val(null);
+                }
+                else if (treeNode.attributes.PId == models[currentMenuCode].defaultModel.StationId) {
+                    _filterFields.push({ key: 'FloorNo', value: treeNode.id });
+                    $('#FloorNo').val(treeNode.id);
+                    $('#RoomNo').val(null);
+                }
+                else {
+                    _filterFields.push({ key: 'RoomId', value: treeNode.id });
+                    $('#FloorNo').val(null);
+                    $('#RoomNo').val(treeNode.id);
+                }
+                $('#' + models[currentMenuCode].gridOldId).datagrid('reload', {
+                    sort: 'OldManName',
+                    order: 'asc',
+                    fuzzyFieldOP: ' or ',
+                    filterFields: _filterFields
+                });
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                getTreeData('01$01$10', "OrderNo asc", '{"StationId":"' + models[currentMenuCode].defaultModel.StationId + '" }', d); 
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridOldId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseOldModelUrl + 'ListOldManLivingInRoom',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OldManName',
+                        order: 'asc',
+                        fuzzyFieldOP: ' or ',
+                        filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                        { key: 'ResidentStatus', value: models[currentMenuCode].defaultModel.ResidentStatus },
+                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                { key: 'isMapping', value: 0 }
+                ]
+                    },
+                    onLoadSuccess: function (data) {
+                        $('#' + models[currentMenuCode].gridServiceId).datagrid(easyuigrid_settings({
+                            title: "",
+                            fit: true,
+                            rownumbers: true,
+                            singleSelect: true,
+                            url: models[currentMenuCode].baseModelUrl + 'ServiceManListForEasyUIgridByStationId',
+                            method: 'POST',
+                            queryParams: {
+                                filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: window.contants.guidAutoGenerate },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+                            },
+                            onLoadSuccess: function (data) {
+                                var row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+                                if (row) {
+                                    var oldManId = row.OldManId;
+                                    $('.changeMapping').linkbutton({ text: '变更', plain: true, iconCls: 'icon-reload' }).unbind('click').bind('click', function () {
+                                        var userId = $(this).attr('UserId');
+                                        changeMapping(oldManId, userId);
+                                    });
+                                    $('.removeMapping').linkbutton({ text: '解除', plain: true, iconCls: 'icon-remove' }).unbind('click').bind('click', function () {
+                                        var userId = $(this).attr('UserId');
+                                        removeMapping(oldManId, userId);
+                                    });
+                                }
+                            },
+                            columns: [[
+                            { field: 'UserId', title: '角色编号', width: 150, hidden: true },
+                            { field: 'UserName', title: '名称', width: 100 },
+                            { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                            { field: 'Op', title: '操作', width: 125, align: 'center', formatter: function (val, row, idx) {
+                                return '<a href="javascript:void(0)" class="changeMapping" UserId="' + row.UserId + '" >变更</a>' +
+                                           '<a href="javascript:void(0)" class="removeMapping" UserId="' + row.UserId + '" >解除</a>';
+                            }
+                            }
+                          ]],
+                            loader: easyuiLoaderForStringObjectDictionary
+                        }));
+                    },
+                    onSelect: function (rowIndex, rowData) {
+                        $('#' + models[currentMenuCode].gridServiceId).datagrid('reload', {
+                            filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: rowData.OldManId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+                        });
+                    },
+                    columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 60, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'RoomNo', title: '房间号', width: 60, align: 'center', sortable: true },
+                { field: 'ExtNo', title: '分机号', width: 80 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Address', title: '家庭地址', width: 230 }
+        ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            });                                          //end loadTree  
+
+        }
+         
+        //为老人新增服务人员
+        function addMapping() {
+            var row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+            if (row) {
+                openDialog('set-add-mapping', dialogUrlPrefix + 'views/pam-manage/set-mapping-add.htm', function (callback, dialogData) {
+                    callback();
+                    strParms = { 'OldManId': row.OldManId, 'UserIds': dialogData }
+                    postTo(models[currentMenuCode].baseModelUrl + 'OldManMappingServeManAdd?parms=' + $.toJSON(strParms), null, function (ret) {
+                        if (ret.Success) { 
+                            alert("新增成功");
+                            $('#' + models[currentMenuCode].gridServiceId).datagrid('reload', {
+                                filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: row.OldManId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+                            });
+                        }
+                    });
+                }, { dialogData: { StationId: models[currentMenuCode].defaultModel.StationId, OldManId: row.OldManId }, title: '为“' + row.OldManName + '”新增服务人员', width: 805, height: 550, padding: 5, mergeDefault: true
+                });
+            }
+            else {
+                alertInfo('请选择一位老人');
+            }        
+        }
+
+        //移除老人和服务人员的关系
+        function removeMapping(oldManId, userId) {
+            alertConfirm('解除关系后，相关的工作计划都将作废。确定执行此操作吗？？', function (r) {
+                if (r) {
+                    var row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+                    if (row && oldManId && userId) {
+                        putTo(models[currentMenuCode].baseModelUrl + 'OldManMappingServeManRemove/' + oldManId + ',' + userId, null, function (ret) {
+                            if (ret.Success) {
+                                alert("成功解除");
+                                $('#' + models[currentMenuCode].gridServiceId).datagrid('reload', {
+                                    filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: oldManId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        alertInfo('请选择要解除关系的老人和服务人员');
+                    }
+                }
+            });
+        }
+
+        //变更老人和服务人员的关系
+        function changeMapping(oldManId, userId) {
+            alertConfirm('变更关系后，相关的工作计划都将被取代。确定执行此操作吗？？', function (r) {
+                if (r) {
+                    var row = $('#' + models[currentMenuCode].gridOldId).datagrid('getSelected');
+                    if (row && oldManId && userId) {
+                        openDialog('set-change-mapping', dialogUrlPrefix + 'views/pam-manage/set-mapping-change.htm', function (callback, dialogData) {
+                            callback();
+                            putTo(models[currentMenuCode].baseModelUrl + 'OldManMappingServeManChange/' + row.OldManId + ',' + userId + ',' + dialogData, null, function (ret) {
+                                if (ret.Success) {
+                                    alert("变更成功");
+                                    $('#' + models[currentMenuCode].gridServiceId).datagrid('reload', {
+                                        filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: oldManId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+                                    });
+                                }
+                            });
+                        }, { dialogData: { StationId: models[currentMenuCode].defaultModel.StationId, OldManId: oldManId }, title: '为“' + row.OldManName + '”变更服务人员', width: 805, height: 550, padding: 5, mergeDefault: true
+                        });
+                    }
+                    else {
+                        alertInfo('请选择要变更的老人和服务人员');
+                    }
+                }
+            });
+        }
+         
+        function execEx() {
+            $('#' + models[currentMenuCode].gridOldId).datagrid('reload', {
+                sort: 'OldManName',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                { key: 'isMapping', value: 0 }
+                ],
+                fuzzyFields: [{ key: 'OldManName', value: $('#keyWord').val() },
+                    { key: 'IDNo', value: $('#keyWord').val() },
+                    { key: 'InputCode1', value: $('#keyWord').val() },
+                    { key: 'InputCode2', value: $('#keyWord').val()}]
+            });
+            $('#' + models[currentMenuCode].gridServiceId).datagrid('loadData', { total: 0, rows: [] });
+        }
+
+
+        function resetfmEx() {
+            $('#keyWord').val(null);
+        }
+    //自动调高
+    function autoSizeOfHeight(id, iwidth) {
+        autosize(id, iwidth);
+        var h = $("#" + id).height();
+        $("#" + models[currentMenuCode].gridOldId).height(h+25);
+        $("#" + models[currentMenuCode].treeHId).height(h - 8);
+        $("#" + models[currentMenuCode].divId).height(h + 23); 
+    }
+</script>

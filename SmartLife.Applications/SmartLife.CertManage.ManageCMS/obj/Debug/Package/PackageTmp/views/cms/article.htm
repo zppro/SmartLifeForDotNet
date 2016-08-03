@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浙江蓝谷智慧养老</title>
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script> 
+    <script type="text/javascript" src="../../script/cms.js"></script> 
+    <script type="text/javascript">
+        $(function () {
+            loadfiles([
+                { type: "css", url: "../../css/cms/" + appDeployArea.id + ".css" }
+                ], function () { }
+            );
+
+            loadHeadFoot();
+
+            var articleId ,columnName;
+
+            articleId = getQueryString("aid");
+            columnName = getQueryString("cname");
+            //alert(articleId+":"+columnName);
+            if (columnName) {
+                createlistTitleHtml(columnName);
+            }
+            if (articleId) {
+                getTo(ServiceUrl + "LoadArticle/" + articleId, null, function (result) {
+                    createArticleHtml(result.instance);
+                }, { async: false }, { ConnectId: baseInfoNode });
+            }
+        });
+
+        function createlistTitleHtml(columnName) {
+            var html = $(".listTitleDiv").html();
+            html = $.trim(html); //当</div>在下一行时内容末尾会有空格
+            html += "<span>|</span>";
+            html += columnName;
+            $(".listTitleDiv").html(html);
+        }
+
+        function createArticleHtml(article) {
+            //标题
+            $(".artTitleDiv").html(article.Title);
+            //文章信息
+            var articleInfo = "<label>作者:" + article.Author + "</label>";
+            articleInfo += "<label>来源:" + article.Source + "</label>";
+            articleInfo += "<label>发布日期:" + ndateFormatter(article.PublishDate, "yyyy-MM-dd") + "</label>";
+            $(".artInfoDiv").html(articleInfo);
+            //内容 
+            $(".artContentDiv").html(article.Content);
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="header"></div>
+<!--body-->
+<div class="contain">
+  <div class="contain_artList">
+    <div class="listTitleDiv"><a href="index.htm">首页</a></div>
+    <div class="artDiv">
+        <div class="artTitleDiv"></div>
+        <div class="artInfoDiv"></div>
+        <div class="artContentDiv"></div>
+    </div>
+  </div>
+</div>
+<!--foot-->
+<div class="footer"></div>
+</body>
+</html>

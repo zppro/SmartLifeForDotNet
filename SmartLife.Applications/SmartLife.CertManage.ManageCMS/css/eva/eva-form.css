@@ -1,0 +1,24 @@
+﻿/* CSS Document */
+.head_hd {height:70px; text-align:center; word-spacing:15px; font-size:24px; font-weight:bold; line-height:50px;letter-spacing:15px;}
+.title_1 { font-size:16px; font-weight:bold; word-spacing:10px; letter-spacing:10px; }
+.title_2 { text-align:center; font-size:14px; word-spacing:8px; letter-spacing:8px; background:"#FFFFFF"; }
+.title_3 { font-size:14px; word-spacing:5px; letter-spacing:3px; }
+.title_4 { font-size:14px; font-weight:bold; }
+.title_5 { font-size:16px; line-height:28px;}
+.table_tb{ text-align:center; border-collapse:collapse; }
+.table_tb td{ text-align:center; vertical-align:middle; background-color:#FFFFFF; height:60px; border:1px solid #999;}
+.txt_01 { width:150px; height:30px; line-height:30px; border:none; border-bottom:1px solid #000; font-size:14px; text-align:center;}
+.txt_02 { width:80px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:14px;}
+.txt_03 { width:450px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:14px; margin-left:50px;}
+
+.table{ width:100%;border-collapse:collapse; }
+.table .bg{ background-color:#000000; }
+.table tr{ text-align:center; }
+.table td { border:solid 1px #999; height:50px; background-color:#FFFFFF; text-align:center; vertical-align:middle;}
+.text { margin-left:10px; margin-top:3px; line-height:22px; font-size:20px;}
+.txt { width:120px; height:30px; line-height:30px; border:none; margin-left:14px; border-bottom:1px solid #000; font-size:16px; text-align:center;}
+.vertical_txt{margin:0 auto; width:20px; line-height:24px;font-size:16px;}
+.txt_bg_01 {width: 90%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;font-size: 16px; margin-left:5px;}
+.txt_bg_02 { width:60px; height:30px; line-height:30px; text-align:center; border:none; border-bottom:1px solid #000; font-size:16px;}
+.txt_check_top{height:100px;margin-left:10px; margin-top:10px; text-align:left;font-size:16px; vertical-align:middle; }
+.txt_date_bottom{height:68px; text-align:right; margin-right:10px;font-size:16px; line-height:28px;}

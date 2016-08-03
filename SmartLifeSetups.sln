@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SmartLife.Client.Merchant.Setup", "SmartLifeSetups\SmartLife.Client.Merchant.Setup\SmartLife.Client.Merchant.Setup.isproj", "{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SmartLife.Client.Seat.Setup", "SmartLifeSetups\SmartLife.Client.Seat.Setup\SmartLife.Client.Seat.Setup.isproj", "{A4CA9933-07A6-411B-916E-62E58D69F08D}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SmartLife.Client.Gov.Setup", "SmartLifeSetups\SmartLife.Client.Gov.Setup\SmartLife.Client.Gov.Setup.isproj", "{CBC48283-F0F9-4065-9877-E4B7C4090FF2}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SmartLife.Client.PensionAgency.Setup", "SmartLifeSetups\SmartLife.Client.PensionAgency.Setup\SmartLife.Client.PensionAgency.Setup.isproj", "{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|x86 = CD_ROM|x86
+		Debug|x86 = Debug|x86
+		DVD-5|x86 = DVD-5|x86
+		Release|x86 = Release|x86
+		SingleImage|x86 = SingleImage|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.CD_ROM|x86.ActiveCfg = CD_ROM
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.CD_ROM|x86.Build.0 = CD_ROM
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.Debug|x86.ActiveCfg = DVD-5
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.Debug|x86.Build.0 = DVD-5
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.DVD-5|x86.ActiveCfg = DVD-5
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.DVD-5|x86.Build.0 = DVD-5
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.Release|x86.ActiveCfg = SingleImage
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.Release|x86.Build.0 = SingleImage
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.SingleImage|x86.ActiveCfg = SingleImage
+		{1B5C9DF9-B74C-49B7-8473-8B06C70B3560}.SingleImage|x86.Build.0 = SingleImage
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.CD_ROM|x86.ActiveCfg = CD_ROM
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.CD_ROM|x86.Build.0 = CD_ROM
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.Debug|x86.ActiveCfg = DVD-5
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.Debug|x86.Build.0 = DVD-5
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.DVD-5|x86.ActiveCfg = DVD-5
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.DVD-5|x86.Build.0 = DVD-5
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.Release|x86.ActiveCfg = SingleImage
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.Release|x86.Build.0 = SingleImage
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.SingleImage|x86.ActiveCfg = SingleImage
+		{A4CA9933-07A6-411B-916E-62E58D69F08D}.SingleImage|x86.Build.0 = SingleImage
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.CD_ROM|x86.ActiveCfg = CD_ROM
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.CD_ROM|x86.Build.0 = CD_ROM
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.Debug|x86.ActiveCfg = DVD-5
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.Debug|x86.Build.0 = DVD-5
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.DVD-5|x86.ActiveCfg = DVD-5
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.DVD-5|x86.Build.0 = DVD-5
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.Release|x86.ActiveCfg = SingleImage
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.Release|x86.Build.0 = SingleImage
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.SingleImage|x86.ActiveCfg = SingleImage
+		{CBC48283-F0F9-4065-9877-E4B7C4090FF2}.SingleImage|x86.Build.0 = SingleImage
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.CD_ROM|x86.ActiveCfg = CD_ROM
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.CD_ROM|x86.Build.0 = CD_ROM
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.Debug|x86.ActiveCfg = DVD-5
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.Debug|x86.Build.0 = DVD-5
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.DVD-5|x86.ActiveCfg = DVD-5
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.DVD-5|x86.Build.0 = DVD-5
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.Release|x86.ActiveCfg = SingleImage
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.Release|x86.Build.0 = SingleImage
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.SingleImage|x86.ActiveCfg = SingleImage
+		{45D56FD2-2B88-4EE2-AFD3-BD2A78EF6830}.SingleImage|x86.Build.0 = SingleImage
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

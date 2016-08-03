@@ -1,0 +1,280 @@
+﻿<div id="toolbar-B180607">
+    <table width="100%">
+        <tr>
+            <td width="80" style="text-align: center;">
+                街道社区:
+            </td>
+            <td  style="text-align: left; width: 160px;">
+                <input name="AreaIdStreet" id="AreaIdStreet"  />
+            </td>
+            <td style="text-align: left; width: 160px;">
+                <input name="AreaIdCommunity" id="AreaIdCommunity"  />
+                <input type="hidden" name="AreaId2" id="AreaId2" />
+                <input type="hidden" name="AreaId3" id="AreaId3" />
+            </td>
+            <td style="text-align: left; width:50px; padding-left:10px;">
+                <label for="KeyWord">关键字：</label> 
+            </td>
+            <td style="text-align: left; width:180px;">
+                <input id="KeyWord" class="easyui-validatebox "    placeholder="姓名、身份证、电话、手机"/>
+            </td>
+            <td style="text-align: left;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="locationServerMan()">定位</a>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="dlg-B180607" class="easyui-dialog" style="width: 720px; height: 380px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-B180607">
+    <form id="fm-B180607" method="post">  
+    <div class="fitem">
+        <label>
+            老人姓名:</label>
+        <input name="OldManName" readonly="readonly" style="color: #888;" class="easyui-validatebox">
+        <label>
+            身份证号:</label>
+        <input id="IDNo" name="IDNo" class="easyui-validatebox" readonly="readonly" style="color: #888;">
+        &nbsp;&nbsp;
+        <label>
+            性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+        <label id="Gender">
+        </label> 
+    </div>
+    <div class="fitem">
+        <label>
+            街道社区:</label>
+        <input id="StreetAndCommunity"   style=" width:580px;color: #888;" readonly="readonly" />  
+    </div>
+     <div class="fitem">
+        <label>
+            家庭地址:</label>
+        <textarea name="Address" class="easyui-validatebox" readonly="readonly" style="width: 580px;
+            color: #888;" maxlength="200"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            身份情况:</label>
+        <input id="OldManIdentityName" name="OldManIdentityName" class="easyui-validatebox" style="color: #888;" readonly="readonly"  />
+        <label>
+            居住情况:</label>
+        <input id="LivingStateName" name="LivingStateName" class="easyui-validatebox" style="color: #888;" readonly="readonly"/>
+        <label>
+            邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编:</label>
+        <input name="PostCode"  style="color: #888;" readonly="readonly"/>
+    </div>
+    <div class="fitem">
+        <label>
+            医&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保:</label>
+        <input name="HealthInsuranceFlagName" id="HealthInsuranceFlagName" readonly="readonly" style="color: #888;"/>
+        <label>
+            医保号码:</label>
+        <input name="HealthInsuranceNumber" readonly="readonly" style="color: #888;"/>
+        <label>
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Tel" readonly="readonly" style="color: #888;" />
+    </div>
+    <div class="fitem">
+        <label>
+            社&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保:</label>
+        <input name="SocialInsuranceFlagName" id="SocialInsuranceFlagName"readonly="readonly" style="color: #888;" />
+        <label>
+            社保号码:</label>
+        <input name="SocialInsuranceNumber" readonly="readonly" style="color: #888;"/>
+        <label>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Mobile" readonly="readonly" style="color: #888;" />
+    </div>
+    <div class="fitem">
+        <label>
+            经&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度:</label>
+        <input name="LongitudeS" maxlength="20" readonly="readonly" style="color: #888;"/>
+        <label>
+            纬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度:</label>
+        <input name="LatitudeS" maxlength="20" readonly="readonly" style="color: #888;"/> 
+    </div>
+    <div class="fitem">
+        <label>
+            备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</label>
+        <textarea name="Remark" style="width: 580px; color: #888;" maxlength="400" readonly="readonly"></textarea>
+    </div> 
+    </form>
+</div>
+<div id="location-panel"  >地图载入中...</div>
+
+<script type="text/javascript">
+    $(function () {
+        placeholder(); //占位符初始化  
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" },
+        { type: "js", url: "../../script/map/transgps.js" }
+        ], function () {
+            //加载街道
+            $('#AreaIdStreet').combobox({
+                width: 152,
+                panelHeight: 200,
+                method: 'get',
+                data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据不加权限
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    var opts = $(this).combobox('options');
+                    return row[opts.textField].indexOf(q) == 0;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if ($('#AreaIdStreet').combo('getText') == "") {
+                        $('#AreaIdCommunity').combobox('setValue', null);
+                        $('#AreaId2').val(null);
+                        $('#AreaId3').val(null);
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaId2').val(d.ItemId);
+                    var community = GetStreetAndCommunityInAreaAuthority(d.ItemId, top.window.gUserId, "5"); //获取社区数据加权限
+                    $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                    //如果该街道下有社区，则自动填充
+                    if (community.length > 0) {
+                        $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                        $('#AreaId3').val(community[0].ItemId);
+                    }
+                    //否则为空
+                    else {
+                        $('#AreaIdCommunity').combobox('setValue', null);
+                        $('#AreaId3').val(null);
+                    }
+                }
+            });
+            //加载社区
+            $('#AreaIdCommunity').combobox({
+                width: 152,
+                panelHeight: 250,
+                method: 'get',
+                data: GetStreetAndCommunityInAreaAuthority(top.appDeployArea.id, top.window.gUserId, "5"), //获取社区数据加权限
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                filter: function (q, row) {
+                    var opts = $(this).combobox('options');
+                    return row[opts.textField].indexOf(q) == 0;
+                },
+                //姓名选择为空的时候    清除表单中的所以内容
+                onHidePanel: function () {
+                    if ($('#AreaIdCommunity').combo('getText') == "") {
+                        $('#AreaId3').val(null);
+                    }
+                },
+                onSelect: function (d) {
+                    $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                    $('#AreaId2').val(d.ParentId);
+                    $('#AreaId3').val(d.ItemId);
+                }
+            });
+
+            //初始化地图
+            autosize("location-panel", -26);
+            var longitude = '120.110509';
+            var latitude = '30.338033';
+            initMap("location-panel", longitude, latitude, function () {
+//                locationServerMan();
+            });
+        });
+    });
+
+    function locationServerMan() {
+        var oldManIds = '';
+        var whereClause = " ISNULL(LongitudeS,'') not in ('','NULL') and ISNULL(LatitudeS,'') not in ('','NULL') and IDNo not like '%*%'";
+        var keyWord=$('#KeyWord').val();
+        if (keyWord && keyWord != '') {
+            whereClause += " and ( OldManName like '%" + keyWord + "%' or IDNo like '%" + keyWord + "%' or Tel like '%" + keyWord + "%' or Mobile like '%" + keyWord + "%' or InputCode1 like '%" + keyWord + "%' or InputCode2 like '%" + keyWord + "%' )";
+        }
+        var locationOldMan = { "AreaId2": $('#AreaId2').val(),
+            "AreaId3": $('#AreaId3').val(),
+            "WhereClause": whereClause
+        };
+
+        if (!map) {
+            alertInfo('地图初始化未加载成功，请稍后再试...');
+            return;
+        }
+        postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/LocationOldMan', $.toJSON(locationOldMan), function (ret) {
+            if (ret.Success && ret.rows.length > 0) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                transMorePoints(rows);
+            }
+        });  
+    }
+
+
+    function transMorePoints(rows) {
+        map.clearOverlays();
+        currentRows = rows;
+
+        if (rows && rows.length > 0) {
+            var gpsPoints = _.map(_.filter(rows, function (i) { return i.LongitudeS && i.LatitudeS }), function (o) {
+                return new BMap.Point(o.LongitudeS, o.LatitudeS);
+            });
+            BMap.Convertor.transMore(gpsPoints, 0, callback);
+        }
+    }
+
+    function callback(xyResults) {
+        _.each(xyResults, function (o, i) {
+            if (o.error == 0) {
+                var point = new BMap.Point(o.x, o.y);
+
+                var marker = retPointMarker(point);
+                var strlaber = currentRows[i].OldManName + "   :   " + Date.now().toString("HH:mm:ss");
+               // var strlaber = currentRows[i].OldManName;
+                createPointLabel(marker, point, strlaber, false);
+                createPointInfoWindow(marker, point, addinfoWindowContent(currentRows[i]));
+            }
+
+        });
+        var points = _.map(_.filter(xyResults, function (z) { return z.error == 0 }), function (o, i) { return new BMap.Point(o.x, o.y) });
+        setViewport(points)
+    }
+    function addinfoWindowContent(item) {
+        var htm = [];
+        htm.push("<p style='font-size:16;color:red;'>相关信息:</p>")
+        htm.push("<p style='line-height:12px'>姓名：" + item.OldManName + "</p>");
+        htm.push("<p style='line-height:12px'>性别：" + item.GenderName + "</p>");
+        htm.push("<p style='line-height:12px'>年龄：" + item.Age + "</p>");
+        htm.push("<p style='line-height:12px;word-wrap:break-word; word-break:normal;' >地址：" + item.Address + "</p>");
+//        htm.push("<p style='line-height:12px;float:right;' ><a href='javascript:void(0)' onclick='openServiceStationInfo(\"" + item.OldManId + "\")' >详细...</a></p>");
+        return htm.join("");
+    }
+
+    function openServiceStationInfo(strOldManId) {
+        $('#fm-B180607').form('clear');
+
+        if (currentRows && currentRows.length > 0) {
+            var rows = _.filter(currentRows, function (o) {
+                return o.OldManId == strOldManId;
+            });
+
+            if (rows && rows.length > 0) {
+                $('#fm-B180607').form('load', rows[0]);
+                $('#dlg-B180607').dialog(_.extend({
+                    onClose: function () {
+                    },
+                    modal: true
+                }, null)).dialog('open').dialog('setTitle', '查看-基本信息');
+                $('#Gender').text(rows[0].GenderName);
+                $('#StreetAndCommunity').val(rows[0].AreaId2Name + rows[0].AreaId3Name);
+            }
+        }
+    }
+
+
+    function closeDlg() {
+        $('#dlg-B180607').dialog('close');
+    }
+</script>

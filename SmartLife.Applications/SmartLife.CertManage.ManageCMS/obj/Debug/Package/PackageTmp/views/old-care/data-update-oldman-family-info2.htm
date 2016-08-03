@@ -1,0 +1,498 @@
+﻿<table id="cc-B18080102" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 20%; height: 100%;" valign="top">
+            <div style="line-height: 30px; width: 100%; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd; background-color: #fafafa;">
+                所属街道社区
+            </div>
+            <div id="div_tree" style="border: solid 1px #ddd; width: 100%; float: left; overflow: auto;"
+                valign="top">
+                <ul id="tree-B18080102">
+                </ul>
+                <input type="hidden" name="AreaId2_Start" id="AreaId2_Start" />
+                <input type="hidden" name="AreaId3_Start" id="AreaId3_Start" />
+            </div>
+        </td>
+        <td style="height: 100%;" valign="top">
+            <table id="dg-oldman-B18080102">
+            </table>
+        </td>
+        <td style="width: 330px; height: 100%;">
+            <table style="width: 100%; height: 100%;">
+                <tr>
+                    <td style="width: 330px; height: 290px; border-right: solid 1px #ddd; border-top: solid 1px #ddd;
+                        text-align: center; background-color: #fafafa; padding-top: 10px;" valign="top">
+                        搜索亲人：
+                        <input id="FamilyMember" />
+                        <input id="OldManId" type="hidden" name="OldManId" />
+                        <input id="FamilyMemberId" type="hidden" name="FamilyMemberId" />
+                        <ul style="width: 100%; height: 245px; border-right: solid 1px #ddd; border-top: solid 1px #ddd;
+                            margin-top: 10px; padding-top: 10px; background-color: #fff; text-align: center;">
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                                <input readonly="readonly" id="FamilyMemberName" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+                                <input readonly="readonly" id="Gender" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    身份证号:</label>
+                                <input readonly="readonly" id="IDNo" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</label>
+                                <input readonly="readonly" id="Address" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</label>
+                                <input readonly="readonly" id="Tel" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+                                <input readonly="readonly" id="Mobile" style="background-color: #fafafa;" />
+                            </li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    与老人关系:</label>
+                                <input name="relations" id="RelationIdOfOldMan" style="background-color: #fafafa;" /></li>
+                            <li style="height: 30px;">
+                                <label style="font-weight: bold; font-size: 14px;">
+                                    称呼老人为:</label>
+                                <input name="relations" id="RelationIdOfFamily" style="background-color: #fafafa;" /></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr id="td_family">
+                    <td valign="top" style="text-align: center; background-color: #fafafa; border-top: 1px solid #ddd;
+                        border-right: solid 1px #ddd; padding-top: 5px;">
+                        <span id="oldmanname" style="font-size: 14px; font-weight: bold;">请选择一位老人</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                            plain="true" onclick="addFamily()">绑定</a>
+                        <table id="dg-family-B18080102">
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="toolbar-oldman-B18080102">
+    <table>
+        <tr>
+            <td>
+                关键字：
+            </td>
+            <td>
+                <input name="oldMan_KeyWord" id="oldMan_KeyWord" class="easyui-validatebox" placeholder="姓名、身份证、电话、手机" />
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="reload_datagrid_oldMan()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="removekeyword('oldMan')">清空</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<!--<div id="toolbar-family-B18080102" style=" text-align:center; vertical-align:middle; ">
+<span id="Span1">--</span>的亲人资料
+    <table>
+        <tr>
+            <td>
+                关键字：
+            </td>
+            <td>
+                <input name="family_KeyWord" id="family_KeyWord" class="easyui-validatebox" placeholder="姓名、身份证、电话、手机" />
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="reload_datagrid_oldMan('family')">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-reload" plain="true" onclick="removekeyword('family')">清空</a>
+            </td>
+        </tr>
+    </table>
+</div>-->
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    placeholder(); //占位符初始化   
+    var areas;
+    var relations;
+    $(function () {
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridOldManId: 'dg-oldman-' + currentMenuCode,
+            gridFamilyId: 'dg-family-' + currentMenuCode,
+            toolbarOldManId: 'toolbar-oldman-' + currentMenuCode,
+            toolbarFamilyId: 'toolbar-family-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+            subModelUrl: baseCMSInvokeUrl + '/Oca/OldManFamilyInfoService/',
+            seachModelUrl: baseCMSInvokeUrl + '/Oca/FamilyMemberService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, OldManStatus: 1, FamilyMemberStatus: 1 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        getTo(window.ajaxData_InvokeUrl + '/GetDictionaryItem/11003', null, function (result) {
+            relations = result;
+        }, { async: false });
+
+        var h1 = $("#cc-" + currentMenuCode).parent().parent().parent().height() - 10;
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点
+                        $("#AreaId2_Start").val(treeNodeId);
+                        $("#AreaId3_Start").val(null);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点 
+                        $("#AreaId2_Start").val(null);
+                        $("#AreaId3_Start").val(treeNodeId);
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点
+                    $("#AreaId2_Start").val(null);
+                    $("#AreaId3_Start").val(null);
+                };
+
+                $('#' + models[currentMenuCode].gridOldManId).datagrid('load', {
+                    sort: 'OldManName',
+                    order: 'asc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    },
+                    fuzzyFields: [{ key: 'AreaId', value: areaId}]
+                });
+                removekeyword('oldMan');
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false })
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridOldManId).datagrid(easyuigrid_settings({
+                    title: "老人信息",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    height: h1,
+                    toolbar: '#' + models[currentMenuCode].toolbarOldManId,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage2',
+                    method: 'POST',
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        instance: {
+                            Status: models[currentMenuCode].defaultModel.Status,
+                            AreaId: models[currentMenuCode].defaultModel.AreaId
+                        }
+                    },
+                    onSelect: function (index, row) {
+                        set_datagrid_family(row.OldManId);
+                        $('#oldmanname').text('“'+row.OldManName + '”的亲人资料');
+                        removekeyword('oldMan');
+                    },
+                    onLoadSuccess: function () {
+                        $('#oldmanname').text('请选择一位老人');
+                        removekeyword('oldMan');
+                    },
+                    frozenColumns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo }
+                 ]],
+                    columns: [[
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Birthday', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                set_datagrid_family(null);
+                seachFamilyMember();
+            });      //end loadTree 
+    });
+
+    _autosize('cc-' + currentMenuCode, -10); //自动调整大小 
+
+    function seachFamilyMember() {
+        var datas;
+        //输入姓名 匹配身份证号  选择老人  获得老人的基本信息
+        $('#FamilyMember').combogrid({
+            delay: 500,
+            width: 150,
+            panelWidth: 330,
+            panelHeight: 240,
+            mode: 'local',
+            data: datas,
+            idField: 'FamilyMemberId',
+            textField: 'FamilyMemberName',
+            //过滤
+            onChange: function (newValue, oldValue) {
+                var queryParams = {
+                    sort: 'FamilyMemberName',
+                    order: 'asc',
+                    page: '1',
+                    rows: '30',
+                    fuzzyFieldOP: ' or ',
+                    filterFields: [
+                            { key: 'Status', value: 1 },
+                            { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) }
+                            ],
+                    fuzzyFields: []
+                };
+                queryParams.fuzzyFields = [
+                                                { key: 'IDNo', value: $.trim(newValue) },
+                                                { key: 'FamilyMemberName', value: $.trim(newValue) },
+                                                { key: 'Tel', value: $.trim(newValue) },
+                                                { key: 'Mobile', value: $.trim(newValue) },
+                                                { key: 'InputCode1', value: $.trim(newValue) },
+                                                { key: 'InputCode2', value: $.trim(newValue) }
+                                              ];
+                if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#FamilyMember').combobox("getText")))) {
+                    postTo(models[currentMenuCode].seachModelUrl + 'ListForEasyUIgridPageForFamilyMenber', $.toJSON(queryParams), function (ret) {
+                        //                        alert($.toJSON(ret.rows));
+                        $('#FamilyMember').combogrid("grid").datagrid("loadData", ret.rows);
+                    });
+                }
+            },
+            filter: function (q, row) {
+                return row["FamilyMemberName"].indexOf(q) != -1 || row["IDNo"].indexOf(q) != -1;
+            },
+            columns: [[
+                                        { field: 'FamilyMemberName', title: '姓名', width: 50, sortable: true },
+                                    { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+                                    { field: 'Tel', title: '座机', width: 80, align: 'center' },
+                                        { field: 'Gender', title: '性别', width: 30, sortable: true, formatter: easyuigrid_genderFormatter },
+                                        { field: 'IDNo', title: '身份证号', width: 150, sortable: true, formatter: easyuigrid_IDNo }
+                                    ]],
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#FamilyMember').combo('getText') == "") {
+                    removekeyword('oldMan');
+                    //                    $('input[name="relations"]').combobox('reload');
+                }
+            },
+            //选择一个老人之后   把老人的基本信息都填入表单
+            onSelect: function (index, record) {
+                $('#FamilyMemberId').val(record.FamilyMemberId);
+                $('#FamilyMemberName').val(record.FamilyMemberName);
+                $('#Gender').val(easyuigrid_genderFormatter(record.Gender, null, null));
+                $('#IDNo').val(record.IDNo);
+                $('#Tel').val(record.Tel);
+                $('#Mobile').val(record.Mobile);
+                $('#Address').val(record.Address);
+            }
+        });
+    }
+
+    var h2 = $("#cc-" + currentMenuCode).parent().parent().parent().height() - 337;
+    function set_datagrid_family(oldManId) {
+        if (!oldManId) {
+            oldManId = 'A0000000-0000-0000-0000-000000000000';
+        }
+        else {
+            removekeyword('oldMan');
+            //            $('input[name="relations"]').combobox('reload');
+        }
+        $('#OldManId').val(oldManId);
+        $('#' + models[currentMenuCode].gridFamilyId).datagrid(easyuigrid_settings({
+            title: "",
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].subModelUrl + 'ListByOldMan/' + oldManId,
+            method: 'POST',
+            height: h2,
+            toolbar: '#' + models[currentMenuCode].toolbarFamilyId,
+            queryParams: {
+                sort: 'b.OldManName',
+                order: 'asc',
+                filterFields: [
+                        { key: 'OldManStatus', value: models[currentMenuCode].defaultModel.OldManStatus },
+                        { key: 'FamilyMemberStatus', value: models[currentMenuCode].defaultModel.FamilyMemberStatus },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId },
+                        { key: 'OldManId', value: oldManId }
+                        ]
+            },
+            onLoadSuccess: function (date) { 
+                $('.deleteFamily').linkbutton({ plain: true, iconCls: 'icon-remove' }).unbind('click').bind('click', function () {
+                    var oldManId = $(this).attr('OldManId');
+                    var familyMemberId = $(this).attr('FamilyMemberId');
+                    var relationIdOfOldMan = $(this).attr('RelationIdOfOldMan');
+                    var relationIdOfFamily = $(this).attr('RelationIdOfFamily');
+                    var familyMemberName = $(this).attr('FamilyMemberName');
+                    var param = { 'OldManId': oldManId,
+                        'FamilyMemberId': familyMemberId,
+                        'RelationIdOfOldMan': relationIdOfOldMan,
+                        'RelationIdOfFamily': relationIdOfFamily
+                    };
+                    deleteFamily(param, familyMemberName);
+                });
+            },
+            frozenColumns: [[{ field: 'deleteFamily', title: '操作', width: 60, align: 'center', formatter: function (val, row, idx) {
+                return '<a href="javascript:void(0)" class="deleteFamily"  OldManId="' + row.OldManId + '" FamilyMemberId="' + row.FamilyMemberId + '" RelationIdOfOldMan="' + row.RelationIdOfOldMan + '" RelationIdOfFamily="' + row.RelationIdOfFamily + '"  FamilyMemberName="' + row.FamilyMemberName + '" >删除</a>';
+            }
+            },
+                        { field: 'OldManId', title: '家庭成员编号', width: 150, hidden: true },
+                        { field: 'FamilyMemberId', title: '家庭成员编号', width: 150, hidden: true },
+                        { field: 'FamilyMemberName', title: '姓名', width: 80, align: 'center' }             
+             ]],
+            columns: [[
+                        { field: 'FamilyMemberIDNo', title: '身份证', width: 150, align: 'center' },
+                        { field: 'FamilyMemberGender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                        { field: 'FamilyMemberContactPhone', title: '电话', width: 100, align: 'center' },
+                        { field: 'RelationIdOfOldMan', title: '与老人关系', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: relations },
+                        { field: 'RelationIdOfFamily', title: '称呼老人为', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: relations }
+                        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+        $('input[name="relations"]').combobox({
+            width: 140,
+            panelHeight: 150,
+            required: true,
+            data: relations,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+
+    function reload_datagrid_oldMan() {
+        var keyWord = $('#oldMan_KeyWord').val();
+        var filterField = [];
+        if ($("#AreaId2_Start").val()) {
+            filterField.push({ key: 'AreaId2_Start', value: $("#AreaId2_Start").val() });
+        }
+        if ($("#AreaId3_Start").val()) {
+            filterField.push({ key: 'AreaId3_Start', value: $("#AreaId3_Start").val() });
+        }
+        $('#' + models[currentMenuCode].gridOldManId).datagrid('load', {
+            sort: 'OldManName',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: models[currentMenuCode].defaultModel.Status,
+                AreaId: models[currentMenuCode].defaultModel.AreaId
+            },
+            filterFields: filterField,
+            fuzzyFields: [{ key: 'OldManName', value: keyWord },
+                               { key: 'IDNo', value: keyWord },
+                               { key: 'Tel', value: keyWord },
+                               { key: 'Mobile', value: keyWord },
+                               { key: 'InputCode1', value: keyWord },
+                               { key: 'InputCode2', value: keyWord}]
+        });
+        $('#' + models[currentMenuCode].gridFamilyId).datagrid('loadData', { total: 0, rows: [] });
+    };
+
+    function addFamily() {
+        var oldManId = $('#OldManId').val();
+        var familyMemberId = $('#FamilyMember').combobox("getValue");
+        var relationIdOfOldMan = $('#RelationIdOfOldMan').combobox("getValue");
+        var relationIdOfFamily = $('#RelationIdOfFamily').combobox("getValue");
+        var param = { 'OldManId': oldManId,
+            'FamilyMemberId': familyMemberId,
+            'RelationIdOfOldMan': relationIdOfOldMan,
+            'RelationIdOfFamily': relationIdOfFamily
+        };
+
+        if (oldManId && oldManId != 'A0000000-0000-0000-0000-000000000000') {
+            if (familyMemberId) {
+                if (relationIdOfOldMan && relationIdOfFamily) {
+                    postTo(models[currentMenuCode].subModelUrl + "UnRepeatCreate", $.toJSON(param), function (ret) {
+                        if (ret.Success) {
+                            $('#' + models[currentMenuCode].gridFamilyId).datagrid('reload');
+                            alertInfo('保存成功！');
+                        }
+                    });
+                }
+                else {
+                    alert("请选择与老人的关系或称呼！");
+                }
+            }
+            else {
+                alert("请选择居民！");
+            }
+        }
+        else {
+            alert("请选择老人！");
+        }
+    }
+
+    function deleteFamily(param, familyMemberName) {
+        alertConfirm('确定要删除“' + familyMemberName + '”人吗？', function (r) {
+            if (r) {
+                postTo(models[currentMenuCode].subModelUrl + 'DeleteFamily', $.toJSON(param), function (ret) {
+                    if (ret.Success) {
+                        $('#' + models[currentMenuCode].gridFamilyId).datagrid('reload');
+                        alertInfo('删除成功！');
+                    }
+                });
+            }
+        });
+    }
+
+    function removekeyword(k) {
+        if (k) {
+            $('input[name="' + k + '_KeyWord"]').val(null);
+        }
+        $('#FamilyMember').combogrid('clear');
+        $('#FamilyMemberId').val(null);
+        $('#FamilyMemberName').val(null);
+        $('#Gender').val(null);
+        $('#IDNo').val(null);
+        $('#Tel').val(null);
+        $('#Mobile').val(null);
+        $('#Address').val(null); 
+        $('#RelationIdOfOldMan').combobox('setValue', null);
+        $('#RelationIdOfFamily').combobox('setValue', null); 
+    }
+
+    function _autosize(id, delta) {
+        $("#" + id).height($("#" + id).parent().parent().parent().height() + delta);
+        $("#" + id).width($("#" + id).parent().parent().parent().width());
+
+        var hh = $("#" + id).height();
+        $("#div_tree").height(hh - 32);
+    } 
+</script>

@@ -1,0 +1,36 @@
+﻿.icon
+{
+    display: inline-block;overflow: hidden; background-repeat: no-repeat;
+    width: 16px; height: 16px; background-image: url('../images/public/icons-files.png')
+} 
+.ui-jqgrid-view .icon{ margin-top:3px;}
+.icon-file-docx{background-position: 0 0;}
+.icon-file-doc{background-position: 0 -32px;}
+.icon-file-xlsx{ background-position: 0 -64px; }
+.icon-file-xls{ background-position:  0 -96px; }
+.icon-file-unknow{ background-position:  0 -128px; }
+.icon-file-txt{ background-position: 0 -160px ; }
+.icon-file-rar{ background-position: 0 -192px; }
+.icon-file-zip{ background-position: 0 -192px; }
+.icon-file-pptx{ background-position: 0 -224px; }
+.icon-file-ppt{ background-position: 0 -256px; }
+.icon-file-png{ background-position: 0 -288px; }
+.icon-file-jpg{ background-position: 0 -320px; }
+.icon-file-gif{ background-position: 0 -352px; }
+.icon-file-flv{ background-position: 0 -384px; }
+.icon-file-bmp{ background-position: 0 -416px; }
+.icon-file-ie{ background-position: 0 -448px; }
+.icon-file-xml{background-position: 0 -480px;} 
+.icon-file-pdf{background-position: 0 -512px;} 
+.icon-file-mp4{ background-position:  0 -544px; }
+.icon-file-mp3{ background-position:  0 -576px; }
+
+.icon-upload{display: inline-block; background-repeat: no-repeat; background-image: url('../images/public/icon-upload.gif')}
+ 
+
+
+.menu78-hr-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-hr-blue.jpg') no-repeat center center;}
+.menu78-hr-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-hr-blue-on.jpg') no-repeat center center;}
+.menu78-sys-blue{ display:block; width:78px;height:65px;background:url('../images/public/menu78-sys-blue.jpg') no-repeat center center;}
+.menu78-sys-blue-on{ display:block; width:78px;height:65px;background:url('../images/public/menu78-sys-blue-on.jpg') no-repeat center center;} 
+

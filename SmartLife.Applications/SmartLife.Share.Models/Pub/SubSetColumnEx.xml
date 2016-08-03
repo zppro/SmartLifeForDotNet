@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <update id="SubSetColumn_Update2" parameterClass="StringObjectDictionary" >
+            update Pub_SubSetColumn
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="TableName" >TableName=#TableName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnName" >ColumnName=#ColumnName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnNameNew" >ColumnNameNew=#ColumnNameNew#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ColumnCNameNew" >ColumnCNameNew=#ColumnCNameNew#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ComputeColumnFlag" >ComputeColumnFlag=#ComputeColumnFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Expression" >Expression=#Expression#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetId" >WidgetId=#WidgetId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="WidgetOption" >WidgetOption=#WidgetOption#</isPropertyAvailable>
+            </dynamic>
+          where SubSetId=#SubSetId# and ColumnNameNew=#Old_ColumnNameNew#
+        </update>
+    </statements>
+</sqlMap>

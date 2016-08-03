@@ -1,0 +1,51 @@
+﻿<div id="toolbar-B180810">
+</div>
+<table id="dg-B180810" >
+</table>   
+<script type="text/javascript">
+    $(function () {
+        validateUI(); 
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode, 
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            }, 
+            uiMode: 'list',
+            entityName: '政府购买服务商资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Pub/ServiceStationService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), OldManStatus: 1 }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+        autosize(models[currentMenuCode].gridId);
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'GetServePeriodsForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId, 
+            columns: [[
+                { field: 'Id', title: '编号', width: 150, hidden: true },
+                { field: 'StationId', title: '服务商编号', width: 150, hidden: true },
+                { field: 'StationName', title: '服务商名称', width: 80, align: 'center' },
+                { field: 'BeginDate', title: '开始日期', width: 150, align: 'center' },
+                { field: 'EndDate', title: '结束日期', width: 150, align: 'center', formatter: easyuigrid_dateFormatter,datefmt:'yyyy-MM-dd' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+    }); 
+    
+</script>

@@ -1,0 +1,280 @@
+﻿<div id="search-sample-B180507" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B180507" method="post">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字： <input name="KeyWord" class="easyui-validatebox" />
+            </td>
+            <td style="text-align: left">
+                起始发送时间：
+                <input name="OperatedOn_Start" class="Wdate" onfocus="WdatePicker()" />
+                截止发送时间：
+                <input name="OperatedOn_End" class="Wdate" onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+                <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="query()">高级查询</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<table id="dg-B180507" >
+</table>
+<div id="sms-panel-B180507"  style="width:25%;float:right;position:absolute;z-index:99;right:0; top:32px; ">
+    <label style=" height:32px; line-height:32px;  font-size:large;">满意度调查内容:</label>
+    <textarea id="getSendInfo" style=" width:97%; " rows="10" maxlength="200" >
+    </textarea>
+    <br />
+    <div style=" float:right; margin-top:6px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="OpenSendSms()">发送</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#getSendInfo').val('')">清空</a>
+    </div>
+</div>
+
+<div id="dlg-search-B180507" class="easyui-dialog" style="width: 580px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B180507"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B180507" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            发&nbsp;&nbsp;送&nbsp;&nbsp;&nbsp;批&nbsp;&nbsp;次:</label>
+        <input name="BatchNum"  />
+        <label style="padding-left:6px;">
+            发&nbsp;&nbsp;送&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;码:</label>
+        <input name="Mobile" />
+    </div>
+   <div class="fitem">
+        <label>
+            起始发送时间:</label>
+        <input name="CheckInTime_Start" class="Wdate"  onFocus="WdatePicker()" />
+        
+         <label style="padding-left:6px;">
+            截止发送时间:</label>
+        <input name="CheckInTime_End" class="Wdate" onFocus="WdatePicker()" />
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180507">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+</div>
+
+<div id="dlg-filter-B180507" class="easyui-dialog" style="width: 780px; height: 420px; padding:2px;"
+ closed="true" cache="false" buttons="#btn-filter-B180507"  >
+    <div id="toolbar-filter-B180507" style=" height:28px; line-height:28px;" >
+        <form id="fm-filter-B180507" method="post" >
+            <label>老人姓名:</label>
+            <input name="OldManName"  />
+            <label style="margin-left:7px;">街道社区:</label> 
+            <input id="AreaOfStreetAndCommunity" /> 
+            <input type="hidden" name="AreaId2" id="AreaId2" />
+            <input type="hidden" name="AreaId3" id="AreaId3" />
+            <!--<label>身份证:</label>
+            <input name="IDNo" />-->
+            <label style="margin-left:7px;">呼叫号码:</label>
+            <input name="CallNo" />
+            <a href="javascript:void(0)" class="easyui-linkbutton" style="margin-left:7px;" iconCls="icon-search"  onclick="query2()">查询</a>
+        </form>
+    </div>
+    <table id="dg-filter-B180507" style="width: 762px; height: 346px;">
+    </table>
+</div>
+<div id="btn-filter-B180507">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="save_sms()"> 保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="close_filter()">取消</a>
+</div>
+
+<script type="text/javascript">
+    var areas;
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            gridFilterId: 'dg-filter-' + currentMenuCode,
+            toolbarFilterId: 'toolbar-filter-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            dlgFilterId: 'dlg-filter-' + currentMenuCode,
+            fmFilterId: 'fm-filter-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['Id'] = formData['KeyWord'];
+                formData['BatchNum'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['SendContent'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '满意度调查发送记录',
+            baseModelUrl: baseCMSInvokeUrl,
+            defaultModel: { SourceTable: 'Oca_OldManConfigInfo', SourceCatalog: '满意度调查', SendCatalog: 0,
+                AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), OldManStatus: 1
+            }
+        };
+
+        autosize(models[currentMenuCode].gridId,-30);
+        autoSizeofWidth(models[currentMenuCode].gridId);
+        autosize('sms-panel-B180507');
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + '/Pub/SmsSendService/ListForEasyUIgridPage',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'CheckInTime',
+                order: 'desc',
+                filterFields: [
+                        { key: 'SourceTable', value: models[currentMenuCode].defaultModel.SourceTable },
+                        { key: 'SourceCatalog', value: models[currentMenuCode].defaultModel.SourceCatalog },
+                        { key: 'SendCatalog', value: models[currentMenuCode].defaultModel.SendCatalog }
+                        ]
+            },
+            columns: [[
+                { field: 'Id', title: '短信编号', width: 120, hidden: true },
+                { field: 'BatchNum', title: '发送批次', width: 100, align: 'center' },
+                { field: 'Mobile', title: '发送号码', width: 100, align: 'center' },
+                { field: 'CheckInTime', title: '发送时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'Status', title: '发送状态', width: 100, align: 'center', formatter: easyuigrid_sendSmsStatus },
+                { field: 'SendResult', title: '发送结果', width: 150, align: 'left', formatter: easyuigrid_receivedSmsStatus },
+                { field: 'SendContent', title: '发送内容', width: 300, align: 'left' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+
+        $('#getSendInfo').val('');
+        $('#' + models[currentMenuCode].gridFilterId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            pageList: [10],
+            url: models[currentMenuCode].baseModelUrl + '/Oca/OldManConfigInfoService/ListForEasyUIgridPage',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarFilterId,
+            queryParams: {
+                sort: 'isnull(b.OperatedOn,a.OperatedOn)',
+                order: 'desc',
+                filterFields: [
+                        { key: 'OldManStatus', value: models[currentMenuCode].defaultModel.OldManStatus },
+                        { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                        ]
+            },
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Birthday', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_age2Formatter, datefmt: "yyyy-MM-dd" },
+                { field: 'CallNo', title: '呼叫号码', width: 100, align: 'center' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+    });
+
+    function OpenSendSms(row) {
+
+        $('#AreaOfStreetAndCommunity').combogrid({
+            delay: 500,
+            width: 160,
+            panelWidth: 360,
+            panelHeight: 240,
+            mode: 'local',
+            data: areas,
+            idField: 'AreaId',
+            textField: 'AreaName',
+            filter: function (q, row) {
+                return row["AreaName"].indexOf(q) != -1 || row["AreaCode"].indexOf(q) != -1 || (row["InputCode1"] && row["InputCode1"].indexOf(q) != -1);
+            },
+            columns: [[
+                { field: 'AreaCode', title: '编码', width: 120, sortable: true },
+                { field: 'AreaName', title: '名称', width: 220, sortable: true }
+            ]],
+            onHidePanel: function () {
+                if ($('#AreaOfStreetAndCommunity').combo('getText') == "") {
+                    $('#AreaId2').val("");
+                    $('#AreaId3').val("");
+                }
+            },
+            onSelect: function (index, record) {
+                if (record.ParentId.length == 5) {
+                    //选择街道
+                    $('#AreaId2').val(record.AreaId.toUpperCase());
+                    $('#AreaId3').val("");
+                }
+                else {
+                    //选择社区
+                    $('#AreaId2').val(record.ParentId.toUpperCase());
+                    $('#AreaId3').val(record.AreaId.toUpperCase());
+                }
+            }
+        });
+        $('#' + models[currentMenuCode].dlgFilterId).dialog({
+            inline: false,
+            onClose: function () {
+                models[currentMenuCode].uiMode = 'list';
+            },
+            modal: true
+        }).dialog('open').dialog('setTitle', '发送短信');
+
+        $('#' + models[currentMenuCode].gridFilterId).datagrid('reload');
+
+    }
+
+    function save_sms(rows) {
+        if (!rows) {
+            rows = $('#' + models[currentMenuCode].gridFilterId).datagrid('getRows');
+        }
+        if (rows.length > 0) {
+            var sinfo = $('#getSendInfo').val();
+            if (sinfo) {
+                SendBatchSms(sinfo, "满意度调查");
+            }
+            else {
+                alertInfo('发送的短信内容不可为空！');
+            }
+        }
+        else {
+            alertInfo('请选中要发送提醒的信息！');
+        }
+    }
+
+    //自动调整宽度
+    function autoSizeofWidth(id) {
+        $("#" + id).width(parseFloat($("#" + id).parent().width()) * 0.739);
+    }
+    
+    
+</script>

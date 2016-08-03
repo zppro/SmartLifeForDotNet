@@ -1,0 +1,213 @@
+﻿<style type="text/css">
+    #c-ServeMode span{float:left;}
+    #c-ServeMode span input{ padding-top:4px;} 
+    #c-ServeItemB {width:100%; border:solid 1px #999; border-collapse:collapse;}
+    #c-ServeItemB td{padding:5px;border:solid 1px #999; }
+    #c-ServeItemB td.fieldLabel{width:120px; text-align:center;}
+    #c-ServeItemB td.fieldLabel div{ width:100px; margin:0px auto;}
+    #c-ServeItemB td.fieldLabel input{ padding-top:5px;}
+    #c-ServeItemB td.fieldHeader{ text-align:center; font-size:14px;}
+    #c-ServeItemB td.fieldHeader div{ width:100px; margin:0px auto;}
+    #c-ServeItemB td.fieldHeader div input{ padding-top:5px;}
+    #c-ServeItemB td.fieldHeader div label{  font-size:14px;}
+    #c-ServeItemB span{float:left;margin-right:5px;}
+    #c-ServeItemB span input{ padding-top:4px;}
+    #c-ServeItemB span input.ServeFee{width:30px;padding-top:4px;border:none; text-align:center; border-bottom:solid 1px #000;} 
+    #c-ServeItemB span input.ServeFeeRemarks{width:40px;padding-top:4px;border:none;  text-align:center;border-bottom:solid 1px #000;} 
+</style>
+<div class="ftitle">
+</div>
+<form id="fm-settings-B180806" method="post" novalidate>
+<div class="fitem">
+    <label>
+        服务方式:</label>
+    <div id="c-ServeMode">
+    </div>
+</div>
+<div class="fitem">
+    <label>
+        服务项目:</label>
+    <table id="c-ServeItemB"> 
+        <thead>
+            <tr>
+                <td class="fieldLabel fieldHeader">服务大类</td>
+                <td class="fieldHeader"><div><input type="checkbox" id="selectAllServeItemB" /><label for="selectAllServeItemB">服务小类</label></div></td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</form>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var stationId = dialogData;
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/11014',
+            top.ajaxData_InvokeUrl + '/GetDictionaryItem/11013',
+            top.ajaxData_InvokeUrl + '/GetDictionaryItem/11012',
+            top.baseCMSInvokeUrl + '/Pub/ServiceStationService/GetServeModes/' + stationId,
+            top.baseCMSInvokeUrl + '/Pub/ServiceStationService/GetServeItems/' + stationId], function (optionsOfServeModel, optionsOfServeItemB, optionsOfServeItemA, optionsOfMerchantServeMode, optionsOfMerchantServeItem) {
+
+                var serveModesOfStation = _.map(optionsOfMerchantServeMode, function (o) {
+                    return o.ServeMode;
+                });
+                var serveItemsOfStation = _.map(optionsOfMerchantServeItem, function (o) {
+                    return o.ServeItemB;
+                });
+                var oServeFeeDict = {};
+                _.each(optionsOfMerchantServeItem, function (o) {
+                    oServeFeeDict[o.ServeItemB] = o.ServeFee;
+                });
+                var oServeFeeRemarksDict = {};
+                _.each(optionsOfMerchantServeItem, function (o) {
+                    oServeFeeRemarksDict[o.ServeItemB] = o.ServeFeeRemarks;
+                });
+
+                $('#c-ServeMode').html(_.map(optionsOfServeModel, function (o) {
+                    var ischecked = _.contains(serveModesOfStation, o.ItemId) ? "checked" : "";
+                    return '<span><input type="checkbox" ' + ischecked + ' name="ServeMode" id="ServeMode-' + o.ItemId + '"  value="' + o.ItemId + '" /><label for="ServeMode-' + o.ItemId + '">' + o.ItemName + '</label></span>';
+                }).join(""));
+
+                $('#c-ServeItemB tbody').html(_.map(optionsOfServeItemA, function (o) {
+                    var arrServeItemB = _.map(_.filter(optionsOfServeItemB, function (o1) {
+                        return o1.ItemId.substring(0, 2) == o.ItemCode;
+                    }), function (o2) {
+                        var ischecked = _.contains(serveItemsOfStation, o2.ItemId) ? "checked" : "";
+                        var serveFee = '25';
+                        if (oServeFeeDict[o2.ItemId]) {
+                            serveFee = oServeFeeDict[o2.ItemId];
+                        } 
+                        var serveFeeRemarks = '';
+                        if (oServeFeeRemarksDict[o2.ItemId]) {
+                            serveFeeRemarks = oServeFeeRemarksDict[o2.ItemId];
+                        }
+                        return '<span><input ServeItemA="' + o.ItemId + '" type="checkbox" ' + ischecked + ' name="ServeItemB" id="ServeItemB-' + o2.ItemId + '"  value="' + o2.ItemId + '" /><label for="ServeItemB-' + o2.ItemId + '">' + o2.ItemName + '</label><input ' + (ischecked == 'ischecked' ? '' : 'disabled') + ' id="ServeFee-' + o2.ItemId + '" class="ServeFee" type="text" name="ServeFee" value="' + serveFee + '"  onblur="fillServeFeeRemarks(\'' + o2.ItemId + '\')" /><label class="ServeFee">元</label><label class="ServeFeeRemarks">价格描述</label><input ' + (ischecked == 'ischecked' ? '' : 'disabled') + ' id="ServeFeeRemarks-' + o2.ItemId + '" class="ServeFeeRemarks" type="text" name="ServeFeeRemarks" value="' + serveFeeRemarks + '"  />&nbsp;</span>';
+                    });
+                    return '<tr><td class="fieldLabel"><div><input value="' + o.ItemId + '" id="ServeItemA-' + o.ItemId + '" type="checkbox" class="ServeItemA" /><label for="ServeItemA-' + o.ItemId + '">' + o.ItemName + '</label></div></td><td>' + arrServeItemB.join('') + '</td></tr>';
+                }).join(""));
+                $('.ServeFee').hide();
+                $('.ServeFeeRemarks').hide();
+                $('#c-ServeItemB span input:checked').siblings(".ServeFee").show();
+                $('#c-ServeItemB span input:checked').siblings(".ServeFeeRemarks").show();
+                $('#c-ServeItemB span input:checked').siblings("input.ServeFee").prop('disabled', false);
+                $('#c-ServeItemB span input:checked').siblings("input.ServeFeeRemarks").prop('disabled', false);
+
+                //全选ServeItemB按钮
+                if ($('input:checked[name="ServeItemB"]').size() == $('input[name="ServeItemB"]').size()) {
+                    $('#selectAllServeItemB').prop('checked', true);
+                }
+
+                //ServeItemA选择按钮
+                $('input.ServeItemA').bind('click', function () {
+                    if ($(this).prop('checked')) {
+                        $('input[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').prop('checked', true);
+                        $('input:checked[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings(".ServeFee").show();
+                        $('input:checked[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings(".ServeFeeRemarks").show();
+                        $('input:checked[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings("input.ServeFee").prop('disabled', false);
+                        $('input:checked[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings("input.ServeFeeRemarks").prop('disabled', false);
+
+                        if ($('input:checked[name="ServeItemB"]').size() == $('input[name="ServeItemB"]').size()) {
+                            $('#selectAllServeItemB').prop('checked', true);
+                        }
+                    }
+                    else {
+                        $('#selectAllServeItemB').prop('checked', false);
+
+                        $('input[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').prop('checked', false);
+                        $('input:not(checked)[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings(".ServeFee").hide();
+                        $('input:not(checked)[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings(".ServeFeeRemarks").hide();
+                        $('input:not(checked)[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings("input.ServeFee").prop('disabled', true);
+                        $('input:not(checked)[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').siblings("input.ServeFeeRemarks").prop('disabled', true);
+                    }
+                }).each(function (i, o) {
+                    $(o).prop('checked', ($('input[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').size()
+                    == $('input:checked[name="ServeItemB"][ServeItemA="' + $(this).val() + '"]').size()));
+                });
+
+                //ServeItemB选择按钮
+                $('input[name="ServeItemB"]').bind('click', function () {
+                    var serveItemA = $(this).attr('ServeItemA');
+                    if ($(this).prop("checked")) {
+                        $(this).siblings('.ServeFee').show();
+                        $(this).siblings('.ServeFeeRemarks').show();
+                        $(this).siblings('input.ServeFee').prop('disabled', false);
+                        $(this).siblings('input.ServeFeeRemarks').prop('disabled', false);
+
+                        if ($('input:checked[name="ServeItemB"]').size() == $('input[name="ServeItemB"]').size()) {
+                            $('#selectAllServeItemB').prop('checked', true);
+                        }
+
+                        if ($('input:checked[name="ServeItemB"][ServeItemA="' + serveItemA + '"]').size() == $('input[name="ServeItemB"][ServeItemA="' + serveItemA + '"]').size()) {
+                            $('input.ServeItemA[value="' + serveItemA + '"]').prop('checked', true);
+                        }
+                    }
+                    else {
+                        $(this).siblings('.ServeFee').hide();
+                        $(this).siblings('.ServeFeeRemarks').hide();
+                        $(this).siblings('input.ServeFee').prop('disabled', true);
+                        $(this).siblings('input.ServeFeeRemarks').prop('disabled', true);
+                        $('#selectAllServeItemB').prop('checked', false);
+                        $('input.ServeItemA[value="' + serveItemA + '"]').prop('checked', false);
+                    }
+                });
+            });
+
+
+        $('#selectAllServeItemB').bind('click', function () {
+            $('input[name="ServeItemB"],input.ServeItemA').prop('checked', $(this).prop('checked'));
+            if ($(this).prop('checked')) {
+                $('#c-ServeItemB span .ServeFee').show();
+                $('#c-ServeItemB span .ServeFeeRemarks').show();
+                $('#c-ServeItemB span input.ServeFee').prop('disabled', false);
+                $('#c-ServeItemB span input.ServeFeeRemarks').prop('disabled', false);
+            }
+            else {
+                $('#c-ServeItemB span .ServeFee').hide();
+                $('#c-ServeItemB span .ServeFeeRemarks').hide();
+                $('#c-ServeItemB span input.ServeFee').prop('disabled', true);
+                $('#c-ServeItemB span input.ServeFeeRemarks').prop('disabled', true);
+            }
+        });
+
+    }
+
+    function fillServeFeeRemarks(itemId) { 
+        var serveFee = $('#ServeFee-' + itemId).val() + "元";
+        var serveFeeRemarks = $('#ServeFeeRemarks-' + itemId).val(); 
+        if (!serveFeeRemarks || serveFeeRemarks=='') {
+            $('#ServeFeeRemarks-' + itemId).val(serveFee);
+         }
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+        $('input:checked[name="ServeItemB"]').each(function (i, o) {
+            if ($(o).siblings('input.ServeFee').val().trim() == "") {
+                alertError('必须填写【' + $(o).siblings(':eq(0)').text() + '】每小时的服务费用', function () {
+                    $(o).siblings('input.ServeFee').focus();
+                });
+                result = false;
+                return false;
+            }
+        });
+
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var formData = $('#fm-settings-B180806').serializeObject();
+        if (_.isString(formData.ServeMode)) {
+            formData.ServeMode = [formData.ServeMode];
+        }
+        if (_.isString(formData.ServeItemB)) {
+            formData.ServeItemB = [formData.ServeItemB];
+        }
+        if (_.isString(formData.ServeFee)) {
+            formData.ServeFee = [formData.ServeFee];
+        }
+        if (_.isString(formData.ServeFeeRemarks)) {
+            formData.ServeFeeRemarks = [formData.ServeFeeRemarks];
+        }
+        return formData;
+    }
+     
+</script>

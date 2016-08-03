@@ -1,0 +1,5 @@
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\Solution-Outputs\SmartLife.Share.Models.PO.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\Solution-Outputs\SmartLife.Share.Models.PO.pdb
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Models.PO\obj\Debug\ResolveAssemblyReference.cache
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Models.PO\obj\Debug\SmartLife.Share.Models.PO.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Share.Models.PO\obj\Debug\SmartLife.Share.Models.PO.pdb

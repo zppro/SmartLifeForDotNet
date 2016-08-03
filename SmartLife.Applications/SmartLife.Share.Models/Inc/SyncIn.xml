@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Inc_SyncInResidentParam" class="StringObjectDictionary">
+      <parameter  property="DataSourceToken" column="DataSourceToken" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="DataSourceOn" column="DataSourceOn" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="char" />
+      <parameter  property="Area1" column="Area1" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Area2" column="Area2" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Area3" column="Area3" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="name" column="ResidentName" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="sex" column="GenderName" direction="Input" type="string" dbType="nchar" />
+      <parameter  property="birthday" column="Birthday" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="idcardnum" column="IDNo" direction="Input" type="string" dbType="char" />
+      <parameter  property="liveaddress" column="Address" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="PostCode" column="PostCode" direction="Input" type="string" dbType="char" />
+      <parameter  property="familyphone" column="Tel" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="mobilephone" column="Mobile" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="Remark" column="Remark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="relation" column="RelationWithFamilyHead" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="familyid" column="FamilyAccountId" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap> 
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Inc_SyncInResident" parameterMap="SP_Inc_SyncInResidentParam" resultClass="StringObjectDictionary">
+      SP_Inc_SyncInResident
+    </procedure> 
+  </statements>
+</sqlMap>

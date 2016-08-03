@@ -1,0 +1,88 @@
+﻿<style type="text/css">
+ul,li{list-style:none; margin:0; padding:0;}
+.scroll{ width:96%;overflow:hidden; margin:0 auto;}
+.scroll li{ width:100%; height:25px; line-height:25px; overflow:hidden;}
+.scroll li a{ font-size:12px;color:#333; text-decoration:none;}
+.scroll li a:hover{text-decoration:none;}
+.scroll li a span{font-size:12px;}
+.abandoned{cursor:pointer;}
+.field-oldmanname-reminder{width:60px; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.field-checkintime-reminder{width:100px;text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+</style>
+<div style="width: 200px; height: 75px; margin: 0px auto; text-align: center;">
+    <div id="scroll-c" class="scroll">
+        <ul class="list">
+        </ul>
+    </div>
+</div>
+<script type="text/javascript"> 
+    var maxid = 0;
+    var repeatTime = 20000;//20秒
+    var clearTime = 5 * 60 * 1000;//5分钟
+    $(function () {
+
+        //取数据
+        setTimeout(function () {
+            _loadDataForScroll(getQueryString('serviceType'), maxid, function (rows) {
+                var isAppend = true;
+                if (maxid == 0) {
+                    isAppend = false;
+                }
+                if (rows.length > 0) {
+                    maxid = _.max(rows, function (o) {
+                        return o.Id;
+                    }).Id;
+                    var htmlstr = _.map(rows, function (o) {
+                        //
+                        var liClass = o.AbandonFlag == "1" ? "abandoned" : "";
+                        return '<li onclick="processAbandon(this)" class="' + liClass + '" CallServiceId="' + o.CallServiceId + '"  AbandonFlag="' + o.AbandonFlag + '" CallNo="' + o.CallNo + '" OldManName="' + o.OldManName + '"><a><span class="field-oldmanname-reminder" >' + o.OldManName + '</span>&nbsp;<span class="field-checkintime-reminder">' + Date.parse(o.CheckInTime).toString('HH点mm分ss秒') + '</span></a></li>';
+                    }).join("");
+                    if (isAppend) {
+                        $('#scroll-c ul').append(htmlstr);
+                    }
+                    else {
+                        $('#scroll-c ul').html(htmlstr);
+                    }
+                }
+            });
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+
+        //滚动
+        setInterval('autoScroll(".scroll")', 5000);
+
+        //定时将id清零
+        setTimeout(function () {
+            maxid = 0;
+            setTimeout(arguments.callee, clearTime);
+        }, clearTime);
+    });
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-25px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function _loadDataForScroll(serviceType, id, callback) {
+        var selectedDate = Date.today().toString('yyyy-MM-dd'); 
+        getTo(window.callservice_InvokeUrl + '/LoadRemindersForScroll/' + serviceType + ',' + selectedDate + ',' + id, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                callback.apply(this, [rows]);
+            }
+        });
+    }
+     
+    function processAbandon(o) {
+        var $li = $(o);
+        if ($li.attr('AbandonFlag') == '1') {
+            //调用cs拨号
+            window.external.DialBack($li.attr('CallServiceId'), $li.attr('CallNo'), $li.attr('OldManName'),'');
+        }
+    }
+</script>

@@ -1,0 +1,467 @@
+﻿<div id="_left" style="width: 350px; padding: 0 2px 0 2px; float: left;">
+    <table>
+        <tr style="height: 40px;">
+            <td colspan='2'>
+                <table>
+                    <tr>
+                        <td>
+                            关键字：
+                        </td>
+                        <td>
+                            <input name="serviceMan_KeyWord" id="serviceMan_KeyWord" style="width: 120px;" class="easyui-validatebox"
+                                placeholder="工号、姓名" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="set_datagrid_serviceMan()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="removekeyword('serviceMan')">清空</a>
+                            <div id="CurrentMerchant-c" style="display: inline-block;">
+                                <input id="CurrentMerchant" /></div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr  >
+            <td>
+                <div style="width: 140px; padding: 0 2px 0 2px; float: left;">
+                    <table id="dg-serviceMan">
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div style="width: 200px; border: solid 1px #ddd; padding: 0 2px 0 2px; float: left;"
+                    valign="top">
+                    <div style="line-height: 35px; text-align: center; background-color: #fafafa;">
+                        服务区域
+                    </div>
+                    <div id='div_tree' style="overflow:auto;width: 200px;">
+                    <ul id="tree-serviceArea">
+                    </ul>
+                    </div>
+                    <input type="hidden" id="_areaId" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="_right" style="border: solid 1px #ddd;   float: left;">
+    <table>
+        <tr>
+            <td>
+                <div style="border: solid 1px #ddd; text-align: center; background-color: #fafafa;
+                    width: 100%;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="checkAll()"
+                        style="color: #0099FF;">分配本页</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                            iconcls="accordion-expand" plain="true" onclick="checkAll()"></a><a href="javascript:void(0)"
+                                class="easyui-linkbutton" plain="true" onclick="checkSelected()" style="color: #0099FF;">
+                                分配选中</a><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="spinner-arrow-down"
+                                    plain="true" onclick="checkSelected()"></a>
+                </div>
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                <table id="dg-oldMan-uncheck">
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="border: solid 1px #ddd; text-align: center; background-color: #fafafa;
+                    width: 100%;"> 
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="spinner-arrow-up"
+                        plain="true" onclick="uncheckSelected()"></a><a href="javascript:void(0)" class="easyui-linkbutton"
+                            plain="true" onclick="uncheckSelected()" style="color: #0099FF;">取消选中分配</a><a href="javascript:void(0)"
+                                class="easyui-linkbutton" iconcls="accordion-collapse" plain="true" onclick="uncheckAll()">
+                            </a><a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="uncheckAll()"
+                                style="color: #0099FF;">取消本页分配</a>
+                </div>
+            </td>
+        </tr> 
+        <tr>
+            <td>
+                <table id="dg-oldMan-check">
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="toolbar-oldMan-uncheck">
+                <table>
+                    <tr>
+                        <td>
+                            关键字：
+                        </td>
+                        <td>
+                            <input name="uncheck_KeyWord" id="uncheck_KeyWord" class="easyui-validatebox" placeholder="姓名、身份证、电话、地址" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="set_datagrid_check('uncheck')">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="removekeyword('uncheck')">清空</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="OnlyShowGovTurnkey" type="checkbox"  checked /><label for="OnlyShowGovTurnkey">仅政府购买</label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <label style="color: #63B8FF">
+                                未分配的服务对象,可以分配给</label><label name="serviceManName" style="color: Red; font-weight: bolder;">--</label>
+                        </td>
+                    </tr>
+                </table>
+</div>
+<div id="toolbar-oldMan-check">
+                <table>
+                    <tr>
+                        <td>
+                            关键字：
+                        </td>
+                        <td>
+                            <input name="check_KeyWord" id="check_KeyWord" class="easyui-validatebox" placeholder="姓名、身份证、电话、地址" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="set_datagrid_check('check')">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="removekeyword('check')">清空</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label name="serviceManName" style="color: Red; font-weight: bolder;">
+                                --</label>
+                            <label style="color: #63B8FF">
+                                已经分配的服务对象</label>
+                        </td>
+                    </tr>
+                </table>
+</div>
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    placeholder(); //占位符初始化  
+    var stationId;
+    var areas;
+    $(function () {
+        //加载商家
+        $('#CurrentMerchant').combobox({
+            width: 60,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingMerchants,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: false,
+            onSelect: function (record) {
+                $('label[name="serviceManName"]').text('--');
+                removekeyword('uncheck');
+                removekeyword('serviceMan');
+                removekeyword('check');
+                doload();//加载
+                $('#dg-oldMan-check').datagrid('loadData', { total: 0, rows: [] });//初始化datagrid
+                $('#dg-oldMan-uncheck').datagrid('loadData', { total: 0, rows: [] }); //初始化datagrid
+            }
+        });
+        if (top.gUserInfo.MappingMerchants.length > 0) {
+            $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId); 
+            if (top.gUserInfo.MappingMerchants.length == 1) {
+                $('#CurrentMerchant-c').hide();
+            }
+        }
+        else {
+            alertInfo('当前帐号没有绑定任何商家');
+            $('#toolbar-Schedule').hide();
+        }
+        doload(); //加载 
+        $('#OnlyShowGovTurnkey').on('change', function () { doload(); });
+        $('#dg-oldMan-check').datagrid().size(); //初始化datagrid
+        $('#dg-oldMan-uncheck').datagrid().size(); //初始化datagrid
+    });
+
+    function doload() {
+        stationId = $('#CurrentMerchant').combobox('getValue');
+        models[currentMenuCode] = { 
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/MerchantServeManMappingOldManService /',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00003|" + window.contants.GuidAsGroup_MerchantServeMan, Gender: 'N', SystemFlag: 0, Status: 1 }
+        };
+         
+        _autosize1('dg-serviceMan', -45);//自动调整大小
+        _autosize1('tree-serviceArea', -80); //自动调整大小
+        _autosize1('div_tree', -80); //自动调整大小
+        _autosize2('dg-oldMan-check', -40); //自动调整大小
+        _autosize2('dg-oldMan-uncheck', -40); //自动调整大小
+         
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        set_datagrid_serviceMan();//加载服务人员
+
+        initTree('easyUITree', 'tree-serviceArea', {
+            width: 152,
+            panelWidth: 200,
+            panelHeight: 260,
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点 
+                        $('#_areaId').val(areaId);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点 
+                        $('#_areaId').val(areaId);
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点 
+                    $('#_areaId').val("");
+                };
+                reload_dateagrid_check('check');//刷新已分配的老人
+                reload_dateagrid_check('uncheck'); //刷新未分配的老人
+            }
+        }, function (d) {
+            getTreeData('01$02$08', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '", "StationId":"' + stationId + '"}', d);
+        }, null, function (treeObj) {
+
+        });      //end loadTree 
+        set_datagrid_check('check'); //刷新已分配的老人
+        set_datagrid_check('uncheck'); //刷新未分配的老人
+    };
+
+    function set_datagrid_serviceMan() {
+        var keyWord = $('#serviceMan_KeyWord').val();
+        $('#dg-serviceMan').datagrid(easyuigrid_settings({
+            title: "",
+            rownumbers: false,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListForEasyUIgridByStationId/' + stationId,
+            method: 'POST',
+            queryParams: {
+                page: 1,
+                rows: 300,
+                fuzzyFieldOP: ' or ',
+                sort: 'UserName',
+                order: 'asc',
+                filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType }
+                            ],
+                fuzzyFields: [
+                            { key: 'UserCode', value: keyWord },
+                            { key: 'UserName', value: keyWord },
+                               { key: 'InputCode1', value: keyWord },
+                               { key: 'InputCode2', value: keyWord }
+                            ]
+            },
+            onDblClickRow: function (idx, row) {
+                $('label[name="serviceManName"]').text(row.UserName);
+                $('#dg-oldMan-check').datagrid('loadData', { total: 0, rows: [] });
+                $('#dg-oldMan-uncheck').datagrid('loadData', { total: 0, rows: [] });
+                reload_dateagrid_check('check');
+                reload_dateagrid_check('uncheck');
+            },
+            onSelect: function (index, row) {
+                $('label[name="serviceManName"]').text(row.UserName);
+                reload_dateagrid_check('check');
+                reload_dateagrid_check('uncheck');
+            },
+            columns: [[
+                    { field: 'UserId', title: '服务人员编号', width: 150, hidden: true },
+        { field: 'UserCode', title: '工号', width: 40, sortable: true },
+        { field: 'UserName', title: '名称', width: 60 },
+        { field: 'Gender', title: '性别', width: 40, align: 'center', formatter: easyuigrid_genderFormatter }
+    ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+    }
+
+    function set_datagrid_check(e) {
+        var areaId = $('#_areaId').val();
+        var rows_serviceMan = $('#dg-serviceMan').datagrid('getSelections');
+        var serviceManIds = [];
+        var govTurnkeyFlag = $('#OnlyShowGovTurnkey').prop('checked'); 
+        if (rows_serviceMan || rows_serviceMan.length > 0) {
+            _.each(rows_serviceMan, function (o) {
+                serviceManIds.push(o.UserId);
+            });
+            var strServiceManIds = "'" + serviceManIds.join("','") + "'";
+            var keyWord = $('#' + e + '_KeyWord').val();
+            if (e == 'uncheck') {
+                filterField = [{ key: 'ServeManIdUnCheck', value: strServiceManIds}];
+            }
+            else {
+                filterField = [{ key: 'ServeManIdCheck', value: strServiceManIds}];
+            }
+            filterField.push({ key: 'StationId', value: stationId });
+            if (govTurnkeyFlag) { filterField.push({ key: 'GovTurnkeyFlag', value: 1 }); }
+            $('#dg-oldMan-' + e).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/ListForEasyUIgrid_OldManBaseInfo',
+                method: 'POST', 
+                toolbar: '#toolbar-oldMan-'+e,
+                queryParams: {
+                    sort: 'OldManName',
+                    order: 'asc',
+                    fuzzyFieldOP: ' or ',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    },
+                    filterFields: filterField,
+                    fuzzyFields: [{ key: 'OldManName', value: keyWord },
+                               { key: 'IDNo', value: keyWord },
+                               { key: 'Tel', value: keyWord },
+                               { key: 'Mobile', value: keyWord },
+                               { key: 'Address', value: keyWord },
+                               { key: 'InputCode1', value: keyWord },
+                               { key: 'InputCode2', value: keyWord },
+                               { key: 'AreaId', value: areaId}]
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                            { field: 'CK', title: '', checkbox: true },
+                { field: 'OldManName', title: '姓名', width: 60, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 40, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'Address', title: '家庭地址', width: 250 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+        }
+    }
+
+    function reload_dateagrid_check(e) {
+        var areaId = $('#_areaId').val();
+        var rows_serviceMan = $('#dg-serviceMan').datagrid('getSelections');
+        var serviceManIds = [];
+        _.each(rows_serviceMan, function (o) {
+            serviceManIds.push(o.UserId);
+        });
+        var strServiceManIds = "'" + serviceManIds.join("','") + "'";
+        var keyWord = $('#check_KeyWord').val();
+        var govTurnkeyFlag = $('#OnlyShowGovTurnkey').prop('checked');
+        var filterField = [];
+        if (e == 'uncheck') {
+            filterField = [{ key: 'ServeManIdUnCheck', value: strServiceManIds}];
+        }
+        else {
+            filterField = [{ key: 'ServeManIdCheck', value: strServiceManIds}];
+        }
+        if (govTurnkeyFlag) { filterField.push({ key: 'GovTurnkeyFlag', value: 1 }); }
+        filterField.push({ key: 'StationId', value: stationId });
+        $('#dg-oldMan-' + e).datagrid('load', {
+            sort: 'OldManName',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: models[currentMenuCode].defaultModel.Status,
+                AreaId: models[currentMenuCode].defaultModel.AreaId
+            },
+            filterFields: filterField,
+            fuzzyFields: [{ key: 'OldManName', value: keyWord },
+                               { key: 'IDNo', value: keyWord },
+                               { key: 'Tel', value: keyWord },
+                               { key: 'Mobile', value: keyWord },
+                               { key: 'Address', value: keyWord },
+                               { key: 'InputCode1', value: keyWord },
+                               { key: 'InputCode2', value: keyWord },
+                               { key: 'AreaId', value: areaId}]
+        });
+    }
+    //分配本页全部
+    function checkAll() {
+        var rows_oldMan = $('#dg-oldMan-uncheck').datagrid('getRows');
+        var rows_serveMan = $('#dg-serviceMan').datagrid('getSelections');
+        setServeManOldMan(rows_serveMan, rows_oldMan, 1);
+    }
+
+    //分配本页选中的
+    function checkSelected() {
+        var rows_oldMan = $('#dg-oldMan-uncheck').datagrid('getSelections');
+        var rows_serveMan = $('#dg-serviceMan').datagrid('getSelections');
+        if (rows_oldMan.length > 0 || rows_serveMan.length > 0) {
+            setServeManOldMan(rows_serveMan, rows_oldMan, 1);
+        } else {
+            alertInfo('没有选中的老人或服务人员！');
+        }
+    }
+
+    //取消分配本页选中
+    function uncheckSelected() {
+        var rows_oldMan = $('#dg-oldMan-check').datagrid('getSelections');
+        var rows_serveMan = $('#dg-serviceMan').datagrid('getSelections');
+        if (rows_oldMan.length > 0 || rows_serveMan.length > 0) {
+            setServeManOldMan(rows_serveMan, rows_oldMan, 0);
+        } else {
+            alertInfo('没有选中的老人或服务人员！');
+        }
+    }
+
+    //取消分配本页全部
+    function uncheckAll() {
+        var rows_oldMan = $('#dg-oldMan-check').datagrid('getRows');
+        var rows_serveMan = $('#dg-serviceMan').datagrid('getSelections');
+        setServeManOldMan(rows_serveMan, rows_oldMan, 0);
+    }
+
+
+    function setServeManOldMan(rows_serveMan, rows_oldMan, flag) {
+        if (rows_serveMan.length > 0) {
+            if (rows_oldMan.length > 0) {
+                var tmpData;
+                var url;
+                _.each(rows_serveMan, function (o) {
+                    tmpData = _.map(rows_oldMan, function (item) {
+                        return { ServeManId: o.UserId, OldManId: item.OldManId, AreaId: item.AreaId3 };
+                    });
+                });
+                if (tmpData && tmpData.length > 0) {
+                    alertConfirm('您确定要继续吗？', function (r) {
+                        if (r) {
+                            if (flag) {
+                                url = baseCMSInvokeUrl + '/Oca/MerchantServeManMappingOldManService/SaveServeManOldMan';
+                            }
+                            else {
+                                url = baseCMSInvokeUrl + '/Oca/MerchantServeManMappingOldManService/RemoveServeManOldMan';
+                            }
+                            postTo(url, $.toJSON(tmpData), function (ret) {
+                                if (ret.Success) {
+                                    alertInfo('保存成功！');
+                                    $('#dg-oldMan-check').datagrid('load');
+                                    $('#dg-oldMan-uncheck').datagrid('load');
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            else {
+                alertInfo('没有选中的老人！');
+            }
+        }
+        else {
+            alertInfo('没有选中的服务人员！');
+        }
+    }
+
+    function removekeyword(k) {
+        $('input[name="' + k + '_KeyWord"]').val(null);
+    }
+
+    function _autosize1(id, delta) {
+        $("#" + id).height($("#" + id).parent().parent().parent().parent().parent().parent().parent().parent().parent().height() + delta);
+    }
+    function _autosize2(id, delta) {
+        var w = $('#_left').width();
+        var ww = $('#_right').parent().width();
+        $("#" + id).width(ww - w - 10); 
+        $("#" + id).height($("#" + id).parent().parent().parent().parent().parent().parent().parent().height() / 2 + delta);
+    } 
+</script>

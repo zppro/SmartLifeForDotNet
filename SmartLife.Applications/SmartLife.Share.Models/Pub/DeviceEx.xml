@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="OrgDeviceList" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.StationId From Pub_Device a inner join Pam_Device b on a.DeviceId=b.DeviceId and b.Status=1
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceType" >a.DeviceType=#DeviceType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceCode" >a.DeviceCode=#DeviceCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceName" >a.DeviceName=#DeviceName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >b.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Count_OrgDeviceListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse,a.*,b.StationId,b.BindingTime,b.UnBindingTime From Pub_Device a inner join Pam_Device b 
+      on a.DeviceId=b.DeviceId and b.Status=1
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="DeviceId" >a.DeviceId=#DeviceId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceCode" >a.DeviceCode=#DeviceCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceName" >a.DeviceName=#DeviceName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceType" >a.DeviceType=#DeviceType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Description" >a.Description=#Description#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ActiveFlag" >a.ActiveFlag=#ActiveFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Monitor" >a.Monitor=#Monitor#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >b.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BindingTime_Start" >b.BindingTime>=#BindingTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BindingTime_End" >b.BindingTime&lt;=#BindingTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="UnBindingTime_Start" >b.UnBindingTime>=#UnBindingTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="UnBindingTime_End" >b.UnBindingTime&lt;=#UnBindingTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OrgDeviceListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.*,b.StationId,
+      b.BindingTime,b.UnBindingTime From Pub_Device a inner join Pam_Device b on a.DeviceId=b.DeviceId and b.Status=1
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="DeviceId" >a.DeviceId=#DeviceId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Id" >a.Id=#Id#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >a.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >a.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceCode" >a.DeviceCode=#DeviceCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceName" >a.DeviceName=#DeviceName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DeviceType" >a.DeviceType=#DeviceType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Description" >a.Description=#Description#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ActiveFlag" >a.ActiveFlag=#ActiveFlag#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Monitor" >a.Monitor=#Monitor#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >b.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BindingTime_Start" >b.BindingTime>=#BindingTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="BindingTime_End" >b.BindingTime&lt;=#BindingTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="UnBindingTime_Start" >b.UnBindingTime>=#UnBindingTime_Start#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="UnBindingTime_End" >b.UnBindingTime&lt;=#UnBindingTime_End#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

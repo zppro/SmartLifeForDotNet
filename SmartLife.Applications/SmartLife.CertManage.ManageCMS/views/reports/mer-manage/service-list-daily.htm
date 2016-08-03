@@ -1,0 +1,291 @@
+﻿<style type="text/css">
+.tool_tr{ vertical-align:top; line-height:25px; border-bottom:1px solid;}
+.tool_tr td{ font-size:15px; background-color:#ddd; font-weight:bold;}
+.tool_td_Time{ width:130px; text-align:center;}
+.tool_td_Status{ width:80px; text-align:center;}
+.tool_td_OldMan{ width:80px; text-align:center;}
+.tool_td_ServeItemB{ width:90px; text-align:center;}
+.tool_td_Content{ width:150px; text-align:center;}
+.tool_td_ServeMan{ width:80px; text-align:center;}
+.tool_td_ArriveTime{ width:130px; text-align:center;}
+.tool_td_LeaveTime{ width:130px; text-align:center;}
+.tool_td_Feedback{ width:50px; text-align:center;}
+.tool_td_CountTime{ width:50px; text-align:center;}
+</style>
+<div id="search-sample-B230401" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B230401" method="post">
+    <table width="100%">
+        <tr>
+            <td id="CurrentMerchant-cc" style="text-align:center; width: 200px;">
+                <div id="CurrentMerchant-c" style="display: inline-block;">
+                    <input id="CurrentMerchant" /></div>
+                <input id="CheckInTime" name="CheckInTime" class="Wdate" onfocus="WdatePicker()"
+                    onchange="datetiemchange()" style="width: 90px;" />
+                工单状态:
+                <input id="workOrderDoStatus" class="easyui-validatebox" />
+                服务人员：<input name="ServeManName" id="ServeManName" class="easyui-validatebox" style="width: 90px;" />
+                服务对象：<input name="OldManName" id="OldManName" class="easyui-validatebox" style="width: 90px;" />
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                    查询</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                    清空</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div  id="cc-B230401" style="   border:1px solid;width:900px;  margin:0 auto;">
+<table align="center" style="  text-align:center;">
+<tr  class="tool_tr">
+<td class="tool_td_OldMan">服务对象</td><td class="tool_td_Time">呼入时间</td><td class="tool_td_ServeItemB">服务内容</td><td class="tool_td_Content">工作内容</td><td class="tool_td_Status">状态</td><td class="tool_td_ServeMan">服务人员</td><td class="tool_td_ArriveTime">上门时间</td><td class="tool_td_LeaveTime">离开时间</td><td class="tool_td_CountTime">用时</td>
+</tr>
+<tr><td colspan="9">
+<div id="cc-content-B230401" style=" overflow-y:auto; width:100%; ">
+<table>
+<tbody id="tby-B230401"">
+</tbody>
+</table>
+</div>
+</td></tr>
+</table>
+</div>
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+
+    $(function () {
+        loadfiles([
+            { type: "css", url: "../../css/mer/restore-datagrid-default.css" }
+            ], function () {
+                //加载商家
+                $('#CurrentMerchant').combobox({
+                    width: 100,
+                    panelWidth: 200,
+                    data: top.gUserInfo.MappingMerchants,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onSelect: function (record) {
+                        page_load();
+                    }
+                });
+                if (top.gUserInfo.MappingMerchants.length > 0) {
+                    $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+
+                    if (top.gUserInfo.MappingMerchants.length == 1) {
+                        $('#CurrentMerchant-c').hide();
+                        $('#CurrentMerchant-cc').width(190);
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何商家');
+                    $('#toolbar-Schedule').hide();
+                }
+
+                setToday();
+                page_load();
+            });
+    });
+
+    function page_load() {
+        var checkInTime = $('#CheckInTime').val();
+        validateUI();
+        var param = {
+                sort: 'CheckInTime',
+                order: 'asc',
+                filterFields: [
+                            { key: 'StationId', value: $('#CurrentMerchant').combobox('getValue') },
+                            { key: 'CheckInTime',value: checkInTime},
+                            { key: 'workOrderDoStatus', value: '1,2,3,4,5' }
+                            ]
+            };
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            headers:  { ConnectId: baseInfoNode },
+            uiMode: 'list',
+            entityName: '工单处理',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/WorkOrderService',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+        autosize("cc-B230401", -40);
+        var h = $("#cc-B230401").height() - 40;
+        $('#cc-content-B230401').css('height', h);
+        datagridSet(param);
+
+        $('#workOrderDoStatus').combobox({
+            width: 90,
+            panelHeight: 105,
+            multiple: true,
+            data: [{ ItemId: 1, ItemName: "未响应" },
+                   { ItemId: 2, ItemName: "已响应" },
+                   { ItemId: 3, ItemName: "服务中" },
+                   { ItemId: 4, ItemName: "服务结束" },
+                   { ItemId: 5, ItemName: "回访结束"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    function datagridSet(param) {
+        postTo(models[currentMenuCode].baseModelUrl + '/GetWorkOrderForReport', $.toJSON(param), function (ret) {
+            if (ret.Success) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                $('.all-count-rows').remove();
+                if (rows.length > 0) {
+                    var htmls = [];
+                    _.each(rows, function (o) {
+                        htmls.push('<tr class="all-count-rows" style=" vertical-align:top; line-height:25px;"><td class="tool_td_OldMan">' + o.OldManName + '</td><td class="tool_td_Time">' + o.CheckInTime + '</td><td class="tool_td_ServeItemB">' + o.ServeItemBName + '</td><td class="tool_td_Content">' + workContent(o.WorkOrderContent, o.OldManName) + '</td><td class="tool_td_Status">' + doStatus(o) + '</td><td class="tool_td_ServeMan">' + o.ServeManName + '</td><td class="tool_td_ArriveTime">' + o.ServeManArriveTime + '</td><td class="tool_td_LeaveTime">' + o.ServeManLeaveTime + '</td><td class="tool_td_CountTime">' + getCountTime(o.ServeManArriveTime, o.ServeManLeaveTime) + '</td></tr>');
+                    });
+                    $(htmls.join("")).insertAfter('#tby-B230401');
+                }
+            }
+        });
+    }
+    function workContent(workOrderContent, oldManName) {
+        var content;
+        var index = workOrderContent.toString().indexOf(oldManName);
+        if (index ==0) {
+            content = workOrderContent.substring(oldManName.length);
+        }
+        else if (workOrderContent.length > 10) {
+            content = workOrderContent.substring(0, 10);
+        }
+        else {
+            content = workOrderContent;
+        }
+        return content;
+    }
+    function doStatus(row) {
+        var htm_ZT = '';
+        if (row.DoStatus == 0 && row.ReceiveStatus == 0 && IsNull(row.ServeStationId, '') == '') {
+            htm_ZT = '<label style=" color:#FF6347;">未响应</label>';
+            }
+        else if (row.DoStatus == 0 && row.ReceiveStatus == 1) {
+            htm_ZT = '<label style="color:#63B8FF;">已申请</label>';
+         }
+        else if (isTrue(row.DoStatus) && row.ReceiveStatus == 2) {
+            htm_ZT = '<label style="color:#DA70D6;">接单失败</label>';
+        }
+        else if (isTrue(row.DoStatus) && IsNull(row.ServeStationId, '') != '' && IsNull(row.ServeManName, '') == '') {
+            htm_ZT = '<label style="color:#63B8FF;">接单成功</label>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManArriveTime, '') == '') {
+            htm_ZT = '<label style=" color:#FFCC00;">服务未开始</label>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManArriveTime, '') != '' && IsNull(row.ServeManLeaveTime, '') == '') {
+            htm_ZT = '<label style=" color:#2E8B57;">服务已开始</label>';
+        }
+        else if (isTrue(row.DoStatus) && row.ServeManName != '' && IsNull(row.ServeManLeaveTime, '') != '' && IsNull(row.InputtedTimeByServiceStation, '') == '') {
+            htm_ZT = '<label style=" color:#0033FF;">服务结束</label>';
+        }
+        else if (isTrue(row.DoStatus) && IsNull(row.InputtedTimeByServiceStation, '') != '') {
+            htm_ZT = '完成工单';
+        }
+        else if (row.DoStatus == 4) {
+            htm_ZT = '回访完成';
+        }
+        return htm_ZT;
+    }
+    function isTrue(doStatus) {
+        if (doStatus == 1 || doStatus == 2 || doStatus == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function getCountTime(arrive,leave) {
+        var countTime;
+        if (isnull(arrive, '') != '' && isnull(leave, '') != '') {
+            var ss = DateDiff('s',new Date(arrive) ,new Date(leave));
+            var h = parseInt(ss / 3600);
+            var m = Math.ceil(ss % 3600 / 60);
+            if (m == 60) {
+                h = h + 1;
+                m = 0;
+            }
+            if (h > 0) {
+                countTime = h + '时' + m + '分';
+            }
+            else {
+                countTime = m + '分';
+            }
+        }
+        else if (isnull(arrive, '') != '' && isnull(leave, '') == '') {
+            countTime = '服务中';
+        }
+        else {
+            countTime = '未开始';
+        }
+        return countTime;
+    }
+
+    function execEx() {
+        var selected = $('#workOrderDoStatus').combobox('getValues').toString();
+        var checkInTime = $('#CheckInTime').val();
+        var serveManName = $('#ServeManName').val();
+        var oldManName = $('#OldManName').val();
+        //        alert(selected.toString());
+        var param;
+        if (serveManName != '' || oldManName != '') {
+            param = {
+                sort: 'CheckInTime',
+                order: 'asc',
+            fuzzyFields: [],
+            filterFields: [
+                            { key: 'StationId', value: $('#CurrentMerchant').combobox('getValue') },
+                            { key: 'CheckInTime',value: checkInTime},
+                            { key: 'workOrderDoStatus', value: selected == '' ? '1,2,3,4,5' : selected }
+                            ]
+                            };
+                            param.fuzzyFields.push({ key: 'OldManName', value: isnull(oldManName, '') == '' ? null : oldManName });
+                            param.fuzzyFields.push({ key: 'ServeManName', value: isnull(serveManName, '') == '' ? null : serveManName });
+        }
+        else {
+            param ={
+                sort: 'CheckInTime',
+                order: 'asc',
+                filterFields: [
+                            { key: 'StationId', value: $('#CurrentMerchant').combobox('getValue') },
+                            { key: 'CheckInTime',  value:checkInTime },
+                            { key: 'workOrderDoStatus', value: selected == '' ? '1,2,3,4,5' : selected }
+                            ]
+            };
+        }
+        datagridSet(param);
+    }
+    function datetiemchange() {
+        execEx();
+    }
+    function resetexec() {
+        $('#workOrderDoStatus').combobox('clear');
+        $('#ServeManName').val(null);
+        $('#OldManName').val(null);
+        setToday();
+    }
+    function setToday() {
+        $('#CheckInTime').val(Date.today().toString('yyyy-MM-dd'));
+    }
+</script>

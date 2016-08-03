@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Menu" type="SmartLife.Share.Models.Sys.Menu, SmartLife.Share.Models" />
+    <typeAlias alias="MenuPK" type="SmartLife.Share.Models.Sys.MenuPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Menu_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Menu(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MenuId" >MenuId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuCode" >MenuCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuName" >MenuName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PageUrl" >PageUrl</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenInFrameFlag" >OpenInFrameFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SelectOnRefreshFlag" >SelectOnRefreshFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CanFullScreenFlag" >CanFullScreenFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MenuId" >#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuCode" >#MenuCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuName" >#MenuName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PageUrl" >#PageUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenInFrameFlag" >#OpenInFrameFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SelectOnRefreshFlag" >#SelectOnRefreshFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CanFullScreenFlag" >#CanFullScreenFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Menu_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Menu
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuCode" >MenuCode=#MenuCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MenuName" >MenuName=#MenuName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PageUrl" >PageUrl=#PageUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenInFrameFlag" >OpenInFrameFlag=#OpenInFrameFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SelectOnRefreshFlag" >SelectOnRefreshFlag=#SelectOnRefreshFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CanFullScreenFlag" >CanFullScreenFlag=#CanFullScreenFlag#</isPropertyAvailable>
+      </dynamic>
+      where MenuId=#MenuId#
+    </update>
+    <delete id="Menu_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Menu
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuCode" >MenuCode=#MenuCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuName" >MenuName=#MenuName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PageUrl" >PageUrl=#PageUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenInFrameFlag" >OpenInFrameFlag=#OpenInFrameFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SelectOnRefreshFlag" >SelectOnRefreshFlag=#SelectOnRefreshFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CanFullScreenFlag" >CanFullScreenFlag=#CanFullScreenFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Menu_Load" parameterClass="MenuPK" resultClass="Menu" >
+      select MenuId,Id,Status,CodeClass,MenuCode,MenuName,PageUrl,ApplicationId,ParentId,Levels,EndFlag,Picture,OrderNo,Description,OpenInFrameFlag,SelectOnRefreshFlag,CanFullScreenFlag from Sys_Menu
+      where MenuId=#MenuId#
+    </select>
+    <select id="Menu_List" parameterClass="StringObjectDictionary" resultClass="Menu" >
+      select MenuId,Id,Status,CodeClass,MenuCode,MenuName,PageUrl,ApplicationId,ParentId,Levels,EndFlag,Picture,OrderNo,Description,OpenInFrameFlag,SelectOnRefreshFlag,CanFullScreenFlag from Sys_Menu
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuCode" >MenuCode=#MenuCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuName" >MenuName=#MenuName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PageUrl" >PageUrl=#PageUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenInFrameFlag" >OpenInFrameFlag=#OpenInFrameFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SelectOnRefreshFlag" >SelectOnRefreshFlag=#SelectOnRefreshFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CanFullScreenFlag" >CanFullScreenFlag=#CanFullScreenFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

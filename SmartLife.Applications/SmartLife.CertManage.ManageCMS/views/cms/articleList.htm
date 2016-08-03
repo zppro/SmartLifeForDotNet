@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浙江蓝谷智慧养老</title>
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/1.3.3/icon.css" />
+    <script type="text/javascript" src="../../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../../script/jquery/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.easyui-1.3.3.min.js"></script>
+    <script type="text/javascript" src="../../script/jquery/locale/easyui-1.3.3-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../script/underscore/underscore-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../script/xml2json-v1.1.js"></script>
+    <script type="text/javascript" src="../../script/jquery/jquery.jMenu.js"></script>
+    <script type="text/javascript" src="../../script/switchVar.js"></script>
+    <script type="text/javascript" src="../../script/site.js"></script>  
+    <script type="text/javascript" src="../../script/cms.js"></script> 
+    <script type="text/javascript">
+        $(function () {
+            loadfiles([
+                { type: "css", url: "../../css/cms/" + appDeployArea.id + ".css" }
+                ], function () { }
+            );
+
+            loadHeadFoot();
+
+            var colId , colName;
+
+            colId = getQueryString("cid");
+            colName = getQueryString("cname");
+            //alert(colId + ":" + colName);
+            if (colName) {
+                $("#lb_colName").text(colName);
+                createlistTitleHtml(colName);
+            }
+            if (colId) {
+                //自定义查询变量兼容EasyUIgridCollectionParam<T>
+                var pageParam = {
+                    page: 1,
+                    rows: 10,
+                    pageList: [10, 15],
+                    sort: 'PublishDate',
+                    order: 'desc',
+                    total: 0,
+                    instance: {
+                        AreaId: appDeployArea.id,
+                        ColumnId: colId,
+                        Status: 1
+                    }
+                };
+                createArticleGrid(colId, pageParam, colName);
+            }
+        });
+
+        function createlistTitleHtml(columnName) {
+            var html = $(".listTitleDiv").html();
+            html = $.trim(html); //当</div>在下一行时内容末尾会有空格
+            html += "<span>|</span>";
+            html += columnName;
+            $(".listTitleDiv").html(html);
+        }
+
+        function createArticleListHtml(articleList, columnName) {
+            var _html = "";
+            if (articleList.length > 0) {
+                _html = [];
+                _html.push("<ul>"); 
+                for (var index in articleList) {
+                    _html.push("<li>");
+                    _html.push("<a href=\"article.htm?aid=" + articleList[index].ArticleId + "&cname=" + escape(columnName||"") + "\" target=\"_blank\" >" + exchangeTiltle(articleList[index].Title,25) + "</a>");
+                    if (articleList[index].PublishDate) {//发布日期
+                        _html.push("<label>" + ndateFormatter(articleList[index].PublishDate, "yyyy-MM-dd") + "</label>");
+                    }
+                    _html.push("</li>");
+                }
+                _html.push("</ul>");
+                _html = _html.join("");
+            }
+            $("#contain_artListR_content").html(_html);
+        }
+
+        function createPaginationDiv(pageParam) {
+            $('#paginationDiv').pagination({
+                total: pageParam.total,
+                pageSize: pageParam.rows,
+                pageList: pageParam.pageList,
+                onSelectPage: function (pageNumber, pageSize) {
+                    $(this).pagination('loading');
+                    //alert('pageNumber:' + pageNumber + ',pageSize:' + pageSize);                 
+                    reloadArticleGrid(pageNumber, pageSize);
+                    $(this).pagination('loaded');
+                }
+                //onRefresh: function (pageNumber, pageSize) {},//直接调用onSelectPage事件，无需再重写该事件除非有额外功能要添加
+                //onChangePageSize: function (pageNumber) {}//直接调用onSelectPage事件，无需再重写该事件除非有额外功能要添加
+            });
+        }
+        function createArticleGrid(columnId, pagination, columnName) {
+            postTo(ServiceUrl + "ArtListForGrid", $.toJSON(pagination), function (result) {
+                if (result.rows) {
+                    var articleData = $.map(result.rows, function (item) {
+                        return xml2json.parser(item, 'StringObjectDictionary');
+                    });
+                    createArticleListHtml(articleData, columnName);
+                    pagination.total = result.total;
+                    createPaginationDiv(pagination);
+                }
+            }, { async: true }, { ConnectId: baseInfoNode });
+        }
+
+        function reloadArticleGrid(pageNo, pageSize) {
+            var colId = getQueryString("cid");
+            var colName = getQueryString("cname");
+            if (colId) {
+                var pageParam = {
+                    page: pageNo,
+                    rows: pageSize,
+                    sort: 'PublishDate',
+                    order: 'desc',
+                    instance: {
+                        AreaId: appDeployArea.id,
+                        ColumnId: colId,
+                        Status:1
+                    }
+                }
+                postTo(ServiceUrl + "ArtListForGrid", $.toJSON(pageParam), function (result) {
+                    if (result.rows) {
+                        var articleData = $.map(result.rows, function (item) {
+                            return xml2json.parser(item, 'StringObjectDictionary');
+                        });
+                        createArticleListHtml(articleData, colName);
+                    }
+                }, { async: true }, { ConnectId: baseInfoNode });
+            } else {
+                alert("主键错误!");
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="header"></div>
+<!--body-->
+<div class="contain">
+  <div class="contain_artList">
+    <div class="contain_artListL">
+        <div class="contain_artListL_div">
+            <div class="contain_artListL_div_Item0">
+                <div class="contain_artListL_div_Item0_div">
+                    <label id="lb_colName"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contain_artListR">
+        <div class="listTitleDiv"><a href="index.htm">首页</a></div>
+        <div id="contain_artListR_content"></div>
+        <div id="paginationDiv" ></div>
+    </div>
+    <div style=" width:100%; clear:both"></div>
+  </div>
+</div>
+<!--foot-->
+<div class="footer"></div>
+</body>
+</html>

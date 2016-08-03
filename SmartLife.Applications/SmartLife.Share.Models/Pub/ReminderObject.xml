@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ReminderObject" type="SmartLife.Share.Models.Pub.ReminderObject, SmartLife.Share.Models" />
+    <typeAlias alias="ReminderObjectPK" type="SmartLife.Share.Models.Pub.ReminderObjectPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ReminderObject_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_ReminderObject(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectType" >ObjectType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectKey" >ObjectKey</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReminderId" >ReminderId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseAppType" >ResponseAppType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseFlag" >ResponseFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectType" >#ObjectType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectKey" >#ObjectKey#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReminderId" >#ReminderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseAppType" >#ResponseAppType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseFlag" >#ResponseFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ReminderObject_Update" parameterClass="StringObjectDictionary" >
+      update Pub_ReminderObject
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectType" >ObjectType=#ObjectType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ObjectKey" >ObjectKey=#ObjectKey#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReminderId" >ReminderId=#ReminderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseAppType" >ResponseAppType=#ResponseAppType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ResponseFlag" >ResponseFlag=#ResponseFlag#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="ReminderObject_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_ReminderObject
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectType" >ObjectType=#ObjectType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectKey" >ObjectKey=#ObjectKey#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReminderId" >ReminderId=#ReminderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseAppType" >ResponseAppType=#ResponseAppType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseFlag" >ResponseFlag=#ResponseFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ReminderObject_Load" parameterClass="ReminderObjectPK" resultClass="ReminderObject" >
+      select Id,CheckInTime,ObjectType,ObjectKey,ReminderId,ResponseAppType,ResponseFlag from Pub_ReminderObject
+      where Id=#Id#
+    </select>
+    <select id="ReminderObject_List" parameterClass="StringObjectDictionary" resultClass="ReminderObject" >
+      select Id,CheckInTime,ObjectType,ObjectKey,ReminderId,ResponseAppType,ResponseFlag from Pub_ReminderObject
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectType" >ObjectType=#ObjectType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectKey" >ObjectKey=#ObjectKey#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReminderId" >ReminderId=#ReminderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseAppType" >ResponseAppType=#ResponseAppType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseFlag" >ResponseFlag=#ResponseFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ReminderObject_ListByPage" parameterClass="StringObjectDictionary" resultClass="ReminderObject" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,ObjectType,ObjectKey,ReminderId,ResponseAppType,ResponseFlag from Pub_ReminderObject
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectType" >ObjectType=#ObjectType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ObjectKey" >ObjectKey=#ObjectKey#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ReminderId" >ReminderId=#ReminderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseAppType" >ResponseAppType=#ResponseAppType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResponseFlag" >ResponseFlag=#ResponseFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

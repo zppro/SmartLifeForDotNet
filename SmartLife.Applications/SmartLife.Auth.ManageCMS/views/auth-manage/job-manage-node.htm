@@ -1,0 +1,141 @@
+﻿<div id="toolbar-MsdbJob"> 
+</div>
+<table id="dg-MsdbJob"  >
+</table> 
+<div id="btn-MsdbJob">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+<script type="text/javascript">
+    $(function () {
+        var connectId = currentMenuId.split('--')[1];
+        models[currentMenuCode] = {
+            gridId: 'dg-MsdbJob',
+            toolbarId: 'toolbar-MsdbJob',
+            pk: 'UserId',
+            headers: { ConnectId: connectId },
+            uiMode: 'list',
+            entityName: '作业'
+        };
+        autosize(models[currentMenuCode].gridId);
+
+        loadfiles([
+        { type: "css", url: "../../css/auth-manage/node.css" }
+        ], function () {
+            postTo(baseCMSInvokeUrl + '/Sys/DatabaseConnectService/TestDatabaseConnection/' + connectId).done(function (result) {
+                if (result.Success) {
+
+                    $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                        title: "",
+                        pagination: true,
+                        rownumbers: true,
+                        singleSelect: true,
+                        url: msdbJob_InvokeUrl + '/ListForEasyUIgrid/' + connectId,
+                        method: 'POST',
+                        toolbar: '#' + models[currentMenuCode].toolbarId,
+                        onLoadSuccess: function (data) {
+                            $('.op-buttion-enable').linkbutton().unbind('click').bind('click', function () {
+                                var job_id = $(this).attr("job_id").toLowerCase();
+                                alertConfirm('您确定要启用当前作业吗？', function (r) {
+                                    if (r) {
+                                        putTo(msdbJob_InvokeUrl + '/enable/' + job_id, null, function (result) {
+                                            if (result.Success) {
+                                                alertInfo('启用成功！');
+                                            }
+                                            $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                                        }, null, models[currentMenuCode].headers);
+                                    }
+                                });
+                            });
+                            $('.op-buttion-modify').linkbutton().unbind('click').bind('click', function () {
+                                var job_id = $(this).attr("job_id").toLowerCase();
+                                var row_data = _.find($('#' + models[currentMenuCode].gridId).datagrid('getRows'), function (o) {
+                                    return o.job_id.toLowerCase() == job_id;
+                                });
+                                if (row_data) {
+                                    var schedule = null;
+                                    getTo(msdbJob_InvokeUrl + '/Schedules/' + job_id, null, function (result) {
+                                        if (result.rows.length > 0) {
+                                            schedule = result.rows[0];
+                                        }
+                                    }, { async: false }, models[currentMenuCode].headers);
+                                    openDialog('dlg-update-job', 'views/dialogs/update-job.htm', function (callback, dialogData) {
+                                        putTo(msdbJob_InvokeUrl + '/' + job_id, $.toJSON(dialogData), function (result) {
+                                            if (result.Success) {
+                                                alertInfo('修改成功！');
+                                            }
+                                            $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                                            callback();
+                                        }, null, models[currentMenuCode].headers);
+                                    }, { dialogData: { row_data: row_data, schedule: schedule }, title: '修改作业对话框', width: 450, height: 240, padding: 5 });
+                                }
+                            });
+                            $('.op-buttion-disable').linkbutton().unbind('click').bind('click', function () {
+                                var job_id = $(this).attr("job_id").toLowerCase();
+                                alertConfirm('您确定要禁用当前作业吗？', function (r) {
+                                    if (r) {
+                                        putTo(msdbJob_InvokeUrl + '/disable/' + job_id, null, function (result) {
+                                            if (result.Success) {
+                                                alertInfo('禁用成功！');
+                                            }
+                                            $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                                        }, null, models[currentMenuCode].headers);
+                                    }
+                                });
+
+                            });
+                            $('.op-buttion-mannual').linkbutton().unbind('click').bind('click', function () {
+                                var job_id = $(this).attr("job_id").toLowerCase();
+                                openDialog('dlg-processing-job', 'views/dialogs/processing-job.htm', null,
+                                { dialogData: { job_id: job_id, headers: models[currentMenuCode].headers }, title: '执行作业对话框', width: 450, height: 240, padding: 5,
+                                    buttons: [{
+                                        text: '关闭',
+                                        iconCls: 'icon-cancel',
+                                        handler: function () { top.$('#dlg-processing-job').dialog('close'); }
+                                    }]
+                                });
+                            });
+                        },
+                        columns: [[
+            { field: 'job_id', title: '作业编号', width: 150, hidden: true },
+            { field: 'name', title: '作业名称', width: 300, sortable: true },
+            { field: 'enabled', title: '状态', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '禁用:0~t启用:1' },
+            { field: 'last_run', title: '上次执行', width: 135, align: 'center', formatter: function (val, row, idx) {
+                if (row.last_run_date && row.last_run_time) {
+                    return Date.parseExact(row.last_run_date + "T" + (row.last_run_time.toString().length == 5 ? ("0" + row.last_run_time) : row.last_run_time), 'yyyyMMddTHHmmss').toString("yyyy-MM-dd HH:mm:ss");
+                }
+            }
+            },
+            { field: 'last_run_outcome', title: '上次执行结果', width: 135, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '失败:0~t成功:1~t已取消:3~t未知:5' },
+            { field: 'next_run', title: '下次执行', width: 135, align: 'center', formatter: function (val, row, idx) {
+                if (row.next_run_date && row.next_run_time && row.enabled == 1) {
+                    return Date.parseExact(row.next_run_date + "T" + (row.next_run_time.toString().length == 5 ? ("0" + row.next_run_time) : row.next_run_time), 'yyyyMMddTHHmmss').toString("yyyy-MM-dd HH:mm:ss");
+                }
+            }
+            },
+            { field: 'op', title: '操作', width: 150, align: 'center', formatter: function (val, row, idx) {
+                var htmls = [];
+                if (row.enabled == 0) {
+                    htmls.push('<a href="javascript:void(0)" class="op-buttion-enable" iconcls="icon-ok" plain="true" job_id="' + row.job_id + '" >启用</a>');
+                    htmls.push('<a href="javascript:void(0)" class="op-buttion-modify" iconcls="icon-edit" plain="true" job_id="' + row.job_id + '" >更改设置</a>');
+                }
+                else {
+                    htmls.push('<a href="javascript:void(0)" class="op-buttion-disable" iconcls="icon-no" plain="true" job_id="' + row.job_id + '" >禁用</a>');
+                    htmls.push('<a href="javascript:void(0)" class="op-buttion-mannual" iconcls="icon-sum" plain="true" job_id="' + row.job_id + '" >手工执行</a>');
+                }
+                return htmls.join("");
+            }
+            }
+        ]],
+                        loader: easyuiLoader
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+                }
+                else {
+                    setTimeout(function () { closeTab(currentMenuTitle) }, 2000);
+                }
+            });
+        }); //loadFiles
+    }); 
+    
+</script>

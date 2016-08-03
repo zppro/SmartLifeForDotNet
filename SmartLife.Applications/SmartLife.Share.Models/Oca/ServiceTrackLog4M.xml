@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ServiceTrackLog4M" type="SmartLife.Share.Models.Oca.ServiceTrackLog4M, SmartLife.Share.Models" /> 
+  </alias>
+  <statements>
+    <select id="TrackLogListByService" parameterClass="StringObjectDictionary" resultClass="ServiceTrackLog4M" >
+      select cast(CallServiceId as char(36))+'|'+cast(id as varchar) as LogId,CheckInTime,LogType,LogContent,
+      LogFileType,LogFile,CallServiceId
+      from Oca_ServiceTrackLog Where CallServiceId=#CallServiceId# and Status=1
+      Order By CheckInTime asc;
+    </select>
+  </statements>
+</sqlMap>

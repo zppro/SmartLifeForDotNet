@@ -1,0 +1,107 @@
+﻿<style type="text/css">
+.articleList{font-size:12px; padding: 5px;}
+#news{padding: -10px;}
+.article_Column_List{height:230px}
+#article_Column {background-color:#0089D1;font-size:30px;color:White} 
+#article a{font-size:25px;color:Black}
+#article lable{font-size:15px;color:#9FA1A0}
+
+#title 
+{
+    font-weight:bold;
+    text-align:center;
+    height:25px; 
+    line-height:25px;
+    font-size:20px;
+} 
+#date{font-size:12px;text-align:center;}
+#content{font-size:12px;}
+#footer{font-size:12px; font-weight:bold;text-align:right;}
+ 
+</style>
+<div id="news">
+</div>
+<script type="text/javascript">
+    $(function () {
+        articleColumn();
+    });
+
+    function articleColumn() {
+        var articleColumn;
+        var queryParams = {
+            'OrderByClause': 'OrderNo asc',
+            'Status': 1,
+            'AreaId': window.appDeployArea.id,
+            'PermitType': 1
+        };
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleColumnService/Query2', { parms: $.toJSON(queryParams) }, function (result) {
+            articleColumn = result.rows;
+
+            var html = [];
+            if (articleColumn) {
+                for (var i = 0; i < articleColumn.length; i++) {
+                    html.push('<div class="article_Column_List">');
+                    html.push('<div id="article_Column">' + articleColumn[i].COL_Name + '</div>');
+
+                    queryParams = {
+                        sort: 'PublishDate',
+                        order: 'desc',
+                        page: '1',
+                        rows: '5',
+                        instance: { 'Status': 1,
+                            'AreaId': window.appDeployArea.id
+                        },
+                        filterFields: [
+                            { key: 'ColumnId', value: articleColumn[i].ColumnId }
+                        ]
+                    };
+
+                    var article;
+                    postTo(baseCMSInvokeUrl + '/Pub/ArticleService/ListForEasyUIgrid2/' + baseInfoNode, $.toJSON(queryParams), function (result) {
+                        article = result.rows;
+                    }, { async: false });
+
+                    for (var j = 0; j < article.length; j++) {
+                        //html.push('<div class="articleList" id="article"><a href="#" onclick="newsDetails(\'' + article[j].ArticleId + '\')">' + article[j].Title + '</a><lable>发布时间：' + ndateFormatter(article[j].PublishDate, 'yyyy-MM-dd') + '<lable></div>');
+                        //                    html.push('<div class="articleList" id="article"><a href="#" onclick="openInfo(\'' + article[j].ArticleId + '\')">' + article[j].Title + '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<lable>发布时间：' + ndateFormatter(article[j].PublishDate, 'yyyy-MM-dd') + '<lable></div>');
+                        html.push('<div class="articleList" id="article">');
+                        html.push('<lable>　</lable>')
+                        html.push('<a href="#" onclick="openInfo(\'' + article[j].ArticleId + '\')">' + article[j].Title + '</a>');
+                        html.push('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+                        html.push('<lable>发布时间：' + ndateFormatter(article[j].PublishDate, 'yyyy-MM-dd') + '<lable>');
+                        html.push('</div>');
+                    }
+                    html.push('</div>');
+                }
+                $('#news').html(html.join(""));
+            } else {
+                $('#news').html("欢迎使用 政府监管平台 决策支持版");
+            }
+        }, null, { ConnectId: baseInfoNode });
+    }
+
+    function openInfo(articleId) {
+        var pageUrl = 'cms/news-info.htm';
+        window.external.OpenPopup(pageUrl, $.toJSON({ ArticleId: articleId }));
+    }
+
+    function newsDetails(articleId) {
+        var article;
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleService/' + articleId, null, function (result) {
+            article = result.instance;
+        }, { async: false }, { ConnectId: baseInfoNode });
+        var content, author, source, creatorId = "";
+        article.Content == null ? content = "" : content = article.Content;
+        article.Author == null ? author = "" : author = article.Author;
+        article.Source == null ? source = "" : source = article.Source;
+        article.CreatorId == null ? creatorId = "" : creatorId = article.CreatorId;
+        var html = [];
+        html.push('<br><div class="articleList" id="title">' + article.Title + '</div><br>');
+        html.push('<div class="articleList" id="date">' + ndateFormatter(article.PublishDate, 'yyyy-MM-dd HH:mm:ss') + '</div><br>');
+        html.push('<div class="articleList" id="content">' + content + '</div><br>');
+        html.push('<div class="articleList" id="footer">来源：' + source + '&nbsp;&nbsp;&nbsp;作者：' + author + '&nbsp;&nbsp;&nbsp;编辑：' + creatorId + '</div><br>');
+        html.push('<div class="articleList" style="text-align:center;"><a href="#" onclick="articleColumn()" style="font-size:15px;">返回栏目</a></div>');
+        html.join("");
+        $('#news').html(html);
+    }
+</script>

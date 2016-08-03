@@ -1,0 +1,69 @@
+﻿<style type="text/css">
+#day-care-content{ margin:10px 80px 10px 80px;min-height:430px;_height:430px;}
+.background{height:60px;width:1080px}
+.day-care-List{font-size:12px; padding: 5px;}
+
+#title 
+{
+    font-weight:bold;
+    text-align:center;
+    height:25px; 
+    line-height:25px;
+    font-size:30px;
+} 
+#date{font-size:12px;text-align:center;}
+#content{font-size:12px;}
+#footer{font-size:12px; font-weight:bold;text-align:center;}
+ 
+</style>
+<div id="day-care-info">
+</div>
+<script type="text/javascript">
+    $(function () {
+        var stationId = pageParams.StationId;
+        loadInfo(stationId);
+    });
+    function loadInfo(stationId) {
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (areas) {
+            getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, null, function (result) {
+                if (result) {
+                    var ret = result.instance;
+                    var html = [];
+                    html.push('<div class="background" style="background-image:url(\'cms/top.jpg\');"></div>');
+
+                    html.push('<div id="day-care-content">');
+                    html.push('<div class="day-care-List" id="title">' + isnull(ret.StationName, '') + '</div><br>');
+                    html.push('<div class="day-care-List" id="date">服务热线：' + isnull(ret.Hotline, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;&nbsp;");
+                    isnull(ret.AreaId2, '') ? html.push('街道社区：' + GetItemName(areas, isnull(ret.AreaId2, '　　'))) : html.push(isnull(ret.AreaId2, ''));
+                    isnull(ret.AreaId3, '') ? html.push('&nbsp;&nbsp;' + GetItemName(areas, isnull(ret.AreaId3, '　　'))) : html.push(isnull(ret.AreaId3, ''));
+                    html.push("&nbsp;&nbsp;&nbsp;&nbsp;");
+                    html.push('详细地址：' + isnull(ret.Address, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('</div><br>');
+                    html.push('<div class="day-care-List" style="line-height:20px;text-indent: 2em;min-height:150px;_height:150px;">' + isnull(ret.Intro, '') + '</div><br>');
+                    html.push('<div id="footer">');
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('传真：' + isnull(ret.Fax, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('邮箱：' + isnull(ret.Email, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('邮编：' + isnull(ret.PostCode, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('联系人：' + isnull(ret.LinkMan, '　　'));
+                    html.push("&nbsp;&nbsp;&nbsp;");
+                    html.push('联系人号码：' + isnull(ret.LinkManMobile, '　　'));
+                    html.push('</div>');
+                    html.push('</div>');
+
+                    html.push('<div class="background" style="background-image:url(\'cms/end.jpg\');"></div>');
+                    $('#day-care-info').html(html.join(""));
+                }
+            }, null, { ConnectId: baseInfoNode });
+        });
+    }
+
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.AreaId.toLowerCase() == value.toLowerCase();}).AreaName;
+    }
+</script>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Eva" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements> 
+    <select id="GetEvaluatedRequisition_List" parameterClass="StringObjectDictionary" resultClass="EvaluatedRequisition_V" >
+        select AreaId2Name,AreaId3Name,ResidentName,IDNo,AssessmentResult,AssessmentResultNodes,IncomeStatus,IncomeStatusNodes ,dbo.FUNC_Tol_GetDictionaryItemName('12002',ServeItemType) ServeItemTypeName,StationName
+        from (
+        select Id,Status,ResidentId,AreaId,AreaId2,AreaId2Name,AreaId3,AreaId3Name,ResidentName,IDNo,AssessmentResult,AssessmentResultNodes,IncomeStatus,IncomeStatusNodes ,StationId,StationName
+        ,(select top 1 Status from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) Rep_Status
+        ,(select top 1 CheckInTime from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) Rep_CheckInTime
+        ,(select top 1 ServeItemType from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) ServeItemType
+        from Eva_EvaluatedRequisition_V  qu
+        ) eva right join (select ResidentId as Eva_ResidentId ,MAX(Id) as Eva_Id  from Eva_EvaluatedRequisition  group by ResidentId)eva_t
+        on  eva.Id=eva_t.Eva_Id and eva.ResidentId=eva_t.Eva_ResidentId
+        where Rep_Status=1 and Status=1
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTimeFrom" >Rep_CheckInTime>=#CheckInTimeFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTimeTo" >Rep_CheckInTime&lt;=#CheckInTimeTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable> 
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="GetEvaluatedRequisition_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+    select AreaId2Name,AreaId3Name,ResidentName,IDNo,AssessmentResult,AssessmentResultNodes,IncomeStatusNodes ,dbo.FUNC_Tol_GetDictionaryItemName('12002',ServeItemType) ServeItemTypeName,StationName,ServiceSubsidies
+    from (
+    select Id,Status,ResidentId,AreaId,AreaId2,AreaId2Name,AreaId3,AreaId3Name,ResidentName,IDNo,AssessmentResult,AssessmentResultNodes,IncomeStatusNodes ,StationId,StationName
+    ,(select top 1 Status from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) Rep_Status
+    ,(select top 1 CheckInTime from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) Rep_CheckInTime
+    ,(select top 1 ServeItemType from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) ServeItemType
+    ,(select top 1 ServiceSubsidies from Eva_EvaluatedReport where RequisitionId=qu.RequisitionId order by Id desc) ServiceSubsidies
+    from Eva_EvaluatedRequisition_V  qu
+    ) eva right join (select ResidentId as Eva_ResidentId ,MAX(Id) as Eva_Id  from Eva_EvaluatedRequisition  group by ResidentId)eva_t
+    on  eva.Id=eva_t.Eva_Id and eva.ResidentId=eva_t.Eva_ResidentId
+    where Rep_Status=1 and Status=1
+    <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="CheckInTimeFrom" >Rep_CheckInTime>=#CheckInTimeFrom#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="CheckInTimeTo" >Rep_CheckInTime&lt;=#CheckInTimeTo#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="ServeItemType" >ServeItemType=#ServeItemType#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="ServiceSubsidies" >ServiceSubsidies>#ServiceSubsidies#</isPropertyAvailable>
+    <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+    </dynamic>
+    </select>
+  </statements>
+</sqlMap>

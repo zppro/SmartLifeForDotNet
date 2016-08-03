@@ -1,0 +1,34 @@
+﻿<div class="ftitle">
+</div>
+<form id="fm-set-merchant-serve-period" method="post">
+<input type="hidden" name="StationId" id="stationid-set-merchant-serve-period" />
+<div class="fitem">
+    <label>
+        　　服务商家:</label>
+    <label id="StationName"></label>
+</div>
+<div class="fitem">
+    <label>
+        服务截止日期:</label>
+    <input name="EndDate" type="text" class="Wdate easyui-validatebox" data-options="required:true"  missingMessage="服务截止日期不能为空" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" />
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        $('#stationid-set-merchant-serve-period').val(dialogData.StationId);
+        $('#StationName').text(dialogData.StationName); 
+    }
+
+    function dialogBeforeSubmit() {
+        var result = false;
+        if ($('#fm-set-merchant-serve-period').form('validate')) {
+            result = true;
+        } 
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var formData = $('#fm-set-merchant-serve-period').serializeObject(); 
+        return formData;
+    }
+     
+</script>

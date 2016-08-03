@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements> 
+    <select id="Count_ServeRecordByServeMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as PlaceHolder from (
+      select ServeManArriveTime as ServeDate,ServeManArriveTime as ArriveTime,ServeManLeaveTime as LeaveTime,OldManName,dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,ServeStationName from
+      Oca_ServiceWorkOrder a
+      where a.ServeManId in( select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      and DoStatus>1 and ServeManArriveTime is not null and ServeManLeaveTime is not null
+      <isPropertyAvailable prepend=" And " property="ServeDate" >DATEDIFF(d,ServeManArriveTime,#ServeDate#)=0</isPropertyAvailable>
+      )x
+    </select>
+    <select id="ServeRecordByServeMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN, ServeManArriveTime as ServeDate,ServeManArriveTime as ArriveTime,ServeManLeaveTime as LeaveTime,OldManName,dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,ServeStationName from
+      Oca_ServiceWorkOrder a
+      where a.ServeManId in( select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      and DoStatus>1 and ServeManArriveTime is not null and ServeManLeaveTime is not null
+      <isPropertyAvailable prepend=" And " property="ServeDate" >DATEDIFF(d,ServeManArriveTime,#ServeDate#)=0</isPropertyAvailable>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="ServeDurationByServeMan_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select ServeStationName,ServeItemBName,isnull(ByDay,0) as ByDay,isnull(ByWeek,0) as ByWeek,isnull(ByMonth,0) as ByMonth from (
+      select dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,ServeStationName,
+      'ByDay' as Period,
+      Sum(DateDiff(ss,a.ServeManArriveTime,a.ServeManLeaveTime)) as TotalSeconds
+      from Oca_ServiceWorkOrder a
+      where a.ServeManId in(select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      and DoStatus>1 and ServeManArriveTime is not null and ServeManLeaveTime is not null
+      and DATEDIFF(dd,ServeManArriveTime,GETDATE()) = 3
+      Group By a.ServeStationName,a.ServeItemB
+      union
+      select dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,ServeStationName,
+      'ByWeek' as Period,
+      Sum(DateDiff(ss,a.ServeManArriveTime,a.ServeManLeaveTime)) as TotalSeconds
+      from Oca_ServiceWorkOrder a
+      where a.ServeManId in(select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      and DoStatus>1 and ServeManArriveTime is not null and ServeManLeaveTime is not null
+      and DATEDIFF(ww,ServeManArriveTime,GETDATE()) = 0
+      Group By a.ServeStationName,a.ServeItemB
+      union
+      select dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,ServeStationName,
+      'ByMonth' as Period,
+      Sum(DateDiff(ss,a.ServeManArriveTime,a.ServeManLeaveTime)) as TotalSeconds
+      from Oca_ServiceWorkOrder a
+      where a.ServeManId in(select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      and DoStatus>1 and ServeManArriveTime is not null and ServeManLeaveTime is not null
+      and DATEDIFF(MM,ServeManArriveTime,GETDATE()) = 1
+      Group By a.ServeStationName,a.ServeItemB
+      ) a pivot( max(TotalSeconds) for Period in(ByDay,ByWeek,ByMonth) ) b
+    </select>
+  </statements>
+</sqlMap>

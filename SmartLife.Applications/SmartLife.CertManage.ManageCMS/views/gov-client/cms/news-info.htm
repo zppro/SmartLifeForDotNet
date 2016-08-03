@@ -1,0 +1,42 @@
+﻿<style type="text/css">
+#news-content{ margin:10px 60px 10px 60px;min-height:430px;_height:430px;}
+.background{height:60px;width:1080px}
+.articleList{font-size:12px; padding: 5px;}
+#title 
+{
+    font-weight:bold;
+    text-align:center;
+    height:25px; 
+    line-height:25px;
+    font-size:20px;
+} 
+#date{font-size:12px;text-align:center;}
+#content{font-size:12px;line-height:20px;text-indent: 2em;}
+ 
+</style>
+<div id="news-info" >
+</div>
+<script type="text/javascript">
+    $(function () {
+        var articleId = pageParams.ArticleId;
+        loadInfo(articleId);
+    });
+    function loadInfo(articleId) {
+        getTo(baseCMSInvokeUrl + '/Pub/ArticleService/' + articleId, null, function (ret) {
+            var html = [];
+            html.push('<div class="background" style="background-image:url(\'cms/top.jpg\');"></div>');
+
+            html.push('<div id="news-content">')
+            html.push('<div class="articleList" id="title">' + isnull(ret.instance.Title, '') + '</div><br>');
+            html.push('<div class="articleList" id="date">来源：' + isnull(ret.instance.Source));
+            html.push('&nbsp;&nbsp;&nbsp;作者：' + isnull(ret.instance.Author));
+            html.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+            html.push(ndateFormatter(ret.instance.PublishDate, 'yyyy-MM-dd HH:mm:ss') + '</div><br>');
+            html.push('<div class="articleList" id="content">' + isnull(ret.instance.Content) + '</div><br>');
+            html.push('</div>');
+
+            html.push('<div class="background" style="background-image:url(\'cms/end.jpg\');"></div>');
+            $('#news-info').html(html.join(""));
+        }, null, { ConnectId: baseInfoNode });
+    }
+</script>

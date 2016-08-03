@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Tree" type="SmartLife.Share.Models.Sys.Tree, SmartLife.Share.Models" />
+    <typeAlias alias="TreePK" type="SmartLife.Share.Models.Sys.TreePK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Tree_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Tree(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TreeId" >TreeId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeType" >TreeType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LoadMode" >LoadMode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeCode" >TreeCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeName" >TreeName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeParamFormat" >TreeParamFormat</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeGenerateMode" >RootNodeGenerateMode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeContent" >RootNodeContent</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeFormat" >RootNodeFormat</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeIconCls" >RootNodeIconCls</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TreeId" >#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeType" >#TreeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LoadMode" >#LoadMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeCode" >#TreeCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeName" >#TreeName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeParamFormat" >#TreeParamFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeGenerateMode" >#RootNodeGenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeContent" >#RootNodeContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeFormat" >#RootNodeFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeIconCls" >#RootNodeIconCls#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Tree_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Tree
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeType" >TreeType=#TreeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LoadMode" >LoadMode=#LoadMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeCode" >TreeCode=#TreeCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeName" >TreeName=#TreeName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TreeParamFormat" >TreeParamFormat=#TreeParamFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeGenerateMode" >RootNodeGenerateMode=#RootNodeGenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeContent" >RootNodeContent=#RootNodeContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeFormat" >RootNodeFormat=#RootNodeFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RootNodeIconCls" >RootNodeIconCls=#RootNodeIconCls#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+      </dynamic>
+      where TreeId=#TreeId#
+    </update>
+    <delete id="Tree_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Tree
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TreeId" >TreeId=#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeType" >TreeType=#TreeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LoadMode" >LoadMode=#LoadMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeCode" >TreeCode=#TreeCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeName" >TreeName=#TreeName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeParamFormat" >TreeParamFormat=#TreeParamFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeGenerateMode" >RootNodeGenerateMode=#RootNodeGenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeContent" >RootNodeContent=#RootNodeContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeFormat" >RootNodeFormat=#RootNodeFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeIconCls" >RootNodeIconCls=#RootNodeIconCls#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Tree_Load" parameterClass="TreePK" resultClass="Tree" >
+      select TreeId,Id,Status,CodeClass,TreeType,LoadMode,TreeCode,TreeName,TreeParamFormat,RootNodeGenerateMode,RootNodeContent,RootNodeFormat,RootNodeIconCls,Description from Sys_Tree
+      where TreeId=#TreeId#
+    </select>
+    <select id="Tree_List" parameterClass="StringObjectDictionary" resultClass="Tree" >
+      select TreeId,Id,Status,CodeClass,TreeType,LoadMode,TreeCode,TreeName,TreeParamFormat,RootNodeGenerateMode,RootNodeContent,RootNodeFormat,RootNodeIconCls,Description from Sys_Tree
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TreeId" >TreeId=#TreeId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeType" >TreeType=#TreeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LoadMode" >LoadMode=#LoadMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeCode" >TreeCode=#TreeCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeName" >TreeName=#TreeName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TreeParamFormat" >TreeParamFormat=#TreeParamFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeGenerateMode" >RootNodeGenerateMode=#RootNodeGenerateMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeContent" >RootNodeContent=#RootNodeContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeFormat" >RootNodeFormat=#RootNodeFormat#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RootNodeIconCls" >RootNodeIconCls=#RootNodeIconCls#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,94 @@
+﻿<style type="text/css">
+<!-- 
+#serviceStation{font-size:12px; padding: 5px;}
+#title {background-color:#0089D1;color:White;font-size:35px;text-align:center;} 
+#stationList{}
+table,th,td{border-collapse:collapse;border:solid 1px #0089D1;width:100%;}
+table th{height:25px;text-align:center;font-weight:bold;font-size:26px;height:50px;}
+table td{height:25px;text-align:center;height:40px;font-size:20px;}
+table td a{font-size:20px;}
+.subTitle{font-size:20px;}
+.one{width:65%; text-align:left;text-indent: 1em;}
+.two{width:210px}
+.three{width:150px}
+--> 
+</style>
+
+<div id="serviceStation" style="border-collapse:collapse;">
+<div id="day-care-tree" style="float:left;width:200px; height:99%;">
+<ul id="tree"></ul>
+</div>
+<div id="day-care-list" style="float:left;height:99%;"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        creatTree();
+        serviceStation();
+    });
+    function serviceStation(areaId2) {
+        var serviceStation;
+        var queryParams;
+        if (areaId2) {
+            queryParams = {
+                'OrderByClause': 'OperatedOn desc',
+                'Status': 1,
+                'AreaId': window.appDeployArea.id,
+                'StationType': "00002",
+                'StationType2': "00002",
+                'AreaId2': areaId2
+            };
+        } else {
+            queryParams = {
+                'OrderByClause': 'OperatedOn desc',
+                'Status': 1,
+                'AreaId': window.appDeployArea.id,
+                'StationType': "00002",
+                'StationType2': "00002"
+            };
+        }
+        getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/Query', { parms: $.toJSON(queryParams) }, function (result) {
+            serviceStation = result.rows;
+            var htmls = [];
+
+            if (serviceStation) {
+                htmls.push('<div id="title">日照中心</div>');
+                htmls.push('<div id="stationList">');
+                htmls.push('<table align="center" >');
+                htmls.push('<tr class="subTitle"><th class="one" style="text-align:center;">机构名称</th><th class="two">服务热线</th><th class="three">联系人</th></tr>');
+                for (var i = 0; i < serviceStation.length; i++) {
+                    var hotline = serviceStation[i].Hotline == null ? "" : serviceStation[i].Hotline;
+                    var linkMan = serviceStation[i].LinkMan == null ? "" : serviceStation[i].LinkMan;
+                    htmls.push('<tr><td class="one"><a href="#" onclick="openInfo(\'' + serviceStation[i].StationId + '\')">' + serviceStation[i].StationName + '</a></td><td class="two">' + hotline + '</td><td class="three">' + linkMan + '</td></tr>');
+                }
+                htmls.push('</table>');
+                htmls.push('</div>');
+                $('#day-care-list').html(htmls.join(""));
+            } else {
+                $('#day-care-list').html("欢迎使用 政府监管平台 决策支持版");
+            }
+        }, null, { ConnectId: baseInfoNode });
+    }
+    function creatTree() {
+        initTree('easyUITree', 'tree', {
+            onClick: function (treeNode) {
+                if (treeNode.id.length == 5) {
+                    serviceStation();
+                } else {
+                    serviceStation(treeNode.id);
+                }
+            }
+        },
+        function (d) {
+            getTreeData('01$01$08', null, '{"DictionaryId":"00005","ItemId":"' + window.appDeployArea.id + '"}', d);
+        },
+        null,
+        function (treeObj) {
+
+        });
+    }
+    function openInfo(stationId) {
+        var pageUrl = 'service-station/day-care-info.htm';
+        window.external.OpenPopup(pageUrl, $.toJSON({ StationId: stationId }));
+    }
+</script>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="ApplicationAccessibility" type="SmartLife.Share.Models.Sys.ApplicationAccessibility, SmartLife.Share.Models" />
+    <typeAlias alias="ApplicationAccessibilityPK" type="SmartLife.Share.Models.Sys.ApplicationAccessibilityPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="ApplicationAccessibility_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_ApplicationAccessibility(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="InterfaceApplicationId" >InterfaceApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccessApplicationId" >AccessApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="InterfaceApplicationId" >#InterfaceApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccessApplicationId" >#AccessApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="ApplicationAccessibility_Update" parameterClass="StringObjectDictionary" >
+      update Sys_ApplicationAccessibility
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+      </dynamic>
+      where InterfaceApplicationId=#InterfaceApplicationId# and AccessApplicationId=#AccessApplicationId#
+    </update>
+    <delete id="ApplicationAccessibility_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_ApplicationAccessibility
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="InterfaceApplicationId" >InterfaceApplicationId=#InterfaceApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccessApplicationId" >AccessApplicationId=#AccessApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="ApplicationAccessibility_Load" parameterClass="ApplicationAccessibilityPK" resultClass="ApplicationAccessibility" >
+      select InterfaceApplicationId,AccessApplicationId,Id from Sys_ApplicationAccessibility
+      where InterfaceApplicationId=#InterfaceApplicationId# and AccessApplicationId=#AccessApplicationId#
+    </select>
+    <select id="ApplicationAccessibility_List" parameterClass="StringObjectDictionary" resultClass="ApplicationAccessibility" >
+      select InterfaceApplicationId,AccessApplicationId,Id from Sys_ApplicationAccessibility
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="InterfaceApplicationId" >InterfaceApplicationId=#InterfaceApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccessApplicationId" >AccessApplicationId=#AccessApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

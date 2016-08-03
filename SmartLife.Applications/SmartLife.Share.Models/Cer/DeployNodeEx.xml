@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Cer" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="DeployAccessPoint_CTE_ListAncestor" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      with CTE_Deploy_AccessPoint as (
+      select  cast(a.AccessPoint as varchar) as AccessPoint,b.OrderNo, b.Levels, b.ParentId,b.ItemId,cast(b.ItemName+(case when RunMode = 0 then '' else '(调试节点)' end) as varchar) as ItemName from
+      (select AccessPoint,objectId ,RunMode from Cer_DeployNode
+      where ApplicationIdFrom='BG001' and ApplicationIdTo='IG001' ) a left join
+      (select * from Sys_DictionaryItem where Status=1 and DictionaryId = '00005' ) b on a.ObjectId = b.ItemCode
+      union all
+      select cast('' as varchar) as AccessPoint,a.OrderNo,a.Levels, a.ParentId,a.ItemId,cast (a.ItemName  as varchar)
+      from Sys_DictionaryItem a inner join CTE_Deploy_AccessPoint b on a.ItemId = b.ParentId
+      where a.Status=1 and a.DictionaryId = '00005'
+      )select distinct m.* from CTE_Deploy_AccessPoint m
+      union
+      select AccessPoint,0 as OrderNo,3 as Levels,null as ParentId,'*' as ItemId,case when RunMode = 1 then '认证管理平台(调试节点)' else '认证管理平台' end as ItemName from Cer_DeployNode
+      where ApplicationIdFrom='BP001' and ApplicationIdTo='IP002'
+      order by Levels,OrderNo
+    </select>
+  </statements>
+</sqlMap>

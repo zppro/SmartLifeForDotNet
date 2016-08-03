@@ -1,0 +1,50 @@
+﻿#scroll-block{ background:#000;}
+#head-c1{font-size:50px; color:#fff; text-align:center; background:#000;}
+#head-c1 #CurrentArea{font-size:50px;}
+#head-c1 #CurrentAreaName{font-size:50px;}
+#stat-time{font-size:30px; position:absolute; right:5px; bottom:5px; }
+#head-c2{color:#fff; background:#000; position:relative;}
+#head-c3{color:#fff; background:#000;}
+#areaComboTree{position:absolute; left:40px; color:#ffffff; }
+#stat-all a{font-size:20px; color:Red; margin: 0 5px;}
+#all-c,#vouch-c{padding: 0px; background:#000;} 
+.row-color-red{ color:Red;}
+.row-color-orange{ color:Orange;}
+.row-color-blue{ color:Blue;}
+.row-color-yellow{ color:Yellow;}
+.row-color-green{ color:Green;}
+.scroll-head{width:96%;margin:0 auto;}
+.scroll-head span{ font-size:30px; font-weight:bold;color:#fff;}
+#all-c .field-servicecatalog{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-servicecontent{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-oldmanname{width:10%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-areaname2{width:20%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-areaname3{width:20%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-checkintime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-seatno{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#all-c .field-statusdescription{width:10%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis} 
+
+#vouch-c .field-servicecontent{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-serviceentity{width:15%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-oldmanname{width:10%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-areaname2{width:20%; text-align:center; float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-begintime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-endtime{width:15%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#vouch-c .field-statusdescription{width:10%; text-align:center;float:left;display:block; word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis} 
+
+ul,li{list-style:none; margin:0; padding:0;}
+.scroll{ width:96%;overflow:hidden; margin:0 auto;}
+.scroll li{ width:100%; height:50px; line-height:50px; overflow:hidden;}
+.scroll li a{ font-size:25px;color:#333; text-decoration:none;}
+.scroll li a:hover{text-decoration:none;}
+.scroll li a span{font-size:25px;}
+
+/*** big-screen-stat-table.htm ***/
+#all-count-c,#vouch-duration-c{padding: 5px; background:#000;} 
+#all-count-c table{width:100%; border-collapse:collapse; border:solid 1px yellow;color:red; text-align:center;}
+#all-count-c td{padding:5px;border:solid 1px yellow; text-align:center;font-size:18px;}
+#all-count-c td.head-c1,#vouch-duration-c td.head-c1{font-size:32px;} 
+#all-count-c td.stat-time2,#vouch-duration-c td.stat-time2{font-size:18px; text-align:right;}
+
+#vouch-duration-c table{width:100%; border-collapse:collapse; border:solid 1px yellow;color:green; text-align:center;}
+#vouch-duration-c td{padding:5px;border:solid 1px yellow; text-align:center;font-size:18px;}

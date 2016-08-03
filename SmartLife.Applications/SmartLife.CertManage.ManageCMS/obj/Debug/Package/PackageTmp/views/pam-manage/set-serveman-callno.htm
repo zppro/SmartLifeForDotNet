@@ -1,0 +1,28 @@
+﻿<div id="set-serveman-callno-info" >
+     <input name="UserId" id="UserId" type="hidden"/> 
+     <div class="fitem">
+     <label>服&nbsp;&nbsp;&nbsp;&nbsp;务&nbsp;&nbsp;&nbsp;员：</label> 
+     <label id="UserName" style=" font-weight:bolder;"></label>
+     </div>
+     <div class="fitem">
+     <label>呼叫器号码：</label> 
+     <input name="CallNo" id="CallNo"/>
+     </div>  
+</div>
+
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        $('#UserId').val(dialogData.UserId);
+        $('#CallNo').val(dialogData.CallNo);
+        $('#UserName').text(dialogData.UserName );
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        return { 'UserId': $('#UserId').val(), 'CallNo': $('#CallNo').val() };
+    }
+</script>

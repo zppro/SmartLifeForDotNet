@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Oca_GenReserveWorkOrderParam" class="StringObjectDictionary">
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaId3" column="AreaId3" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="GovTurnkeyFlag" column="GovTurnkeyFlag" direction="Input" type="byte" dbType="tinyint" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Oca_GenReserveWorkOrder" parameterMap="SP_Oca_GenReserveWorkOrderParam" resultClass="StringObjectDictionary">
+      SP_Oca_GenReserveWorkOrder
+    </procedure>
+    <insert id="MerchantServiceReserve_CreateReturnId" parameterClass="StringObjectDictionary" >
+      insert into Oca_MerchantServiceReserve(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveDate" >ReserveDate</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveFrom" >ReserveFrom</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveTo" >ReserveTo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManId" >ServeManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManName" >ServeManName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemB" >ServeItemB</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeDuration" >ServeDuration</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ChangeFlag" >ChangeFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveDate" >#ReserveDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveFrom" >#ReserveFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ReserveTo" >#ReserveTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManId" >#ServeManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeManName" >#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeItemB" >#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServeDuration" >#ServeDuration#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ChangeFlag" >#ChangeFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+      <selectKey resultClass="int" type="post" property="Id" >
+        SELECT @@IDENTITY AS Id
+      </selectKey>
+    </insert>
+    <select id="ScheduleListByMerchant" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.OldManId,OldManName,$PivotColumnsForSelect$  from Oca_OldManBaseInfo_V x left join (
+      select OldManId,$PivotColumns$
+      from(select r.oldManId,r.ReserveDate,dbo.JoinStr(cast(r.Id as varchar(8))+'|'+r.ReserveFrom+'|'+r.ReserveTo+'|'
+      +cast(r.ServeManId as char(36))+'|'+r.ServeManName+ '|' + r.ServeItemB+'|'
+      + dbo.FUNC_Tol_GetDictionaryItemName('11013',r.ServeItemB) +'|' + r.ServeDuration +'|' + r.Description + '|'
+      + CAST(isnull(r.WorkOrderId,'00000000-0000-0000-0000-000000000000') as CHAR(36))+ '|'
+      +convert(varchar,isnull(w.ServeManArriveTime,''),108) +'|'
+      +convert(varchar,isnull(w.ServeManLeaveTime,''),108)
+      ) as ServeInfo
+      from Oca_MerchantServiceReserve r left join Oca_ServiceWorkOrder w on r.WorkOrderId=w.WorkOrderId
+      where  r.StationId=#StationId# group By  r.oldManId, r.ReserveDate) a
+      pivot(max(ServeInfo) for ReserveDate in($PivotColumns$))b
+      ) y on x.OldManId =y.OldManId  inner join Oca_MerchantServeManMappingOldMan a  on a.OldManId=x.OldManId
+      where Status =1 and AreaId3 = '$AreaId$'and ServeManId=#ServeManId#
+      <isPropertyAvailable prepend=" And " property="GovTurnkeyFlag" >GovTurnkeyFlag=#GovTurnkeyFlag#</isPropertyAvailable> 
+      <isPropertyAvailable prepend=" And " property="OldManName" >$OldManName$</isPropertyAvailable>  order by OldManName asc
+    </select>
+    <select id="Count_ScheduleByServeMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as PlaceHolder from (
+      select ReserveDate,ReserveFrom,ReserveTo,OldManId,(select OldManName from Oca_OldManBaseInfo  where OldManId=a.OldManId) as OldManName,dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName from Oca_MerchantServiceReserve a
+      where ServeManId in( select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      <isPropertyAvailable prepend=" And " property="ReserveDate" >DATEDIFF(d,ReserveDate,#ReserveDate#)=0</isPropertyAvailable>
+      )x
+    </select>
+    <select id="ScheduleByServeMan_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN, ReserveDate,ReserveFrom,ReserveTo,OldManId,(select OldManName from Oca_OldManBaseInfo  where OldManId=a.OldManId) as OldManName,dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName from Oca_MerchantServiceReserve a
+      where ServeManId in( select dbo.FUNC_Oca_GetUserIdByOpenId(OpenId,StationId) from Pub_WXStationAuthRequest where DoStatus=1 and OpenId = #OpenId#)
+      <isPropertyAvailable prepend=" And " property="ReserveDate" >DATEDIFF(d,ReserveDate,#ReserveDate#)=0</isPropertyAvailable>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

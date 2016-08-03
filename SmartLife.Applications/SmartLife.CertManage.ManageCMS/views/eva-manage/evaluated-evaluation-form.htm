@@ -1,0 +1,480 @@
+﻿<div id="cc-B140102">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            所属街道社区
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B140102"></ul>
+            <input type="hidden"  id="_AreaId2" />
+            <input type="hidden"  id="_AreaId3" />
+        </div>
+    </div>
+    <div id="toolbar-B140102">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="addneeds()">生成需求评估</a>
+        <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-upload" plain="true" onclick="upload()">上传凭证</a>-->
+    </div>
+    <div id="search-sample-B140102" title="查询" style="overflow:auto;padding:3px;">
+        <form id="fm-search-rough-B140102" method="post" >
+            <table width="100%">
+                <tr>
+                    <td style=" text-align:right">关键字：</td>
+                    <td style=" text-align:left"><input name="KeyWord" class="easyui-validatebox"  placeholder="申请人姓名、身份证号码"/></td> 
+                    <td style=" text-align:right">审核状态：</td>
+                    <td style=" text-align:left"><input id="CC-FlowTo"  name="FlowTo_Start"class="combobox" /></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  onclick="exec(true)">查询</a></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">清空</a></td>
+                    <td style=" width:90px;"><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"  onclick="query()">高级查询</a></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <table id="dg-B140102">
+    </table>
+</div>
+
+<div id="dlg-search-B140102" class="easyui-dialog" style="width: 520px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B140102"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B140102" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            居民姓名：</label>
+        <input name="ResidentName"  >
+        <label>
+            身份证号：</label>
+        <input name="IDNo" >
+    </div>
+    <div class="fitem">
+        <label>
+            申请时间:</label>
+        <input name="CheckInTime_Start" class="Wdate"  onFocus="WdatePicker()">
+    </div>
+    </form>
+</div>
+<div id="btn-search-B140102">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm()">清空</a>
+</div>
+
+<div id="dlg-upload-B140102" class="easyui-dialog" style="width: 720px; height: 400px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-upload-B140102"  >
+    <div class="ftitle"></div>
+    <form id="fm-upload-B140102" method="post" novalidate> 
+    <input type="hidden" name="infoType" id="infoType" /> 
+    <div class="fitem">
+        <input type="file" name="file_upload" id="file_upload" /> 
+        <!-- <a href="javascript:$('#file_upload').uploadify('upload','*')" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+        >上传</a>|
+        <a href="javascript:$('#file_upload').uploadify('cancel','*')" class="easyui-linkbutton" iconcls="icon-cancel" plain="true"
+        >取消上传</a>-->
+    </div>
+    </form>
+    <div style="padding:10px; height:70%; border:1px solid red;overflow:auto;">
+        <ul id="img-Content-B140102">
+        </ul>
+    </div>
+</div>
+<div id="btn-upload-B140102">
+     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="closeUpload2(true)">关闭</a>
+</div>
+<script type="text/javascript">
+    var flowName; //流转名称
+    var flowSetp; //流转名称中取出需要几步审核
+    placeholder(); //占位符初始化
+
+    $(function () {
+        validateUI();
+        var areas;
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            treeId: 'tree-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dialogUploadId: 'dlg-upload-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'residentId-' + currentMenuCode,
+            pk: 'ResidentId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['ResidentName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '评估对象',
+            headers: { ConnectId: baseInfoNode },
+            baseModelUrl: baseCMSInvokeUrl + '/Eva/EvaluatedRequisitionService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+        autosize("cc-" + currentMenuCode, -3);
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+            autosize(models[currentMenuCode].gridId, -35);
+
+            initTree('easyUITree', models[currentMenuCode].treeId, {
+                onClick: function (treeNode) {
+                    //查询参数
+                    var FilterFields = [];
+                    //获取节点
+                    var treeNodeId = treeNode.id; //当前节点
+                    if (treeNodeId.length > 6) {
+                        var tmpAreaId = treeNodeId.substring(14, 18);
+                        if (tmpAreaId == '0000') {//街道
+                            FilterFields.push({ key: "AreaId2", value: treeNodeId });
+                        }
+                        else {//社区
+                            FilterFields.push({ key: "AreaId2", value: treeNode.attributes.PId });
+                            FilterFields.push({ key: "AreaId3", value: treeNodeId });
+                        }
+                    }
+
+                    var QueryParams = $('#' + models[currentMenuCode].gridId).datagrid('options').queryParams;
+                    QueryParams = _.extend(QueryParams, { filterFields: FilterFields });
+                    $('#' + models[currentMenuCode].gridId).datagrid('load', QueryParams);
+                },
+                onLoadSuccess: function () {
+                    //左边的树，默认展开一级
+                    var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                    $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                    $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+                }
+            },
+            function (d) {
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'EvaluatedRequisitionInfo/' + models[currentMenuCode].headers.ConnectId,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        instance: {
+                            Status: models[currentMenuCode].defaultModel.Status,
+                            AreaId: models[currentMenuCode].defaultModel.AreaId
+                        }
+                    },
+                    onLoadSuccess: function (data) {
+                        $('.iconPG').linkbutton({ plain: true, iconCls: 'icon-tip' }).unbind('click').bind('click', function () {
+                            var thisReportData = $(this).attr('rowReportData');
+                            var rowReportData = eval('(' + thisReportData + ')'); 
+                            if (rowReportData) {
+                                getFlowStep(rowReportData.AreaId2, rowReportData.AreaId3); 
+                                estimate(rowReportData, flowSetp);
+                            }
+                        });
+                        $('.iconGZS').linkbutton({ plain: true, iconCls: 'icon-print' }).unbind('click').bind('click', function () {
+
+                            var currentData = $(this).attr("rowData");
+                            if (currentData) {
+                                var rowData = eval('(' + currentData + ')');
+                                showGZS(rowData);
+                            }
+                            //var reportId = $(this).attr('ReportId');
+                            //var requisitionId = $(this).attr('RequisitionId');
+                            //showGZS(reportId, requisitionId);
+                        });
+                    },
+                    onDblClickRow: function (idx, row) {
+                        //                        addneeds(row);
+                    },
+                    //pageSize: 17,
+                    //pageList: [17],
+                    columns: [[
+                { field: 'ResidentId', title: '居民编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'ResidentName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'AreaId2', title: '街道', align: 'center', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId", caseSensitive: false },
+                { field: 'AreaId3', title: '社区', align: 'center', width: 180, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId", caseSensitive: false },
+                { field: 'PG', title: '评估记录', width: 500, align: 'left', formatter: easyuigrid_linkFormatter, fn: setReportAndGZS }
+        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            }); //end loadTree
+        });
+
+        $('#CC-FlowTo').combobox({
+            width: 140,
+            panelHeight: 63,
+            data: [{ ItemId: '0', ItemName: '全部' },
+                   { ItemId: '1', ItemName: '未完成' },
+                   { ItemId: '2', ItemName: '已完成'}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 0
+        });
+    });
+
+    function setReportAndGZS(row) {
+        var htm = '';
+        if (row) {
+            var queryParams = { RequisitionId: row.RequisitionId, WhereClause: ' Status <>0', OrderByClause: 'CheckInTime desc' };
+            var flowTo = $("#CC-FlowTo").combobox('getValue'); 
+            if (flowTo == 1) { _.extend(queryParams, { Status: 2 }); }
+            if (flowTo == 2) { _.extend(queryParams, { Status: 1 }); }
+            getTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/QueryReportList?parms=' + $.toJSON(queryParams), null, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                htm = _.map(rows, function (o) {
+                    o.IncomeStatus = row.IncomeStatus;
+                    o.IncomeStatusName = row.IncomeStatusName;  //低保字段
+                    o.IncomeStatusNodes = row.IncomeStatusNodes;
+                    o.StationId = row.StationId;
+                    o.ResidentId = row.ResidentId;
+
+                    return '<a  class="iconPG" rowReportData=\'' + $.toJSON(o) + '\' title="' + o.ReportCode + '" >' + right(o.ReportCode, 10) + '<' + o.ActionName + '>' + '</a>' + (o.Status == 1 ? '|<a class="iconGZS"  rowData =\'' + $.toJSON(o) + '\' >告知书</a>' : '');
+                }).join(";");
+            }, { async: false }, { ConnectId: baseInfoNode });
+        }
+        return htm;
+    }
+     
+    function addneeds() {
+        var row;
+        if (!row) {
+            row = $('#dg-B140102').datagrid('getSelected');
+        }
+        if (row) {
+            if (row.AreaId3 && row.AreaId3 != '') {
+                var mappingId = row.AreaId3;
+                getFlowStep(row.AreaId2, row.AreaId3);
+                row.ConnectId = baseInfoNode;
+                openDialog('set-needs-assessment', 'views/dialogs/set-needs-assessment.htm', function (callback, dialogData) {
+                    var doStatus = 0;       //??
+                    dialogData.DoStatus = doStatus;     //??
+
+                    postTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/BuildEvaluatedReport', $.toJSON(dialogData), function (ret) {
+                        if (ret.Success) {
+                            if (ret.ErrorCode == 0) {
+                                execFlowAction2(ret.instance.ReportId, mappingId, 10, 0, '新建评估单');
+
+                                //加入收入情况
+                                ret.instance.IncomeStatus = row.IncomeStatus;
+                                ret.instance.IncomeStatusName = row.IncomeStatusName;
+                                ret.instance.IncomeStatusNodes = row.IncomeStatusNodes;
+                                ret.instance.ResidentId = row.ResidentId;
+                                estimate(ret.instance, flowSetp);
+                            }
+                            $('#dg-B140102').datagrid('reload');
+                        }
+                    }, null, { ConnectId: baseInfoNode });
+
+                    callback();
+                }, { dialogData: row, title: '设置参数', width: 880, height: 680, padding: 5, mergeDefault: true });
+            }
+            else {
+                alert('评估对象所处的社区不明确');
+            }
+        }
+        else {
+            alert('请选择评估对象');
+        } 
+    }
+
+
+    function showGZS(rowData) {
+        var dialogData = [];
+        if (rowData) {
+            dialogData.push(rowData);
+        }
+        if (dialogData && dialogData.length > 0) {
+            openDialog('print-evaluation-book', 'views/dialogs/print-evaluation-book.htm', function (callback, dialogData) {
+                postTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/UpdateEvaluatedPrintNo/' + dialogData.ReportId, null, function () {
+                });
+                callback();
+            }, { dialogData: dialogData, title: '查看-服务补贴告知书', width: 880, height: 680, padding: 5, mergeDefault: true });
+        }
+    }
+
+
+    function estimate(rowReportData, setp) {
+        var dialogDataParams = _.extend(rowReportData, { FlowSetp: setp });
+        var bNextToSave = false;    //下一步可保存当前操作数据
+        var mappingId = rowReportData.AreaId3;
+
+        if (rowReportData) {
+            var arr_Buttons = [{
+                text: '上一步',
+                iconCls: 'icon-undo',
+                handler: function () {
+                    top.toggleTreeSelected(false);
+                }
+            },
+                {
+                    text: '下一步',
+                    iconCls: 'icon-redo',
+                    handler: function () { top.toggleTreeSelected(true); }
+                }];
+                if (!rowReportData.FlowTo || (rowReportData.Status == 2 && rowReportData.FlowTo == '10' && (rowReportData.FlowFrom == '20' || rowReportData.FlowFrom == '10'))) {
+                    bNextToSave = true;
+                    arr_Buttons.push({
+                        text: '完成评分',
+                        iconCls: 'icon-ok',
+                        handler: function () {
+                            //top.toAudit('dg-B140102', flowName, mappingId, { fn: function () { if (done) { done.apply(this, [function () { $('#set-evaluation-parameters').dialog('close'); }, dialogClose(dialogId)]); } } });
+                            top.toAudit( function () { 
+                                execFlowAction2(rowReportData.ReportId, mappingId, 10, 1, '提交评估报告');
+                                $('#' + models[currentMenuCode].gridId).datagrid('reload'); //刷新
+                            }); 
+                        }
+                    });
+                }
+                if ( rowReportData.FlowTo && rowReportData.Status == 2  && rowReportData.FlowTo == '20') { 
+                    arr_Buttons.push({
+                        text: '撤销提交',
+                        iconCls: 'icon-undo',
+                        handler: function () { 
+                            top.toUnAudit(function () {
+                                execFlowAction2(rowReportData.ReportId, mappingId, 20, 0, '撤销提交估报告');
+                                $('#' + models[currentMenuCode].gridId).datagrid('reload'); //刷新
+                            }); 
+                        }
+                    });
+                }
+            arr_Buttons.push({
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function () { top.eDialogClose(); }
+            });
+
+            dialogDataParams.NextToSave = bNextToSave; 
+            openDialog('set-evaluation-parameters', 'views/dialogs/set-evaluation-parameters.htm', null
+            , { dialogData: dialogDataParams, title: '设置参数', width: 980, height: 680, padding: 5,
+                buttons: arr_Buttons
+            });
+        }
+    }
+
+    //取流转名称
+    function getFlowStep(_areaId2, _areaId3) {
+        var params = { "MappingType": "EvaluatedReport", "MappingId": models[currentMenuCode].defaultModel.AreaId, "MappingId2": _areaId2, "MappingId3": _areaId3 };
+        getTo(baseCMSInvokeUrl + '/Pub/FlowDefineMappingService/GetFlowName?parms=' + $.toJSON(params), null, function (result) {
+            if (result != '') {
+                flowName = result; //流转名称 
+                flowSetp = flowName.substring(flowName.length - 1); //流转名称中取出需要几步审核（最后一位是1、2、3） 
+            }
+            else {
+                alert('未发现流程配置信息');
+            }
+        }, { async: false }, { ConnectId: baseInfoNode });
+    }
+     
+    function execFlowAction2(bizids, mappingId, processState, processAction, processComment) {
+        var flowAction = {
+            "BIZ_IDs": bizids,
+            "TableName": 'Eva_EvaluatedReport',//表名
+            "TableColumn": 'ReportId',//表主键
+            "StatusColumn": 'Status',//流程结束时变更字段
+            "StatusValuse": 1, //流程结束时变更字段值
+            "ServiceType": '00004', //服务类别
+            "MappingType": 'EvaluatedReport',//映射类型
+            "MappingId": mappingId, //映射类型Id
+            "ProcessState": processState,//操作前的流程状态
+            "ProcessAction": processAction, //处理动作 
+            "ProcessComment": processComment, //处理动作 
+            "WhereClause": ''
+        }
+        postTo(baseCMSInvokeUrl + "/Share/Circulation/NextFlowTo2", $.toJSON(flowAction), function (ret) {
+            if (ret.Success && ret.ErrorCode != 0) {
+                alert(ret.ErrorMessage);
+            }
+        }, { async: false }, { ConnectId: baseInfoNode });
+    }
+     
+    function upload() {
+        var row;
+        if (!row) {
+            row = $('#dg-B140102').datagrid('getSelected');
+        }
+        if (row) {
+            var currentModel = {
+                ImageData: { 'ResidentName': row.ResidentName, 'ResidentId': row.ResidentId, 'SourceTable': 'Eva_EvaluatedRequisition', 'AttachmentTag': 'AssessAttachment', 'bThumb': 'true', 'folderPath': '/Attachment/Assessment' },
+                onBeforeDialogOpen: function () {
+                    var queryParams = { 'SourceId': row.ResidentId, 'SourceTable': 'Eva_EvaluatedRequisition', 'Status': 1, OrderByClause: 'CheckInTime desc' };
+                    getTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Query?parms=' + $.toJSON(queryParams), null, function (ret) {//<img src="' + baseCMSInvokeUrl + o.SaveThumbName + '" width="80" height="80" />
+                        $("#img-Content-B140102").html(_.map(ret.rows, function (o) {
+                            return '<li><a class="bgSuffix" Suffix="' + o.Suffix + '"></a><a class="iconshowImg" href="' + baseContentInvokeUrl + top.objectId + o.SaveName + '"  target="_blank" >' + retImgName(o.SaveName) + '</a><a href="javascript:void(0)" class="iconhidenImg" AttachmentId ="' + o.AttachmentId + '"></a></li>';
+                        }).join(""));
+
+                        $('.bgSuffix').each(function () {
+                            var suffix = $(this).attr("Suffix");
+                            var tmpCss = "icon ";
+                            if (suffix) {
+                                tmpCss += ' icon-file-' + suffix;
+                            }
+                            else {
+                                tmpCss += ' icon-file-unknow';
+                            }
+                            $(this).append("<span class='" + tmpCss + "' style='vertical-align: middle'></span>");
+                            //$(this).before("<span class='" + tmpCss + "' style='vertical-align: middle'></span>");
+                        }).linkbutton({ plain: true });
+                        $('.iconshowImg').linkbutton({ plain: true });
+                        $('.iconhidenImg').linkbutton({ plain: true, iconCls: 'icon-cancel' }).unbind('click').bind('click', function () {
+                            var attachmentId = $(this).attr("AttachmentId");
+                            var pli = $(this).closest("li");
+                            if (attachmentId) {
+                                putTo(baseCMSInvokeUrl + '/Pub/AttachmentService/Nullify/' + attachmentId, null, function (ret) {
+                                    if (ret.Success) { $(pli).remove(); }
+                                });
+                            }
+                        });
+                    });
+                }
+            };
+
+            //打开上传窗口
+            _.extend(currentModel.ImageData, models[currentMenuCode].defaultModel);
+            uploadImg("居民评估资料", currentModel);
+        }
+        else {
+            alertInfo("请选择要上传的居民记录！"); 
+        }
+    }
+
+
+    function retImgName(imgname) {
+        var imgName = "";
+        if (imgname) {
+            imgName = right(imgname, imgname.length - imgname.lastIndexOf('/') - 1);
+            imgName = imgName.substring(0, imgName.lastIndexOf('.'));
+        }
+
+        return imgName;
+    }
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

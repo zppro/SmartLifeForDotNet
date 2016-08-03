@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="WXMessageTemplate" type="SmartLife.Share.Models.WeiXin.Pub.WXMessageTemplate, SmartLife.Share.Models" />
+    <typeAlias alias="WXMessageTemplatePK" type="SmartLife.Share.Models.WeiXin.Pub.WXMessageTemplatePK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="WXMessageTemplate_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_WXMessageTemplate(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TemplateId" >TemplateId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BizType" >BizType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateName" >TemplateName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateContent" >TemplateContent</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="TemplateId" >#TemplateId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BizType" >#BizType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateName" >#TemplateName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateContent" >#TemplateContent#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="WXMessageTemplate_Update" parameterClass="StringObjectDictionary" >
+      update Pub_WXMessageTemplate
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BizType" >BizType=#BizType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateName" >TemplateName=#TemplateName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="TemplateContent" >TemplateContent=#TemplateContent#</isPropertyAvailable>
+      </dynamic>
+      where TemplateId=#TemplateId#
+    </update>
+    <delete id="WXMessageTemplate_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_WXMessageTemplate
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TemplateId" >TemplateId=#TemplateId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BizType" >BizType=#BizType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TemplateName" >TemplateName=#TemplateName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TemplateContent" >TemplateContent=#TemplateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="WXMessageTemplate_Load" parameterClass="WXMessageTemplatePK" resultClass="WXMessageTemplate" >
+      select TemplateId,Id,CheckInTime,Status,BizType,TemplateName,TemplateContent from Pub_WXMessageTemplate
+      where TemplateId=#TemplateId#
+    </select>
+    <select id="WXMessageTemplate_List" parameterClass="StringObjectDictionary" resultClass="WXMessageTemplate" >
+      select TemplateId,Id,CheckInTime,Status,BizType,TemplateName,TemplateContent from Pub_WXMessageTemplate
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="TemplateId" >TemplateId=#TemplateId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BizType" >BizType=#BizType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TemplateName" >TemplateName=#TemplateName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="TemplateContent" >TemplateContent=#TemplateContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

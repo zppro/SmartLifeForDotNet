@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Eva" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parameterMaps>
+        <parameterMap id="SP_DBA_ImportEvaluatedBaseInfoParam" class="StringObjectDictionary">
+            <parameter  property="SourceData" column="SourceData" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="char" />
+            <parameter  property="Age" column="Age" direction="Input" type="int" dbType="int" />
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+    </parameterMaps>
+    <statements>
+        <procedure id="SP_DBA_ImportEvaluatedBaseInfo" parameterMap="SP_DBA_ImportEvaluatedBaseInfoParam" resultClass="StringObjectDictionary">
+            SP_DBA_ImportEvaluatedBaseInfo
+        </procedure>
+        <select id="Count_EvaluatedBaseInfoAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select 1 as NoUse
+            from Eva_EvaluatedBaseInfo
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="EvaluatedBaseInfoAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+            ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+            DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+            NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+            HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+            PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+            ResidentialOfHometown,Nation,AccountType ,
+            dbo.FUNC_Tol_GetDictionaryItemName('01005',eva.ResidentBizId) ResidentBizIdName,
+            dbo.FUNC_Tol_GetAreaFullNameByAreaId(eva.NativePlace) NativePlaceName,
+            dbo.FUNC_Tol_GetAreaFullNameByAreaId(eva.HouseholdRegister) HouseholdRegisterName,
+            dbo.FUNC_Tol_GetAreaFullNameByAreaId(eva.ResidentialOfHometown) ResidentialOfHometownName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00016',eva.AccountType) AccountTypeName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00017',eva.EducationLevel) EducationLevelName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00018',eva.Marriage) MarriageName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00019',eva.LivingStatus) LivingStatusName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00020',eva.HousingStatus) HousingStatusName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00021',eva.IncomeStatus) IncomeStatusName,
+            dbo.FUNC_Tol_GetDictionaryItemName('00022',eva.Nation) NationName
+            from Eva_EvaluatedBaseInfo eva
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

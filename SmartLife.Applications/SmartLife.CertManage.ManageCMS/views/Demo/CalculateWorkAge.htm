@@ -1,0 +1,272 @@
+﻿<div id="toolbar-B110703">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" plain="true"
+        onclick="query()">高级查询</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-add" plain="true" onclick="add()">新增</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true"
+        onclick="nullify()">删除</a> <a href="javascript:void(0)" behaviorcode='c1' class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="SyncResidentsInfo()">同步评估居民信息</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+        onclick="sync()">将呼叫号码推送到前置库</a>
+</div>
+<table id="dg-B110703">
+</table>
+<div id="dlg-B110703" class="easyui-dialog" style="width: 1000px; height: 400px;
+    padding: 10px; overflow:scroll;" closed="true" cache="false" buttons="#btn-B110703">
+    <div class="fitem">
+        <table>
+            <tr>
+                <td style="width: 200px; text-align: center;">
+                    原工作单位
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    工作起止时间
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    实际合同起止时间
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    社保起止时间
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="WorkUnit_1" class="easyui-validatebox" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="WorkTime_from_1" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="WorkTime_to_1" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="AgreeTime_from_1" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="AgreeTime_to_1" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="SecureTime_from_1" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="SecureTime_to_1" class="easyui-datebox" style="width: 100px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="WorkUnit_2" class="easyui-validatebox" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="WorkTime_from_2" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="WorkTime_to_2" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="AgreeTime_from_2" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="AgreeTime_to_2" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="SecureTime_from_2" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="SecureTime_to_2" class="easyui-datebox" style="width: 100px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="WorkUnit_3" class="easyui-validatebox" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="WorkTime_from_3" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="WorkTime_to_3" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="AgreeTime_from_3" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="AgreeTime_to_3" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="SecureTime_from_3" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="SecureTime_to_3" class="easyui-datebox" style="width: 100px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="WorkUnit_4" class="easyui-validatebox" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="WorkTime_from_4" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="WorkTime_to_4" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="AgreeTime_from_4" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="AgreeTime_to_4" class="easyui-datebox" style="width: 100px" />
+                </td>
+                <td style="width: 400px; text-align: center;">
+                    <input id="SecureTime_from_4" class="easyui-datebox" style="width: 100px" /><label>到</label><input
+                        id="SecureTime_to_4" class="easyui-datebox" style="width: 100px" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <label>
+                        工龄起算时间</label>
+                    <input id="Result" class="easyui-validatebox" />
+                    <input type="button" onclick="result_sure()" value="计算" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="btn-B110703">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok">确定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="cancel()">
+            取消</a>
+    </div>
+    <div id="dlg-search-B110703" class="easyui-dialog" style="width: 420px; height: 200px;
+        padding: 10px;" closed="true" cache="false" buttons="#btn-search-B110703">
+        <div class="ftitle">
+        </div>
+        <form id="fm-search-B110703" method="post" novalidate>
+        <div class="fitem">
+            <label>
+                老人姓名:</label>
+            <input name="OldManName">
+        </div>
+        <div class="fitem">
+            <label>
+                身份证:</label>
+            <input name="IDNo">
+        </div>
+        </form>
+    </div>
+    <div id="btn-search-B110703">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+            查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+        <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            validateUI();
+            var areas;
+            models[currentMenuCode] = {
+                gridId: 'dg-' + currentMenuCode,
+                toolbarId: 'toolbar-' + currentMenuCode,
+                dialogId: 'dlg-' + currentMenuCode,
+                dlgSearchId: 'dlg-search-' + currentMenuCode,
+                fmSearchId: 'fm-search-' + currentMenuCode,
+                btnSearchId: 'btn-search-' + currentMenuCode,
+                formId: 'fm-' + currentMenuCode,
+                buttonId: 'btn-' + currentMenuCode,
+                pkId: 'oldmanid-' + currentMenuCode,
+                pk: 'OldManId',
+                getPKValueWhenAdd: function () {
+                    return window.contants.guidAutoGenerate;
+                },
+                uiMode: 'list',
+                entityName: '老人基本资料',
+                baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+                defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+                defaultModelWhenAdd: { Gender: 'M' }
+                //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+            };
+            autosize(models[currentMenuCode].gridId);
+            getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+                areas = result;
+            }, { async: false });
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    }
+                },
+                onDblClickRow: function (idx, row) {
+                    edit(row);
+                },
+                columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+
+        });
+        function result_sure() {
+            var workAgree_start = []; //确认工龄开始时间
+            var workAgree_end = []; //确认工龄结束时间
+            var workAgree_result = 0; //确认工龄全部月份
+            var agreeTime_start = []; //实际合同开始时间
+            var agreeTime_end = []; //实际合同结束时间
+            var agreeTime_result = 0; //实际合同全部月份
+            var resultTime;
+            for (var i = 1; i <= 4; i++) {
+                var workUnit = $('#WorkUnit_' + i).val();
+                var agreeTime_from = $('#AgreeTime_from_' + i).datebox('getValue');
+                var agreeTime_to = $('#AgreeTime_to_' + i).datebox('getValue');
+                var secureTimee_from = $('#SecureTime_from_' + i).datebox('getValue');
+                var secureTime_to = $('#SecureTime_to_' + i).datebox('getValue');
+                if (workUnit) {
+                    workAgree_start.push(agreeTime_from < secureTimee_from ? secureTimee_from : agreeTime_from);
+                    workAgree_end.push(agreeTime_to < secureTime_to ? agreeTime_to : secureTime_to);
+                    agreeTime_start.push(agreeTime_from);
+                    agreeTime_end.push(agreeTime_to);
+                }
+            }
+            for (var j = 0; j < workAgree_start.length; j++) {
+                var workAgree_year1 = new Date(workAgree_start[j]).getFullYear();
+                var workAgree_month1 = new Date(workAgree_start[j]).getMonth() + 1;
+                //                alert(year1 + "年" + month1);
+                var workAgree_year2 = new Date(workAgree_end[j]).getFullYear();
+                var workAgree_month2 = new Date(workAgree_end[j]).getMonth() + 1;
+                //                alert(year2 + "年" + month2);
+                if (workAgree_year1 == workAgree_year2) {
+                    workAgree_result += workAgree_month2 - workAgree_month1 + 1;
+                }
+                else {
+                    workAgree_result += (workAgree_year2 - workAgree_year1) * 12 + (workAgree_month2 - workAgree_month1) + 1;
+                }
+
+                var agreeTime_year1 = new Date(agreeTime_start[j]).getFullYear();
+                var agreeTime_month1 = new Date(agreeTime_start[j]).getMonth() + 1;
+
+                var agreeTimee_year2 = new Date(agreeTime_end[j]).getFullYear();
+                var agreeTime_month2 = new Date(agreeTime_end[j]).getMonth() + 1;
+                if (agreeTime_year1 == agreeTimee_year2) {
+                    agreeTime_result += agreeTime_month2 - agreeTime_month1 + 1;
+                }
+                else {
+                    agreeTime_result += (agreeTimee_year2 - agreeTime_year1) * 12 + (agreeTime_month2 - agreeTime_month1) + 1;
+                }
+            }
+            if (agreeTime_result > workAgree_result) {
+                var year = new Date($('#SecureTime_from_1').datebox('getValue')).getFullYear(); //社保的起始时间的年份
+                var month = new Date($('#SecureTime_from_1').datebox('getValue')).getMonth() + 1; //社保的起始时间的月份
+                var months = (agreeTime_result - workAgree_result) + month;
+                if (months >= 12) {
+                    var year_s = year + parseInt(months / 12);
+                    var month_s = month + months % 12;
+                    resultTime = year_s + "年" + month_s + "月";
+                }
+                else {
+                    resultTime = year + "年" + months + "月";
+                }
+                $('#Result').val(workAgree_result + "," + agreeTime_result + "," + resultTime);
+            }
+            else {
+                alert(workAgree_start[0]);
+                $('#Result').val(workAgree_result + "," + agreeTime_result + "," + agreeTime_start[0]);
+            }
+        }
+
+    </script>

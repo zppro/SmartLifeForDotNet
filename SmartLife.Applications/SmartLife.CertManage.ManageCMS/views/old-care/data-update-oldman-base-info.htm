@@ -1,0 +1,591 @@
+﻿<table id="cc-B18080101" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B18080101">
+            </ul>
+                        <input type="hidden"  id="_AreaId2" />
+                        <input type="hidden"  id="_AreaId3" />
+        </td>
+        <td valign="top">
+            <div id="toolbar-B18080101">
+                <table style=" width:100%;">
+                    <tr>
+                        <td>
+                        <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                onclick="add()">新增</a>-->
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                            onclick="edit()">编辑</a>
+                        <!--<a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-remove" plain="true" onclick="nullify()">作废</a>-->
+                        <!--<a href="javascript:void(0)" behaviorcode='c1' class="easyui-linkbutton" iconcls="icon-edit"
+                            plain="true" onclick="SyncResidentsInfo()">同步评估居民信息</a>--><!-- <a href="javascript:void(0)"
+                                class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="sync()">将呼叫号码推送到前置库</a>-->
+                        <!--<a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-tip" plain="true" onclick="complain()">投诉处理</a>-->
+                        <a href="javascript:void(0)" class="easyui-linkbutton" id="exportData"
+                        iconcls="icon-script" plain="true" onclick="exportFrame()">导出</a>
+                        </td>
+                        <td style=" width:20px;"> 
+                            <div  ondblclick="forExportData()" style=" width:10px; height:10px;"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="search-sample-B18080101" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B18080101" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right">
+                            关键字：
+                        </td>
+                        <td style="text-align:left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="姓名、身份证、电话、手机"/> 
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B18080101">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B18080101" class="easyui-dialog" style="width: 720px; height: 400px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-B18080101">
+    <div class="ftitle">
+    </div>
+    <form id="fm-B18080101" method="post" novalidate>
+    <input type="hidden" name="OldManId" id="oldmanid-B18080101" />
+    <div class="fitem">
+        <label>
+            老人姓名:</label>
+        <input name="OldManName" readonly="readonly" style="color: #888;" class="easyui-validatebox">
+        <label>
+            身份证号:</label>
+        <input id="IDNo" name="IDNo" class="easyui-validatebox" readonly="readonly" style="color: #888;">
+        &nbsp;&nbsp;
+        <label>
+            性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+        <label id="Gender">
+        </label>
+        <!--<input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+        <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>-->
+    </div>
+    <div class="fitem">
+        <label>
+            街道社区:</label>
+        <input name="AreaIdStreet" id="AreaIdStreet" />
+        <input name="AreaIdCommunity" id="AreaIdCommunity" />
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+        <label style="margin-left: 77px;">
+            出生日期:</label>
+        <input name="Birthday" id="Birthday" onblur="checkBirthday()" class="easyui-datebox" required="true" missingmessage="出生日期不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            详细地址:</label>
+        <textarea name="Address" class="easyui-validatebox" readonly="readonly" style="width: 580px;
+            color: #888;" maxlength="200"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            身份情况:</label>
+        <input id="OldManIdentity" name="OldManIdentity" class="easyui-validatebox" missingmessage="身份情况不能为空" />
+        <label>
+            居住情况:</label>
+        <input id="LivingState" name="LivingState" class="easyui-validatebox" missingmessage="居住情况不能为空" />
+        <label>
+            邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编:</label>
+        <input name="PostCode" maxlength="6" />
+    </div>
+    <div class="fitem">
+        <label>
+            医&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保:</label>
+        <input name="HealthInsuranceFlag" id="HealthInsuranceFlag" />
+        <label>
+            医保号码:</label>
+        <input name="HealthInsuranceNumber" />
+        <label>
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Tel" readonly="readonly" style="color: #888;" />
+    </div>
+    <div class="fitem">
+        <label>
+            社&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保:</label>
+        <input name="SocialInsuranceFlag" id="SocialInsuranceFlag" />
+        <label>
+            社保号码:</label>
+        <input name="SocialInsuranceNumber" />
+        <label>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Mobile" readonly="readonly" style="color: #888;" />
+    </div>
+    <div class="fitem">
+        <label>
+            经&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度:</label>
+        <input name="LongitudeS" maxlength="20" />
+        <label>
+            纬&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度:</label>
+        <input name="LatitudeS" maxlength="20" />
+        <label>
+            呼叫号码:</label>
+        <input id="CallNo" />
+    </div>
+    <div class="fitem">
+        <label>
+            备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</label>
+        <textarea name="Remark" style="width: 580px; color: #888;" maxlength="400" readonly="readonly"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-B18080101">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="beforsave()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B18080101" class="easyui-dialog" style="width: 280px; height: 270px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B18080101">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B18080101" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            老人姓名:</label>
+        <input name="OldManName">
+    </div>
+    <div class="fitem">
+        <label>
+            身份证号:</label>
+        <input name="IDNo">
+    </div>
+    <div class="fitem">
+        <label>
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+        </label>
+        <input name="Tel" />
+    </div>
+    <div class="fitem">
+        <label>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+        </label>
+        <input name="Mobile"  />
+    </div>
+    <div class="fitem">
+        <label>
+            详细地址:</label>
+        <input name="Address" >
+    </div>
+    </form>
+</div>
+<div id="btn-search-B18080101">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+
+<div id="export-iframe-block" style=" display:none;"></div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#exportData').hide();
+        validateUI();
+        var areas;
+        placeholder(); //占位符初始化  
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            //            dialogOption: {
+            //                onBeforeOpen: function () {
+            //                    
+            //                }
+            //            },
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['OldManName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            actionDone: function (action, pks) {
+                if (action != 'nullify' && pks.OldManId) {
+                    putTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + pks.OldManId, $.toJSON({ OldManId: pks.OldManId, CallNo: $('#CallNo').val() }), function (ret) { });
+                }
+            },
+            onBeforeDialogOpen: function () {
+                //街道
+                $('#AreaIdStreet').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    disabled: true,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    onHidePanel: function () {
+                        if ($('#AreaIdStreet').combo('getText') == "") {
+                            $('#AreaIdCommunity').combobox('setValue', null);
+                            $('#AreaId2').val(null);
+                            $('#AreaId3').val(null);
+                        }
+                    },
+                    onSelect: function (d) {
+                        $('#AreaId2').val(d.ItemId);
+                        var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                        $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                        //如果该街道下有社区，则自动填充
+                        if (community.length > 0) {
+                            $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                            $('#AreaId3').val(community[0].ItemId);
+                        }
+                        //否则为空
+                        else {
+                            $('#AreaIdCommunity').combobox('setValue', null);
+                            $('#AreaId3').val(null);
+                        }
+                    }
+                });
+                //社区
+                $('#AreaIdCommunity').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    disabled: true,
+                    method: 'get',
+                    data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+                    valueField: 'ItemId',
+                    textField: 'ItemName',
+                    filter: function (q, row) {
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField].indexOf(q) == 0;
+                    },
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    onHidePanel: function () {
+                        if ($('#AreaIdCommunity').combo('getText') == "") {
+                            $('#AreaId3').val(null);
+                        }
+                    },
+                    onSelect: function (d) {
+                        $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                        $('#AreaId2').val(d.ParentId);
+                        $('#AreaId3').val(d.ItemId);
+                    }
+                });
+                setCombobox('HealthInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有"}]);
+                setCombobox('SocialInsuranceFlag', [{ ItemId: "0", ItemName: "无" }, { ItemId: "1", ItemName: "有"}]);
+            },
+            onAfterDialogOpen: function (row) {
+                if (row) {
+                    getTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + row.OldManId, null, function (ret) {
+                        $('#CallNo').val(ret.instance.CallNo);
+                    });
+                    var gender = row.Gender;
+                    $("#Gender").text(gender == "F" ? "女" : (gender == "M" ? "男" : "未知"));
+                    $('#HealthInsuranceFlag').combobox('setValue', row.HealthInsuranceFlag);
+                    $('#SocialInsuranceFlag').combobox('setValue', row.SocialInsuranceFlag);
+                }
+
+                var areaId2 = $('#AreaId2').val();
+                var areaId3 = $('#AreaId3').val();
+                var birthday = $('#Birthday').datebox('getValue');
+
+                if (areaId2 != "") {
+                    $('#AreaIdStreet').combobox('setValue', areaId2);
+                }
+                if (areaId3 != "") {
+                    $('#AreaIdCommunity').combobox('setValue', areaId3);
+                }
+                if (isnull(birthday, '') == '') {
+                    $('#Birthday').datebox('setValue', getBirthday(row.IDNo));
+                }
+            },
+            uiMode: 'list',
+            entityName: '老人基本资料',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1, UserId: top.gUserId, isSuperAdmin: top.gUserInfo.isSuperAdmin },
+            defaultModelWhenAdd: { Gender: 'M' }
+            //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+        };
+
+        autoSizeOfHeight("cc-B18080101", -30); //datagrid收缩30个像素点;
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点
+                        $("#_AreaId2").val(treeNodeId);
+                        $("#_AreaId3").val(null);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点 
+                        $("#_AreaId2").val(treeNode.attributes.PId);
+                        $("#_AreaId3").val(treeNodeId);
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点
+                    $("#_AreaId2").val(null);
+                    $("#_AreaId3").val(null);
+                };
+
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId,
+                        UserId: models[currentMenuCode].defaultModel.UserId,
+                        isSuperAdmin: models[currentMenuCode].defaultModel.isSuperAdmin
+                    },
+                    fuzzyFields: [{ key: 'AreaId', value: areaId}]
+                });
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) { 
+                if (top.gUserInfo.isSuperAdmin) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'OperatedOn',
+                        order: 'desc',
+                        instance: {
+                            Status: models[currentMenuCode].defaultModel.Status,
+                            AreaId: models[currentMenuCode].defaultModel.AreaId,
+                            UserId: models[currentMenuCode].defaultModel.UserId,
+                            isSuperAdmin: models[currentMenuCode].defaultModel.isSuperAdmin
+                        }
+                        //                fuzzyFields: [{ key: 'OldManName', value: models[currentMenuCode].defaultModel.GroupType },
+                        //                              { key: 'IDNo', value: models[currentMenuCode].defaultModel.GroupType }
+                        //                ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                            { field: 'CK', title: '', checkbox: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                    loader: easyuiLoader
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            }); //end loadTree
+
+        $('#OldManIdentity').combobox({
+            width: 152,
+            panelHeight: 40,
+            required: true,
+            method: 'get',
+            url: ajaxData_InvokeUrl + '/GetDictionaryItem/11002',
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+
+        $('#LivingState').combobox({
+            width: 152,
+            panelHeight: 40,
+            required: true,
+            method: 'get',
+            url: ajaxData_InvokeUrl + '/GetDictionaryItem/11001',
+            valueField: 'ItemId',
+            textField: 'ItemName'
+        });
+
+    });
+
+    function complain(row) {
+        var row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        if (row) {
+            openDialog('set-oldman-complain', 'views/dialogs/set-oldman-complaininfo.htm', function (callback, dialogData) { 
+                postTo(baseCMSInvokeUrl + '/Oca/OldManComplainInfoService/', $.toJSON(dialogData), function (ret) {
+                    if (ret.Success) {
+                        alertInfo('投诉信息添加完成');
+                        callback();
+                    }
+                });
+            }, { dialogData: row, title: '“' + row.OldManName + '”的投诉信息', width: 480, height: 400, padding: 5, mergeDefault: true });
+        }
+        else {
+            alertInfo('请选中要设置老人！');
+        }
+    }
+
+    //设置下拉框
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 152,
+            panelHeight: 40,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+    //获取出身日期
+    function getBirthday(idNo) {
+        var tmpStr;
+        if (idNo.length == 15) {
+            tmpStr = idNo.substring(6, 12);
+            tmpStr = "19" + tmpStr;
+            tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+        }
+        else {
+            tmpStr = idNo.substring(6, 14);
+            tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+        }
+        return tmpStr;
+    }
+    function beforsave() {
+        var r = /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29))$/;
+        //                var t1 =$.toJsonDate( formData["Birthday"]); //判断出生日期是否正确
+        var t1 = $("#Birthday").datebox('getValue'); //判断出生日期是否正确 
+        if (r.test(t1)) {
+            save();
+        }
+        else { 
+            alert("出生日期有误");
+        } 
+    }
+
+    function sync() {
+        postTo(ipcc_InvokeUrl + '/caller', null, function (ret) {
+            if (ret.Success) {
+                alertInfo("推送成功！");
+            }
+        });
+    }
+
+    function SyncResidentsInfo() {
+        postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/ImportOldManBaseInfoFromEva', null, function (ret) {
+            if (ret.Success) {
+                alertInfo("同步成功！");
+                $('#dg-B18080101').datagrid('reload');
+            }
+        });
+    }
+    function resetexec() {
+        $('#StreetAndCommunity').combotree('clear');
+        $('#AreaId2_Start').val(null);
+        $('#AreaId3_Start').val(null);
+        resetfm(true);
+    }
+    //自动调高
+    function autoSizeOfHeight(id, iwidth) {
+        autosize(id, iwidth);
+        $("#" + models[currentMenuCode].gridId).height($("#" + id).height());
+    }
+
+
+
+    function exportFrame() {
+        $('#export-iframe-block').html('');
+
+        var iframe = document.createElement("iframe");
+        iframe.src = baseUrl + '/views/dialogs/export-box.htm';
+        iframe.scrolling = "no";
+        iframe.frameBorder = 0;
+        $('#export-iframe-block').html(iframe);
+    }
+    function exportFileData() {
+        var qureryData = $('#' + models[currentMenuCode].gridId).datagrid('options').queryParams;
+        qureryData['sort']='OldManName';
+        qureryData['order'] = 'asc'; 
+        var formData = {
+            actionUrl: baseCMSInvokeUrl + '/AppShare/ExportExcel.ashx',
+            actionType: 'ExportOldManBaseInfo',
+            actionData: qureryData
+        };
+
+        return formData;
+    }
+    function forExportData() {
+        getTo(baseCMSInvokeUrl + '/Pub/UserService/GetGroup/' + models[currentMenuCode].defaultModel.UserId, null, function (ret) { 
+            if ((top.gUserInfo.isSuperAdmin) || (_.contains(ret, '00000000-0000-0000-0000-000000000001'))) {
+                if ($('#exportData').is(":hidden")) {
+                    $('#exportData').show();
+                }
+                else {
+                    $('#exportData').hide();
+                }
+            }
+        })
+    }
+</script>

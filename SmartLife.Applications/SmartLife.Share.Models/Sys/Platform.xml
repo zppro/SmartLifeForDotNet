@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Platform" type="SmartLife.Share.Models.Sys.Platform, SmartLife.Share.Models" />
+    <typeAlias alias="PlatformPK" type="SmartLife.Share.Models.Sys.PlatformPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Platform_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_Platform(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="PlatformId" >PlatformId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformCode" >PlatformCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformName" >PlatformName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="PlatformId" >#PlatformId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformCode" >#PlatformCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformName" >#PlatformName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Platform_Update" parameterClass="StringObjectDictionary" >
+      update Sys_Platform
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformCode" >PlatformCode=#PlatformCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlatformName" >PlatformName=#PlatformName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+      </dynamic>
+      where PlatformId=#PlatformId#
+    </update>
+    <delete id="Platform_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_Platform
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlatformId" >PlatformId=#PlatformId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlatformCode" >PlatformCode=#PlatformCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlatformName" >PlatformName=#PlatformName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Platform_Load" parameterClass="PlatformPK" resultClass="Platform" >
+      select PlatformId,Id,Status,PlatformCode,PlatformName,AliasName,Picture,OrderNo,Description from Sys_Platform
+      where PlatformId=#PlatformId#
+    </select>
+    <select id="Platform_List" parameterClass="StringObjectDictionary" resultClass="Platform" >
+      select PlatformId,Id,Status,PlatformCode,PlatformName,AliasName,Picture,OrderNo,Description from Sys_Platform
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="PlatformId" >PlatformId=#PlatformId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlatformCode" >PlatformCode=#PlatformCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlatformName" >PlatformName=#PlatformName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="GetCrossingReport" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select AreaId2,AreaId3,
+      [60-69岁-男],[60-69岁-女],[60-69岁-未知],[70-79岁-男],[70-79岁-女],[70-79岁-未知],[80-89岁-男],[80-89岁-女],[80-89岁-未知],
+      [90-99岁-男],[90-99岁-女],[90-99岁-未知],[100岁及以上-男],[100岁及以上-女],[100岁及以上-未知]
+      from (
+      select OldmanId,isnull(AreaId2,'') as AreaId2,isnull(AreaId3,'') as AreaId3
+      ,case
+      when DateDiff(MM,Birthday,GETDATE()) >=60*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;70*12  then  case Gender when 'M' then '60-69岁-男' when 'F' then '60-69岁-女' else '60-69岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=70*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;80*12 then  case Gender when 'M' then '70-79岁-男' when 'F' then '70-79岁岁-女' else '70-79岁岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=80*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;90*12 then case Gender when 'M' then '80-89岁-男' when 'F' then '80-89岁-女' else '80-89岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=90*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;100*12 then case Gender when 'M' then '90-99岁-男' when 'F' then '90-99岁-女' else '90-99岁-未知' end
+      else case Gender when 'M' then '100岁及以上-男' when 'F' then '100岁及以上-女' else '100岁及以上-未知' end  end
+      as StatRange
+      from Oca_OldManBaseInfo where Status = 1 and Birthday is not null
+      ) s1 pivot
+      ( count(OldmanId) for StatRange in (
+      [60-69岁-男],[60-69岁-女],[60-69岁-未知],[70-79岁-男],[70-79岁-女],[70-79岁-未知],[80-89岁-男],[80-89岁-女],[80-89岁-未知],
+      [90-99岁-男],[90-99岁-女],[90-99岁-未知],[100岁及以上-男],[100岁及以上-女],[100岁及以上-未知]
+      )
+      ) as pvt1
+      union
+      select AreaId2,AreaId3,
+      [60-69岁-男],[60-69岁-女],[60-69岁-未知],[70-79岁-男],[70-79岁-女],[70-79岁-未知],[80-89岁-男],[80-89岁-女],[80-89岁-未知],
+      [90-99岁-男],[90-99岁-女],[90-99岁-未知],[100岁及以上-男],[100岁及以上-女],[100岁及以上-未知]
+      from (
+      select OldmanId,isnull(AreaId2,'') as AreaId2,'ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ' as AreaId3
+      ,case
+      when DateDiff(MM,Birthday,GETDATE()) >=60*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;70*12  then  case Gender when 'M' then '60-69岁-男' when 'F' then '60-69岁-女' else '60-69岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=70*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;80*12 then  case Gender when 'M' then '70-79岁-男' when 'F' then '70-79岁岁-女' else '70-79岁岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=80*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;90*12 then case Gender when 'M' then '80-89岁-男' when 'F' then '80-89岁-女' else '80-89岁-未知' end
+      when DateDiff(MM,Birthday,GETDATE()) >=90*12 and  DateDiff(MM,Birthday,GETDATE()) &lt;100*12 then case Gender when 'M' then '90-99岁-男' when 'F' then '90-99岁-女' else '90-99岁-未知' end
+      else case Gender when 'M' then '100岁及以上-男' when 'F' then '100岁及以上-女' else '100岁及以上-未知' end  end
+      as StatRange
+      from Oca_OldManBaseInfo where Status = 1 and Birthday is not null
+      ) s1 pivot
+      ( count(OldmanId) for StatRange in (
+      [60-69岁-男],[60-69岁-女],[60-69岁-未知],[70-79岁-男],[70-79岁-女],[70-79岁-未知],[80-89岁-男],[80-89岁-女],[80-89岁-未知],
+      [90-99岁-男],[90-99岁-女],[90-99岁-未知],[100岁及以上-男],[100岁及以上-女],[100岁及以上-未知]
+      )
+      ) as pvt1
+
+      order by AreaId2,AreaId3
+    </select>
+  </statements>
+</sqlMap>

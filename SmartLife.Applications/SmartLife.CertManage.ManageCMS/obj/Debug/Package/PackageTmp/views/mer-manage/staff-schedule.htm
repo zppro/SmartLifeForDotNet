@@ -1,0 +1,692 @@
+﻿<div id="toolbar-Schedule" >
+    <table width="100%;"  height="60px">
+        <tr>
+            <td id="CurrentMerchant-cc" style="text-align: left; width: 370px; border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                <div id="CurrentMerchant-c" style="display: inline-block;"><input id="CurrentMerchant" /></div>
+                <input id="SelectedArea" />
+            </td>
+            <td style="text-align: left;">
+            <table>
+                <tr>
+                    <td style=" border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                <input id="OnlyShowGovTurnkey" type="checkbox"  checked /><label for="OnlyShowGovTurnkey">仅政府购买</label>
+                </td>
+                <td style=" border-right:1px solid #ddd; padding-left:5px; padding-right:5px;">
+                从<input id="ScheduleOn_Start" name="ScheduleOn_Start" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                至<input id="ScheduleOn_End" name="ScheduleOn_End" class="Wdate" onfocus="WdatePicker()"
+                    style="width: 90px; border-left: none; border-right: none; border-top: none;" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-prev" plain="true" onclick="queryLastWeek()">上周</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-next" plain="true" onclick="queryNextWeek()">
+                            下周</a></td>
+                    <td style=" padding-left:10px; padding-right:5px;"><input id="oldManName" style=" width:80px;" placeholder="服务对象姓名"/></td>
+                    <td >
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                    onclick="queryData()">查询</a> </td>
+                </tr>
+            </table>
+                   
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left;" colspan="2">
+                <input id="ServeMan" />
+                从<input id="ReserveFrom" class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                    style="width: 60px;" />到<input id="ReserveTo" class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                        style="width: 60px;" />
+                <input id="ServeItemB" />
+                <input id="ServeDuration" />
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true"
+                    onclick="reserve()">预约</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-undo" plain="true" onclick="undo()">还原</a> <a href="javascript:void(0)"
+                            class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="updateToDB()">
+                            保存</a>
+                 <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-tip" 
+                 plain="true" onclick="CreateWorkOrder()">手工生成工单</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="dg-Schedule" class="main-area">
+</table>
+
+<script type="text/javascript">
+    
+    var mouseClickDown = false;
+    var templateOfServerInfoForView = '<li class="serve-info-item" serveInfoItemId="[ServeInfoItemId]" oldManId="[OldManId]" reserveDate="[ReserveDate]" workOrderId="[WorkOrderId]" color="[Color]"  doneStr="服务时间：[ServeManArriveTime][ServeManLeaveTime]" ><a style="display:[DisplayStyleOfRemoveServeInfoItem]" title="删除此项" onclick="removeServeInfoItem(this)" class="removeServeInfoItem actionServeInfoItem nicon-blue nicon-R2C13"></a><span onclick="[ItemClickFunc]" title="服务时间：[ServeManArriveTime][ServeManLeaveTime]" class="serve-info-item-serveman[Color]" serveManId="[ServeManId]">[[ServeManName]]</span><span onclick="[ItemClickFunc]"  title="服务时间：[ServeManArriveTime][ServeManLeaveTime]" class="serve-info-item-fromto[Color]" >[ReserveFrom]-[ReserveTo]</span><span onclick="[ItemClickFunc]"  title="服务时间：[ServeManArriveTime][ServeManLeaveTime]" class="serve-info-item-serveitem[Color]" serveItemBId="[ServeItemBId]">[ServeItemBName]</span><span onclick="[ItemClickFunc]"  title="服务时间：[ServeManArriveTime][ServeManLeaveTime]" class="serve-info-item-serveduration[Color]" >[ServeDuration]</span><a style="display:[DisplayStyleOfRemindServeInfoItemByWX]" title="微信督办提醒" onclick="remindServeInfoItemByWX(this)" class="remindServeInfoItemByWX actionServeInfoItem nicon-blue nicon-R9C11"></a><div onclick="[ItemClickFunc]" class="serve-info-item-description">[Description]</div></li>';
+    var daysBeforehand = -1; //今天之前的不能修改
+    placeholder(); //占位符初始化  
+    $(function () { 
+        loadfiles([
+            { type: "css", url: "../../css/mer/staff-schedule.css" }
+            ], function () {
+                
+
+                //加载商家
+                $('#CurrentMerchant').combobox({
+                    width: 180,
+                    panelWidth: 300,
+                    data: top.gUserInfo.MappingMerchants,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onSelect: function (record) {
+                        $('#oldManName').val(null);
+                        buildPageByMerchant();
+                    }
+                });
+                if (top.gUserInfo.MappingMerchants.length > 0) {
+                    $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+                    buildPageByMerchant();
+
+                    if (top.gUserInfo.MappingMerchants.length == 1) {
+                        $('#CurrentMerchant-c').hide();
+                        $('#CurrentMerchant-cc').width(190);
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何商家');
+                    $('#toolbar-Schedule').hide();
+                }
+            });
+    });
+
+    function buildPageByMerchant() {
+        //加载社区
+        initTree('easyUIComboTree', 'SelectedArea', {
+            width: 180,
+            panelWidth: 300,
+            panelHeight: 260,
+            editable: false,
+            onClick: function (node) {
+                if (node.id.length == 36 && node.id.substr(14, 4) != '0000') {
+                    //社区 
+                    $('#oldManName').val(null);
+                    queryData();
+                }
+                else {
+                    $('#SelectedArea').combotree('setValue', '');
+                    alertInfo('请选择一个社区');
+                    $('#oldManName').val(null);
+                }
+
+            }
+        }, function (d) {
+            getTreeData('11$01$03', "Levels,OrderNo ", '{"StationId":"' + $('#CurrentMerchant').combobox('getValue') + '"}', d);
+        }, null, function () {
+            var autoSetNode = findTreeNode($('#SelectedArea').combotree('tree'), 2, 0);
+            if (autoSetNode) {
+                $('#SelectedArea').combotree('setValue', autoSetNode.id);
+            }
+
+            //加载服务人员
+            getAll([baseCMSInvokeUrl + '/Pub/ServiceStationService/ListServeMan/' + $('#CurrentMerchant').combobox('getValue') + ',' + window.contants.UserTypeAsMerchant + ',' + window.contants.GuidAsGroup_MerchantServeMan,
+                    ajaxData_InvokeUrl + '/GetDictionaryItem/11013',
+                    baseCMSInvokeUrl + '/Pub/ServiceStationService/GetServeItems/' + $('#CurrentMerchant').combobox('getValue'),
+                    parameterData_InvokeUrl + "/Oca_ReserveModifyDaysBeforehand"], function (r1, r2s, r3, r4) {
+
+                        $('#ServeMan').combobox({
+                            width: 100,
+                            panelWidth: 120,
+                            data: r1.rows,
+                            valueField: 'UserId',
+                            textField: 'UserName',
+                            editable: false,
+                            onSelect: function () {
+                                $('#oldManName').val(null);
+                                queryData();
+                            }
+                        });
+                        if (r1.rows.length > 0) {
+                            $('#ServeMan').combobox('setValue', r1.rows[0].UserId);
+                        }
+
+                        var oServeFeeDict = {};
+                        _.each(r3, function (o) {
+                            oServeFeeDict[o.ServeItemB] = o.ServeFee;
+                        });
+                        var serveItemBs = _.filter(r2s, function (o) { return oServeFeeDict[o.ItemId]; });
+                        //区分政府购买服务和非政府购买服务的项目
+                        //                      var serveItemBs = _.filter(
+                        //                            _.filter(r2s, function (o) { return oServeFeeDict[o.ItemId]; }),
+                        //                      function (item) {
+                        //                            alert($.toJSON(item));
+                        //                            if ($('#OnlyShowGovTurnkey').prop('checked')) {
+                        //                                return item.ItemId.indexOf('01') == 0;
+                        //                            }
+                        //                            else {
+                        //                                return item.ItemId.indexOf('01') < 0;
+                        //                            }
+                        //                      });
+                        $('#ServeItemB').combobox({
+                            width: 120,
+                            panelWidth: 200,
+                            data: serveItemBs,
+                            valueField: 'ItemId',
+                            textField: 'ItemName',
+                            editable: false
+                        });
+                        if (serveItemBs.length > 0) {
+                            $('#ServeItemB').combobox('setValue', serveItemBs[0].ItemId);
+                        }
+
+                        $('#ReserveFrom').timespinner('setValue', Date.now().toString('HH') + ':00');
+                        $('#ReserveTo').timespinner('setValue', Date.now().addHours(2).toString('HH') + ':00');
+
+                        if (r4.ret) {
+                            daysBeforehand = parseInt(r4.ret.Value);
+                        }
+
+                        $('#ServeDuration').combobox({
+                            width: 70,
+                            data: [{ ItemId: "0.5H", ItemName: "0.5小时" }, { ItemId: "1.0H", ItemName: "1.0小时" }, { ItemId: "1.5H", ItemName: "1.5小时" }, { ItemId: "2.0H", ItemName: "2.0小时" }, { ItemId: "2.5H", ItemName: "2.5小时" }, { ItemId: "3.0H", ItemName: "3.0小时" }, { ItemId: "3.5H", ItemName: "3.5小时" }, { ItemId: "4.0H", ItemName: "4.0小时"}],
+                            valueField: 'ItemId',
+                            textField: 'ItemName',
+                            editable: false
+                        }).combobox('setValue', '1.0H');
+                        autosize('dg-Schedule', -64);
+                        //createGrid(); 
+                        var monday = Date.today().is().monday() ? Date.today() : Date.today().moveToDayOfWeek(1, -1);
+                        var sunday = Date.today().moveToDayOfWeek(0);
+                        queryFromTo(monday, sunday);
+
+                    });
+
+        });
+        $('#OnlyShowGovTurnkey').on('change', function () { queryData(); });
+    }
+
+    function queryLastWeek() {
+        var beginDate = Date.parse($('#ScheduleOn_Start').val()).moveToDayOfWeek(1, -1);
+        var endDate = Date.parse($('#ScheduleOn_Start').val()).moveToDayOfWeek(0, -1);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryNextWeek() {
+        var beginDate = Date.parse($('#ScheduleOn_Start').val()).moveToDayOfWeek(1, 1);
+        var endDate = Date.parse($('#ScheduleOn_Start').val()).moveToDayOfWeek(0, 1).addDays(7);
+        queryFromTo(beginDate, endDate);
+    }
+
+    function queryFromTo(beginDate, endDate, loadDataFlag) {
+        $('#ScheduleOn_Start').val(beginDate.toString('yyyy-MM-dd'));
+        $('#ScheduleOn_End').val(endDate.toString('yyyy-MM-dd'));
+        queryData();
+    }
+
+    function queryData() {
+        var unSave = checkUnSave();
+        if (unSave) {
+            alertConfirm('当前还有未保存的预约信息，确定要继续吗？', function (r) {
+                if (r) {
+                    _queryData();
+                }
+            });
+        }
+        else {
+            _queryData();
+        }
+    }
+    function _queryData() { 
+        var beginDateStr = $('#ScheduleOn_Start').val();
+        if (!beginDateStr) {
+            alertInfo('请选择一个开始日期');
+            return;
+        }
+        var endDateStr = $('#ScheduleOn_End').val();
+        if (!endDateStr) {
+            alertInfo('请选择一个结束日期');
+            return;
+        }
+        var SelectedAreaId = $('#SelectedArea').combo('getValue');
+        if (!SelectedAreaId) {
+            SelectedAreaId = '00000000-0000-0000-0000-000000000000';
+        } 
+        var currentDate = Date.parse(beginDateStr);
+        var days = DateDiff('d', currentDate, Date.parse(endDateStr));
+        var frozenColumns = [[
+                    { field: 'OldManId', title: '对象编号', width: 150, hidden: true },
+                    { field: 'OldManName', title: '老人姓名', align: 'center', width: 100, styler: function () { return 'background-color:#098AD2;color:#fff'; } }
+            ]];
+        var columns = [[]];
+        for (var i = 0; i <= days; i++) {
+            var spanDays = DateDiff('d', Date.today(), currentDate);
+            var changeFlag = true;
+            if (spanDays <= daysBeforehand) {
+                changeFlag = false;
+            }
+            var theColumn = { changeFlag: changeFlag, field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 300, formatter: serveInfoFormatter, styler: cellStyler };
+            columns[0].push(theColumn);
+            currentDate = currentDate.addDays(1);
+        }
+        //columns[0].push({ field: '_' + currentDate.toString('yyyyMMdd'), title: currentDate.toString('yyyy-MM-dd') + ' (' + currentDate.getDayName() + ')', align: 'center', width: 300, formatter: serveInfoFormatter, styler: cellStyler });
+        var serveManId = $('#ServeMan').combobox('getValue');
+        if (!serveManId || serveManId=='') {
+            serveManId = '00000000-0000-0000-0000-000000000000';
+        }
+
+        $('#dg-Schedule').datagrid({
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListSchedule',
+            rownumbers: true,
+            singleSelect: false,
+            method: 'POST',
+            autoRowHeight: false,
+            queryParams: {
+                instance: { StationId: $('#CurrentMerchant').combobox('getValue'), ServeManId: serveManId, AreaId: SelectedAreaId, BeginDateStr: beginDateStr, EndDateStr: endDateStr, OnlyShowGovTurnkey: $('#OnlyShowGovTurnkey').prop('checked'), OldManName: $('#oldManName').val() }
+            },
+            loader: easyuiLoaderForStringObjectDictionary,
+            frozenColumns: frozenColumns,
+            columns: columns
+        }).datagrid('freezeRow', 1).datagrid('attachCellSelect', {
+            onmousedown: function (e) {
+                if (e.button == 0 || e.button == 1) {
+                    if (!e.ctrlKey) {
+                        if ($('.selectedCell').size() > 0) {
+                            $('.selectedCell').removeClass('selectedCell');
+                        }
+                    }
+                    mouseClickDown = true;
+                    var columnOption = $('#dg-Schedule').datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+
+                    }
+                }
+            },
+            onmouseup: function (e) {
+                var userSelection;
+                if (window.getSelection) { //现代浏览器
+                    userSelection = window.getSelection();
+                } else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面
+                    userSelection = document.selection.createRange();
+                }
+                mouseClickDown = false;
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        try {
+                            window.getSelection().removeAllRanges();
+                        }
+                        catch (e) { }
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            },
+            onmouseover: function (e) {
+                if (mouseClickDown) {
+                    var columnOption = $('#dg-Schedule').datagrid('getColumnOption', $(this).attr('field'));
+                    if (columnOption && columnOption.field != 'OldManName' && columnOption.changeFlag == true) {
+                        $(this).addClass('selectedCell');
+                    }
+                }
+            },
+            onkeydown: function (e) {
+                if (e.which == 46) {
+                    if ($('.selectedCell .serveInfo ul.tmp li').size() == 0 && $('.selectedCell .serveInfo ul.formal li').size() == 0) {
+                        return;
+                    }
+                    alertConfirm('确定要删除选中的预约信息吗？', function (r) {
+                        if (r) {
+                            $('.selectedCell').find('.saveServeInfo').hide().end().find('.serveInfo ul.tmp').empty();
+                            var ids = _.map($('.selectedCell .serveInfo ul.formal li'), function (o) {
+                                return $(o).attr('serveInfoItemId');
+                            });
+                            var workOrderIds = _.map($('.selectedCell .serveInfo ul.formal li'), function (o) {
+                                if ($(o).attr('workOrderId') != '00000000-0000-0000-0000-000000000000') {
+                                    return 1;
+                                }
+                            });
+                            alert(workOrderIds.length);
+                            if (workOrderIds.length <= 0) {
+                                if (ids.length > 0) {
+                                    deleteTo2(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/', ids.join('|'), function () {
+                                        $('.selectedCell .serveInfo ul.formal').empty();
+                                    });
+                                }
+                            }
+                            else {
+                                alert('已生成工单，不能删除预约信息');
+                            }
+                        }
+                    });
+                }
+            },
+            onbodyclick: function (e) {
+                if (e.target.className == 'datagrid-body') {
+                    if ($('.selectedCell').size() > 0) {
+                        $('.selectedCell').removeClass('selectedCell');
+                    }
+                }
+            }
+        });
+    }
+
+    function serveInfoFormatter(value, row, index) {
+        var formallis = '';
+        var reserveDate = this.field.substr(1);
+        var columnOption = $('#dg-Schedule').datagrid('getColumnOption', this.field);
+        var cWorkOrderId;
+        if (value) {
+            formallis = _.map(value.split(','), function (o) {
+                var arrServeInfo = o.split('|'); 
+                if (arrServeInfo[9] == "00000000-0000-0000-0000-000000000000") {
+                    cWorkOrderId = arrServeInfo[9];
+                }
+                var color = '';
+                if (arrServeInfo[10] == '00:00:00') {
+                    arrServeInfo[10] = '服务未开始';
+                    arrServeInfo[11] = '';
+                    color = '-gray';
+                }
+                else if (arrServeInfo[11] == '00:00:00') {
+                    arrServeInfo[11] = '(服务中)';
+                    color = '-green'
+                }
+                else {
+                    arrServeInfo[10] = arrServeInfo[10] + '—';
+                    color = '-blue'
+                }
+                return replaceWithKeys(templateOfServerInfoForView, { DisplayStyleOfRemoveServeInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindServeInfoItemByWX: columnOption.changeFlag ? 'inline-block' : 'none', ItemClickFunc: 'editserveInfoItem(this,' + columnOption.changeFlag + ')', ServeInfoItemId: arrServeInfo[0], OldManId: row.OldManId, ReserveDate: reserveDate, ReserveFrom: arrServeInfo[1], ReserveTo: arrServeInfo[2], ServeManId: arrServeInfo[3].toLowerCase(), ServeManName: arrServeInfo[4], ServeItemBId: arrServeInfo[5], ServeItemBName: arrServeInfo[6], ServeDuration: arrServeInfo[7], Description: arrServeInfo[8], ServeManArriveTime: arrServeInfo[10], ServeManLeaveTime: arrServeInfo[11], WorkOrderId: arrServeInfo[9], Color: color });
+            }).join("");
+        } 
+        var htmls = [];
+        htmls.push('<div class="serveInfo"><ul class="formal">' + formallis + '</ul><ul class="tmp" oldManId="' + row.OldManId + '" reserveDate="' + reserveDate + '"></ul></div><a title="点击保存" onclick="saveServeInfo(this,' + index + ',\'' + $(this).attr('field') + '\',\'' + value + '\')" class="saveServeInfo nicon-blue nicon-R2C16"></a>');
+        if (cWorkOrderId && cWorkOrderId == "00000000-0000-0000-0000-000000000000" && columnOption.changeFlag) {
+            htmls.push('<a title="手工工单"  class="createWorkOrder nicon-blue nicon-R6C14" onclick="CreateWorkOrder(\'' + row.OldManId + '\')"></a>');
+        }
+        if (columnOption.changeFlag) {
+            htmls.push('<a title="点击预约" onclick="addServeInfo()" class="addServeInfo nicon-blue nicon-R2C11"></a>');
+            
+        }
+        return htmls.join('');
+    }
+
+    function cellStyler(value, row, index) {
+
+        if (this.title.indexOf('六') != -1 || this.title.indexOf('日') != -1) {
+            return { "class": 'restday' };
+        }
+        else if (!this.changeFlag) {
+            return { "class": 'cantchangeday' };
+        }
+    }
+
+    function addServeInfo() {
+        _reserve($('.selectedCell'));
+    }
+
+    function remindServeInfoItemByWX(o) {
+        alertConfirm('确定要向服务人员微信号发送预约提醒信息吗？', function (r) {
+            if (r) {
+                var $li = $(o).parent();
+                var $ul = $li.parent();
+
+                var id = $li.attr('serveInfoItemId');
+                postTo(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/RemindReserveInfo/' + id, null, function (ret) {
+                    if (ret.Success) {
+                        alertInfo('提醒发送成功');
+                    }
+                });
+            }
+        });
+    }
+    function removeServeInfoItem(o) {
+        var $li = $(o).parent();
+        var workOrderId = $li.attr('workOrderId'); 
+        var changeFlag = true;
+        workOrderId == '00000000-0000-0000-0000-000000000000' ? changeFlag :changeFlag = false; //只要产生工单了，就不能对预约信息进行删除
+        if (changeFlag) {
+            alertConfirm('确定要删除当前的预约信息吗？', function (r) {
+                if (r) {
+                    var $li = $(o).parent();
+                    var $ul = $li.parent();
+
+                    if ($ul.attr('class') == 'tmp') {
+                        $li.remove();
+                        if ($ul.find('li').size() == 0) {
+                            $ul.parent().parent().find('.saveServeInfo').hide();
+                        }
+                    }
+                    else if ($ul.attr('class') == 'formal') {
+                        var ids = $li.attr('serveInfoItemId');
+                        deleteTo2(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/', ids, function () {
+                            $li.remove();
+                            var $CreateWorkOrder = $ul.parent().parent().find(".createWorkOrder");
+                            if ($ul.find("li").size() == 0 && $CreateWorkOrder.size() > 0) {
+                                $CreateWorkOrder.remove();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            alert('该预约信息已经产生工单，不能删除');
+        }
+    }
+
+    function editserveInfoItem(o, changeFlag) {
+        var $li = $(o).parent();
+        var serveInfoItemId = $li.attr('serveInfoItemId');
+        var color = $li.attr('color');
+        var workOrderId = $li.attr('workOrderId');
+        var tip_str = '';
+        var doneStr = $li.attr('doneStr');
+        var _height='300';
+        var $serveInfoItemServeMan = $li.find('span.serve-info-item-serveman' + color);
+        var $serveInfoItemFromTo = $li.find('span.serve-info-item-fromto' + color);
+        var $serveInfoItemServeItem = $li.find('span.serve-info-item-serveitem' + color);
+        var $serveInfoItemServeDuration = $li.find('span.serve-info-item-serveduration' + color);
+        var $serveInfoItemDescription = $li.find('div.serve-info-item-description' + color);  
+        var serveManId = $serveInfoItemServeMan.attr('serveManId');
+        var serveManName = $serveInfoItemServeMan.text().substr(1, $serveInfoItemServeMan.text().length - 2);
+        var reserveFrom = $serveInfoItemFromTo.text().split('-')[0];
+        var reserveTo = $serveInfoItemFromTo.text().split('-')[1];
+        var serveItemB = $serveInfoItemServeItem.attr('serveItemBId');
+        var serveDuration = $serveInfoItemServeDuration.text();
+        var description = $serveInfoItemDescription.text();  
+        workOrderId == '00000000-0000-0000-0000-000000000000' ? changeFlag : changeFlag = false; //只要产生工单了，就不能对预约信息进行删除
+        changeFlag ? (tip_str,_height)  : (tip_str = '已经生成工单，不能修改',_height = '325');
+//        changeFlag ? : ;
+//        servemanarrivetime == '服务未开始' ? changeFlag : changeFlag = false; //只要服务开始了，就不能对预约信息进行修改 
+        openDialog('edit-serve-info-item', dialogUrlPrefix + 'views/dialogs/edit-serve-info-item.htm', function (callback, dialogData) {
+            var changed = {};
+            var isChanged = false;
+            if (dialogData.ServeManId != serveManId) {
+                isChanged = true;
+                $serveInfoItemServeMan.attr('ServeManId', dialogData.ServeManId);
+                $serveInfoItemServeMan.text('[' + dialogData.ServeManName + ']');
+                changed["ServeManId"] = dialogData.ServeManId;
+                changed["ServeManName"] = dialogData.ServeManName;
+            }
+            if (dialogData.ReserveFrom != reserveFrom || dialogData.ReserveTo != reserveTo) {
+                isChanged = true;
+                $serveInfoItemFromTo.text(dialogData.ReserveFrom + '-' + dialogData.ReserveTo);
+                changed["ReserveFrom"] = dialogData.ReserveFrom;
+                changed["ReserveTo"] = dialogData.ReserveTo;
+            }
+            if (dialogData.ServeItemBId != serveItemB) {
+                isChanged = true;
+                $serveInfoItemServeItem.attr('serveItemBId', dialogData.ServeItemBId);
+                $serveInfoItemServeItem.text(dialogData.ServeItemBName);
+                changed["ServeItemB"] = dialogData.ServeItemBId;
+            }
+            if (dialogData.ServeDuration != serveDuration) {
+                isChanged = true;
+                $serveInfoItemServeDuration.text(dialogData.ServeDuration);
+                changed["ServeDuration"] = dialogData.ServeDuration;
+            }
+            if (dialogData.Description != description) {
+                isChanged = true;
+                $serveInfoItemDescription.text(dialogData.Description);
+                changed["Description"] = dialogData.Description;
+            }
+
+            if (isChanged && serveInfoItemId != '[ServeInfoItemId]') {
+                changed["Id"] = parseInt(serveInfoItemId);
+                putTo(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/' + serveInfoItemId, $.toJSON(changed), function () {
+                    alertInfo('修改成功');
+                });
+            }
+            callback(); //新增成功之后关闭对话框
+        }, { dialogData: { ServeMan: $('#ServeMan').combobox('getData'), currentServeMan: serveManId,
+            currentReserveFrom: reserveFrom, currentReserveTo: reserveTo, serveItemBs: $('#ServeItemB').combobox('getData'), currentServeItemB: serveItemB,
+            serveDurationRange: $('#ServeDuration').combobox('getData'), currentServeDuration: serveDuration, currentDescription: description,
+            tip: tip_str, doneStr: doneStr
+        }
+        , title: '修改预约项目信息', width: 240, height: _height, padding: 5, mergeDefault: changeFlag
+        });
+    }
+    function saveServeInfo() {
+        alertConfirm('确定要将选中的未确认预约信息保存吗？', function (r) {
+            if (r) {
+                var $lisToAdd = $('.selectedCell ul.tmp li[serveInfoItemId="[ServeInfoItemId]"]');
+                var merchantServiceReserves = _.map($lisToAdd, function (li) {
+                    var color = $(li).attr('color');
+                    var $serveInfoItemServeMan = $(li).find('span.serve-info-item-serveman' + color);
+                    var $serveInfoItemFromTo = $(li).find('span.serve-info-item-fromto' + color);
+                    var $serveInfoItemServeItem = $(li).find('span.serve-info-item-serveitem' + color);
+                    var $serveInfoItemServeDuration = $(li).find('span.serve-info-item-serveduration' + color);
+                    var $serveInfoItemDescription = $(li).find('div.serve-info-item-description' + color);
+                    var serveManId = $serveInfoItemServeMan.attr('serveManId');
+                    var serveManName = $serveInfoItemServeMan.text().substr(1, $serveInfoItemServeMan.text().length - 2);
+                    var reserveFrom = $serveInfoItemFromTo.text().split('-')[0];
+                    var reserveTo = $serveInfoItemFromTo.text().split('-')[1];
+                    var serveItemB = $serveInfoItemServeItem.attr('serveItemBId');
+                    var serveDuration = $serveInfoItemServeDuration.text();
+                    var description = $serveInfoItemDescription.text();
+                    return { Id: -1, StationId: $('#CurrentMerchant').combobox('getValue'), OldManId: $(li).attr('oldManId'), ReserveDate: toJsonDate(Date.parseExact($(li).attr('reserveDate'), 'yyyyMMdd')), ReserveFrom: reserveFrom, ReserveTo: reserveTo, ServeManId: serveManId, ServeManName: serveManName, ServeItemB: serveItemB, ServeDuration: serveDuration, Description: description };
+                });
+                if (merchantServiceReserves.length > 0) {
+                    var urlAndDatas = _.map(merchantServiceReserves, function (o) {
+                        return [baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/CreateOne', $.toJSON(o)];
+                    });
+                    postAll(urlAndDatas, function () {
+                        var i = 0;
+                        for (key in arguments) {
+                            $($lisToAdd[i]).attr('serveInfoItemId', arguments[key].instance.Id);
+                            i++;
+                        }
+                        $lisToAdd.appendTo($('.selectedCell ul.formal'));
+                        if (top.WeiXinFlag == '1') {
+                            $('.selectedCell ul.formal a.remindServeInfoItemByWX').show();
+                        }
+                        $('.selectedCell .serveInfo ~ .saveServeInfo').hide();
+                        _queryData();
+                        //手工生成工单按钮显示
+                        if ($('.selectedCell .serveInfo ~ .createWorkOrder').size() == 0) {
+                            $('.selectedCell .serveInfo ~ .saveServeInfo').after('<a title="手工工单" class="createWorkOrder nicon-blue nicon-R6C14" onclick="CreateWorkOrder(\'' + merchantServiceReserves[0].OldManId + '\')" ></a>');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function updateToDB() {
+        alertConfirm('确定要将所有未确认预约信息保存吗？', function (r) {
+            if (r) {
+                var merchantServiceReserves = _.map($('ul.tmp li'), function (li) {
+                    var color = $(li).attr('color');
+                    var $serveInfoItemServeMan = $(li).find('span.serve-info-item-serveman' + color);
+                    var $serveInfoItemFromTo = $(li).find('span.serve-info-item-fromto' + color);
+                    var $serveInfoItemServeItem = $(li).find('span.serve-info-item-serveitem' + color);
+                    var $serveInfoItemServeDuration = $(li).find('span.serve-info-item-serveduration' + color);
+                    var $serveInfoItemDescription = $(li).find('div.serve-info-item-description' + color);
+                    var serveManId = $serveInfoItemServeMan.attr('serveManId');
+                    var serveManName = $serveInfoItemServeMan.text().substr(1, $serveInfoItemServeMan.text().length - 2);
+                    var reserveFrom = $serveInfoItemFromTo.text().split('-')[0];
+                    var reserveTo = $serveInfoItemFromTo.text().split('-')[1];
+                    var serveItemB = $serveInfoItemServeItem.attr('serveItemBId');
+                    var serveDuration = $serveInfoItemServeDuration.text();
+                    var description = $serveInfoItemDescription.text();
+                    return { Id: -1, StationId: $('#CurrentMerchant').combobox('getValue'), OldManId: $(li).attr('oldManId'), ReserveDate: toJsonDate(Date.parseExact($(li).attr('reserveDate'), 'yyyyMMdd')), ReserveFrom: reserveFrom, ReserveTo: reserveTo, ServeManId: serveManId, ServeManName: serveManName, ServeItemB: serveItemB, ServeDuration: serveDuration, Description: description };
+                });
+                if (merchantServiceReserves.length > 0) {
+                    postTo(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/CreateAll', $.toJSON(merchantServiceReserves), function (ret) {
+                        _queryData();
+                        alertInfo('保存成功');
+                    });
+                }
+            }
+        });
+    }
+
+    function reserve() {
+        _reserve($('.selectedCell'));
+    }
+    function _reserve(selectedCell) { 
+        var serveManId = $('#ServeMan').combobox('getValue');
+        if (!serveManId) {
+            alertInfo('请选择一个服务人员');
+            return;
+        }
+        var serveManName = $('#ServeMan').combobox('getText');
+        var reserveFrom = $('#ReserveFrom').timespinner('getValue');
+        var reserveTo = $('#ReserveTo').timespinner('getValue');
+        var serveItemBId = $('#ServeItemB').combobox('getValue');
+        var serveItemBName = $('#ServeItemB').combobox('getText');
+        var serveDuration = $('#ServeDuration').combobox('getValue');
+        var hour = Date.now().toString('HH');
+        var defaultServeFrom = '08:00';
+        var defaultServeTo = '12:00';
+        if (hour > 12) {
+            defaultServeFrom = '13:00';
+            defaultServeTo = '18:00';
+        }
+        var columnOption = $('#dg-Schedule').datagrid('getColumnOption', selectedCell.attr('field'));
+        selectedCell.find('.serveInfo').each(function () {
+            var serveInfoContainer = $(this).find('ul.tmp');
+            serveInfoContainer.append(replaceWithKeys(templateOfServerInfoForView, { DisplayStyleOfRemoveServeInfoItem: columnOption.changeFlag ? 'inline-block' : 'none', DisplayStyleOfRemindServeInfoItemByWX: 'none', ItemClickFunc: 'editserveInfoItem(this,' + columnOption.changeFlag + ')', OldManId: serveInfoContainer.attr('oldManId'), ReserveDate: serveInfoContainer.attr('reserveDate'), ReserveFrom: reserveFrom, ReserveTo: reserveTo, ServeManId: serveManId, ServeManName: serveManName, ServeItemBId: serveItemBId, ServeItemBName: serveItemBName, ServeDuration: serveDuration, Description: '', ServeManArriveTime: '服务未开始', ServeManLeaveTime: '', WorkOrderId: '00000000-0000-0000-0000-000000000000', Color: '-gray' }));
+            $.parser.parse(serveInfoContainer);
+        }).end().find('.saveServeInfo').each(function () {
+            $(this).show();
+        }).end().focus();
+    }
+
+    function undo() {
+        $('.serveInfo ~ .saveServeInfo').each(function () {
+            if (!$(this).is(':hidden')) {
+                $(this).hide().parent().find('ul.tmp').empty();
+            }
+        });
+    }
+
+    function checkUnSave() {
+        var ret = false;
+        $('.serveInfo ~ .saveServeInfo').each(function () {
+            if (!$(this).is(':hidden')) {
+                ret = true;
+            }
+        }); 
+        return ret;
+    }
+
+    //手工生成工单
+    function CreateWorkOrder(oldManId) {
+        alertConfirm('确定要手工生成工单吗？', function (r) {
+            if (r) {
+                var SelectedAreaId = $('#SelectedArea').combo('getValue');
+                var strStationId = $('#CurrentMerchant').combobox('getValue');
+                var iOnlyShowGovTurnkey = $('#OnlyShowGovTurnkey').prop('checked') ? 1 : 0;
+
+                var formData = { StationId: strStationId };
+                if (oldManId) {
+                    formData = _.extend(formData, { OldManId: oldManId });
+                }
+                else {
+                    formData = _.extend(formData, { AreaId3: SelectedAreaId, GovTurnkeyFlag: iOnlyShowGovTurnkey });
+                } 
+                postTo(baseCMSInvokeUrl + '/Oca/MerchantServiceReserveService/GenReserveWorkOrder', $.toJSON(formData), function (ret) {
+                    if (!oldManId) {
+                    }
+                    _queryData();
+                    alertInfo('保存成功');
+                });
+            }
+        });
+    }
+</script>

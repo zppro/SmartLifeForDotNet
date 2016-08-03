@@ -1,0 +1,382 @@
+﻿<style type="text/css"> 
+    .sp{ margin-left:3px; margin-right:3px;}
+</style>
+<table id="cc-B120208" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 200px;" valign="top">
+            <ul id="tree-B120208">
+            </ul>
+                        <input type="hidden"  id="_AreaId2" />
+                        <input type="hidden"  id="_AreaId3" />
+        </td>
+        <td valign="top">
+            <div id="toolbar-B120208"> 
+                <a href="javascript:void(0)" class="easyui-linkbutton"
+                iconcls="icon-add" plain="true" onclick="add()">新增</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" plain="true"
+                    onclick="search_complain()">查看历史</a> 
+            </div>
+            <div id="search-sample-B120208" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-B120208" method="post">
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right">
+                            关键字：
+                        </td>
+                        <td style="text-align:left">
+                            <input name="KeyWord" class="easyui-validatebox"   placeholder="姓名、身份证、电话、手机"/> 
+                        </td>
+                        <td style="text-align:right">
+                            投诉次数：
+                        </td>
+                        <td style="text-align:left">
+                            <input name="Times" class="easyui-validatebox" style="width: 90px;"/> 
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                                查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                                清空</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                                onclick="query()">高级查询</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-B120208">
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="dlg-B120208" class="easyui-dialog" style="width: 380px; height: 330px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-B120208"> 
+    <form id="fm-B120208" method="post" novalidate>
+    <div class="fitem">
+    <label  style=" font-size:larger; font-weight:bolder;">姓名：</label> 
+    <input type="hidden" name="OldManId" id="oldManId" /> 
+                    <input id="NameAndIDNo" type="text" /> 
+    </div> 
+    <div class="fitem">
+   <label  style=" font-size:larger; font-weight:bolder;">投诉内容</label>
+   <textarea id="ComplainContent" style=" width:300px; height:90px;" ></textarea>
+    </div> 
+    </form>
+    <div class="fitem" >
+    <table>
+     <tr height='25'><td width='120'><label class="sp" id="OldManName">姓名：</label></td><td width='100'><label class="sp" id="Gender">性别：</label></td><td  width='150'><label class="sp" id="Tel">电话：</label></td></tr>
+     <tr height='25'><td colspan='2'><label class="sp" id="IDNo">身份证号：</label></td><td><label class="sp" id="Mobile">手机：</label></td></tr>
+    </table> 
+    </div>
+</div>
+<div id="btn-B120208">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="add_complaininfo()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B120208" class="easyui-dialog" style="width: 280px; height: 290px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B120208">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B120208" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            投诉次数:</label>
+        <input name="Times">
+    </div>
+    <div class="fitem">
+        <label>
+            老人姓名:</label>
+        <input name="OldManName">
+    </div>
+    <div class="fitem">
+        <label>
+            身份证号:</label>
+        <input name="IDNo">
+    </div>
+    <div class="fitem">
+        <label>
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+        </label>
+        <input name="Tel" />
+    </div>
+    <div class="fitem">
+        <label>
+            手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:
+        </label>
+        <input name="Mobile"  />
+    </div>
+    <div class="fitem">
+        <label>
+            详细地址:</label>
+        <input name="Address" >
+    </div>
+    </form>
+</div>
+<div id="btn-search-B120208">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a> 
+</div>
+<script type="text/javascript">
+    $(function () {
+        var areas;
+        var mans;
+        var queryParams = {
+            sort: 'OldManName',
+            order: 'asc',
+            page: '1',
+            rows: '20',
+            fuzzyFieldOP: 'or',
+            instance: {
+                Status: "1",
+                AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id)
+            },
+            fuzzyFields: []
+        };
+        placeholder(); //占位符初始化  
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+            });
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            changeFormDataBeforeSubmit: function (formData) {
+                formData["AreaId"] = models[currentMenuCode].defaultModel.AreaId;
+            },
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['OldManName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            onAfterDialogOpen: function (row) {
+                $('#OldManName').text('姓名：' );
+                $('#Gender').text('性别：' );
+                $('#IDNo').text('身份证号：' );
+                $('#Tel').text( '电话：' );
+                $('#Mobile').text('手机： ');
+                $('#NameAndIDNo').combogrid({
+                    delay: 500,
+                    width: 150,
+                    panelWidth: 230,
+                    panelHeight: 240,
+                    mode: 'local',
+                    data: mans,
+                    idField: 'IDNo',
+                    textField: 'OldManName',
+                    //过滤
+                    onChange: function (newValue, oldValue) {
+                        queryParams.fuzzyFields = [
+                                                { key: 'OldManName', value: $.trim(newValue) },
+                                                { key: 'InputCode1', value: $.trim(newValue) },
+                                                { key: 'InputCode2', value: $.trim(newValue) }
+                                              ];
+                        if ($.trim(newValue) && ($.trim(newValue) == $.trim($('#NameAndIDNo').combobox("getText")))) {
+                            postTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/ListForEasyUIgridPage', $.toJSON(queryParams), function (ret) {
+                                $('#NameAndIDNo').combogrid("grid").datagrid("loadData", ret.rows);
+                            });
+                        }
+                    },
+                    filter: function (q, row) { 
+                        return row["OldManName"].indexOf(q) != -1 || row["IDNo"].indexOf(q) != -1;
+                    },
+                    columns: [[
+                                        { field: 'OldManName', title: '姓名', width: 50, sortable: true },
+                                        { field: 'Gender', title: '性别', width: 30, sortable: true, formatter: easyuigrid_genderFormatter },
+                                        { field: 'IDNo', title: '身份证号', width: 145, sortable: true }
+                                    ]],
+                    //姓名选择为空的时候    清除表单中的所以内容
+                    onHidePanel: function () {
+                        if ($('#NameAndIDNo').combo('getText') == "") {
+                            $('#OldManName').text('姓名：');
+                            $('#Gender').text('性别：');
+                            $('#IDNo').text('身份证号：');
+                            $('#Tel').text('电话：');
+                            $('#Mobile').text('手机： ');
+                        } 
+                    }, 
+                    //选择一个老人之后   把老人的基本信息都填入表单
+                    onCheck: function (index, record) {
+                        //                        alert($.toJSON(record));
+                        $('#OldManName').text('姓名：'+record.OldManName);
+                        $('#Gender').text('性别：'+easyuigrid_genderFormatter(record.Gender, null, null));
+                        $('#IDNo').text('身份证号：'+record.IDNo);
+                        $('#Tel').text(isnull('电话：'+record.Tel,'--'));
+                        $('#Mobile').text('手机：' + isnull(record.Mobile, '--'));
+                        $('#oldManId').val(record.OldManId);
+                    }
+                });
+            },
+            uiMode: 'list',
+            entityName: '老人投诉信息',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManComplainInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 },
+            defaultModelWhenAdd: { Gender: 'M' }
+        };
+
+        autoSizeOfHeight("cc-B120208", -30); //datagrid收缩30个像素点;
+
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13); //选择的是街道节点
+                        $("#_AreaId2").val(treeNodeId);
+                        $("#_AreaId3").val(null);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18); //选择的是社区节点 
+                        $("#_AreaId2").val(treeNode.attributes.PId);
+                        $("#_AreaId3").val(treeNodeId);
+                    }
+                }
+                else {
+                    areaId = ""; //选择的是区级节点
+                    $("#_AreaId2").val(null);
+                    $("#_AreaId3").val(null);
+                };
+
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    sort: 'Times',
+                    order: 'desc',
+                    filterFields: [
+                                    { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                                    ],
+                    fuzzyFields: [{ key: 'AreaId', value: areaId}]
+                });
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                var res;
+                postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                    res = result;
+                }, { async: false })
+                if (res) {
+                    getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+                } else {
+                    getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+                }
+            },
+            null,
+            function (treeObj) {
+                $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                    title: "",
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'OldManComplainInfo_Grid',
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'Times',
+                        order: 'desc',
+                        filterFields: [
+                                    { key: 'AreaId', value: models[currentMenuCode].defaultModel.AreaId }
+                                    ]
+                    },
+                    onDblClickRow: function (idx, row) {
+                        edit(row);
+                    },
+                    columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                            { field: 'CK', title: '', checkbox: true },
+                 { field: 'Times', title: '投诉次数', width: 60, align: 'center' },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                { field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 100 },
+                { field: 'AreaId2', title: '街道', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 150, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'Address', title: '家庭地址', width: 300 }
+        ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            }); //end loadTree
+
+    });
+
+        function add_complaininfo() {
+            var oldManId=$('#oldManId').val();
+            var  complainContent=$('#ComplainContent').val();
+        if (oldManId&&complainContent) {
+            var datas = { 'OldManId': oldManId, 'ComplainContent': complainContent };
+            postTo(baseCMSInvokeUrl + '/Oca/OldManComplainInfoService/', $.toJSON(datas), function (ret) {
+                if (ret.Success) {
+                    $('#' + models[currentMenuCode].dialogId).dialog('close');
+                    alertInfo('投诉信息添加完成');
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                }
+            });
+        }
+        else {
+            alertInfo('未选择投诉对象或者投诉内容为空');
+        }
+    }
+
+    function search_complain(row) {
+        var row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        if (row) {
+            openDialog('set-oldman-complain', 'views/dialogs/set-oldman-complaininfo.htm', function (callback, dialogData) {
+                postTo(baseCMSInvokeUrl + '/Oca/OldManComplainInfoService/', $.toJSON(dialogData), function (ret) {
+                    if (ret.Success) {
+                        alertInfo('投诉信息添加完成');
+                        callback();
+                        $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                    }
+                });
+            }, { dialogData: row, title: '“' + row.OldManName + '”的投诉信息', width: 480, height: 400, padding: 5, mergeDefault: true });
+        }
+        else {
+            alertInfo('请选中要设置老人！');
+        }
+    }
+
+    function resetexec() {
+        $('#StreetAndCommunity').combotree('clear');
+        $('#AreaId2_Start').val(null);
+        $('#AreaId3_Start').val(null);
+        resetfm(true);
+    }
+    //自动调高
+    function autoSizeOfHeight(id, iwidth) {
+        autosize(id, iwidth);
+        $("#" + models[currentMenuCode].gridId).height($("#" + id).height());
+    }
+</script>

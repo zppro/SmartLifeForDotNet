@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<report autoload="false" showtoolbar="true">
+	<datasourse>
+		<ds id="ds1" name="www">
+			select OldManName,count(CallServiceId)number from Oca_CallService callService,Oca_OldManBaseInfo baseInfo where callService.OldManId=baseInfo.OldManId and CONVERT(varchar(10),callservice.CheckInTime,20)>'{stateTime}' and CONVERT(varchar(10),callservice.CheckInTime,20) &lt; '{endTime}' and (callservice.AreaId='{AreaId}' or callservice.AreaId2='{AreaId}' or callservice.AreaId3='{AreaId}') group by OldManName
+      order by count(CallServiceId) desc
+    </ds>
+	</datasourse>
+	<params>
+		<param id="stateTime">stateTime</param>
+		<param id="endTime">endTime</param>
+		<param id="areaId">areaId</param>
+	</params>
+	<page>
+		<pagehead>
+			<table style="margin-left: 20px; padding-top: 20px">
+				<tbody>
+					<tr>
+						<td width="80">
+							行政区划：
+						</td>
+						<td width="280">
+							<input id="AreaSelect" class="easyui-combotree" style="width: 260px;" />
+						</td>
+						<td style="width: 70px;">
+							<span style="float: right">起始时间：</span>
+						</td>
+						<td style="width: 80px">
+							<input class="Wdate" id="CheckInTimeFrom" style="width: 100px" onfocus="var CheckInTimeTo=$dp.$('CheckInTimeTo');WdatePicker({onpicked:function(){CheckInTimeTo.focus();},dateFmt:getFormat(),maxDate:'#F{$dp.$D(\'CheckInTimeTo\')}'})" />
+						</td>
+						<td style="width: 70px;">
+							<span style="float: right">终止时间：</span>
+						</td>
+						<td style="width: 80px">
+							<input class="Wdate" id="CheckInTimeTo" style="width: 100px" onfocus="WdatePicker({dateFmt:getFormat(),minDate:'#F{$dp.$D(\'CheckInTimeFrom\')}'})" />
+						</td>
+						<td width="70">
+							<button onclick="reset();">
+								重置
+							</button>
+						</td>
+						<td style="width: 80px">
+							<button align="right" onclick="query();">
+								查询
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<input type="hidden" id="Area" />
+		</pagehead>
+		<pagebody>
+			<panel>
+				<panelhead>
+					<h2>
+						<span id="currentDate" style="font-size: 24px;"></span>老人呼叫号码次数统计表
+					</h2>
+				</panelhead>
+				<paneltitle>
+					<table>
+						<tr>
+							<th width='120' height='30'>姓名</th>
+							<th width='140' height='30'>呼叫次数</th>
+						</tr>
+					</table>
+				</paneltitle>
+				<panelbody>
+
+				</panelbody>
+				<panelfoot>
+					<span style="float: right;">制表时间：2014年5月5日</span>
+				</panelfoot>
+
+			</panel>
+		</pagebody>
+		<pagefoot>
+		</pagefoot>
+	</page>
+</report>

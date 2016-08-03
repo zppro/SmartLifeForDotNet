@@ -1,0 +1,501 @@
+﻿<style type="text/css">
+    .workexecute-mot{width:306px; height:275px;margin:10px 20px; float:left; border:solid 1px #006699;  -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; }
+    .workexecute-mot-head{width:100%;color:White; cursor:pointer; text-indent:2px; line-height:30px; height:30px; font-size:12px; background-color:#3C87C0; text-align:center; }
+    .workexecute-mot-body{width:100%; text-align:left; height:215px; font-size:20px; color:white; background-color:#006030; }
+    .workexecute-mot-body .bbody {padding:5px; height:155px;overflow: auto;}
+    .workexecute-mot-body .bfoot {padding:5px; height:38px;}
+    .workexecute-mot-body .cbfoot {height:20px; line-height:20px;}
+    .workexecute-mot-foot{width:100%;color:#000; text-indent:5px; line-height:35px; height:35px; font-size:24px; position:relative; }
+    .workexecute-mot-foot .ltool{ text-align:center; width:20%; vertical-align:middle; height:30px; line-height:31px;float:right;}
+    
+    .floorblock{min-height:60px;height:auto;margin:0 auto;}
+    .floorname{width:70%; height:30px; line-height:30px; margin:5px 0px 0px 0px; text-align:center; background-color:#87CEFF;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+    
+    .alink { z-index:201; cursor:pointer;}
+    
+    .roomoldman-panel{margin-left:5px; float:left; height:100%;width:75%;overflow-y: auto;}
+    .roomoldman-panel-block{min-height:60px;height:auto;margin:0 auto;}
+    .roomoldman-panel-floor{width:99%; height:30px; line-height:30px; padding-left:5px; margin:5px 0px 0px 0px; text-align:left; background-color:#87CEFF;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; font-size:16px;}
+    .roomoldman-panel-li{float:left; width:100px;height:50px; line-height:50px;margin:10px; text-align:center;  background-color:#006699;  -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+
+    .workitem-panel{margin-right:5px; float:right; height:300px;width:20%}
+</style>
+<div id="workexecute-block">
+    <div id="search-sample-B130402" title="查询" style="padding: 5px;">
+        <div id="CurrentAgency-c" style="display: inline-block; "><input id="CurrentAgency" /></div>
+    </div>
+    <div style="padding: 5px;width:99%; margin: 0 auto; height:25px; line-height:25px; vertical-align:middle;">
+        <div style=" width:10%; float:left;margin-left:10px;">图标描述:</div>
+        <div style=" width:10%; float:left;">
+            <a href="javascript:void(0)" class="alink nicon-blue nicon-R2C15"></a>&nbsp;&nbsp;未开始
+        </div>
+        <div style=" width:10%; float:left;">
+            <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C16"></a>&nbsp;&nbsp;服务中
+        </div>
+        <div style=" width:10%; float:left;">
+            <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C14"></a>&nbsp;&nbsp;服务完成
+        </div>
+        <div style=" width:10%; float:left;">
+            <a href="javascript:void(0)" class="alink  nicon-blue nicon-R2C13"></a>&nbsp;&nbsp;异常
+        </div>
+        <div style=" width:15%; float:left;">
+            <div style=" width:80px; border:2px solid #FFFF00; height:12px; display:inline-block;vertical-align:middle;"></div>&nbsp;&nbsp;服务中
+        </div>
+        <div style=" width:15%; float:right;">
+            <a href="javascript:void(0)" title="房间" class="alink nicon-blue nicon-R9C12" onclick="SwitchShowType('room')"></a>&nbsp;&nbsp;
+            <a href="javascript:void(0)" title="老人" class="alink nicon-blue nicon-R6C2" onclick="SwitchShowType('oldman')"></a>
+        </div>
+    </div>
+    <div id="workexecute-panel" style="width:99%; height:89%; margin: 0 auto; border:1px solid #00CDCD;  overflow-y: auto; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; ">
+    </div>
+</div>
+
+<div id="dlg-YYRemind-B130402" class="easyui-dialog" style="width: 420px; height: 280px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-YYRemind-B130402"  >
+    <div class="ftitle"></div>
+    <form id="fm-YYRemind-B130402" method="post" novalidate>
+    <div class="fitem">
+        <label>语音获得方式：</label>
+        <input id="TemplateYYRemind" type="radio" name="YYRemindType" value="Template" /><label for="TemplateYYRemind">预定录音</label>
+        <input id="RecordYYRemind" type="radio" name="YYRemindType" value="Record" /><label for="RecordYYRemind">分机录音</label>
+    </div>
+    <div class="fitem record-yy">
+        <label>录音分机号码：</label>
+        <input name="ExtNo" id="ExtNo"/>
+    </div>
+    <div class="fitem template-yy">
+        <label>模板语音文件名称：</label>
+        <input name="TemplateFileName" id="TemplateFileName" />
+        <input type="hidden" name="FileName" id="FileName"/>
+    </div>
+    <div class="fitem" >
+        <label>目标号码（多个号码请用","号隔开）：</label>
+    </div>
+    <div class="fitem" >
+        <input name="ServerManCallNo" id="ServerManCallNo" value=""/>
+    </div>
+    </form>
+</div>
+<div id="btn-YYRemind-B130402">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="SendYYInfo()">确认</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="CloseYY()">关闭</a>
+</div>
+
+
+<script type="text/javascript">
+    var isCS = false;
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+        isCS = true;
+    }
+
+    var repeatTime = 10000; //5秒
+    var stationId;
+    var interfaceUrl = window.runMode == 1 ? "http://192.168.1.11:8090/api/v1/" : "http://115.236.175.108:8090/api/v1/";
+    var iShowType; //默认房间展示
+
+    $(function () {
+        //加载机构 
+        $('#CurrentAgency').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgency').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgency-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                }
+            },
+            onSelect: function (record) {
+                loading();
+            }
+        });
+        loading();
+
+        autosize('workexecute-block');
+
+        //获取当前时间下服务监控信息 
+        setTimeout(function () {
+            var lis = $("#workexecute-panel li");
+            if (stationId && lis && lis.length > 0) {
+                getTo(baseCMSInvokeUrl + "/Pam/WorkExecuteService/GetWorkExecuteMonitor/" + stationId + ",monitor", null, function (ret) {
+                    if (ret.Success && ret.rows) {
+                        var rows = _.map(ret.rows, function (o) {
+                            return xml2json.parser(o, 'StringObjectDictionary');
+                        });
+
+                        if (iShowType == 'room') {
+                            _.each(lis, function (o) {
+                                var roomId = $(o).attr("id");
+                                var executes = _.where(rows, { "RoomId": roomId });
+                                $(o).find(".bbody").html(_.map(executes, function (i) {
+                                    var tmphtm = [];
+                                    var strIcon, strReminde;
+                                    if (i.Reminded == 0) {
+                                        strIcon = "nicon-R2C15";
+                                        strReminde = "未服务";
+                                    }
+                                    else if (i.ServeManArriveTime && !i.ServeManLeaveTime) {
+                                        strIcon = "nicon-R2C16";
+                                        strReminde = "服务中";
+                                    }
+                                    else if (i.ServeManArriveTime && i.ServeManLeaveTime) {
+                                        strIcon = "nicon-R2C14";
+                                        strReminde = "服务完成";
+                                    }
+                                    else {
+                                        strIcon = "nicon-R2C13"
+                                        strReminde = "异常";
+                                    }
+
+                                    var strContent;
+                                    if (i.SickBedNo) {
+                                        strContent = i.SickBedNo + '床 : ' + i.OldManName + ' ' + Date.parse(i.RemindTime).pattern("HH:mm") + ' 需要 ' + '[' + i.UserName + '] 帮助 ' + i.ItemName;
+                                    }
+                                    else {
+                                        strContent = '?床 : ' + i.OldManName + ' ' + Date.parse(i.RemindTime).pattern("HH:mm") + ' 需要 ' + '[' + i.UserName + '] 帮助 ' + i.ItemName;
+                                    }
+                                    tmphtm.push('<div id="WorkExcuted-' + i.Id + '" style="white-space:nowrap;">');
+                                    tmphtm.push('<a title="' + strReminde + '" href="javascript:void(0)" class="alink nicon-blue ' + strIcon + '"></a>');
+                                    tmphtm.push('<span style="vertical-align:middle;' + (strReminde == '服务中' ? 'border:1px #FFFF00 solid;' : '') + '">' + strContent + '</span>');
+                                    tmphtm.push('</div>');
+
+                                    return tmphtm.join("");
+                                }).join(""));
+
+                            });
+                        }
+                        else {
+                            $("#workexecute-panel .workitem-panel").html('');
+
+                            _.each(lis, function (o) {
+                                var liId = $(o).attr("id").split('|');
+                                var executeItems = _.where(rows, { "RoomId": liId[0], "OldManId": liId[1] });
+                                var doItem = _.filter(executeItems, function (k) {
+                                    return k.ServeManArriveTime && !k.ServeManLeaveTime;
+                                });
+
+                                if (doItem && doItem.length > 0) {
+                                    $(o).css('background-color', '#006030');
+                                    $("#workexecute-panel .workitem-panel").append('<div style="width:100%; height:20px; line-height:20px; text-align:left">' + Date.parse(doItem.RemindTime).pattern("HH:mm") + ' [' + doItem.UserName + ']正在帮助 ' + doItem.SickBedNo + '床 : ' + doItem.OldManName + doItem.ItemName + '</div>');
+                                }
+                                else {
+                                    $(o).css('background-color', '#006699');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+
+    });
+
+    function loading() {
+        SwitchShowType('room');
+
+        iShowType = 'room';
+    }
+
+    function SwitchShowType(strShowFlag) {
+        if (iShowType != strShowFlag) {
+            iShowType = strShowFlag;
+
+            if (strShowFlag == 'room') {
+                toRoomShow();
+            }
+            else {
+                toOldManOfBedShow();
+            }
+        }
+    }
+
+    function toRoomShow() {
+        stationId = $('#CurrentAgency').combobox('getValue');
+        $("#workexecute-panel").html("");   //清空内容
+
+        //获取一行展示个数
+        var ili = parseInt($('#workexecute-panel').width() / 308);
+        getTo(baseCMSInvokeUrl + "/Pam/RoomService/Query?parms=" + $.toJSON({ 'StationId': stationId, 'Status': 1, 'OrderByClause': " ISNULL(FloorNo,RoomNo),RoomNo" }), null, function (result) {
+            if (result.Success && result.rows) {
+                var htm = [], htmls = [];
+                var row, tmpFloorNo;
+                var iRooms = 0; //楼层房间数
+                for (var i = 0; i < result.rows.length; i++) {
+                    row = result.rows[i];
+
+                    if (i > 0 && tmpFloorNo != row.FloorNo) {
+                        htm.push("<div class='floorblock' style='min-height:" + ((parseInt(iRooms % ili) > 0 ? (parseInt(iRooms / ili) + 1) : parseInt(iRooms / ili)) * 315 + 10) + "px'><div class='floorname' >" + result.rows[i - 1].FloorNo + "</div>");
+                        htm.push("<ul>");
+                        htm.push(htmls.join(""));
+                        htm.push("</ul></div>");
+
+                        htmls = [];
+                        iRooms = 0;
+                    }
+                    var onclick = "checkMore('" + row.RoomId + "','" + row.RoomNo + "','" + row.BedNo + "')";
+                    htmls.push("<li class='workexecute-mot' id='" + row.RoomId + "' >");
+                    htmls.push('<div class="workexecute-mot-head" onclick="' + onclick + '"><span>' + row.RoomNo + '</span></div>');
+                    htmls.push("<div class='workexecute-mot-body'>");
+                    htmls.push("<div class='bbody'></div>");
+                    htmls.push("<div class='bfoot'>");
+                    htmls.push("<div class='cbfoot'>分机号 : " + row.ExtNo + "</div>");
+                    htmls.push('<div class="cbfoot">床位数 : ' + row.BedNo + '&nbsp;&nbsp;&nbsp;&nbsp;入住人数 : ' + row.OccupancyNumber + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" style="color:white;text-decoration:underline;" onclick="' + onclick + '">查看更多</a></div>');
+                    htmls.push("</div>");
+                    htmls.push("<div class='workexecute-mot-foot'><div class='ltool'><a href='javascript:void(0);' onclick='openYY(\"Record\")' title='语音提醒' class='nicon-blue nicon-R10C8'></a></div></div>");
+                    htmls.push("</li>");
+
+                    tmpFloorNo = row.FloorNo;
+                    iRooms++;
+
+                    //最后一个
+                    if (i == result.rows.length - 1) {
+                        htm.push("<div class='floorblock' style='min-height:" + ((parseInt(iRooms % ili) > 0 ? (parseInt(iRooms / ili) + 1) : parseInt(iRooms / ili)) * 315 + 10) + "px'><div class='floorname'>" + row.FloorNo + "</div>");
+                        htm.push("<ul>");
+                        htm.push(htmls.join(""));
+                        htm.push("</ul></div>");
+                    }
+                }
+
+                $("#workexecute-panel").html(htm.join(""));
+            }
+        });
+    }
+
+    function toOldManOfBedShow() {
+        stationId = $('#CurrentAgency').combobox('getValue');
+        $("#workexecute-panel").html("");   //清空内容
+
+        var ili = parseInt($('#workexecute-panel').width() * 0.75 / 102);
+        getTo(baseCMSInvokeUrl + "/Pam/RoomService/GetRoomInfoWithOldManForStation/" + stationId, null, function (result) {
+            if (result.Success && result.rows) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+
+                var tmpFloorNo;
+                var htm = [], htmls = [];
+                var ibeds = 0;
+                for (var i = 0; i < rows.length; i++) {
+                    var item = rows[i];
+                    if (i > 0 && tmpFloorNo != item.FloorNo) {
+                        htm.push("<div class='roomoldman-panel-block' style='min-height:" + ((parseInt(ibeds % ili) > 0 ? (parseInt(ibeds / ili) + 1) : parseInt(ibeds / ili)) * 100 + 20) + "px' ><div class='roomoldman-panel-floor'>" + rows[i - 1].FloorNo + "</div>");
+                        htm.push("<ul>" + htmls.join("") + "</ul>");
+                        htm.push("</div>");
+                        htmls = [];
+                        ibeds = 0;
+                    }
+
+                    htmls.push("<li class='roomoldman-panel-li' id='" + item.RoomId + '|' + item.OldManId + "'>");
+                    htmls.push("<div style='color:#fff;'>" + item.RoomNo + "/" + item.SickBedNo + "床/" + item.OldManName + "</div>");
+                    htmls.push("</li>");
+
+                    tmpFloorNo = item.FloorNo;
+                    ibeds++;
+
+                    //最后一个
+                    if (i == result.rows.length - 1) {
+                        htm.push("<div class='roomoldman-panel-block' style='min-height:" + ((parseInt(ibeds % ili) > 0 ? (parseInt(ibeds / ili) + 1) : parseInt(ibeds / ili)) * 100 + 20) + "px' ><div class='roomoldman-panel-floor'>" + item.FloorNo + "</div>");
+                        htm.push("<ul>" + htmls.join("") + "</ul>");
+                        htm.push("</div>");
+                    }
+                }
+
+                $("#workexecute-panel").html("<div class='roomoldman-panel'>" + htm.join("") + "</div><div class='workitem-panel' ></div>");
+            }
+        });
+    }
+
+
+    function checkMore(roomId, roomNo, bedNo) { 
+        if (isCS) {
+            window.external.Ready4OpenTarget('_tab_' + roomId, roomNo + '房间监控', '../pam-manage/workexecute-monitor-room.htm?currentMenuCode=' + roomId + '$' + stationId + '|' + bedNo + ',' + roomNo + '&canFullScreen=true', '_tab', '71XXO01');
+         }
+        else {
+            top.openTab(roomId, stationId + '|' + bedNo + ',' + roomNo, roomNo + '房间监控', 'views/pam-manage/workexecute-monitor-room.htm', null, null, true, true, false, true);
+        }
+    }
+
+    //录音提醒
+    function openYY(itype) {
+        stationId = $('#CurrentAgency').combobox('getValue');
+
+        $('#dlg-YYRemind-B130402').dialog(_.extend({
+            inline: false,
+            onBeforeOpen: function () {
+                $("#dlg-YYRemind-B130402 form").form('clear');
+
+                //填充发送语音文件号码
+                $('#ServerManCallNo').combogrid({
+                    delay: 500,
+                    width: 367,
+                    panelHeight: 240,
+                    multiple: true,
+                    idField: 'CallNo',
+                    textField: 'CallNo',
+                    method: 'get',
+                    url: baseCMSInvokeUrl + '/Pam/ServeManService/QueryServeManConfigInfo?parms=' + $.toJSON({ "StationId": stationId }),
+                    filter: function (q, row) {
+                        return row["CallNo"].toString().indexOf(q) > -1 || row["UserName"].toString().indexOf(q) > -1;
+                    },
+                    onClickRow: function (idx, row) {
+                        if (!row.CallNo) { $(this).datagrid('unselectRow', idx); }
+                    },
+                    onCheck: function (idx, row) {
+                        if (!row.CallNo) { $(this).datagrid('uncheckRow', idx); }
+                    },
+                    onCheckAll: function (rows) {
+                        _.each(rows, function (o, i) {
+                            if (!o.CallNo) {
+                                $('#ServerManCallNo').combogrid('grid').datagrid('uncheckRow', i);
+                            }
+                        });
+                    },
+                    columns: [[
+                        { field: 'UserId', title: 'Id', width: 120, hidden: true },
+                        { field: 'CK', title: '', checkbox: true },
+                        { field: 'CallNo', title: '呼叫号码', width: 120, align: 'center' },
+                        { field: 'UserName', title: '服务人员', width: 120, align: 'center' },
+                        { field: 'Gender', title: '性别', width: 80, align: 'center', formatter: easyuigrid_genderFormatter }
+                    ]],
+                    loader: easyuiLoaderForStringObjectDictionary
+                });
+
+                //填充待录音分机
+                $('#ExtNo').combobox({
+                    width: 152,
+                    panelHeight: 80,
+                    method: 'get',
+                    url: baseCMSInvokeUrl + '/Pam/RoomService/Query?parms=' + $.toJSON({ "Status": 1, "StationId": stationId }),
+                    loadFilter: function (data) {
+                        return _.map(_.filter(data.rows, function (item) {
+                            return item.ExtNo;
+                        }), function (k) {
+                            return { "ItemId": k.ExtNo, "ItemName": k.ExtNo };
+                        });
+                    },
+                    filter: function (q, row) {
+                        return row["ItemName"].indexOf(q) > -1;
+                    },
+                    valueField: 'ItemId',
+                    textField: 'ItemName'
+                });
+
+                //填充语音模板
+                $('#TemplateFileName').combobox({
+                    width: 249,
+                    panelHeight: 80,
+                    editable: false,
+                    onSelect: function (record) {
+                        $('#FileName').val(record.ItemName);
+                    },
+                    valueField: 'ItemId',
+                    textField: 'ItemName'
+                });
+
+                //填充语音模板
+                var orgCode = _.findWhere(top.gUserInfo.MappingAgencys, { StationId: stationId }).StationCode.toString().substr(1, 2);
+                postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/IpccSpeechTemplateList", $.toJSON({ RemoteUrl: interfaceUrl + "QueryFiles", RetType: "json", OrgCode: orgCode }), function (result) {
+                    var ret = eval('(' + result.ret.replace(/\r\n/g, "") + ')');
+                    if (ret && ret.fileCount > 0) {
+                        var tmpRet = _.map(ret.files, function (k) { return { "ItemId": k, "ItemName": k} });
+                        $('#TemplateFileName').combobox("loadData", tmpRet);
+                    }
+                });
+            },
+            onOpen: function () {
+                $("#dlg-YYRemind-B130402 .template-yy").hide();
+                $("#dlg-YYRemind-B130402 .record-yy").show();
+                $('#RecordYYRemind').prop("checked", true);
+
+                $("#dlg-YYRemind-B130402 input[name='YYRemindType']").unbind("click").bind("click", function () {
+                    if ($(this).val() == "Template") {
+                        $("#dlg-YYRemind-B130402 .template-yy").show();
+                        $("#dlg-YYRemind-B130402 .record-yy").hide();
+                    }
+                    else {
+                        $("#dlg-YYRemind-B130402 .template-yy").hide();
+                        $("#dlg-YYRemind-B130402 .record-yy").show();
+                    }
+                });
+            },
+            modal: true
+        }, null)).dialog('open').dialog('setTitle', '编辑-发送录音');
+    }
+
+    function SendYYInfo() {
+        var formData = $("#dlg-YYRemind-B130402 form").serializeObject();
+
+        if (formData.YYRemindType == "Template") {
+            if (!formData.FileName) {
+                alertInfo("请选择一个语音模板文件！");
+                return;
+            }
+        }
+        else {
+            var r = /^[1-9]\d*$/;
+            if (!r.test(formData.ExtNo)) {
+                alertInfo("请选择或者输入一个合法分机号！");
+                return;
+            }
+
+            //组合录音文件名称
+            formData.FileName = $('#CurrentAgency').combobox('getText').toString() + "-" + (new Date()).getTime().toString() + ".wav";
+        }
+
+        //验证发送目标号码
+        if (!formData.ServerManCallNo) {
+            alertInfo("请输入合法需发送语音的目标号码！");
+            return;
+        }
+        else {
+            var rDestNo = /^[1-9]\d*$/;
+            var strDestNo = formData.ServerManCallNo.split(",");
+            var errDestNo = _.filter(strDestNo, function (o) { return !rDestNo.test(o) });
+            if (errDestNo && errDestNo.length > 0) {
+                alertInfo("请输入合法需发送语音的目标号码！");
+                return;
+            }
+            formData.TelNo = strDestNo;
+        }
+
+        if (formData.YYRemindType == "Template") {
+            postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/IpccRECManage", $.toJSON(_.extend(formData, { RemoteUrl: interfaceUrl + "RecordPlay" })), function (ret) {
+                if (ret.Success) {
+                    alertInfo("发送成功!");
+                }
+            });
+        }
+        else {
+            postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/IpccRECManage", $.toJSON(_.extend(formData, { RemoteUrl: interfaceUrl + "RecordCreate" })), function (result) {
+                if (result.Success) {
+                    alertConfirm('确定录音完毕,发送录音吗？', function (r) {
+                        if (r) {
+                            postTo(top.baseCMSInvokeUrl + "/Share/CrossDomain/IpccRECManage", $.toJSON(_.extend(formData, { RemoteUrl: interfaceUrl + "RecordPlay" })), function (ret) {
+                                if (ret.Success) {
+                                    alertInfo("发送成功!");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function CloseYY() {
+        $("#dlg-YYRemind-B130402").dialog("close");
+    }
+
+</script>

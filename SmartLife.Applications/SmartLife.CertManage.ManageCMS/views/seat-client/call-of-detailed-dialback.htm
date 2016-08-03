@@ -1,0 +1,33 @@
+﻿<div id="detailed-dialback-panel" style="width:99%; margin: 0 auto;">
+    <table id="dg-detailed-dialback">
+    </table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        autosize('detailed-dialback-panel', -3);
+        $("#dg-detailed-dialback").height($("#detailed-dialback-panel").height());
+        $('#dg-detailed-dialback').datagrid(easyuigrid_settings({
+            title: "",
+            rownumbers: true,
+            singleSelect: true,
+            columns: [[
+                { field: 'CallServiceId', title: '服务编号', width: 120, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 100 },
+                { field: 'Content', title: '呼叫服务内容', width: 150 },
+                { field: 'CheckInTime', title: '呼入时间', width: 120, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                { field: 'Age', title: '年龄', width: 60, align: 'center' },
+                { field: 'Sex', title: '性别', width: 60, align: 'center' },
+                { field: 'Address', title: '家庭地址', width: 300 }
+            ]],
+            loader: easyuiLoaderForStringObjectDictionary//easyuiLoader
+        }));
+
+        var strCallServiceList = window.external.getDialBackPageData();
+        if (strCallServiceList) {
+            var callServiceList = eval('(' + strCallServiceList + ')');
+
+            $('#dg-detailed-dialback').datagrid("loadData", callServiceList);
+        }
+    });
+
+</script>

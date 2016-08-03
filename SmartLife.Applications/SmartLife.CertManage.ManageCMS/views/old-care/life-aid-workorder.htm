@@ -1,0 +1,672 @@
+﻿<div id="the-workorder" class="easyui-dialog" style="width: 1024px; height: 692px; background-color:gray;
+    padding: 0px;" closed="true" cache="false" buttons="#btn-workorder">
+    <input type="hidden" id="WorkOrderId" />
+    <input type="hidden" id="CallServiceId" />
+    <input type="hidden" id="DoStatus" />
+    <input type="hidden" id="SpecialFlag" />
+    <table class="workorder-content" style="width: 800px; margin: 0px auto;" cellspacing="0"
+            cellpadding="0">
+            <tr style="height: 50px;">
+                <td>
+                    <div class="workorder-head">
+                        生活服务工单</div>
+                </td>
+            </tr>
+            <tr style="height: 30px;">
+                <td>
+                    <div class="workorder-neck">
+                        <div id="field-WorkOrderNo">
+                            工单编号：<span>############-######-###</span></div>
+                        <div id="field-DoStatus">
+                            工单状态：<span>####-##-##</span></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="workorder-body">
+                        <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                            <colgroup>
+                                <col style="width: 95px;" />
+                                <col style="width: 21%;" />
+                                <col style="width: 95px;" />
+                                <col style="width: 21%;" />
+                                <col style="width: 95px;" />
+                                <col />
+                            </colgroup>
+                            <tr style="height: 60px;">
+                                <td>
+                                    工单内容：
+                                </td>
+                                <td colspan="5">
+                                    <textarea id="field-WorkOrderContent" style="width: 99%;" rows="3" readonly></textarea>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td>
+                                    工单归属：
+                                </td>
+                                <td colspan="5" >
+                                    <div id="field-WorkOrderArea" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td>
+                                    呼入时间：
+                                </td>
+                                <td colspan="5" >
+                                    <div id="field-CallIn-CheckInTime">
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td>
+                                    服务大类：
+                                </td>
+                                <td>
+                                    <div id="field-ServeItemAName" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    服务小类：
+                                </td>
+                                <td>
+                                    <div id="field-ServeItemBName" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    服务方式：
+                                </td>
+                                <td>
+                                    <div id="field-ServeModeName" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+                                 <td>
+                                    服务费用(元)：
+                                </td>
+                                <td>
+                                    <div id="field-ServeFee" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    政府承担(元)：
+                                </td>
+                                <td>
+                                    <div id="field-ServeFeeByGov" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    自费(元)：
+                                </td>
+                                <td>
+                                    <div id="field-ServeFeeBySelf" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height:30px;">
+                                 <td>
+                                    其他收费项：
+                                </td>
+                                <td colspan="3">
+                                    <div id="field-OtherCharges" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    其他收费(元)：
+                                </td>
+                                <td>
+                                    <div id="field-OtherChargesFee" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td>
+                                    服务半径：
+                                </td>
+                                <td>
+                                    <div id="field-ServeRadiusName" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    服务类别：
+                                </td>
+                                <td>
+                                    <div id="field-ServeTypeName" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    要求上门时间：
+                                </td>
+                                <td>
+                                    <div id="field-ServiceTimeRequired" >
+                                    <span></span></div>
+                                </td> 
+                            </tr>  
+                            <tr style="height: 30px;">
+                                <td >
+                                    要求备注：
+                                </td>
+                                <td colspan="5"> 
+                                    <textarea id="field-RemarkRequired" style="width: 99%;" rows="3" readonly></textarea>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td>
+                                    督办时间：
+                                </td>
+                                <td>
+                                    <div id="field-SuperviseTime" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    督办人员：
+                                </td>
+                                <td>
+                                    <div id="field-SupervisedByName" >
+                                    <span></span></div>
+                                </td>
+                                <td>
+                                    服务最终结果：
+                                </td>
+                                <td >
+                                    <div id="field-ServeFinalResultName" >
+                                    <span></span></div>
+                                </td>
+                            </tr> 
+                            <tr style="height: 60px;">
+                                <td >
+                                    最终结果备注：
+                                </td>
+                                <td colspan="5" > 
+                                    <textarea id="field-ServeFinalResultRemark" style="width: 99%;" rows="3" readonly></textarea>
+                                </td> 
+                            </tr>
+                        </table> 
+                        <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    服务对象：
+                                </td>
+                                <td >
+                                    <div id="field-OldManName" >
+                                    <span></span></div>
+                                </td>
+                                <td style="width: 50px;">
+                                    性别：
+                                </td>
+                                <td style="width: 50px;">
+                                    <div id="field-Gender" >
+                                    <span style="float:none;"></span></div>
+                                </td>
+                                <td style="width: 50px;">
+                                    座机：
+                                </td>
+                                <td>
+                                    <div id="field-Tel" >
+                                    <span></span></div>
+                                </td>
+                                <td style="width: 50px">
+                                    手机：
+                                </td>
+                                <td >
+                                    <div id="field-Mobile" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    家庭地址：
+                                </td>
+                                <td colspan="7">
+                                    <div id="field-Address" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                            <colgroup>
+                                <col style="width: 95px;" />
+                                <col style="width: 21%;" />
+                                <col style="width: 95px;" />
+                                <col style="width: 21%;" />
+                                <col style="width: 95px;" />
+                                <col />
+                            </colgroup>
+                            <tr style="height: 100px;">
+                                <td style="width: 95px;">
+                                    候选商家：
+                                </td>
+                                <td id="td-ServiceStationsDispatched" colspan="5">
+                                    <div></div> 
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    最终服务商家：
+                                </td>
+                                <td colspan="5" >
+                                    <div id="field-ServeStationName" >
+                                    <span></span></div>
+                                </td> 
+                            </tr>
+                             <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    服务人员：
+                                </td>
+                                <td>
+                                    <div id="field-ServeManName" >
+                                    <span></span></div>
+                                </td> 
+                                <td style="width: 95px;">
+                                    人员派遣时间：
+                                </td>
+                                <td>
+                                    <div id="field-ServeManDispatchedTime" >
+                                    <span></span></div>
+                                </td>
+                                <td colspan=2></td>
+                             </tr>
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    服务开始：
+                                </td>
+                                <td>
+                                    <div id="field-ServeBeginTime" >
+                                    <span></span></div>
+                                </td>
+                                <td >
+                                    服务结束：
+                                </td>
+                                <td >
+                                    <div id="field-ServeEndTime" >
+                                    <span></span></div>
+                                </td>
+                                <td style="width: 95px;">
+                                    服务结果：
+                                </td>
+                                <td >
+                                    <div id="field-ServeResultName" >
+                                    <span></span></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 95px;">
+                                    结果备注：
+                                </td>
+                                <td colspan="5"> 
+                                    <textarea id="field-ServeResultRemark" style="width: 99%;" rows="3" readonly></textarea>
+                                </td>
+                            </tr> 
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    老人评价商家：
+                                </td>
+                                <td>
+                                    <div id="field-FeedbackToServiceStationName" >
+                                    <span></span></div>
+                                </td>
+                                <td style="width: 95px;">
+                                    老人评价时间：
+                                </td>
+                                <td >
+                                    <div id="field-FeedbackTimeToServiceStation" >
+                                    <span></span></div>
+                                </td> 
+                                <td colspan="2" >
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td >
+                                    老人评价备注：
+                                </td>
+                                <td colspan="5" >
+                                    <textarea id="field-FeedbackRemarkToServiceStation" style="width: 99%;" rows="3" readonly></textarea>
+                                </td> 
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    人员到达时间：
+                                </td>
+                                <td >
+                                    <div id="field-ServeManArriveTime" >
+                                    <span></span></div>
+                                </td> 
+                                <td style="width: 95px;">
+                                    人员离开时间：
+                                </td>
+                                <td >
+                                    <div id="field-ServeManLeaveTime" >
+                                    <span></span></div>
+                                </td>
+                                <td colspan="2" >
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td style="width: 95px;">
+                                    商家评价老人：
+                                </td>
+                                <td>
+                                   <div id="field-FeedbackToOldManName" >
+                                    <span></span></div>
+                                </td>
+                                <td style="width: 95px;">
+                                    商家评价时间：
+                                </td>
+                                <td >
+                                    <div id="field-FeedbackTimeToOldMan" >
+                                    <span></span></div>
+                                </td> 
+                                <td colspan="2" >
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td >
+                                    商家评价备注：
+                                </td>
+                                <td colspan="5" > 
+                                    <textarea id="FeedbackRemarkToOldMan" style="width: 99%;" rows="3" readonly></textarea>
+                                </td> 
+                            </tr> 
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <tr style="height: 30px;">
+                <td>
+                    <div class="workorder-foot">
+                        <div id="field-OperatedByName">
+                            制单人：<span>###</span></div>
+                        <div id="field-CheckInTime">
+                            制单日期：<span>####-##-##</span></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div id="dlg-return-visit-c" style="display:none;">
+        <div id="dlg-return-visit" class="easyui-dialog" style="width:600px;height: 300px;
+            padding: 0px;" closed="true" cache="false" buttons="#btn-return-visit">
+            <div class="ftitle"></div>
+            <form id="fm-return-visit" method="post" novalidate>
+            <div class="fitem">
+                <label>
+                    人员到达时间:</label> 
+                    <input type="text" class="Wdate easyui-validatebox" style="background-color:#FFF3F3" required="true" missingMessage="人员到达时间不能为空"  name="ServeManArriveTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+                <label>
+                    人员离开时间:</label>
+                <input type="text" class="Wdate easyui-validatebox"   style="background-color:#FFF3F3" required="true" missingMessage="人员离开时间不能为空" name="ServeManLeaveTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+            </div>
+            <div class="fitem">
+                <label>
+                    老人评价商家:</label>
+                    <div id="c-FeedbackToServiceStation"></div>
+            </div> 
+            <div class="fitem">
+                <label>
+                    老人评价备注:</label>
+                    <textarea name="FeedbackRemarkToServiceStation" style="width: 480px;" maxlength="500"></textarea>
+            </div>
+            <div class="fitem">
+                <label>
+                    服务判定结果:</label>
+                    <div id="c-ServeFinalResult"></div>
+            </div> 
+            <div class="fitem">
+                <label>
+                    最终结果备注:</label>
+                    <textarea name="ServeFinalResultRemark" style="width: 480px;" maxlength="400"></textarea>
+            </div> 
+            </form>
+        </div>
+        <div id="btn-return-visit">
+            <a  href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doOkReturnVisit()">
+                提交</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+                    onclick="doCancelReturnVisit()">取消</a>
+        </div>
+        </div>
+</div>
+<div id="btn-workorder">
+    <a id="btnUpToSupervise" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="upToSupervise()" style="display:none;">
+        人工转督办</a> 
+    <a id="btnOkToWorkOrder" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doOkWorkOrder()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="doCancelWorkOrder()">关闭</a>
+</div>
+<div id="workorder-update-vouch-block" ></div>
+<script type="text/javascript">
+    
+    $(function () {
+    });
+
+    function getDoStatusName(doStatus) {
+        var item = _.find('派单中:0~t处置中:1~t督办中:2~t回访中:3~t回访完成:4'.split('~t'), function (o) {
+            return o.split(':')[1] == doStatus;
+        });
+        if (item) {
+            return item.split(':')[0];
+        }
+        return "";
+    }
+
+    function getReceiveStatusName(receiveStatus) {
+        var item = _.find('未响应:0~t申请接单:1~t接单失败:2~t接单成功:3'.split('~t'), function (o) {
+            return o.split(':')[1] == receiveStatus;
+        });
+        if (item) {
+            return item.split(':')[0];
+        }
+        return "";
+    }
+
+    function closeWin() {
+        $('#the-workorder').dialog('close');
+        
+        if (top.execMode == "CS" && fromWhere == "index") {
+            top.external.CloseWin();
+        }
+    }
+
+    function doCancelWorkOrder() {
+        closeWin();   
+    }
+
+    function doOkWorkOrder() {
+        var workOrderId = $('#WorkOrderId').val(); 
+        var doStatus = parseInt($('#DoStatus').val());
+        if (doStatus == 0) {
+            //派单中
+            var selectedServiceStationId = $('input[type="radio"][name="ServiceStationsDispatched"]:checked').val();
+            if (!selectedServiceStationId) {
+                alertError('请为老人挑选一家商家进行上门服务');
+                return;
+            }
+            var selectedServiceStationName = $('input[type="radio"][name="ServiceStationsDispatched"]:checked').attr('stationName');
+            alertConfirm('确定指派【' + selectedServiceStationName + '】上门服务？', function (ret) {
+                if (ret == true) {
+                    postTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/AssignTheFinalStation', $.toJSON({ WorkOrderId: workOrderId, StationId: selectedServiceStationId }), function (ret) {
+                        alertInfo('成功指派商家');
+                        loadWorkOrderContent(workOrderId);
+                    });
+                }
+            });
+        }
+        else if (doStatus == 2) {
+            if (left($('#field-WorkOrderNo span').text(), 2) == '02') {
+                getHtml(urlRoot + 'dialogs/life-aid-workorder-update-vouch.htm', function (str) {
+                    $("#workorder-update-vouch-block").html(str);
+                    $.parser.parse('#fm-workorder-update-vouch,#btn-workorder-update-vouch');
+                    $("#workorder-update-vouch").dialog({
+                        inline: false,
+                        onClose: function () {
+                            if (needCloseParent) {
+                                $(this).dialog('destroy');
+                                closeWin();
+                            }
+                            else {
+                                $(this).dialog('destroy');
+                            }
+                        },
+                        onBeforeOpen: function () {
+                            loadVouchWorkOrderInfo(workOrderId);
+                        },
+                        modal: true
+                    }).dialog('open').dialog('setTitle', '政府购买服务-工单督办对话框');
+                });
+            }
+        }
+        else if (doStatus == 3) {
+            //完成回访
+            //取字典11016和11017
+            getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/11016', top.ajaxData_InvokeUrl + '/GetDictionaryItem/11017'], function (optionsOfServeFinalResult, optionsOfFeedbackToServiceStation) {
+
+                $('#c-ServeFinalResult').html(_.map(optionsOfServeFinalResult, function (o) {
+                    return '<span><input type="radio" name="ServeFinalResult" id="ServeFinalResult-' + o.ItemId + '"  value="' + o.ItemId + '" /><label for="ServeFinalResult-' + o.ItemId + '">' + o.ItemName + '</label></span>';
+                }).join(""));
+
+                $('#c-FeedbackToServiceStation').html(_.map(optionsOfFeedbackToServiceStation, function (o) {
+                    return '<span><input type="radio" name="FeedbackToServiceStation" id="FeedbackToServiceStation-' + o.ItemId + '"  value="' + o.ItemId + '" /><label for="FeedbackToServiceStation-' + o.ItemId + '">' + o.ItemName + '</label></span>';
+                }).join(""));
+            });
+
+
+
+            $.parser.parse('#btn-return-visit,#dlg-return-visit');
+            //$.parser.parse('#the-ServeManArriveTime,#the-ServeManLeaveTime');
+            $("#dlg-return-visit").dialog({
+                inline: false,
+                onBeforeOpen: function () {
+
+                },
+                modal: true
+            }).dialog('open').dialog('setTitle', '回访对话框');
+
+        }
+        else {
+            closeWin();
+        }
+    }
+
+    function upToSupervise() {
+        var workOrderId = $('#WorkOrderId').val();
+        var doStatus = parseInt($('#DoStatus').val());
+        if (doStatus == 1) {
+            alertConfirm('确定要将本张工单转入督办队列？', function (ret) {
+                if (ret == true) {
+                    postTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/UpToSupervise', $.toJSON({ WorkOrderId: workOrderId }), function (ret) {
+                        alertInfo('成功转入督办队列', function () {
+                            closeWin();
+                        });
+                    });
+                }
+            });
+        }
+    } 
+     
+    function doOkReturnVisit() {
+        if ($('#fm-return-visit').form('validate')) {
+            var workOrderId = $('#WorkOrderId').val();
+            var doStatus = parseInt($('#DoStatus').val());
+            if (doStatus == 3) {
+                alertConfirm('确定要提交回访信息吗？', function (ret) {
+                    if (ret == true) {
+                        postTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/CloseWorkOrder', $.toJSON(_.extend({ WorkOrderId: workOrderId }, $('#fm-return-visit').serializeObject())), function (ret) {
+                            alertInfo('成功提交回访信息', function () {
+                                closeWin();
+                            });
+                        });
+                    }
+                });
+            }
+        }   
+    }
+    function doCancelReturnVisit() {
+        $('#dlg-return-visit').dialog('close');
+    }
+
+    function loadWorkOrderContent(workOrderId) {
+        $('#WorkOrderId').val(workOrderId);
+        getTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/GetWorkOrderInfo/' + workOrderId, null, function (ret) {
+            var workOrderInfo = xml2json.parser(ret.ret, 'StringObjectDictionary');
+            $('#DoStatus').val(workOrderInfo.DoStatus);
+            $('#CallServiceId').val(workOrderInfo.CallServiceId);
+            $('#SpecialFlag').val(workOrderInfo.SpecialFlag)
+            if (workOrderInfo.DoStatus == 1) {
+                $('#btnUpToSupervise').show();
+                $('#btnOkToWorkOrder').hide();
+            }
+            else {
+                $('#btnUpToSupervise').hide();
+            }
+
+            if (workOrderInfo.DoStatus == 0) {
+                $('#btnOkToWorkOrder').linkbutton({ text: '挑选最终服务商' });
+            }
+            if (workOrderInfo.DoStatus == 3) {
+                $('#btnOkToWorkOrder').linkbutton({ text: '回访' });
+            }
+            if (workOrderInfo.DoStatus == 9) {
+                $('#btnOkToWorkOrder').hide();
+            }
+            for (var key in workOrderInfo) {
+                if (key == "DoStatus") {
+                    $('#field-' + key + ' span').text(getDoStatusName(workOrderInfo[key]));
+                }
+                else if (key == "Gender") {
+                    $('#field-' + key + ' span').text(easyuigrid_genderFormatter(workOrderInfo[key]));
+                }
+                else if (key == "CheckInTime") {
+                    $('#field-' + key + ' span').text(Date.parse(workOrderInfo[key]).toString('yyyy-MM-dd'));
+                    $('#field-CallIn-' + key + ' span').text(Date.parse(workOrderInfo[key]).toString('yyyy-MM-dd HH:mm:ss'));
+                }
+                else if (key == "ServiceTimeRequired" || key == "SuperviseTime") {
+                    var d = Date.parse(workOrderInfo[key]);
+                    if (d) {
+                        $('#field-' + key + ' span').text(d.toString('yyyy-MM-dd HH:mm'));
+                    }
+                }
+                else if (key == "ServeBeginTime" || key == "ServeEndTime" || key == "FeedbackTimeToServiceStation" || key == "FeedbackTimeToOldMan") {
+                    var d = Date.parse(workOrderInfo[key]);
+                    if (d) {
+                        $('#field-' + key + ' span').text(d.toString('yyyy-MM-dd HH:mm:ss'));
+                    }
+
+                }
+                else if (key == "WorkOrderContent" || key == "RemarkRequired" || key == "ServeResultRemark"
+                || key == "FeedbackRemarkToServiceStation" || key == "FeedbackRemarkToOldMan") {
+                    $('#field-' + key).val(workOrderInfo[key]);
+                }
+                else {
+                    $('#field-' + key + ' span').text(workOrderInfo[key]);
+                }
+            }
+
+            getTo(top.baseCMSInvokeUrl + '/Oca/WorkOrderService/GetDispatchedServiceReceive/' + workOrderId, null, function (ret) {
+                var rows = _.map(ret.rows, function (o) {
+
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                $('#td-ServiceStationsDispatched div').html(_.map(rows, function (o) {
+                    if (workOrderInfo.DoStatus > 0
+                    //|| o.ReceiveStatus != 1
+                    ) {
+                        //已经挑选好商家
+                        return '<span><label>' + o.StationName + '-【' + getReceiveStatusName(o.ReceiveStatus) + '】</label></span>';
+                    }
+                    else {
+                        if (o.ReceiveStatus == 0) {
+                            return '<span><input type="radio" disabled name="ServiceStationsDispatched" id="' + o.ServiceReceiveId + '"  value="' + o.StationId + '" stationName="' + o.StationName + '" /><label for="' + o.ServiceReceiveId + '">' + o.StationName + '-【' + getReceiveStatusName(o.ReceiveStatus) + '】</label></span>';
+                        }
+                        else {
+                            return '<span><input type="radio" name="ServiceStationsDispatched" id="' + o.ServiceReceiveId + '"  value="' + o.StationId + '" stationName="' + o.StationName + '" /><label for="' + o.ServiceReceiveId + '">' + o.StationName + '-【' + getReceiveStatusName(o.ReceiveStatus) + '】</label></span>';
+                        }
+                    }
+                }).join(""));
+            });
+        }); 
+    }
+</script>

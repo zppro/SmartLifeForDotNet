@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Auth" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Module" type="SmartLife.Share.Models.Auth.Module, SmartLife.Share.Models" />
+    <typeAlias alias="ModulePK" type="SmartLife.Share.Models.Auth.ModulePK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Module_Create" parameterClass="StringObjectDictionary" >
+      insert into Auth_Module(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ModuleId" >ModuleId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleCode" >ModuleCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleName" >ModuleName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >Size</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >Location</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >ForeColor</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >BackColor</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Font" >Font</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >Position</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccessUrl" >AccessUrl</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenTarget" >OpenTarget</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >Version</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlType" >ControlType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlOption" >ControlOption</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AssistToolbarFlag" >AssistToolbarFlag</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ModuleId" >#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleCode" >#ModuleCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleName" >#ModuleName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Font" >#Font#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccessUrl" >#AccessUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenTarget" >#OpenTarget#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlType" >#ControlType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlOption" >#ControlOption#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AssistToolbarFlag" >#AssistToolbarFlag#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Module_Update" parameterClass="StringObjectDictionary" >
+      update Auth_Module
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleCode" >ModuleCode=#ModuleCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ModuleName" >ModuleName=#ModuleName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Font" >Font=#Font#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AccessUrl" >AccessUrl=#AccessUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OpenTarget" >OpenTarget=#OpenTarget#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlType" >ControlType=#ControlType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ControlOption" >ControlOption=#ControlOption#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AssistToolbarFlag" >AssistToolbarFlag=#AssistToolbarFlag#</isPropertyAvailable>
+      </dynamic>
+      where ModuleId=#ModuleId#
+    </update>
+    <delete id="Module_Delete" parameterClass="StringObjectDictionary" >
+      delete Auth_Module
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleCode" >ModuleCode=#ModuleCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleName" >ModuleName=#ModuleName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Font" >Font=#Font#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccessUrl" >AccessUrl=#AccessUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenTarget" >OpenTarget=#OpenTarget#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlType" >ControlType=#ControlType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlOption" >ControlOption=#ControlOption#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AssistToolbarFlag" >AssistToolbarFlag=#AssistToolbarFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Module_Load" parameterClass="ModulePK" resultClass="Module" >
+      select ModuleId,Id,Status,ModuleCode,ModuleName,AliasName,Picture,Size,Location,ForeColor,BackColor,Font,Position,OrderNo,AccessUrl,OpenTarget,Version,ApplicationId,Description,ControlType,ControlOption,AssistToolbarFlag from Auth_Module
+      where ModuleId=#ModuleId#
+    </select>
+    <select id="Module_List" parameterClass="StringObjectDictionary" resultClass="Module" >
+      select ModuleId,Id,Status,ModuleCode,ModuleName,AliasName,Picture,Size,Location,ForeColor,BackColor,Font,Position,OrderNo,AccessUrl,OpenTarget,Version,ApplicationId,Description,ControlType,ControlOption,AssistToolbarFlag from Auth_Module
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleCode" >ModuleCode=#ModuleCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleName" >ModuleName=#ModuleName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Font" >Font=#Font#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccessUrl" >AccessUrl=#AccessUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenTarget" >OpenTarget=#OpenTarget#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlType" >ControlType=#ControlType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlOption" >ControlOption=#ControlOption#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AssistToolbarFlag" >AssistToolbarFlag=#AssistToolbarFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Module_ListByPage" parameterClass="StringObjectDictionary" resultClass="Module" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ModuleId,Id,Status,ModuleCode,ModuleName,AliasName,Picture,Size,Location,ForeColor,BackColor,Font,Position,OrderNo,AccessUrl,OpenTarget,Version,ApplicationId,Description,ControlType,ControlOption,AssistToolbarFlag from Auth_Module
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleCode" >ModuleCode=#ModuleCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ModuleName" >ModuleName=#ModuleName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Font" >Font=#Font#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccessUrl" >AccessUrl=#AccessUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenTarget" >OpenTarget=#OpenTarget#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Version" >Version=#Version#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlType" >ControlType=#ControlType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ControlOption" >ControlOption=#ControlOption#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AssistToolbarFlag" >AssistToolbarFlag=#AssistToolbarFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

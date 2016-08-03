@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="SmartLife.BaseData.ManageServices.Global" Language="C#" %>

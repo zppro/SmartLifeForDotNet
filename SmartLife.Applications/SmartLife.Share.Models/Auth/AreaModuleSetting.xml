@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Auth" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="AreaModuleSetting" type="SmartLife.Share.Models.Auth.AreaModuleSetting, SmartLife.Share.Models" />
+    <typeAlias alias="AreaModuleSettingPK" type="SmartLife.Share.Models.Auth.AreaModuleSettingPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="AreaModuleSetting_Create" parameterClass="StringObjectDictionary" >
+      insert into Auth_AreaModuleSetting(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ModuleId" >ModuleId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >Position</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >Location</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >Size</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >ForeColor</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >BackColor</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ModuleId" >#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >#BackColor#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="AreaModuleSetting_Update" parameterClass="StringObjectDictionary" >
+      update Auth_AreaModuleSetting
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+      </dynamic>
+      where ModuleId=#ModuleId# and AreaId=#AreaId#
+    </update>
+    <delete id="AreaModuleSetting_Delete" parameterClass="StringObjectDictionary" >
+      delete Auth_AreaModuleSetting
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="AreaModuleSetting_Load" parameterClass="AreaModuleSettingPK" resultClass="AreaModuleSetting" >
+      select ModuleId,AreaId,Id,CheckInTime,AliasName,Position,Location,Size,ForeColor,BackColor from Auth_AreaModuleSetting
+      where ModuleId=#ModuleId# and AreaId=#AreaId#
+    </select>
+    <select id="AreaModuleSetting_List" parameterClass="StringObjectDictionary" resultClass="AreaModuleSetting" >
+      select ModuleId,AreaId,Id,CheckInTime,AliasName,Position,Location,Size,ForeColor,BackColor from Auth_AreaModuleSetting
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="AreaModuleSetting_ListByPage" parameterClass="StringObjectDictionary" resultClass="AreaModuleSetting" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,ModuleId,AreaId,Id,CheckInTime,AliasName,Position,Location,Size,ForeColor,BackColor from Auth_AreaModuleSetting
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ModuleId" >ModuleId=#ModuleId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AliasName" >AliasName=#AliasName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Position" >Position=#Position#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Location" >Location=#Location#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Size" >Size=#Size#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ForeColor" >ForeColor=#ForeColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BackColor" >BackColor=#BackColor#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

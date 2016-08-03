@@ -1,0 +1,38 @@
+﻿<div style=" width:100%; height:100%">
+    <!--街道相关统计信息-->
+    <div style=" text-align:center; height:50px; background-color:Blue; line-height:50px"><!--line-height文字居中-->
+        设备数:1000
+    </div>
+    <!--下属社区列表-->
+    <div id="area-panel_1" class="area-panel"></div>
+</div>
+<script type="text/javascript">
+
+    function dialogOpen(dialogId, dialogData) {
+        getTo(baseCMSInvokeUrl + "/Cmu/ShareService/GetCommunitiesInStreet?param=" + dialogData, null, function (communities) {
+            var htmls = [];
+            htmls.push('<ul>');
+            $.each(communities, function (i, o) {
+                htmls.push('<li class="area-name"><a href="javascript:void(0);" onclick="openDialog_Community(\'' + o.AreaId + '\')">' + o.AreaName + '</a></li>');
+            });
+            htmls.push('</ul>');
+            $('#area-panel_1').html(htmls.join(""));
+        }, { async: false });
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+
+    }
+
+    /******公共方法*******/
+    function openDialog_Community(areaId) {
+        openDialog("cmu-manage-community-show", 'views/cmu-manage/community-show.htm', function (callback, dialogData) {
+            //
+        }, { dialogData: areaId, title: '社区信息', width: 800, height: 500, padding: 5, mergeDefault: true });
+    }
+</script>

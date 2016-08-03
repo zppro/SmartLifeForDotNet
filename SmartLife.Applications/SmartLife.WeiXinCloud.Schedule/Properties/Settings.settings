@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartLife.WeiXinCloud.Schedule.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MessageBoxTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">消息对话框</Value>
+    </Setting>
+    <Setting Name="ProductName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">智慧生活.微信云.调度客户端</Value>
+    </Setting>
+    <Setting Name="Copyright_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">蓝谷科技</Value>
+    </Setting>
+    <Setting Name="Copyright_Phone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0571-88976666</Value>
+    </Setting>
+    <Setting Name="Copyright_WebSite" Type="System.String" Scope="User">
+      <Value Profile="(Default)">www.leblue.com.cn</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

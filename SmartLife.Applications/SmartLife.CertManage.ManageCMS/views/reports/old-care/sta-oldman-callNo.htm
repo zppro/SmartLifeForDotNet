@@ -1,0 +1,259 @@
+﻿<script type="text/javascript">
+    var info;
+    var page = 1;
+
+    $(function () {
+
+        loadfiles([
+        { type: "css", url: "../../css/report.css" }
+        ], function () { });
+    });
+    //全部条件的json格式
+    //    function sqlstr() {
+    //        
+    //        var params = new Object();
+    //        alert(top.objectId == '*' ? '00000' : top.appDeployArea.id);
+    //        params.AreadId = top.objectId;
+    //        var json = JSON.stringify(params);
+    //        return json;
+    //    }
+
+    //查询方法   查询条件放入隐藏域 
+    function query() {
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+
+    function firstPage() {
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+    //上一页
+    function upPage() {
+        page = $("#nowpage").val();
+        page--;
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+    //最后一页
+    function lastPage() {
+        page = $("#nowpage").val();
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+
+    //刷新
+    function refresh() {
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+
+    //下一页
+    function nextPage() {
+        page = $("#nowpage").val();
+        page++;
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            createTable(rows, page);
+        });
+    }
+    //-----------------------------------------------------------------创建表格
+    function createTable(data, page) {
+        var tabStr = "<table>";
+        var len = data.length;
+
+        if (len > 0) {
+            if (len % 50 == 0) {
+                sumpage = parseInt(len / 50);
+            } else {
+                sumpage = parseInt(len / 50) + 1;
+            }
+            $("#nowpage").val(sumpage);
+            $("#sum").text(sumpage);
+            if (page < 1) {
+                page = 1;
+                $("#nowpage").val(page);
+            }
+            else {
+                $("#nowpage").val(page);
+                $("#sum").text(sumpage);
+            }
+
+            if (page > sumpage) {
+                page = sumpage;
+                $("#nowpage").val(sumpage);
+            }
+
+
+            if (len > 50 * page) {
+                k = page * 50;
+            } else {
+                k = (page - 1) * 50 + len % 50;
+            }
+            var oldManName = "";
+            var callNo = "";
+            var callNo2 = "";
+            var callNo3 = "";
+
+            var sumCallNo = 0;
+            var sumCallNo2 = 0;
+            var sumCallNo3 = 0;
+            var total = 0;
+            for (var i = (page - 1) * 50; i < k; i++) {
+                var j = i + 1;
+                oldManName = data[i].OldManName;
+                callNo = data[i].CallNo;
+                callNo2 = data[i].CallNo2;
+                callNo3 = data[i].CallNo3;
+                if (callNo != "") {
+                    sumCallNo++;
+                }
+                if (callNo2 != "") {
+                    sumCallNo2++;
+                }
+                if (callNo3 != "") {
+                    sumCallNo3++;
+                }
+                tabStr += "<table class='t1'><tr><td width='120' height='30'>" + oldManName + "</td><td width='140' height='30'>" + callNo + "</td><td width='140' height='30'>" + callNo2 + "</td><td width='140'>" + callNo3 + "</td><td width='88'></td></tr></table><table class='t1'>";
+            }
+            total = sumCallNo + sumCallNo2 + sumCallNo3;
+            var tabStr2 = "<table class='t1'><tr><td width='120' height='30'>合计</td><td width='140' height='30'>" + sumCallNo + "</td><td width='140' height='30'>" + sumCallNo2 + "</td><td width='140'>" + sumCallNo3 + "</td><td width='88'>" + total + "</td></tr></table>";
+            $("#total").html(tabStr2);
+            tabStr += "</table>";
+            $("#dataTable").html(tabStr);
+        } else {
+            $("#nowpage").val(1);
+            $("#sum").text(1);
+            tabStr += "</table></table>";
+            $("#dataTable").html(tabStr);
+        }
+    }
+
+    $(function () {
+        var winHeight = $(window).height();
+        $('#dataTable').height(winHeight - 200);
+        //加载布局
+        getXMLInfo("layout");
+        //加载报表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/GetReportsDate', { parms: $.toJSON({ 'xmlName': 'sta-oldman-callNo', 'ds': 'ds1' }) }, function (ret) {
+            var rows = _.map(ret.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            //            alert($.toJSON(rows));
+            var info = rows;
+            createTable(rows, page);
+        });
+        $("#container").hide();
+    });
+
+    //读取xml参数信息
+    function getXMLInfo(type) {
+        //        debugger;
+        $.ajax({
+            type: "GET",
+            url: baseUrl + "/views/reports/old-care/sta-oldman-callNo.xml",
+            dataType: ($.browser.msie) ? "text" : "xml",
+            error: function (data) {
+                alert("加载XML 文件出错！");
+            },
+            success: function (data) {
+                if (type == "layout") {
+                    var nav = $(data).find("pagehead").html()
+                    $("#nav").html(nav);
+
+                    var caption = $(data).find("panelhead").html();
+                    $("#caption").html(caption);
+
+                    var title = $(data).find("paneltitle").html();
+                    $("#title").html(title);
+
+                    var foot = $(data).find("panelfoot").html();
+                    $("#foot").html(foot);
+                }
+            }
+        });
+    }
+    //控制myDate97显示格式
+    //    function getFormat() {
+    //        if ($("#reqMethod").val() == "month") {
+    //            return 'yyyy-MM';
+    //        } else if ($("#reqMethod").val() == "year") {
+    //            return 'yyyy';
+    //        } else {
+    //            return 'yyyy-MM-dd';
+    //        }
+    //    }
+
+ 
+</script>
+<div id="nav">
+</div>
+<div id="caption" style="text-align: center; margin-top: 15px">
+    </div>
+<div id="thead" style="border: 1px solid; width: 650px; margin-right: auto; margin-left: auto;
+    border-bottom: none">
+</div>
+<!--<div style=" height:799">
+   <div id="title" align="center"  style="border: 1px solid; border-top: 0;width: 650px; height:30;margin-right: auto; margin-left: auto;overflow-x: auto;"></div>-->
+<div id="body" style="height: 700px; width: 650px; margin-right: auto; margin-left: auto;">
+    <div id="title" style="border: 1px solid; width: 650px; height: 30px;">
+    </div>
+    <div id="dataTable" style="border: 1px solid; border-top: 30px; width: 650px; margin-right: auto;
+        margin-left: auto; overflow-x: auto; overflow-y: auto;">
+    </div>
+    <div id="total" style="border: 1px solid; width: 650px; height: 30px;">
+    </div>
+    <div id="foot" style="height: 30px; width: 650px; margin-right: auto; margin-left: auto;">
+        </div>
+</div>
+<div id="lsattab" style="padding-bottom: 0px; width: 100%; height: 30px; margin-top: 10px;
+    border-right: 1px solid #CCC; border-bottom: 1px solid #CCC; border-left: 1px solid #CCC;">
+    <!--<button style="background-image: url(img/firstPage.jpg) norepeat ;width:10px; height:10px;border:none; "></button>-->
+    <select id="page" style="margin-left: 20px; margin-top: 8px;" onchange="">
+        <option value="min">50</option>
+        <!--<option value="common">15</option>
+<option value="max">18</option>-->
+    </select>
+    <input type="button" style="width: 10px; height: 10px; margin-left: 20px; border: 0;
+        background: url(../../images/report-form/firstPage.jpg) no-repeat; cursor: pointer"
+        onclick="firstPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/upPage.jpg) no-repeat; cursor: pointer"
+        onclick="upPage()" />
+    第<input type="text" style="width: 15px; height: 10px" id="nowpage" value="1" onchange="pagechang();" />共<label
+        id="sum"></label>页
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/nextPage.jpg) no-repeat; cursor: pointer"
+        onclick="nextPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/lastPage.jpg) no-repeat; cursor: pointer"
+        onclick="lastPage()" />
+    <!--      <input type="button" style="width: 10px; height: 13px; margin-left: 10px; border: 0;
+            background: url(../../images/report-form/refresh.jpg) no-repeat; cursor: pointer"
+            onclick="refresh()" />-->
+</div>
+</div>
+<div id="container" style="min-width: 310px; height: 400px; width: 1000; margin: 0">
+</div>

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!-- 不能放大 -->
+    <title></title>
+
+    <!-- CSS -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' />
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Oleo+Script:400,700' />
+    <!--jqm-->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <link rel="Stylesheet" href="../css/custom-swatches.css" />
+    <link rel="Stylesheet" href="../css/mobiscroll/mobiscroll.custom-2.5.2.min.css" />
+
+    <script type="text/javascript" src="../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../script/jquery/jquery.json-2.2.min.js"></script>
+
+    <!--jqm-->
+    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    <script src="../script/jquery/mobiscroll/mobiscroll.custom-2.5.2.min.js"></script>
+
+    <script src="../script/underscore/underscore-1.5.0-min.js"></script>
+    <script src="../script/weixintools.js"></script>
+    <script src="../script/timetools.js"></script>
+
+    <script type="text/javascript" src="../script/site.js"></script>
+    <script type="text/javascript" src="../script/globalVar.js"></script>
+ 
+    <script type="text/javascript">
+        //            $("#pageone").live("pagebeforecreate", function () {
+        //                alert("正在创建页面");
+        //            });
+        //            $("#pageone").live("pagecreate", function () {
+        //                alert("页面创建完成");
+        //            });
+
+        function opt() {
+            var optobject = {
+                preset: 'date', //日期
+                theme: 'sense-ui', //皮肤样式
+                display: 'modal', //显示方式 
+                mode: 'scroller', //日期选择模式
+                dateFormat: 'yy-mm-dd', // 日期格式
+                setText: '确定', //确认按钮名称
+                cancelText: '取消', //取消按钮名籍我
+                dateOrder: 'yymmdd', //面板中日期排列格式
+                dayText: '日', monthText: '月', yearText: '年', //面板中年月日文字
+                endYear: 2050 //结束年份
+            };
+            return optobject;
+        }
+        //开始日期
+        function startScroller() {
+            var optobject = new opt();
+            $("#startScroller").mobiscroll(optobject).date(optobject);
+            
+        }
+        //结束日期
+        function endScroller() {
+            var optobject = new opt();
+            $("#endScroller").mobiscroll(optobject).date(optobject);
+        }
+        //最近一个星期
+        function aWeek() {
+            $("#startScroller").val(dateForm(addDay(new Date(), -7)));
+            $("#endScroller").val(dateForm(new Date()));
+        }
+        //最近一个月
+        function aMonth() {
+            $("#startScroller").val(dateForm(addMonth(new Date(), -1)));
+            $("#endScroller").val(dateForm(new Date()));
+        }
+        //最近3个月
+        function threeMonth() {
+            $("#startScroller").val(dateForm(addMonth(new Date(), -3)));
+            $("#endScroller").val(dateForm(new Date()));
+        }
+
+        //查询 事件
+//        $(document).on('tap', "#search", function () {
+//            initParams();
+
+//            var urlParam = "?openid=" + openid + "&type=" + type + "&followToIDNo=" + followToIDNo;
+
+//            var searchType = $("#searchType").val();
+//            if (searchType == "search-pay") {
+//                $.mobile.changePage("search-pay.htm" + urlParam, { transition: "slideup", changeHash: true });
+
+//            }
+
+//            if (searchType == "search-service") {
+//                $.mobile.changePage("search-service.htm" + urlParam, { transition: "slideup", changeHash: true });
+//            }
+
+//            if (searchType == "search-project") {
+//                $.mobile.changePage("search-project.htm" + urlParam, { transition: "slideup", changeHash: true });
+//            }
+//        });
+
+//        function initParams() {
+//            var Request = new Object();
+//            Request = GetRequest();
+//            openid = Request['openid'];
+//            type = Request['type'];
+//            followToIDNo = Request['FollowToIDNo'];   
+//        }
+
+    </script>
+</head>
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="header" data-theme="f">
+            <h1>蓝谷养老</h1>
+        </div>
+
+        <div data-role="content">
+            <label for="startTime">起始时间</label>
+            <input id="startScroller" name="scroller" onfocus="startScroller();" /> 
+            <label for="endTime">结束时间</label>
+            <input id="endScroller" name="scroller" onfocus="endScroller();" /> 
+
+            
+<!--            <fieldset data-role="fieldcontain">
+                <label for="searchType">查询类型</label>
+                <select name="searchType" id="searchType" data-native-menu="false">
+                    <option value="search-pay">充值记录查询</option>
+                    <option value="search-service">服务记录查询</option>
+                    <option value="search-project">服务项目查询</option>
+                </select>
+            </fieldset>-->
+
+            <br />
+            <div class="ui-grid-b">
+                <div class="ui-block-a" ><input data-mini="true" type="button" value="近一周" onclick="aWeek();"/></div>
+                <div class="ui-block-b" ><input data-mini="true" type="button" value="近一个月" onclick="aMonth();"/></div>
+                <div class="ui-block-c" ><input data-mini="true" type="button" value="近三个月" onclick="threeMonth();"/></div> 
+            </div>
+            <br />
+            <!--<input id="search" type="button" value="查询" />-->
+            <div id="searchToPage" align="center"> 
+                <a href="search-service.htm" id="search" type="button"  data-transition="flip">查询</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,416 @@
+﻿<div id="body" style=" overflow:auto;  ">
+<div id="queryParam">
+    <table style="width:1080px; margin-left: 10px; padding-top: 5px">
+        <tbody>
+            <tr style="height: 30px;">
+                <td width="70" style="text-align: right;">
+                    <span>呼入时间：</span>
+                </td>
+                <td width="100" colspan='2'>
+                    <input class="Wdate" id="CheckInTimeFrom" style="width: 160px" onfocus="var CheckInTimeTo=$dp.$('CheckInTimeTo');WdatePicker({onpicked:function(){CheckInTimeTo.focus();},dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'CheckInTimeTo\')}'})" />
+                </td>
+                <td width="180" colspan="2">
+                    到 &nbsp;
+                    <input class="Wdate" id="CheckInTimeTo" style="width: 160px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'CheckInTimeFrom\')}'})" />
+                </td>
+                <td width="70" style="text-align: right;">
+                    关键字：
+                </td>
+                <td width="100" colspan='2'>
+                    <input id="KeyWord"  placeholder=" 姓名、电话、手机" />
+                </td>
+                <td width="90"  style="text-align: center;">
+                    <button align="right" onclick="_query();">
+                        查询</button>
+                </td>
+                <td style="width: 130px;text-align: center;" rowspan="2" >
+                坐席列表
+                    <textarea id="OperatedByName" style=" height:40px; width:130px; background-color:#F0F8FF " readonly="readonly"></textarea>
+                </td>
+            </tr>
+            <tr style="height: 30px;">
+                <td width="70">
+                    <span style="float: right">处理人员：</span>
+                </td>
+                <td width="100">
+                    <input id="OperatedBy" />
+                </td>
+                <td width="70" style="text-align: right;">
+                    处理结果：
+                </td>
+                <td width="100">
+                    <input id="DoStatus" />
+                </td>
+                <td width="70">
+                    <span style="float: right">服务类型：</span>
+                </td>
+                <td width="100">
+                    <input id="ServiceCatalog" name="ServiceCatalog" />
+                </td>
+                <td width="70">
+                    <span style="float: right">服务归档：</span>
+                </td>
+                <td width="100">
+                    <input id="ServiceArchive" name="ServiceArchive" />
+                </td>
+                <td style="width: 90px;text-align: center;" rowspan="2" >
+                    <button onclick="reset();">
+                        重置</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="thead">
+    <table>
+        <tr>
+            <th width='40' height='30'>
+                序号
+            </th>
+            <th width='100'>
+                主叫号码
+            </th>
+            <th width='80'>
+                机主姓名
+            </th>
+            <th width='90'>
+                被叫号码
+            </th>
+            <th width='150'>
+                呼入时间
+            </th>
+            <th width='80'>
+                呼叫秒数
+            </th>
+            <th width='80'>
+                处理人员
+            </th>
+            <th width='80'>
+                处理结果
+            </th>
+            <th width='120'>
+                服务类别
+            </th>
+            <th width='150' >
+                服务归档
+            </th>
+            <th width='80' style="border-right: 1px solid;">
+                坐席评价
+            </th>
+        </tr>
+    </table>
+</div>
+<div id="dataTable">
+    <table id="dg-cc">
+    </table>
+</div>
+<div id="lsattab">
+    <!--<button style="background-image: url(img/firstPage.jpg) norepeat ;width:10px; height:10px;border:none; "></button>-->
+    <select id="page" style="margin-left: 20px; margin-top: 8px;" onchange="query()">
+        <option value="max">50</option>
+        <option value="common">15</option>
+        <option value="min">18</option>
+    </select>
+    <!--<input id="pageNo"  type="hidden" />
+    <input id="total"  type="hidden" />-->
+    <input type="button" style="width: 10px; height: 10px; margin-left: 20px; border: 0;
+        background: url(../../images/report-form/firstPage.jpg) no-repeat; cursor: pointer"
+        onclick="firstPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/upPage.jpg) no-repeat; cursor: pointer"
+        onclick="upPage()" />
+    第<input type="text" style="width: 15px; height: 10px" id="pageNo" value="1" onchange="query()" />页，共<label
+        id="pages"></label>页，共<label id="sum"></label>条
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/nextPage.jpg) no-repeat; cursor: pointer"
+        onclick="nextPage()" />
+    <input type="button" style="width: 10px; height: 10px; margin-left: 10px; border: 0;
+        background: url(../../images/report-form/lastPage.jpg) no-repeat; cursor: pointer"
+        onclick="lastPage()" />
+</div>
+
+</div>
+<script type="text/javascript">
+    var date_len;
+    placeholder(); //占位符初始化
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report/call-serve.css" }
+        ], function () {
+            startdate();
+            $('#DoStatus').combobox({
+                width: 106,
+                panelHeight: 105,
+                data: [{ ItemId: '未受理', ItemName: '未受理' },
+                   { ItemId: '受理中', ItemName: '受理中' },
+                   { ItemId: '处理中', ItemName: '处理中' },
+                   { ItemId: '服务完成', ItemName: '服务完成' },
+                   { ItemId: '未知', ItemName: '未知'}],
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false
+            });
+
+            var queryParams = {
+                sort: 'UserName',
+                order: 'asc',
+                page: 1,
+                rows: 100,
+                instance: {
+                    Status: 1,
+                    StopFlag: 0
+                }
+            };
+            postTo(baseCMSInvokeUrl + '/Pub/UserService/GetSeats', $.toJSON(queryParams), function (ret) {
+                $('#OperatedBy').combobox({
+                    width: 106,
+                    panelHeight: 120,
+                    method: 'get',
+                    data: ret.rows,
+                    valueField: 'UserName',
+                    textField: 'UserName',
+                    editable: false
+                });
+            }, { async: false });
+            getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11012',
+        ajaxData_InvokeUrl + '/GetDictionaryItem/11013'], function (serviceCatalog_d, serviceArchive_d) {
+            serviceCatalog = serviceCatalog_d;
+            serviceArchive = serviceArchive_d;
+
+            setCombobox("ServiceCatalog", serviceCatalog);
+            setCombobox("ServiceArchive", serviceArchive);
+            query();
+            _autosize();
+        });
+        });
+
+    });
+
+
+    function query() {
+        var sql = sqlstr();
+//                alert($.toJSON(sql));
+                postTo(baseCMSInvokeUrl + '/Pub/ReportService/CallServiceHistory', $.toJSON(sql), function (ret) {
+            var rows = ret.rows;
+            var sum = ret.total; //总共多少条
+            var pageSize = $("#page").find("option:selected").text(); //一页多少条
+            var pages = Math.ceil(sum / pageSize); //向上取页数  
+            $('#pages').text(pages); //总页数
+            $('#sum').text(sum); //总条数
+            if (rows) {
+                createTable(rows, 1);
+                 _autosize();
+            };
+         }, null, null);
+
+
+         postTo(baseCMSInvokeUrl + '/Pub/ReportService/CallServiceHistory_Seat', $.toJSON(sql), function (ret) {
+             var operatedByName = "";
+             dataArray = eval(ret); 
+             _.each(dataArray, function (o) {
+                 if (o.operatedby != '' && o.operatedby != 'null' && o.operatedby != null) {
+                     operatedByName += o.operatedby + "\n";
+                 }
+             }); 
+             $('#OperatedByName').val(operatedByName);
+         }, null, null);
+
+    }
+    //全部条件的json格式
+    function sqlstr() {
+        var pageNo = $('#pageNo').val();
+        var pageSize = $("#page").find("option:selected").text();
+
+        var checkInTimeFrom = $("#CheckInTimeFrom").val();
+        var checkInTimeTo = $("#CheckInTimeTo").val();
+        var keyWord = $("#KeyWord").val();
+//        var caller = $("#Caller").val();
+        var doStatus = $("#DoStatus").combobox('getValue');
+        var operatedBy = $("#OperatedBy").combobox('getValue');
+        var serviceArchive = $("#ServiceArchive").combobox('getValue');
+        var serviceCatalog = $("#ServiceCatalog").combobox('getValue');
+
+
+        var params = new Object();
+        params.page = pageNo;
+        params.rows = pageSize;
+        params.sort = 'CheckInTime';
+        params.order = 'asc';
+        params.fuzzyFieldOP = ' or ';
+        params.filterFields = [
+                { key: 'Status', value: 1 },
+                { key: 'DoStatus', value: doStatus },
+                { key: 'OperatedBy', value: operatedBy },
+                { key: 'ServiceArchive', value: serviceArchive },
+                { key: 'ServiceCatalog', value: serviceCatalog }
+                ];
+        params.fuzzyFields = [
+                { key: 'CheckInTimeFrom', value: checkInTimeFrom },
+                { key: 'CheckInTimeTo', value: checkInTimeTo },
+                { key: 'Caller', value: keyWord },
+                { key: 'OldManName', value: keyWord },
+                { key: 'CallNo', value: keyWord }
+                ];
+
+        return params;
+    }
+    //查询按钮
+    function _query() {
+        $('#pageNo').val(1); //默认设置第一页
+        query();
+    }
+
+    //上一页
+    function upPage() {
+        var page = parseInt($("#pageNo").val());
+        if (page > 1) {
+            $('#pageNo').val(page - 1);
+            query();
+        }
+        else {
+            alert('已经是第一页');
+        }
+    }
+    //下一页
+    function nextPage() {
+        var page = parseInt($("#pageNo").val());
+        var pages = parseInt($('#pages').text());
+        if (page < pages) {
+            $('#pageNo').val(page + 1);
+            query();
+        }
+        else {
+            alert('已经是最后一页');
+        }
+    }
+    //第一页
+    function firstPage() {
+        $('#pageNo').val(1);
+        query();
+    }
+    //最后一页
+    function lastPage() {
+        var pages = $('#pages').text();
+        $('#pageNo').val(pages);
+        query();
+    }
+
+    //-----------------------------------------------------------------创建表格
+    function createTable(data) {
+
+        var tabStr = "<table class='t1'>";
+        //        tabStr += "<tr><th width='42' height='30'>序号</th><th width='90'>主叫号码</th><th width='90'>被叫号码</th>"
+        //        + "<th width='150'>呼入时间</th><th width='80'>呼叫秒数</th> <th width='80'>处理人员</th>"
+        //        + "<th width='80'>处理结果</th> <th width='100'>服务类别</th><th width='100'>服务归档</th></tr>";
+
+        var dataArray = eval(data);
+        date_len = dataArray.length; 
+        if (dataArray.length > 0) {
+            for (var i = 0; i < dataArray.length; i++) {
+                var j = i + 1;
+                tabStr = tabStr + "<tr><td width='40'>" + j + "</td><td width='100'>" + isnull(dataArray[i].Caller, '') + "</td><td width='80'>" + isnull(dataArray[i].OldManName, '') + "</td><td width='90'>" + isnull(dataArray[i].Callee, '') + "</td><td width='150'>" + isnull(ndateFormatter(dataArray[i].CheckInTime, "yyyy-MM-dd hh:mm:ss"), '') + "</td><td width='80'>" + isnull(dataArray[i].CallSeconds, '')
+              + "</td><td width='80'>" + isnull(dataArray[i].OperatedBy, '') + "</td><td width='80'>" + isnull(dataArray[i].DoStatus, '') + "</td><td width='120'>" + isnull(dataArray[i].ServiceCatalog, '')
+            + "</td><td width='150'>" + isnull(dataArray[i].ServiceArchive, '') + "</td><td width='80'  style='border-right: 1px solid;  '>" + isnull(dataArray[i].EvaluateToSeat, '') + "</td></tr>"
+            }
+        }
+        tabStr += "</table>";
+        $("#dataTable").html(tabStr);
+    }
+    function reset() {
+        startdate();
+        $('#Caller').val(null);
+        $('#ServiceCatalog').combobox('clear');
+        $('#ServiceArchive').combobox('clear');
+        $('#DoStatus').combobox('clear');
+        $('#OperatedBy').combobox('clear');
+        $('#pageNo').val(1);
+    }
+
+    //时间控件初始化
+    function startdate() {
+        var today = new Date();
+        cdateT = getDate(0, 0, 0, today);
+        cdateF = getDate_f(0, 0, 0, today);
+        $('#CheckInTimeFrom').val(cdateF);
+        $('#CheckInTimeTo').val(cdateT);
+    }
+    //得到day拼接日期
+    function getDate(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = time.getDate() + day;
+        var hh = time.getHours();
+        var mm = time.getMinutes();
+        var ss = time.getSeconds();
+
+        if (hh <= 9) hh = "0" + hh;
+        if (mm <= 9) mm = "0" + mm;
+        if (ss <= 9) ss = "0" + ss;
+        var time_str = " " + hh + ":" + mm + ":" + ss;
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (d > monthday[m - 1]) {
+            m++;
+            d = 1;
+        } else if (d - day <= 0) {
+            m--;
+            if (m <= 0) {
+                y--;
+                m = 12;
+            }
+            d = monthday[m - 1];
+        }
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        if (m <= 9) m = "0" + m;
+        if (d <= 9) d = "0" + d;
+        var cdate = y + "-" + m + "-" + d + time_str;
+        return cdate;
+    }
+    //得到day拼接日期(每月第一天)
+    function getDate_f(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = "01";
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (m <= 9) m = "0" + m;
+        var cdate = y + "-" + m + "-" + d + " 00:00:00";
+        return cdate;
+    }
+    function setCombobox(controlsId, data) {
+        $('#' + controlsId + '').combobox({
+            width: 106,
+            panelHeight: 120,
+            method: 'get',
+            data: data,
+            valueField: 'ItemName',
+            textField: 'ItemName',
+            editable: false
+        });
+    }
+
+    function _autosize() {
+        var delta = $("#thead").height() + $("#lsattab").height() + $("#queryParam").height() + 30;
+        var h = $("#dataTable").parent().parent().parent().parent().height() - delta; 
+        var dh = (date_len) * 31 - 1; 
+        if (dh < h) {
+            $("#dataTable").height(dh);
+        }
+        else {
+            $("#dataTable").height(h);
+        }
+         
+        $("body").height($("#dataTable").parent().parent().parent().parent().height());
+    }
+</script>

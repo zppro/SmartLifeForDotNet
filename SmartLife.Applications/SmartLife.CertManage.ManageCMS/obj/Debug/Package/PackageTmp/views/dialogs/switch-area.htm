@@ -1,0 +1,36 @@
+﻿<div id="city-panel" style="width: 99%; margin: 0 auto; overflow-y: auto;">
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        autosize('city-panel', -10);
+        getTo(ajaxData_InvokeUrl + '/GetDeployNode/00012', null, function (cityAndAreas) {
+            var htmls = [];
+            var citys = _.filter(cityAndAreas, function (o) { return o.ItemCode.length == 4 });
+            _.each(citys, function (o1, index) {
+                htmls.push('<ul class="city-zone">');
+                htmls.push('<li class="city-name">' + o1.ItemName + '</li>');
+
+                htmls.push('<li class="area-zone"><ul>');
+                _.each(_.filter(cityAndAreas, function (o) { return o.ItemCode.length > 4 && o.ItemCode.substr(0, 4) == o1.ItemCode }), function (o3) {
+                    var url = 'javascript:void(0);';
+                    if (o3.Extend1) {
+                        url = o3.Extend1.substr(0, o3.Extend1.lastIndexOf('/')) + '/index.htm?mode=loginbox';
+                    }
+                    htmls.push('<li class="area-name"><a href="' + url + '" >' + o3.ItemName + '</a></li>');
+                });
+                htmls.push('</ul></li>');
+
+                htmls.push('</ul>');
+            });
+            $('#city-panel').html(htmls.join(""));
+        }, null, { ConnectId: top.authInfoNode });
+    }
+
+    function dialogBeforeSubmit() {
+
+    }
+
+    function dialogClose(dialogId) {
+
+    } 
+</script>

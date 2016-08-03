@@ -1,0 +1,125 @@
+﻿<style type="text/css">
+.table{ width:99%;border:0; background-color:#000000; border-spacing:1px;TABLE-LAYOUT: fixed }
+.table tr{ text-align:center; }
+.table th{ height:60px; font-size:22px; font-weight:bolder;text-align:center; vertical-align:middle;background-color:#FFFFFF;  }
+.table td {  height:60px; background-color:#FFFFFF; vertical-align:middle; text-align:center; }
+.td_left{ text-align:left;}
+.td_right{ text-align:right;}
+.title_1 { font-size:16px; font-weight:bold; word-spacing:10px; letter-spacing:10px; }
+.title_4 { font-size:16px; font-weight:bold; }
+.title_5{font-size:16px; line-height:28px;}
+.txt_bg_01 {width: 25%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.txt { width:300px; height:30px; line-height:30px; border:none; margin-left:20px; border-bottom:1px solid #000; font-size:16px; text-align:center;}
+
+</style>
+<div class="easyui-layout" data-options="fit:true">
+    <div id="set-evaluation-report1" data-options="region:'center',border:false">
+        <form id="fm-evaluation-report1" method="post" novalidate>
+        <input type="hidden" name="Id" id="evaluation-id" value="-1"/>
+        <input  type="hidden" name="ReportId"/>
+        <input type="hidden" name="RequisitionId"/> 
+        <table class="table">
+                  <tr>
+                    <td colspan="3" class="title_4" style=" background-color:#CCCCCC">评估报告</td>
+                  </tr>
+                  <tr>
+                    <td height="70" colspan="3" class="title_4" style=" text-align:left;">&nbsp;&nbsp;&nbsp;评估报告一：评估总分计算</td>
+                  </tr>
+                  <tr>
+                    <td width="50%" colspan="2" class="title_4">主要参数</td>
+                    <td width="50%"class="title_4">评估分值</td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="title_4">评估分值1</td>
+                    <td width="30%" class="title_5">生活处理能力</td>
+                    <td width="50%" class="title_5">
+                        <input name="LifeSkillsResult" readonly="readonly" type="text" class="txt_bg_01 iscore" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="title_4">评估分值2</td>
+                    <td width="30%" class="title_5">经济条件</td>
+                    <td width="50%"  class="title_5">
+                        <input name="EcoConditionResult" readonly="readonly" type="text" class="txt_bg_01 iscore" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%"  class="title_4">评估分值3</td>
+                    <td width="30%"  class="title_5">居住环境</td>
+                    <td width="50%"  class="title_5">
+                        <input name="LiveEnvironmentResult" readonly="readonly" type="text" class="txt_bg_01 iscore" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="title_4">附加分值1</td>
+                    <td width="30%" class="title_5">年龄</td>
+                    <td width="50%" class="title_5">
+                        <input name="AgeCaseResult" readonly="readonly" type="text" class="txt_bg_01 iscore" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="title_4">附加分值2</td>
+                    <td width="30%" class="title_5">特殊贡献</td>
+                    <td width="50%" class="title_5">
+                        <input name="SContributionResult" readonly="readonly" type="text" class="txt_bg_01 iscore" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="title_4">评价总分</td>
+                    <td width="30%" style="word-break:break-all" class="title_5">
+                        =评估分值1+评估分值2+评估分值3+附加分值1+附加分值2
+                    </td>
+                    <td width="50%" class="title_5">
+                        <input name="AssessmentScores" type="text" readonly="readonly" class="txt_bg_01" />分
+                    </td>
+                  </tr>
+                  <tr>
+                    <td  width="20%" class="title_4">备注</td>
+                    <td width="30%" colspan="2" style=" text-align:left;" >
+                        <textarea name="RecommendedserviceType" cols="52" rows=12 class="text" style=" font-size:16px;"></textarea>
+                    </td>
+                  </tr>
+                </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) {
+            getTo(top.baseCMSInvokeUrl + '/Eva/EvaluationInfoService/Query?parms=' + $.toJSON({ ReportId: dialogData }), null, function (ret) {
+                if (ret.Success) {
+                    $("#fm-evaluation-report1").form("load", ret.rows[0]);
+
+                    var iScore = 0;
+                    _.each($(".iscore"), function (i) {
+                        iScore += parseInt($(i).val())
+                    })
+                    if (iScore) $("input[name='AssessmentScores']").val(iScore);
+                }
+            });
+        }
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+        var formData = $("#fm-evaluation-report1").serializeObject();
+        getTo(top.baseCMSInvokeUrl + '/Eva/EvaluatedReportService/' + formData.ReportId, null, function (ret) {
+            if (ret.Success) {
+                putTo(baseCMSInvokeUrl + '/Eva/EvaluatedReportService/' + formData.ReportId, $.toJSON({ DoStatus: 2, AssessmentScores: formData.AssessmentScores }), function (ret) {
+                    if (!ret.Success) {
+                        result = false;
+                        alert("评估失败！");
+                    }
+                });
+            }
+        }, { async: false });
+
+        return result;
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = $("#fm-evaluation-report1").serializeObject();
+        return formData;
+    }
+</script>

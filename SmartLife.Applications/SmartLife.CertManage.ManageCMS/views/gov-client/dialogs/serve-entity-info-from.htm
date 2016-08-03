@@ -1,0 +1,187 @@
+﻿<style type="text/css">
+    #table_cc { width:95%; margin:10px 3% 3% 3%;}
+    #table_cc tr td { line-height: 30px;}
+    #table_cc tr td input { width: 130px;border: 1px inset; background-color:#f3f8f0;}
+    #table_cc tr td textarea {background-color:#f3f8f0;}
+</style>
+<div id="set-serve-entity-info" title="商家服务信息" style=" padding: 3px; margin-left:10px;margin-right:10px;">
+    <form id="fm-serve-entity-info" method="post" novalidate>
+    <div id="serve-entity">
+    <div class="fitem" title="商家信息" >
+    <input type="hidden" id="StationId" />
+    <table id="table_cc">
+    <tr><td>商家名称：</td><td><input name="StationName" style="width: 150px;border: 1px inset; background-color:#f9fcfc;"/></td><td>&nbsp;联&nbsp;系&nbsp;人&nbsp;：</td><td><input name="LinkMan" /></td>
+    <td>联系电话：</td><td><input name="LinkManMobile" /></td><td>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</td><td> <input name="Tel"  /></td></tr>
+    <tr><td>传&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真：</td><td><input name="Fax" /></td><td>&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;：</td><td> <input name="Email" /></td>
+    <td>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编：</td><td><input name="PostCode" /></td><td>员工数量：</td><td><input name="num" /></td></tr>
+    <tr><td>所属街道：</td><td><input name="AreaId2" /></td><td>所属社区：</td><td><input name="AreaId3" /></td><td>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</td><td colspan="3"><input name="Address" style="width: 280px;" /></td></tr>
+    <tr><td colspan="8">服务区域：</td></tr>
+    <tr><td colspan="8"><textarea style="width: 800px; height: 80px; vertical-align:top;" name="serveArea"></textarea></td></tr>
+    <tr><td colspan="8">服务项目：</td></tr>
+    <tr><td colspan="8"><textarea style="width: 800px; height: 80px; vertical-align:top;" name="serveitemB"></textarea></td></tr>
+    <tr><td colspan="4">简　　介：</td><td colspan="4">备　　注：</td></tr>
+    <tr><td colspan="4"><textarea name="Intro" style="width: 400px; height: 80px;" ></textarea></td><td colspan="4"><textarea name="Remark" style="width: 400px; height: 80px; " ></textarea></td></tr>
+    </table>
+    </div>
+    <div class="fitem" title="服务的老人" >
+<table id="dg-service-workorder" style=" height:480px;">
+</table>
+    </div>
+    </div>
+    </form>
+</div>
+    <div id="toolbar-service-workorder" title="查询" style=" width:100%; height:30px;padding: 3px;">
+    <form id="fm-toolbar-service-workorder" method="post">
+    <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字：<input id="KeyWord" id="KeyWord" class="easyui-validatebox"  />
+            </td>
+            <td style="text-align: left">
+                呼入时间:
+                <input id="CheckInTime" class="Wdate"  onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetexec()">
+                    清空</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        $('#serve-entity').tabs({
+        });
+        $('#fm-serve-entity-info').form('clear');
+        $('#fm-serve-entity-info').form('load', dialogData);
+        $('#StationId').val(dialogData.StationId);
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11012',
+                ajaxData_InvokeUrl + '/GetDictionaryItem/11013',
+                ajaxData_InvokeUrl + '/GetDictionaryItem/11014',
+                ajaxData_InvokeUrl + '/GetDictionaryItem/11016',
+                ajaxData_InvokeUrl + '/GetDictionaryItem/11017',
+                ajaxData_InvokeUrl + '/GetDictionaryItem/11018',
+                ajaxData_InvokeUrl + '/GetArea'], function (serveItemAName, serveItemBName, serveModeName, serveResultName, feedbackToName, serveTypeName, areas) {
+
+                    $('#dg-service-workorder').datagrid(easyuigrid_settings({
+                        title: "",
+                        pagination: true,
+                        rownumbers: true,
+                        singleSelect: true,
+                        url: baseCMSInvokeUrl + '/Oca/WorkOrderService/ListForEasyUIgridByStation',
+                        method: 'POST',
+                        toolbar: '#toolbar-service-workorder',
+                        onDblClickRow: function (idx, row) {
+                            GetCallServiceInfo(row);
+                        },
+                        queryParams: {
+                            sort: 'CheckInTime',
+                            order: 'desc',
+                            instance: {
+                                Status: 1,
+                                ServeStationId: dialogData.StationId
+                            }
+                        },
+                        onLoadSuccess: function (data) {
+                            $('.iconSrviceHistory').linkbutton({ text: '查看', plain: true, iconCls: 'icon-search' }).unbind('click').bind('click', function () {
+                                var callServiceId = $(this).attr('CallServiceId');
+                                var oldManId = $(this).attr('OldManId');
+                                GetCallServiceInfo({ OldManId: oldManId, CallServiceId: callServiceId })
+                            });
+
+                        },
+                        frozenColumns: [[{ field: 'OldManName', title: '老人姓名', width: 80, align: 'center'},
+                { field: 'SrviceHistory', title: '呼叫历史', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                    return '<a href="javascript:void(0)" class="iconSrviceHistory" OldManId="' + row.OldManId + '" CallServiceId="' + row.CallServiceId + '"></a>';
+                }
+                }]],
+                        columns: [[
+                { field: 'WorkOrderId', title: '工单编号', width: 100, hidden: true },
+                { field: 'WorkOrderNo', title: '工单号', width: 180, align: 'center' },
+                { field: 'CheckInTime', title: '呼入时间', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'WorkOrderContent', title: '工作内容', width: 150, align: 'center' },
+                { field: 'ServeMode', title: '服务方式', width: 70, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveModeName },
+                { field: 'ServeType', title: '服务类别', width: 70, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveTypeName },
+                { field: 'ServeManName', title: '服务人员', width: 80, align: 'center' },
+                { field: 'ServeManArriveTime', title: '服务开始时间', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'ServeManLeaveTime', title: '服务结束时间', width: 140, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'ServeResult', title: '服务结果', width: 70, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveResultName },
+                {field: 'ServeFee', title: '服务费用', width: 60, align: 'center' },
+                { field: 'ServeFeeByGov', title: '政府承担', width: 60, align: 'center' },
+                { field: 'ServeFeeBySelf', title: '自费', width: 50, align: 'center' },
+                { field: 'FeedbackToServiceStation', title: '对商家的满意度', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: feedbackToName },
+                { field: 'FeedbackToServiceStation', title: '对老人的满意度', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: feedbackToName },
+                { field: 'ServeItemA', title: '服务大类', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveItemAName },
+                { field: 'ServeItemB', title: '服务小类', width: 100, align: 'center', formatter: easyuigrid_ajaxFormatter, vals: serveItemBName },
+                {field: 'Tel', title: '座机', width: 100 },
+                { field: 'Mobile', title: '手机', width: 90 },
+                { field: 'AreaId2', title: '街道',  width: 100, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                { field: 'AreaId3', title: '社区', width: 100, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "AreaName", valueField: "AreaId" },
+                {field: 'Address', title: '地址', width: 160 }
+
+        ]],
+                        loader: easyuiLoader
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+                }, { async: false });
+
+    }
+
+    function execEx() {
+        var fuzzyFields = [];
+        var checkInTime = $('#CheckInTime').val();
+        var order = 'desc';
+        if ($('#KeyWord').val() != '') {
+            fuzzyFields.push({ key: 'OldManName', value: $('#KeyWord').val() });
+            fuzzyFields.push({ key: 'Tel', value: $('#KeyWord').val() });
+            fuzzyFields.push({ key: 'Mobile', value: $('#KeyWord').val() });
+            fuzzyFields.push({ key: 'WorkOrderContent', value: $('#KeyWord').val() });
+            fuzzyFields.push({ key: 'ServeManName', value: $('#KeyWord').val() });
+        }
+        if (checkInTime && checkInTime != '') {
+            fuzzyFields.push({ key: 'CheckInTime', value: checkInTime });
+            order = 'asc';
+        }
+        $('#dg-service-workorder').datagrid('load', {
+            sort: 'CheckInTime',
+            order: order,
+            instance: {
+                Status: 1,
+                ServeStationId: $('#StationId').val()
+            },
+            fuzzyFieldOP:'or',
+            fuzzyFields: fuzzyFields
+        });
+    }
+    function GetCallServiceInfo(row) {
+        openDialog('set-serve-call-info', '/views/gov-client/dialogs/serve-call-info-from.htm', function (callback, dialogData) {
+
+            callback();
+            page_load();
+        }, { dialogData: row, title: '历史呼叫信息', width: 1010, height: 600, buttons: [{
+            text: '关闭',
+            iconCls: 'icon-cancel',
+            handler: function () { top.onDialogClose('set-serve-call-info'); }
+        }]
+        });
+    }
+    function resetexec() {
+        $('#CheckInTime').val(null);
+        $('#KeyWord').val(null);
+    }
+    function dialogBeforeSubmit() {
+
+    }
+
+    function dialogClose(dialogId) {
+    }
+
+    function onDialogClose(dialogId) {
+        $('#' + dialogId).dialog('close');
+    }
+
+</script>

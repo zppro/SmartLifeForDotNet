@@ -1,0 +1,124 @@
+﻿<div id="dlg-oldman-familymember" class="easyui-dialog" style="width: 660px; height: 360px; padding: 10px;"
+    closed="true" cache="false" buttons="#btn-oldman-familymember">
+    <form id="fm-oldman-familymember" method="post">
+    <input type="hidden" name="OldManId" id="oldManId-oldman-familymember" /> 
+    <input type="hidden" name="FamilyMemberId" id="familyMemberId-oldman-familymember" /> 
+    <input type="hidden" name="FamilyInfoId" id="familyInfoId-oldman-familymember" /> 
+    <input type="hidden" name="AreaId" id="areaId-oldman-familymember" />
+    <div class="fitem">
+        <label>
+            姓 名:</label>
+        <input name="FamilyMemberName" class="easyui-validatebox" required="true" missingmessage="姓名不能为空">
+        <label>
+            性 别:</label>
+        <input id="Gender-M" type="radio" name="Gender" value="M" /><label for="Gender-M">男</label>
+        <input id="Gender-F" type="radio" name="Gender" value="F" /><label for="Gender-F">女</label>
+        <label>
+            身份证:</label>
+        <input name="IDNo" class="easyui-validatebox" required="true" missingmessage="身份证不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            座 机:</label>
+        <input name="Tel" />
+        <label>
+            手 机:</label>
+        <input name="Mobile" />
+    </div>
+    <div class="fitem">
+        <label>与老人关系:</label>
+        <input id="CC-RelationIdOfOldMan" name="RelationIdOfOldMan" class="easyui-validatebox" required="true" missingmessage="与老人关系不能为空"></textarea>
+        <label>称呼老人为:</label>
+        <input id="CC-RelationIdOfFamily"  name="RelationIdOfFamily" class="easyui-validatebox" required="true" missingmessage="称呼老人不能为空"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            家庭地址:</label>
+        <textarea name="Address" style="width: 580px;" maxlength="200"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            备  注:</label>
+        <textarea name="Remark" style="width: 580px;" maxlength="400"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-oldman-familymember">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doCallBck()"> 确定</a> 
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancel()">取消</a>
+</div>
+<script type="text/javascript">
+    var strAreaId;
+    function loadOldManFamilyMember(oldManId,strAreaId ,familyMemberId) {
+        $("#fm-oldman-familymember").form('clear');
+        $("#oldManId-oldman-familymember").val(oldManId);
+        $("#familyMemberId-oldman-familymember").val(familyMemberId);
+        $("areaId-oldman-familymember").val(strAreaId);
+
+        getTo(window.ajaxData_InvokeUrl + '/GetDictionaryItem/11003', null, function (di_11003) {
+            $('#CC-RelationIdOfOldMan').combobox({
+                width: 140,
+                panelHeight: 60,
+                required: true,
+                data: di_11003,
+                valueField: 'ItemId',
+                textField: 'ItemName'
+            });
+            $('#CC-RelationIdOfFamily').combobox({
+                width: 140,
+                panelHeight: 60,
+                required: true,
+                data: di_11003,
+                valueField: 'ItemId',
+                textField: 'ItemName'
+            });
+        });
+
+        if (!familyMemberId) {
+            familyMemberId = window.contants.guidAutoGenerate;
+        }
+        getTo(top.baseCMSInvokeUrl + '/Oca/OldManFamilyInfoService/ListByFamilyMember?parms=' + $.toJSON({ FamilyMemberId: familyMemberId, Status: 1 }), null, function (ret) {
+            if (ret.Success) {
+                var infos = _.map(ret.rows, function (item) {
+                    return xml2json.parser(item, 'StringObjectDictionary');
+                });
+                $('#fm-oldman-familymember').form('load', infos[0]);
+            }
+        });
+    }
+
+    function doCallBck() {
+        var formData = $('#fm-oldman-familymember').serializeObject();
+        if (formData) {
+            formData = _.extend(formData, { Status: 1 });
+            if (!formData.FamilyMemberId) {
+                formData = _.extend(formData, { FamilyMemberId: window.contants.guidAutoGenerate, isCreate: true });
+            }
+            else {
+                formData = _.extend(formData, { PK: formData.FamilyMemberId });
+            }
+            saveTo(top.baseCMSInvokeUrl + '/Oca/FamilyMemberService/', formData, function (ret) {
+                if (ret) {
+                    if (!formData.FamilyInfoId) {
+                        formData = _.extend(formData, { Id: -1, FamilyMemberId: ret.FamilyMemberId });
+                    }
+                    else {
+                        formData = _.extend(formData, { Id: formData.FamilyInfoId, PK: formData.FamilyInfoId });
+                    }
+                    saveTo(top.baseCMSInvokeUrl + '/Oca/OldManFamilyInfoService/', formData, function (ret2) {
+                        if (ret2) {
+                            alertInfo("保存成功！");
+                            doCancel();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
+    function doCancel() {
+        $('#dlg-oldman-familymember').dialog('close');
+    }
+
+</script>

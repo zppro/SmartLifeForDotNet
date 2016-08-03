@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Area_V" type="SmartLife.Share.Models.Pub.Area_V, SmartLife.Share.Models" />
+    <typeAlias alias="Area_VPK" type="SmartLife.Share.Models.Pub.Area_VPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="Area_V_Create" parameterClass="StringObjectDictionary" >
+      insert into Pub_Area_V(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AreaId" >AreaId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaCode" >AreaCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaName" >AreaName</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AreaId" >#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaCode" >#AreaCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaName" >#AreaName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Area_V_Update" parameterClass="StringObjectDictionary" >
+      update Pub_Area_V
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="AreaCode" >AreaCode=#AreaCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="AreaName" >AreaName=#AreaName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      </dynamic>
+      where AreaId=#AreaId#
+    </update>
+    <delete id="Area_V_Delete" parameterClass="StringObjectDictionary" >
+      delete Pub_Area_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaCode" >AreaCode=#AreaCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaName" >AreaName=#AreaName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Area_V_Load" parameterClass="Area_VPK" resultClass="Area_V" >
+      select AreaId,AreaCode,AreaName,Description,ParentId,Levels,EndFlag,OrderNo,Status,InputCode1,InputCode2 from Pub_Area_V
+      where AreaId=#AreaId#
+    </select>
+    <select id="Area_V_List" parameterClass="StringObjectDictionary" resultClass="Area_V" >
+      select AreaId,AreaCode,AreaName,Description,ParentId,Levels,EndFlag,OrderNo,Status,InputCode1,InputCode2 from Pub_Area_V
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaCode" >AreaCode=#AreaCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaName" >AreaName=#AreaName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

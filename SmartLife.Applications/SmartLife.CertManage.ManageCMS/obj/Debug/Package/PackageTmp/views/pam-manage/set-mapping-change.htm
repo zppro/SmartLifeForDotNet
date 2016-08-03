@@ -1,0 +1,195 @@
+﻿<table style=" height:450px; padding:5px;">
+    <tr>
+        <td valign="top">
+            <div id="toolbar-serviceman" > 
+                            <input id="OldManId" type="hidden" />  
+                            <input id="StationId" type="hidden" /> 
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right;width: 40px;">
+                            姓名：
+                        </td>
+                        <td style="text-align:left">
+                            <input id="ServiceManName" class="easyui-validatebox"   style=" width:150px;" /> 
+                        </td>
+                        <td  >
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="execEx()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="resetfmEx()">清空</a> 
+                        </td> 
+                    </tr>
+                </table >
+            </div>
+        <table id="dg-serviceman">
+        </table>
+        </td>
+        <td style="width: 310px; " valign="top">
+            <div style="line-height: 30px; width:309px; text-align: center; border-left: solid 1px #ddd;
+                border-top: solid 1px #ddd; border-right: solid 1px #ddd; background-color: #fafafa;">
+                <label id='title'>正在服务的老人</label> 
+            </div> 
+            <div style=" width:310px; height:417px; overflow:auto; border-top: solid 1px #ddd;border-right: solid 1px #ddd; border-bottom: solid 1px #ddd;">
+            <ul id="inside-oldman"></ul>
+            </div>
+        </td>
+    </tr>
+</table>  
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        $('#StationId').val(dialogData.StationId);
+        $('#OldManId').val(dialogData.OldManId);
+        var currentMenuCode = '';
+        models[currentMenuCode] = {
+            gridId: 'dg-serviceman',
+            toolbarId: 'toolbar-serviceman',
+            baseModelUrl: baseCMSInvokeUrl + '/Pam/ServeManService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00004", GroupId: window.contants.GuidAsGroup_PensionAgencyServeMan, Status: 1, StationId: dialogData.StationId }
+        };
+
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            width: 445,
+            height: 450,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models[currentMenuCode].baseModelUrl + 'ServiceManListForEasyUIgridByStationId',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                fuzzyFieldOP: ' or ',
+                sort: 'UserName',
+                order: 'asc',
+                filterFields: [
+                            { key: 'Area1', value: models[currentMenuCode].defaultModel.AreaId },
+                            { key: 'Status', value: models[currentMenuCode].defaultModel.Status },
+                            { key: 'UserType', value: models[currentMenuCode].defaultModel.UserType },
+                            { key: 'GroupId', value: models[currentMenuCode].defaultModel.GroupId },
+                            { key: 'StationId', value: models[currentMenuCode].defaultModel.StationId },
+                            { key: 'OldManId', value: dialogData.OldManId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 0 }
+                            ]
+            },
+            onSelect: function (index, row) {
+                $('#title').text(row.UserName + ' 正在服务的老人');
+                getWorkPlanForServiceMan(row.UserId);
+            },
+            columns: [[
+                    { field: 'UserId', title: '服务人员编号', width: 150, hidden: true },
+                    { field: 'CK', title: '', checkbox: true },
+                    { field: 'UserName', title: '名称', width: 175, align: 'center' },
+                    { field: 'Gender', title: '性别', width: 60, align: 'center', formatter: easyuigrid_genderFormatter },
+                    { field: 'CallNo', title: '呼叫器号码', width: 150, align: 'center' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    //获得服务人员正在服务的所有老人
+    function getWorkPlanForServiceMan(userId) {
+        var queryParams = {
+            page: 1,
+            rows: 100,
+            sort: 'wp.OldManId',
+            order: 'asc',
+            filterFields: [{ key: 'Status', value: 1 },
+                           { key: 'UserId', value: userId}]
+        };
+        postTo(baseCMSInvokeUrl + '/Pam/WorkPlanService/ListForEasyUIgridByPage', $.toJSON(queryParams), function (ret) {
+            var str = '';
+            if (ret.rows.length > 0) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var manId;
+                var findMans = [];
+                _.each(rows, function (o) {
+                    if (manId != o.OldManId) {
+                        manId = o.OldManId;
+                        findMans.push(o.OldManId);
+                    }
+                });
+                var countOldManId = $('#OldManId').val();
+                if (_.contains(findMans, countOldManId)) {
+                    var index = findMans.indexOf(countOldManId);
+                    findMans.splice(index, index + 1);
+                    findMans.unshift(countOldManId);
+                }
+                _.each(findMans, function (id) {
+                    var i = 1;
+                    _.each(rows, function (o) {
+                        if (id == o.OldManId) {
+                            if (i == 1) {
+                                str += '<ul style="margin-left:5px; margin-top:5px;"><label style=" font-weight:bolder;">姓名：</label>' + o.OldManName + '<label style=" font-weight:bolder;">&nbsp;&nbsp;&nbsp;&nbsp;性别：</label>' + getGender(o.GenderP);
+                            }
+                            str += '<li  style="margin-left:10px; margin-top:5px;"> <label style=" font-weight:lighter">服务项目：</label> ' + o.WorkItemName + '；<label style=" font-weight:lighter">&nbsp;&nbsp;&nbsp;&nbsp;服务用时： </label>' + o.WorkloadName + '</li>';
+                            str += '<li  style="margin-left:10px; margin-top:5px;"> <label style=" font-weight:lighter">计划时间：</label> ' + o.PlanSchedule + '；<label style=" font-weight:lighter">&nbsp;&nbsp;&nbsp;&nbsp; 注意事项：</label> ' + o.RemarkWP + '</li>';
+                            str += '<li  style="margin-left:10px; margin-top:5px;"> &nbsp;&nbsp;&nbsp;&nbsp; </li>';
+                            i++;
+                        }
+                    });
+                    str = str + '</ul>';
+                });
+            }
+            $('#inside-oldman').html(str);
+        }, { async: false });
+    }
+
+    function execEx() {
+        var _filterFields = [
+                            { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                            { key: 'Status', value: 1 },
+                            { key: 'UserType', value: '00004' },
+                            { key: 'GroupId', value: window.contants.GuidAsGroup_PensionAgencyServeMan },
+                            { key: 'StationId', value: $('#StationId').val() },
+                            { key: 'OldManId', value: $('#OldManId').val() },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 0 }
+                ];
+        $('#dg-serviceman').datagrid('reload', {
+            sort: 'OldManName',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            filterFields: _filterFields,
+            fuzzyFields: [{ key: 'UserName', value: $('#ServiceManName').val() },
+                    { key: 'InputCode1', value: $('#ServiceManName').val() },
+                    { key: 'InputCode2', value: $('#ServiceManName').val()}]
+        });
+
+    }
+
+    function resetfmEx() {
+        $('#ServiceManName').val(null);
+    }
+    function getGender(g) {
+        var result = '';
+        if (g == 'M') {
+            result = '男';
+        }
+        else
+            if (g == 'F') {
+                result = '女';
+            }
+            else {
+                result = '未知';
+            }
+        return result;
+    }
+
+    function dialogBeforeSubmit() {
+        var result = false;
+        var row = $('#dg-serviceman').datagrid('getSelected'); 
+        if (row) {
+            result = true;
+        }
+        else {
+            result = false;
+        }
+        return result;
+    }
+    function dialogClose() {
+        var row = $('#dg-serviceman').datagrid('getSelected'); 
+        return row.UserId;
+    }
+</script>

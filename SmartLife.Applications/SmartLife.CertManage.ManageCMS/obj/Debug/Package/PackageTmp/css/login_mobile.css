@@ -1,0 +1,161 @@
+﻿html
+{
+    margin:0px;
+    padding:0px;
+}
+body
+{  
+    margin:0px;
+    padding:0px;
+    background-image:url(../images/login_mobile/login_bg.png);
+    background-position:center center; 
+    background-color:#015a94;
+    background-repeat:no-repeat;
+    position:relative; 
+}
+
+#Container
+{ 
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    width:1024px; 
+    background:solid 1px red; 
+}
+#Logo
+{
+    position:absolute;
+    top:-158px;
+    top:38px\9;
+    right:15px\9;
+    left:242px;
+    width:198px;
+    height:79px; 
+    background-image:url(../images/login_mobile/Login_Logo.png);
+    background-position:center center; 
+    background-repeat:no-repeat;    
+}
+#Main
+{  
+    margin-left:auto;
+    margin-right:auto;
+    width:1024px;  
+    height:728px;
+    position:relative;
+}
+#SystemName
+{
+    width:590px;
+    height:38px;
+    top:-136px;
+    top:60px\9;
+    left:450px;
+    background-image:url(../images/login_mobile/Login_SystemName.png);
+    background-position:left center; 
+    background-repeat:no-repeat; 
+    position:absolute;
+}
+
+#MainLogin
+{ 
+    margin-left:auto;
+    margin-right:auto;
+    width:400px;
+    height:370px;
+    background-image:url(../images/login_mobile/Login_box.png);
+    background-position:center center; 
+    background-repeat:no-repeat; 
+    margin-top:190px;
+    margin-top:190px\9;  
+} 
+
+#MainLogin table
+{
+    margin-left:auto;
+    margin-right:auto; 
+}
+#MainLogin td.login-field-head
+{
+    height:100px; 
+}
+#MainLogin td.login-field-username
+{
+    width:358px;
+    height:52px; 
+    padding-left:100px;
+    background-image:url(../images/login_mobile/login_field_username.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+}
+#MainLogin td.login-field-password
+{
+    width:358px;
+    height:60px; 
+    padding-left:100px;
+    background-image:url(../images/login_mobile/login_field_password.png);
+    background-position:center center; 
+    background-repeat:no-repeat;
+}
+#MainLogin td.login-field-ext
+{
+    width:358px;
+    height:60px; 
+    padding-left:100px;
+    background-image:url(../images/login_mobile/login_field_ext.png);
+    background-position:center center; 
+    background-repeat:no-repeat; 
+    
+}
+#MainLogin td input
+{
+    width:220px;
+    border:none;
+    height:36px;
+    line-height:36px;
+    background:none;
+}  
+
+#RememberUserCodeDiv
+{
+    width:100%;
+}
+#LoginButton
+{
+    margin-left:auto;
+    margin-right:auto;
+    background-image:url(../images/login_mobile/Login_button.png);
+    background-repeat:no-repeat;
+    background-position:center;
+    width:100px;
+    height:40px; 
+    margin-bottom:6px;
+}
+
+#Foot
+{
+    width:500px;
+    height:20px; 
+    top:528px;
+    top:498px\9;
+    _top:498px; 
+    *top:498px;
+    left:262px;  
+    position:absolute;
+    text-align:center; 
+    clear:both;
+    z-index:99;
+}
+.copyright
+{
+    color:#fff; 
+}
+.copyright a
+{
+    color:#fff;
+}
+#MainVerifyInfo
+{
+    clear:both; text-align:center; margin:0 auto; height:40px; line-height:40px; 
+}
+#MainVerifyInfo a{ color:Orange;text-decoration: none; font-size:11px; cursor:pointer;}

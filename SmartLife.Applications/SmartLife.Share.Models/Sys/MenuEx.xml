@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Sys_AdjustMenuParam" class="StringObjectDictionary">
+      <parameter  property="MenuId" column="MenuId" direction="Input" type="string" dbType="char" />
+      <parameter  property="Action" column="Action" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OldParentId" column="OldParentId" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <select id="Menu_ListByPermisson" parameterClass="StringObjectDictionary" resultClass="Menu" >
+      select MenuId,Id,Status,CodeClass,MenuCode,MenuName,PageUrl,ApplicationId,ParentId,Levels,EndFlag,Picture,OrderNo,Description,OpenInFrameFlag,SelectOnRefreshFlag,CanFullScreenFlag from Sys_Menu a
+      inner join (
+      select distinct ResourceId from pub_groupPermit x inner join Pub_GroupMember y on x.GroupId = y.GroupId
+      where UserId=#UserId#  and len(ResourceId) = 5 )b on a.MenuId = b.ResourceId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CodeClass" >CodeClass=#CodeClass#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuCode" >MenuCode=#MenuCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MenuName" >MenuName=#MenuName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PageUrl" >PageUrl=#PageUrl#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ApplicationId" >ApplicationId=#ApplicationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ParentId" >ParentId=#ParentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Levels" >Levels=#Levels#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EndFlag" >EndFlag=#EndFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Picture" >Picture=#Picture#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OrderNo" >OrderNo=#OrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Description" >Description=#Description#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OpenInFrameFlag" >OpenInFrameFlag=#OpenInFrameFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Menu_CTE_ListAncestor" parameterClass="StringObjectDictionary" resultClass="Menu" >
+      with CTE_Sys_Menu as (
+      select a.MenuId,a.Id,a.Status,a.CodeClass,a.MenuCode,a.MenuName,a.PageUrl,a.ApplicationId,a.ParentId,a.Levels,a.EndFlag,a.Picture,a.OrderNo,a.Description,a.OpenInFrameFlag,a.SelectOnRefreshFlag,a.CanFullScreenFlag
+      from Sys_Menu a where a.Status=1 and ((#InCludeSelfFlag#=1 and a.MenuId=#MenuId# ) or (#InCludeSelfFlag#=0 and a.ParentId=#MenuId#))
+      union all
+      select a.MenuId,a.Id,a.Status,a.CodeClass,a.MenuCode,a.MenuName,a.PageUrl,a.ApplicationId,a.ParentId,a.Levels,a.EndFlag,a.Picture,a.OrderNo,a.Description,a.OpenInFrameFlag,a.SelectOnRefreshFlag,a.CanFullScreenFlag
+      from Sys_Menu a inner join CTE_Sys_Menu b on a.MenuId = b.ParentId where a.Status=1
+      )select m.* from CTE_Sys_Menu m
+      <isPropertyAvailable prepend="  " property="PermitFlag" >
+        left join (
+        select distinct ResourceId from pub_groupPermit x inner join Pub_GroupMember y on x.GroupId = y.GroupId
+        where UserId=#UserId#  and len(ResourceId) = 5
+        )n on m.MenuId = n.ResourceId where n.ResourceId is not null
+      </isPropertyAvailable>
+      order by Levels asc,OrderNo asc
+    </select>
+    <select id="Menu_CTE_ListDescendant" parameterClass="StringObjectDictionary" resultClass="Menu" >
+      with CTE_Sys_Menu as (
+      select a.MenuId,a.Id,a.Status,a.CodeClass,a.MenuCode,a.MenuName,a.PageUrl,a.ApplicationId,a.ParentId,a.Levels,a.EndFlag,a.Picture,a.OrderNo,a.Description,a.OpenInFrameFlag,a.SelectOnRefreshFlag,a.CanFullScreenFlag
+      from Sys_Menu a where a.Status=1 and ((#InCludeSelfFlag#=1 and a.MenuId=#MenuId# ) or (#InCludeSelfFlag#=0 and a.ParentId=#MenuId#))
+      union all
+      select a.MenuId,a.Id,a.Status,a.CodeClass,a.MenuCode,a.MenuName,a.PageUrl,a.ApplicationId,a.ParentId,a.Levels,a.EndFlag,a.Picture,a.OrderNo,a.Description,a.OpenInFrameFlag,a.SelectOnRefreshFlag,a.CanFullScreenFlag
+      from Sys_Menu a inner join CTE_Sys_Menu b on a.ParentId = b.MenuId where a.Status=1
+      )select m.* from CTE_Sys_Menu m
+      <isPropertyAvailable prepend="  " property="PermitFlag" >
+        left join (
+        select distinct ResourceId from pub_groupPermit x inner join Pub_GroupMember y on x.GroupId = y.GroupId
+        where UserId=#UserId#  and len(ResourceId) = 5
+        )n on m.MenuId = n.ResourceId where n.ResourceId is not null
+      </isPropertyAvailable>
+      order by Levels asc,OrderNo asc
+    </select>
+    <procedure id="SP_Sys_AdjustMenu" parameterMap="SP_Sys_AdjustMenuParam" resultClass="StringObjectDictionary">
+      SP_Sys_AdjustMenu
+    </procedure>
+  </statements>
+</sqlMap>

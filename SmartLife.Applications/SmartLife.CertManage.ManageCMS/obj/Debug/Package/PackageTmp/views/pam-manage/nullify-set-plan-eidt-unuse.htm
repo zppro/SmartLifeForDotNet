@@ -1,0 +1,377 @@
+﻿<table style=" height:330px; padding:5px;">
+    <tr>
+        <td>
+            <div id="toolbar-serviceman" >  
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right;width: 40px;">
+                            姓名：
+                        </td>
+                        <td style="text-align:left">
+                            <input id="ServiceManName" class="easyui-validatebox"   style=" width:100px;" /> 
+                        </td>
+                        <td  >
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="execEx()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="resetfmEx()">清空</a> 
+                        </td> 
+                    </tr>
+                </table >
+            </div>
+        <table id="dg-serviceman">
+        </table>
+        </td>
+        <td>
+            <div id="toolbar-oldman" >  
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:right;width: 40px;">
+                            姓名：
+                        </td>
+                        <td style="text-align:left">
+                            <input id="oldManName" class="easyui-validatebox"   style=" width:100px;" /> 
+                        </td>
+                        <td >
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" plain="true"
+                                onclick="execEx_()">查询</a><a href="javascript:void(0)" class="easyui-linkbutton"
+                                    iconcls="icon-reload" plain="true" onclick="resetfmEx_()">清空</a> 
+                        </td> 
+                    </tr>
+                </table >
+            </div>
+        <table id="dg-oldman">
+        </table>
+        </td>
+    </tr>
+</table> 
+<div class="easyui-panel" title="设置工作项"  style="border: 1px solid #888; width:768px; height:125px; ">
+<input id="StationId" type="hidden"/>
+<input id="PlanId" type="hidden"/> 
+    <input id="dateNow" type="hidden" />
+<table style=" margin:auto auto auto auto;">
+    <tr style=" height:30px;">
+        <td><label> 工作项目：</label><input id="WorkItem" style=" width:100px"/> </td>
+        <td><label> 用时(分)：</label><input id="Workload" style=" width:60px" onkeyup="value=value.replace(/[^\d]/g,'')"/> </td>
+        <td><label> 注意事项：</label><input id="Remark" style=" width:100px"/> </td>
+        <td> <label> 提醒标识：</label><input id="RemindFlag" style=" width:50px"/> </td>
+        <td><label> 提醒次数：</label><input id="RemindRepeats" style=" width:50px" onkeyup="value=value.replace(/[^\d]/g,'')"/> </td>
+    </tr>
+    <tr style=" height:30px;">
+        <td><label> 计划周期：</label><input id="PlanPeriod"  style=" width:100px"/> </td>
+        <td><label> 计划时间：</label><input id="PlanSchedule"class="easyui-timespinner" style=" width:60px; " /> </td>
+        <td><label> 服务开始：</label><input id="ServerBeginTime"  class="Wdate" style=" width:100px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'dateNow\')}'})"/> </td>
+        <td><label> 重复次数：</label><input id="PlayRepeats" style=" width:50px" /> </td>
+        <td></td>
+    </tr>
+    <tr style=" height:30px;">
+        <td> <label> 原服务人员：</label><label id="ServiceNameOld" style=" color:Blue;"></label><input id="UserIdOld" type="hidden" /></td>
+        <td><label>原老人：</label><label id="OldNameOld" style=" color:Blue;"></label><input id="OldManIdOld" type="hidden" /> </td>
+        <td><label>现服务人员：</label><label id="ServiceNameNew" style=" color:Green;"></label><input id='UserId' type="hidden" /></td>
+        <td><label>现老人：</label><label id="OldNameNew" style=" color:Green;"></label><input id="OldManId" type="hidden"/> </td>
+        <td> </td>
+    </tr>
+</table> 
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        models = {
+            gridId: 'dg-serviceman',
+            toolbarId: 'toolbar-serviceman',
+            gridOldId: 'dg-oldman',
+            toolbarOldId: 'toolbar-oldman',
+            baseModelUrl: baseCMSInvokeUrl + '/Pam/ServeManService/',
+            baseOldModelUrl: baseCMSInvokeUrl + '/Pam/PensionAgencyObjectBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), UserType: "00004", GroupId: window.contants.GuidAsGroup_PensionAgencyServeMan, Status: 1, StationId: dialogData.StationId }
+        };
+        set_datagrid_serviceman(models);
+        set_datagrid_oldMan(models);
+        resetPlan();
+        $('#ServiceNameOld').text(dialogData.row.UserName);
+        $('#OldNameOld').text(dialogData.row.OldManName);
+        $('#ServiceNameNew').text(dialogData.row.UserName);
+        $('#OldNameNew').text(dialogData.row.OldManName);
+        $('#StationId').val(dialogData.StationId);
+        $('#PlanId').val(dialogData.row.PlanId);
+        $('#UserIdOld').val(dialogData.row.UserId);
+        $('#OldManIdOld').val(dialogData.row.OldManId);
+        $('#UserId').val(dialogData.row.UserId);
+        $('#OldManId').val(dialogData.row.OldManId);
+        WorkItem: $('#WorkItem').combobox('setValue', dialogData.row.WorkItem);
+        RemindFlag: $('#RemindFlag').combobox('setValue', dialogData.row.RemindFlag);
+        PlanPeriod: $('#PlanPeriod').combobox('setValue', dialogData.row.PlanPeriod);
+        $('#Workload').val(dialogData.row.Workload);
+        $('#PlanSchedule').val(dialogData.row.PlanSchedule);
+        $('#Remark').val(dialogData.row.RemarkWP);
+        var serverBeginTime = dialogData.row.ServerBeginTime.substring(0, 9).replace(/\//g, '-');
+        $('#ServerBeginTime').val(serverBeginTime);
+
+        if (dialogData.row.RemindFlag == '0') {
+            $('#RemindRepeats').attr('disabled', 'disabled');
+            $('#PlayRepeats').combobox({ disabled: true });
+        }
+        else if (dialogData.row.RemindFlag == '1') {
+            $('#RemindRepeats').removeAttr('disabled', 'disabled');
+            $('#RemindRepeats').val(3);
+            $('#PlayRepeats').combobox({ disabled: false });
+        }
+    }
+
+    function set_datagrid_oldMan(models) {
+        $('#' + models.gridOldId).datagrid(easyuigrid_settings({
+            title: "",
+            width: 480,
+            height: 330,
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: models.baseOldModelUrl + 'ListOldManLivingInRoom',
+            method: 'POST',
+            toolbar: '#' + models.toolbarOldId,
+            queryParams: {
+                sort: 'OldManName',
+                order: 'asc',
+                fuzzyFieldOP: ' or ',
+                filterFields: [{ key: 'Status', value: models.defaultModel.Status },
+                { key: 'AreaId', value: models.defaultModel.AreaId },
+                { key: 'StationId', value: models.defaultModel.StationId }
+                ]
+            },
+            onSelect: function (index, row) {
+                $('#OldNameNew').text(row.OldManName);
+                $('#OldManId').val(row.OldManId);
+                var oldId = $('#OldManIdOld').val();
+                if (oldId != row.OldManId) { $('#OldNameNew').css({ "color": "Red" }); }
+                else { $('#OldNameNew').css({ "color": "Green" }); }
+                execEx(row);
+            },
+            columns: [[
+                { field: 'OldManId', title: '老人编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 60, align: 'center' },
+                { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'RoomNo', title: '所在房间', width: 60, align: 'center' },
+                { field: 'ExtNo', title: '分机号', width: 80, align: 'center' },
+                { field: 'HealthInsuranceFlag', title: '医保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' },
+                { field: 'SocialInsuranceFlag', title: '社保', width: 50, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '无:0~t有:1' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+
+    function set_datagrid_serviceman(models) {
+        $('#' + models.gridId).datagrid(easyuigrid_settings({
+            title: "",
+            width: 275,
+            height: 330,
+            rownumbers: true,
+            singleSelect: true,
+            url: models.baseModelUrl + 'ServiceManListForEasyUIgridByStationId',
+            method: 'POST',
+            toolbar: '#' + models.toolbarId,
+            queryParams: {
+                page: 1,
+                rows: 100,
+                fuzzyFieldOP: ' or ',
+                sort: 'UserName',
+                order: 'asc',
+                filterFields: [
+                            { key: 'Area1', value: models.defaultModel.AreaId },
+                            { key: 'Status', value: models.defaultModel.Status },
+                            { key: 'UserType', value: models.defaultModel.UserType },
+                            { key: 'GroupId', value: models.defaultModel.GroupId },
+                            { key: 'StationId', value: models.defaultModel.StationId },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ]
+            },
+            onSelect: function (index, row) {
+                $('#ServiceNameNew').text(row.UserName);
+                $('#UserId').val(row.UserId);
+                var oldId = $('#UserIdOld').val();
+                if (oldId != row.UserId) { $('#ServiceNameNew').css({ "color": "Red" }); }
+                else { $('#ServiceNameNew').css({ "color": "Green" }); }
+                execEx_(row);
+            },
+            columns: [[
+                    { field: 'UserId', title: '服务人员编号', width: 150, hidden: true },
+        { field: 'UserName', title: '名称', width: 120, align: 'center' },
+                    { field: 'Gender', title: '性别', width: 40, align: 'center', formatter: easyuigrid_genderFormatter },
+        { field: 'CallNo', title: '呼叫器号码', width: 80, align: 'center' }
+        ]],
+            loader: easyuiLoaderForStringObjectDictionary
+        }));
+    }
+
+    function resetPlan() {
+        $('#Workload').val(null);
+        $('#RemindRepeats').val(3);
+        $('#Remark').val(null);
+        var d = new Date();
+        $('#dateNow').val(d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate());
+        $('#ServerBeginTime').val(null);
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (workItem_d) {
+            var v1 = workItem_d.length > 0 ? workItem_d[0].ItemId : '';
+            setCombobox("WorkItem", workItem_d, 102, 100, v1);
+            var d = new Date();
+            $('#PlanSchedule').timespinner('setValue', d.getHours() + ':00');
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13002', null, function (planPeriod_d) {
+            var v2 = planPeriod_d.length > 0 ? planPeriod_d[0].ItemId : '';
+            setCombobox("PlanPeriod", planPeriod_d, 102, 82, v2);
+        }, { async: false });
+
+        setCombobox("PlayRepeats", [{ ItemId: "1", ItemName: "1" }, { ItemId: "2", ItemName: "2" }, { ItemId: "3", ItemName: "3"}], 52, 62, 2);
+        $('#RemindFlag').combobox({
+            width: 52,
+            panelHeight: 42,
+            onSelect: function (record) {
+                if (record.ItemId == '0') {
+                    $('#RemindRepeats').attr('disabled', 'disabled');
+                    $('#PlayRepeats').combobox({ disabled: true });
+                }
+                else if (record.ItemId == '1') {
+                    $('#RemindRepeats').removeAttr('disabled', 'disabled');
+                    $('#RemindRepeats').val(3);
+                    $('#PlayRepeats').combobox({ disabled: false });
+                }
+            },
+            method: 'get',
+            data: [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 1
+        });
+    }
+
+    function isPass(userId, oldManId, workload) {
+        var result = 'flase';
+        if (oldManId && oldManId != '') {
+            if (userId && userId != '') {
+                if (workload && workload != '') {
+                    result = 'true';
+                }
+                else {
+                    result = '服务用时为空，请填写服务用时';
+                }
+            }
+            else {
+                result = '服务人员为空，请选择';
+            }
+        }
+        else {
+            result = '老人为空，请重新选择';
+        }
+        return result;
+    }
+    function setCombobox(controlsId, data, w, h, v) {
+        $('#' + controlsId + '').combobox({
+            width: w,
+            panelHeight: h,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: v
+        });
+    }
+
+
+    function execEx(row) {
+        var serviceManName = $('#ServiceManName').val();
+        var queryParams = {
+            page: 1,
+            rows: 100,
+            fuzzyFieldOP: ' or ',
+            sort: 'UserName',
+            order: 'asc',
+            filterFields: [
+                            { key: 'Area1', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                            { key: 'Status', value: 1 },
+                            { key: 'UserType', value: '00004' },
+                            { key: 'GroupId', value: window.contants.GuidAsGroup_PensionAgencyServeMan },
+                            { key: 'StationId', value: $('#StationId').val() },
+                            { key: 'StopFlag', value: 0 },
+                            { key: 'Selected', value: 1 }
+                            ],
+            fuzzyFields: [
+                            { key: 'UserCode', value: serviceManName },
+                            { key: 'UserName', value: serviceManName },
+                            { key: 'InputCode1', value: serviceManName },
+                            { key: 'InputCode2', value: serviceManName }
+                            ]
+        };
+        if (row) { queryParams.filterFields.push({ key: 'OldManId', value: row.OldManId }); }
+        $('#dg-serviceman').datagrid('reload', queryParams);
+    }
+    function execEx_(row) {
+        var queryParams = {
+            sort: 'OldManName',
+            order: 'asc',
+            fuzzyFieldOP: ' or ',
+            filterFields: [{ key: 'Status', value: 1 },
+                { key: 'AreaId', value: (top.objectId == '*' ? '00000' : top.appDeployArea.id) },
+                { key: 'StationId', value: $('#StationId').val() }
+                ],
+            fuzzyFields: [{ key: 'OldManName', value: $('#oldManName').val() },
+                    { key: 'InputCode1', value: $('#oldManName').val() },
+                    { key: 'InputCode2', value: $('#oldManName').val() },
+                    { key: 'IDNo', value: $('#oldManName').val()}]
+        }
+
+        if (row) { queryParams.filterFields.push({ key: 'UserId', value: row.UserId }); }
+        $('#dg-oldman').datagrid('reload', queryParams);
+
+    }
+
+    function resetfmEx_() {
+        $('#oldManName').val(null);
+    }
+
+    function resetfmEx() {
+        $('#ServiceManName').val(null);
+    }
+
+    function dialogBeforeSubmit() {
+        var result = false;
+        var userId = $('#UserId').val();
+        var oldManId = $('#OldManId').val();
+        var workload = $('#Workload').val();
+        if (isPass(userId, oldManId, workload) == "true") {
+            result = true;
+        }
+        else {
+            alert(isPass(userId, oldManId, workload));
+            result = false;
+        }
+        return result;
+    }
+    function dialogClose() {
+        var userId = $('#UserId').val();
+        var oldManId = $('#OldManId').val();
+        var workload = $('#Workload').val();
+        var param = {
+            PlanId: $('#PlanId').val(),
+            UserId: userId,
+            OldManId: oldManId,
+            Workload: workload,
+            WorkItem: $('#WorkItem').combobox('getValue'),
+            RemindFlag: $('#RemindFlag').combobox('getValue'),
+            PlanPeriod: $('#PlanPeriod').combobox('getValue'),
+            PlanSchedule: $('#PlanSchedule').val(),
+            Remark: $('#Remark').val()
+        };
+        var serverBeginTime = $('#ServerBeginTime').val();
+        if (serverBeginTime && serverBeginTime != '') {
+            serverBeginTime = (serverBeginTime + ' 00:00:00').replace(/-/g, '/');
+            param["ServerBeginTime"] = toJsonDate(serverBeginTime);
+        }
+        var remindFlag = $('#RemindFlag').combobox('getValue');
+        if (remindFlag == '1') {
+            param["RemindRepeats"] = $('#RemindRepeats').val();
+            param["PlayRepeats"] = $('#PlayRepeats').combobox('getValue');
+        }
+        return param;
+    }
+</script>

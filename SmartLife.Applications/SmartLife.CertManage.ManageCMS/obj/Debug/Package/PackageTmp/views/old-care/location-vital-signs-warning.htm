@@ -1,0 +1,113 @@
+﻿<div id="toolbar-B180605" >
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="query()">高级查询</a>
+</div>
+<table id="dg-B180605" >
+</table>
+<div id="dlg-search-B180605" class="easyui-dialog" style="width: 420px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B180605"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B180605" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            老&nbsp;&nbsp;人&nbsp;&nbsp;&nbsp;姓&nbsp;&nbsp;名:</label>
+        <input name="OldManName"  >
+    </div>
+    <div class="fitem">
+        <label>
+            起始定位时间:</label>
+        <input name="CheckInTime_Start" class="Wdate" onFocus="WdatePicker()">
+    </div>
+    <div class="fitem">
+        <label>
+            截止定位时间:</label>
+        <input name="CheckInTime_End" class="Wdate" onFocus="WdatePicker()">
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180605">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        validateUI();
+
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            pkId: 'oldmanid-' + currentMenuCode,
+            pk: 'OldManId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            uiMode: 'list',
+            entityName: '老人生命体征报警记录',
+            baseModelUrl: baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        loadfiles([
+        { type: "css", url: "../../css/old-care/base-data.css" },
+        { type: "js", url: "../../script/old-care/base-data.js" }
+        ], function () {
+            autosize(models[currentMenuCode].gridId);
+
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status,
+                        AreaId: models[currentMenuCode].defaultModel.AreaId
+                    },
+                    filterFields: []
+                },
+                onClickRow: function (idx, row) {
+                    market(row);
+                },
+                columns: [[
+                { field: 'OldManId', title: '编号', width: 150, hidden: true },
+                { field: 'OldManName', title: '姓名', width: 80, align: 'center' },
+                { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                { field: 'Tel', title: '座机', width: 100, align: 'center' },
+                { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+                { field: 'CheckInTime', title: '提醒时间', width: 150, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd hh:mm:ss" },
+                { field: 'Address', title: '家庭地址', width: 300 },
+                { field: 'Content', title: '提醒内容', width: 240, formatter: function getContent(val, row, idx) { if (val == null || val == "") return "脉搏跳动异常"; } },
+                { field: 'RemindType', title: '提醒方式', width: 100, align: 'center', formatter: function getRemindType(val, row, idx) { if (val == null || val == "") return "人工提醒"; } }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+        });
+
+    });
+
+    function market(row) {
+        if (!row) {
+            row = $('#' + models[currentMenuCode].gridId).datagrid('getSelected');
+        }
+        if (row) {
+            //drawLine(row);
+        }
+        else {
+            alertInfo('请选中要查看实时定位的记录！');
+        }
+    }
+ 
+</script>

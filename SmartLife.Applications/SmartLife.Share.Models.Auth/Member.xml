@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Auth" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Member" type="SmartLife.Share.Models.Auth.Member, SmartLife.Share.Models.Auth" />
+    <typeAlias alias="MemberPK" type="SmartLife.Share.Models.Auth.MemberPK, SmartLife.Share.Models.Auth" />
+  </alias>
+  <statements>
+    <insert id="Member_Create" parameterClass="StringObjectDictionary" >
+      insert into Auth_Member(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MemberId" >MemberId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >PasswordHash</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Email" >Email</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Name" >Name</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInCount" >CheckInCount</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastCheckIn" >LastCheckIn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RegisterTime" >RegisterTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Source" >Source</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MemberId" >#MemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Email" >#Email#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Name" >#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInCount" >#CheckInCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastCheckIn" >#LastCheckIn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RegisterTime" >#RegisterTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Source" >#Source#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="Member_Update" parameterClass="StringObjectDictionary" >
+      update Auth_Member
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Email" >Email=#Email#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Name" >Name=#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInCount" >CheckInCount=#CheckInCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="LastCheckIn" >LastCheckIn=#LastCheckIn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RegisterTime" >RegisterTime=#RegisterTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Source" >Source=#Source#</isPropertyAvailable>
+      </dynamic>
+      where MemberId=#MemberId#
+    </update>
+    <delete id="Member_Delete" parameterClass="StringObjectDictionary" >
+      delete Auth_Member
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MemberId" >MemberId=#MemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Email" >Email=#Email#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Name" >Name=#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInCount" >CheckInCount=#CheckInCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastCheckIn_Start" >LastCheckIn>=to_date(#LastCheckIn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastCheckIn_End" >LastCheckIn&lt;=to_date(#LastCheckIn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RegisterTime_Start" >RegisterTime>=to_date(#RegisterTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RegisterTime_End" >RegisterTime&lt;=to_date(#RegisterTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Source" >Source=#Source#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="Member_Load" parameterClass="MemberPK" resultClass="Member" >
+      select MemberId,Id,Status,IDNo,PasswordHash,Mobile,Email,Name,Gender,CheckInCount,LastCheckIn,RegisterTime,Source from Auth_Member
+      where MemberId=#MemberId#
+    </select>
+    <select id="Member_List" parameterClass="StringObjectDictionary" resultClass="Member" >
+      select MemberId,Id,Status,IDNo,PasswordHash,Mobile,Email,Name,Gender,CheckInCount,LastCheckIn,RegisterTime,Source from Auth_Member
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MemberId" >MemberId=#MemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PasswordHash" >PasswordHash=#PasswordHash#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Email" >Email=#Email#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Name" >Name=#Name#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInCount" >CheckInCount=#CheckInCount#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastCheckIn_Start" >LastCheckIn>=to_date(#LastCheckIn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LastCheckIn_End" >LastCheckIn&lt;=to_date(#LastCheckIn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RegisterTime_Start" >RegisterTime>=to_date(#RegisterTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RegisterTime_End" >RegisterTime&lt;=to_date(#RegisterTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Source" >Source=#Source#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

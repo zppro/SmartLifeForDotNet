@@ -1,0 +1,58 @@
+/******************************************************************/
+/*  2015-11-04 10:12:53,723  DEBUG PensionAgencyOrder 
+/*   - {
+  "AccessOfProvice": null,
+  "AccessPoint": "http://localhost/SmartLife.DataExchange.Services",
+  "Area1": "99999",
+  "Area2": null,
+  "Area3": null,
+  "AreaCode1": "120300",
+  "AreaCode2": null,
+  "AreaCode3": null,
+  "AreaName1": "蓝谷演示测试",
+  "AreaName2": null,
+  "AreaName3": null,
+  "AuthorizedModules": null,
+  "CityCode": "1203",
+  "CityId": "00112",
+  "CityName": "杭州市",
+  "DataPointOfManage": null,
+  "UserId": "a4c8a8bf-a1c2-425f-9e3f-75687878ec50",
+  "UserName": "测试养老机构-管理员"
+}
+/******************************************************************/
+
+/******************************************************************/
+/*  2015-11-04 10:12:58,676  DEBUG PensionAgencyOrder 
+/*   - ret.Success=>True
+/******************************************************************/
+
+/******************************************************************/
+/*  2015-11-04 10:15:44,580  DEBUG PensionAgencyOrder 
+/*   - {
+  "AccessOfProvice": null,
+  "AccessPoint": "http://localhost/SmartLife.DataExchange.Services",
+  "Area1": "99999",
+  "Area2": null,
+  "Area3": null,
+  "AreaCode1": "120300",
+  "AreaCode2": null,
+  "AreaCode3": null,
+  "AreaName1": "蓝谷演示测试",
+  "AreaName2": null,
+  "AreaName3": null,
+  "AuthorizedModules": null,
+  "CityCode": "1203",
+  "CityId": "00112",
+  "CityName": "杭州市",
+  "DataPointOfManage": null,
+  "UserId": "a4c8a8bf-a1c2-425f-9e3f-75687878ec50",
+  "UserName": "测试养老机构-管理员"
+}
+/******************************************************************/
+
+/******************************************************************/
+/*  2015-11-04 10:15:45,581  DEBUG PensionAgencyOrder 
+/*   - ret.Success=>True
+/******************************************************************/
+

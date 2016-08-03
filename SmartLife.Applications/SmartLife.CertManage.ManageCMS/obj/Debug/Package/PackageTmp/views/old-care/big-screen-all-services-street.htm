@@ -1,0 +1,271 @@
+﻿<div id="scroll-block" class="easyui-layout" data-options="fit:true">
+    <div id="north-c" data-options="region:'north',border:false" style="height: 144px;">
+        <div id="head-block" class="easyui-layout" data-options="fit:true">
+            <div id="head-c1" data-options="region:'north',border:false" style="height: 60px;">
+                <span id="CurrentAreaName"></span>居家养老 呼叫来电即时信息 
+            </div>
+            <div  id="head-c2" data-options="region:'center',border:false" style="height: 40px;">
+               <div id="areaComboTree" >街道社区：<input id="tree-AreaId" /> </div><span id="stat-time" onclick="showAndHide()"></span>
+            </div>
+            <div id="head-c3" data-options="region:'south',border:false" style="height: 36px;">
+                <div id="h-container">
+                    <div id="stat-all">
+                        未受理X条，受理中X条，处置中X条，督办中X条，回访中X条,处理完成X条。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="all-c" data-options="region:'center',collapsed:false,border:false,split:false" >
+        <div class="scroll-head">
+            <span class="field-servicecatalog">呼叫类型</span><span class="field-servicecontent">服务内容</span><span
+                class="field-oldmanname">姓名</span><span class="field-areaname3">所属社区</span><span class="field-checkintime">呼入时间</span><span
+                    class="field-seatno">受理座席</span><span class="field-statusdescription">受理状态</span></div>
+        <div id="all-scroll" class="scroll">
+            <ul class="list">
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var di_all = '00000';
+    var maxid_all = 0;
+    var repeatTime = 20000;
+    var clearTime = 0.5 * 60 * 1000; //30秒
+    var seatNo = top.gCallCenter.StationId.substring(24, 27) + '000'; //填充数据
+    var flog=false;
+    var flog_show=true;
+    $(function () {
+        $('#areaComboTree').hide();
+        //        getTo(ajaxData_InvokeUrl + "/GetAreaName/" + top.appDeployArea.id, null, function (result) {
+        //            $('#CurrentAreaName').text(result);
+        //        });
+        initTree('easyUIComboTree', 'tree-AreaId', {
+            width: 150,
+            panelWidth: 200,
+            panelHeight: 260,
+            required: false,
+            editable: false,
+            onSelect: function (treeNode) {
+                flog = true;
+                var areaId;
+                var treeNodeId = treeNode.id; //当前节点的层次
+                var areaText = treeNode.text;
+                if (treeNodeId.length > 6) {
+                    var sub_id = treeNodeId.substring(14, 18);
+                    if (sub_id == '0000') {
+                        areaId = left(treeNodeId, 13);
+                    }
+                    else {
+                        areaId = left(treeNodeId, 18);
+                    }
+                }
+                else {
+                    areaId = "AAA";
+                    flog = false;
+                };
+                $('#CurrentAreaName').text(areaText); //显示选择的街道社区
+                maxid_all = 0;
+                load_loadServicesForScroll(areaId);
+                _statServicesForBigScreen(areaId);
+            },
+            onLoadSuccess: function () {
+                //默认展开一级
+                var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+
+                var node_Children = $('#tree-AreaId').combotree('tree').tree('getChildren'); //取所有的节点
+                var rows = [];
+                _.each(node_Children, function (o) {
+                    if (o.attributes.EndFlag == '1' && o.attributes.PId.length > 5) {
+                        rows.push(o); //取所有的社区
+                    }
+                });
+                if (rows.length > 1) {//社区大于一个  为街道权限，默认设置第一个社区所在的街道
+                    $('#tree-AreaId').combotree('setValue', rows[0].attributes.PId);
+                }
+                else if (rows.length == 1) {//只有一个社区  为社区权限 ，默认设置社区
+                    $('#tree-AreaId').combotree('setValue', rows[0].id);
+                    $('#tree-AreaId').combotree('disable');
+                }
+                else {
+                    alert('没有任何权限');
+                }
+            }
+        },
+         function (d) {
+             var res;
+             postTo(baseCMSInvokeUrl + "/Bas/ResidentBaseInfoService/isSuperAdmin/" + top.window.gUserId, null, function (result) {
+                 res = result;
+             }, { async: false })
+             if (res) {
+                 getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '"}', d);
+             } else {
+                 getTreeData('01$02$01', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '" , "UserId":"' + top.window.gUserId + '"}', d);
+             }
+         });
+
+        setTimeout(function () {
+            $('#stat-time').text((new Date()).toString('yyyy-MM-dd HH:mm:ss'));
+            setTimeout(arguments.callee, 1000);
+        }, 0);
+
+
+        autosize('scroll-block');
+        autosize('h-container');
+        autosize('all-scroll', -$('#north-c').height() - 40);
+
+        loadfiles([
+            { type: "css", url: "../../css/old-care/big-screen.css" }
+            ], function () {
+                $("#h-container").roll({ containerCss: { height: '36px', "line-height": '36px' }, contentCss: { color: 'yellow', 'font-size': '24px' }, restart: function () {
+                    var areaId;
+                    if (flog) {
+                        areaId = getAreaId();
+                        _statServicesForBigScreen(areaId);
+                    }
+                }
+                });
+
+                //即时服务
+                setTimeout(function () {
+                    var areaId;
+                    if (flog) {
+                        areaId = getAreaId();
+                        load_loadServicesForScroll(areaId);
+                        setTimeout(arguments.callee, repeatTime);
+                    }
+                }, 0);
+
+                //滚动
+                setInterval('autoScroll(".scroll")', 3000);
+
+                //定时将id清零
+                setTimeout(function () {
+                    maxid_all = 0;
+                    setTimeout(arguments.callee, clearTime);
+                }, clearTime);
+            });
+    });
+    //隐藏和显示街道社区下拉列表
+        function showAndHide() {
+            if (flog_show) {
+                $('#areaComboTree').show();
+                flog_show = false;
+            }
+            else {
+                $('#areaComboTree').hide();
+                flog_show = true;
+            }
+    }
+
+    function autoScroll(obj) {
+        $(obj).find(".list").animate({
+            marginTop: "-50px"
+        }, 500, function () {
+            $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+        });
+    }
+
+    function load_loadServicesForScroll(areaId) {
+        _loadServicesForScroll(di_all, maxid_all, areaId, function (rows) {
+            var isAppend = true;
+            if (maxid_all == 0) {
+                isAppend = false;
+            }
+            if (rows.length > 0) {
+                maxid_all = _.max(rows, function (o) {
+                    return o.Id;
+                }).Id;
+
+                var htmlstr = _.map(rows, function (o, index) {
+                    var rowclass;
+                    if (o.ServiceCatalog.toString().indexOf('紧急救助') > -1) {
+                        rowclass = "row-color-red";
+                    }
+                    else if (o.ServiceCatalog == '亲人通话') {
+                        rowclass = "row-color-blue";
+                    }
+                    else if (o.ServiceCatalog == '公共服务') {
+                        rowclass = "row-color-yellow";
+                    }
+                    else if (o.ServiceCatalog == '生活服务') {
+                        rowclass = "row-color-green";
+                    }
+                    else if (o.ServiceCatalog == '政府购买服务') {
+                        rowclass = "row-color-orange";
+                    }
+
+                    return '<li style="height:25px; line-height:25px;"><a><span class="field-servicecatalog ' + rowclass + '" >' + o.ServiceCatalog + '</span><span class="field-servicecontent ' + rowclass + '" >' + isempty(o.ServiceContent, '&nbsp;') + '</span><span class="field-oldmanname ' + rowclass + '" >' + o.OldManName + '</span><span class="field-areaname3 ' + rowclass + '">' + isempty(o.AreaName3, '&nbsp;') + '</span><span class="field-checkintime ' + rowclass + '">' + Date.parse(o.CheckInTime).toString('HH点mm分ss秒') + '</span><span class="field-seatno ' + rowclass + '" >' + isempty(o.SeatNo, seatNo) + '</span><span class="field-statusdescription ' + rowclass + '">' + isempty(o.StatusDescription, '&nbsp;') + '</span></a></li>';
+                }).join("");
+
+                if (isAppend) {
+                    $('#all-scroll ul').append(htmlstr);
+                }
+                else {
+                    $('#all-scroll ul').html(htmlstr);
+                }
+            }
+            else {
+                var htmlstr = '<li style="height:25px; line-height:25px;"><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span><a><span  >&nbsp;</span></a></li>';
+                if (isAppend) {
+                    $('#all-scroll ul').append(htmlstr);
+                }
+                else {
+                    $('#all-scroll ul').html(htmlstr);
+                } 
+            }
+        });
+    }
+
+    function _loadServicesForScroll(serviceCatalog, id, areaId,callback) {
+        var selectedDate = (new Date()).toString('yyyy-MM-dd');
+        //selectedDate = '2014-01-21';
+        getTo(top.callservice_InvokeUrl + '/LoadServicesForBigScreenStreet/' + serviceCatalog + ',' + selectedDate + ',' + id + ',' + areaId, null, function (result) {
+            if (callback) {
+                var rows = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                callback.apply(this, [rows]);
+            }
+        }, {async:false});
+    }
+
+    function _statServicesForBigScreen(areaId) {
+        var selectedDate = (new Date()).toString('yyyy-MM-dd');
+        //selectedDate = '2014-01-21';
+        getTo(top.callservice_InvokeUrl + '/StatServicesForBigScreenStreet/' + di_all + ',' + selectedDate + ',' + areaId,null, function (result_all) {
+            var rows_all = _.map(result_all.rows, function (o) {
+                return xml2json.parser(o, 'StringObjectDictionary');
+            });
+            var htmls_all = [];
+            _.each(rows_all, function (o) {
+                htmls_all.push(o.StatusDescription + '<a>' + o.Num + '</a>次');
+            });
+            if (htmls_all.length > 0) {
+                $('#stat-all').html(htmls_all.join('； '));
+            }
+            else {
+                $('#stat-all').html('');
+            }
+        }, { async: false });
+    }
+    function getAreaId() {
+        var areaId;
+        var treeNodeId = $('#tree-AreaId').combotree('getValues').toString();
+        if (treeNodeId.length > 6) {
+            var sub_id = treeNodeId.substring(14, 18);
+            if (sub_id == '0000') {
+                areaId = left(treeNodeId, 13);
+            }
+            else {
+                areaId = left(treeNodeId, 18);
+            }
+        }
+        else {
+            areaId = "AAA";
+        };
+        return areaId;
+    }
+</script>

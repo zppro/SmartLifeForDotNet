@@ -1,0 +1,126 @@
+﻿<div id="city-residents-emigrate">
+<form id="fm-residentsinfo" method="post" novalidate>
+    <div class="fitem">
+    <input id="AreaIdFrom" name="AreaId" type="hidden"/>
+    <input id="AreaId2From" name="AreaId2" type="hidden"/>
+    <input id="AreaId3From" name="AreaId3" type="hidden"/>
+    <label id="address"></label>
+    </div>
+    <div class="fitem">
+    <label>迁入地址：</label><label id="addressto"></label>
+    <input id="tree-AreaId"  class="easyui-validatebox" missingmessage="迁入地址不能为空"  />
+    <input id="AreaIdTo" type="hidden"/>
+    <input id="AreaId2To" type="hidden"/>
+    <input id="AreaId3To" type="hidden"/>
+    </div>
+</form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        //        alert(getAreaFullName(dialogData));
+        $('#tree-AreaId').hide();
+        $('#fm-residentsinfo').form('clear');
+        $('#fm-residentsinfo').form('load', dialogData[0]);
+        $('#address').text('迁出地址：' + getAreaFullName(dialogData[0]));
+
+        $('#addressto').text('正在加载迁入地址....');
+        initTree('easyUIComboTree', 'tree-AreaId', {
+            width: 150,
+            panelWidth: 300,
+            panelHeight: 260,
+            required: true,
+            editable: false,
+            onSelect: function (node) {
+                $('#addressto').text();
+                var target = node.target;
+                var levels = node.attributes.Levels;
+                var pid = node.attributes.PId;
+                var id = node.id;
+                var text = node.text;
+                if (levels == 4) {
+                    var pText = $('#tree-AreaId').combotree('tree').tree('getParent', target);
+                    var ppText = $('#tree-AreaId').combotree('tree').tree('getParent', pText.target);
+                    var pppText = $('#tree-AreaId').combotree('tree').tree('getParent', ppText.target);
+                    $('#AreaIdTo').val(ppText.id);
+                    $('#AreaId2To').val(pText.id);
+                    $('#AreaId3To').val(id);
+                    $('#addressto').show();
+                    $('#addressto').text(pppText.text + '，' + ppText.text + '，' + pText.text);
+                }
+                else {
+                    alert('请选择一个社区（村）');
+                    $('#tree-AreaId').combotree('clear'); 
+                    $('#AreaIdTo').val(null);
+                    $('#AreaId2To').val(null);
+                    $('#AreaId3To').val(null);
+                    $('#addressto').hide();
+                    $('#addressto').text(null);
+                }
+            },
+            onLoadSuccess: function () {
+                //默认展开一级 
+                $('#addressto').hide();
+                var node = $('#tree-AreaId').combotree('tree').tree('getRoot');
+                $('#tree-AreaId').combotree('tree').tree("collapseAll");
+                $('#tree-AreaId').combotree('tree').tree('expand', node.target);
+            }
+        },
+         function (d) {
+             var areaCode = top.appDeployArea.code.substring(0, 4);
+             var strParms = { DictionaryId: '00005', ItemCode: areaCode };
+             var itemId;
+             getTo(baseCMSInvokeUrl + '/Sys/DictionaryItemService/Query?parms=' + $.toJSON(strParms), null, function (ret) {
+                 if (ret.rows.length > 0) {
+                     itemId = ret.rows[0].ItemId;
+                 }
+                 else {
+                     alert('市级节点未取到，本市Id未知');
+                 }
+             }, { async: false }, { ConnectId: baseInfoNode });
+             getTreeData('01$01$02', "OrderNo asc", '{"DictionaryId":"00005" , "ItemId":"' + itemId + '"}', d, { ConnectId: baseInfoNode });
+         });
+    }
+
+    function getAreaFullName(row) {
+        var areaid;
+        var areaFullName;
+        if (row.AreaId3) {
+            areaid = row.AreaId3;
+        }
+        else if (row.AreaId2) {
+            areaid = row.AreaId2;
+        }
+        else {
+            areaid = row.AreaId;
+        }
+        getTo(ajaxData_InvokeUrl + '/GetAreaFullName/' + areaid, null, function (ret) {
+//            alert($.toJSON(ret));
+            areaFullName = ret;
+        }, { async: false });
+        return areaFullName;
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {  
+        var areaIdFrom = $('#AreaIdFrom').val();
+        var areaId2From = $('#AreaId2From').val();
+        var areaId3From = $('#AreaId3From').val();
+
+        var areaIdTo=$('#AreaIdTo').val();
+        var areaId2To=$('#AreaId2To').val();
+        var areaId3To = $('#AreaId3To').val();
+        var dialogData = {
+            AreaIdFrom:areaIdFrom,
+            AreaId2From:areaId2From,
+            AreaId3From:areaId3From,
+            AreaIdTo:areaIdTo,
+            AreaId2To:areaId2To,
+            AreaId3To: areaId3To
+        };
+        return dialogData;
+    }
+</script>

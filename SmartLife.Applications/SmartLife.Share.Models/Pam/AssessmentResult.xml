@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="AssessmentResult" type="SmartLife.Share.Models.Pam.AssessmentResult, SmartLife.Share.Models" />
+    <typeAlias alias="AssessmentResultPK" type="SmartLife.Share.Models.Pam.AssessmentResultPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="AssessmentResult_Create" parameterClass="StringObjectDictionary" >
+      insert into Pam_AssessmentResult(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkSchedule" >WorkSchedule</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Workload" >Workload</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindFlag" >RemindFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindRepeats" >RemindRepeats</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlayRepeats" >PlayRepeats</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckFlag" >CheckFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckDescription" >CheckDescription</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >SourceId</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkSchedule" >#WorkSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Workload" >#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindFlag" >#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindRepeats" >#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlayRepeats" >#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckFlag" >#CheckFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckDescription" >#CheckDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >#SourceId#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="AssessmentResult_Update" parameterClass="StringObjectDictionary" >
+      update Pam_AssessmentResult
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="WorkSchedule" >WorkSchedule=#WorkSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Workload" >Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindFlag" >RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RemindRepeats" >RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckFlag" >CheckFlag=#CheckFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckDescription" >CheckDescription=#CheckDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="AssessmentResult_Delete" parameterClass="StringObjectDictionary" >
+      delete Pam_AssessmentResult
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkSchedule" >WorkSchedule=#WorkSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Workload" >Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindFlag" >RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindRepeats" >RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckFlag" >CheckFlag=#CheckFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckDescription" >CheckDescription=#CheckDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="AssessmentResult_Load" parameterClass="AssessmentResultPK" resultClass="AssessmentResult" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,WorkItem,WorkSchedule,Workload,RemindFlag,RemindRepeats,PlayRepeats,CheckFlag,CheckDescription,SourceTable,SourceId from Pam_AssessmentResult
+      where Id=#Id#
+    </select>
+    <select id="AssessmentResult_List" parameterClass="StringObjectDictionary" resultClass="AssessmentResult" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,WorkItem,WorkSchedule,Workload,RemindFlag,RemindRepeats,PlayRepeats,CheckFlag,CheckDescription,SourceTable,SourceId from Pam_AssessmentResult
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkSchedule" >WorkSchedule=#WorkSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Workload" >Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindFlag" >RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindRepeats" >RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckFlag" >CheckFlag=#CheckFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckDescription" >CheckDescription=#CheckDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="AssessmentResult_ListByPage" parameterClass="StringObjectDictionary" resultClass="AssessmentResult" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,WorkItem,WorkSchedule,Workload,RemindFlag,RemindRepeats,PlayRepeats,CheckFlag,CheckDescription,SourceTable,SourceId from Pam_AssessmentResult
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkItem" >WorkItem=#WorkItem#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WorkSchedule" >WorkSchedule=#WorkSchedule#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Workload" >Workload=#Workload#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindFlag" >RemindFlag=#RemindFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindRepeats" >RemindRepeats=#RemindRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlayRepeats" >PlayRepeats=#PlayRepeats#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckFlag" >CheckFlag=#CheckFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckDescription" >CheckDescription=#CheckDescription#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

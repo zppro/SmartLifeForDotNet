@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2774C50E-4B9A-4140-9BE9-50F5110BF87E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartLife.Share.Behaviors</RootNamespace>
+    <AssemblyName>SmartLife.Share.Behaviors</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Solution-Outputs\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.DynamicProxy, Version=1.1.5.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution-Bins\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="IBatisNet.Common, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution-Bins\IBatisNet.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="IBatisNet.Common.Logging.Log4Net">
+      <HintPath>..\..\Solution-Bins\IBatisNet.Common.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="IBatisNet.DataAccess.2005, Version=1.9.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution-Bins\IBatisNet.DataAccess.2005.dll</HintPath>
+    </Reference>
+    <Reference Include="IBatisNet.DataMapper, Version=1.6.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution-Bins\IBatisNet.DataMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\Solution-Bins\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Solution-Bins\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Solution-Bins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\..\Solution-Bins\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="web.core">
+      <HintPath>..\..\Solution-Bins\web.core.dll</HintPath>
+    </Reference>
+    <Reference Include="web.core.share.models">
+      <HintPath>..\..\Solution-Bins\web.core.share.models.dll</HintPath>
+    </Reference>
+    <Reference Include="win.core">
+      <HintPath>..\..\Solution-Bins\win.core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppBaseWcfService.cs" />
+    <Compile Include="CacheManager.cs" />
+    <Compile Include="CertManager.cs" />
+    <Compile Include="CrossDomainService.cs" />
+    <Compile Include="Operations\OperationValidateSessionAttribute.cs" />
+    <Compile Include="Services\DayCareCenterAIOTokenValidateAttribute.cs" />
+    <Compile Include="__CirculationService.cs" />
+    <Compile Include="GlobalManager.cs" />
+    <Compile Include="__LogService.cs" />
+    <Compile Include="__MsdbJobService.cs" />
+    <Compile Include="NPOIManager.cs" />
+    <Compile Include="Services\MobileServicesValidateAttribute.cs" />
+    <Compile Include="Services\ServiceValidateInitilizeAttribute.cs" />
+    <Compile Include="Services\MerchantServicesValidateAttribute.cs" />
+    <Compile Include="Services\MerchantTokenValidateAttribute.cs" />
+    <Compile Include="Services\MobileTokenValidateAttribute.cs" />
+    <Compile Include="Services\SmsServicesValidateAttribute.cs" />
+    <Compile Include="Services\SmsTokenValidateAttribute.cs" />
+    <Compile Include="Services\SmsTokenOfNodeValidateAttribute.cs" />
+    <Compile Include="Services\ServiceErrorOutputAttribute.cs" />
+    <Compile Include="__AjaxDataService.cs" />
+    <Compile Include="__AuthenticationService.cs" />
+    <Compile Include="Operations\OperationValidateApplicationIdAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ServiceAuthorizationAttribute.cs" />
+    <Compile Include="Services\ServiceLoggingAttribute.cs" />
+    <Compile Include="Services\ServiceValidateSessionAttribute.cs" />
+    <Compile Include="__DictionaryDataService.cs" />
+    <Compile Include="__InitService.cs" />
+    <Compile Include="__MsSQLScriptService.cs" />
+    <Compile Include="__ParameterDataService.cs" />
+    <Compile Include="__IPCCService.cs" />
+    <Compile Include="__RegistrarService.cs" />
+    <Compile Include="__TreeDataService.cs" />
+    <Compile Include="__WeiXinShareV1Service.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="log4net.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartLife.Share.Models\SmartLife.Share.Models.csproj">
+      <Project>{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}</Project>
+      <Name>SmartLife.Share.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ErrorCodeMessage.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

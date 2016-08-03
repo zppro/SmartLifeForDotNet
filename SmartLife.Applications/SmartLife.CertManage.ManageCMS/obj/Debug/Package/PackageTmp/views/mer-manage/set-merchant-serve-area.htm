@@ -1,0 +1,52 @@
+﻿<div data-options="region:'center',border:false">
+    <ul id="tree-MerchantArea" >
+
+    </ul> 
+</div>
+
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var stationId = '';
+        if (dialogData) {
+            stationId = dialogData.StationId;
+        }
+        initTree('easyUITree', 'tree-MerchantArea', {
+            checkbox: true,
+            width: 152,
+            panelWidth: 200,
+            panelHeight: 260,
+            onLoadSuccess: function () {
+                var node = $('#tree-MerchantArea').tree('getRoot');
+                $('#tree-MerchantArea').tree("collapseAll");
+                $('#tree-MerchantArea').tree('expand', node.target);
+
+                var zxNode = _.filter($('#tree-MerchantArea').tree('getChildren'), function (i) {
+                    return i.id.indexOf('0999') > -1 && i.text == "中心街道";
+                });
+                if (zxNode) {
+                    $('#tree-MerchantArea').tree('remove', zxNode[0].target); 
+                }
+            }
+        }, function (d) {
+            getTreeData('01$01$09', null, '{ "DictionaryId": "00005", "ItemId": "' + (top.objectId == '*' ? '00000' : top.appDeployArea.id) + '","StationId":"' + stationId + '" }', d);
+        }, null, function (treeObj) {
+        });
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var treeObj = $("#tree-MerchantArea");
+        var checked_nodes = _.map(_.filter(treeObj.tree('getChecked'), function (i) {
+            return i.attributes.Code.length > 8
+        }), function (o) {
+            return o.id
+        });
+        //var indeterminate_nodes = _.map(treeObj.tree('getChecked', 'indeterminate'), function (o) { return o.id });
+        //var postData = $.toJSON(_.union(checked_nodes, indeterminate_nodes));
+        return checked_nodes;
+    }
+</script>

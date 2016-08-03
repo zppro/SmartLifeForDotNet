@@ -1,0 +1,186 @@
+﻿<div id="top-location-panel">
+    <div id="location-panel"  style=" width:60%; float:left" >地图载入中...</div>
+    <div style=" width:39%; float:right;">
+        <table id="dg-B230210"></table>
+    </div>
+</div>
+<div id="dlg-B230210" class="easyui-dialog" style="width: 480px; height: 360px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-B230210">
+    <form id="fm-B230210" method="post">
+    <div class="fitem">
+        <label>
+            机构编码:</label>
+        <input name="StationCode" />
+        <label>
+            机构名称:</label>
+        <input name="StationName">
+    </div>
+    <div class="fitem">
+        <label>
+            联&nbsp;&nbsp;系&nbsp;&nbsp;人:</label>
+        <input name="LinkMan" />
+        <label>
+            手机号码:</label>
+        <input name="LinkManMobile" />
+    </div>
+    <div class="fitem">
+        <label>
+            座　　机:</label>
+        <input name="Tel" />
+        <label>
+            传　　真:</label>
+        <input name="Fax" />
+    </div>
+    <div class="fitem">
+        <label>
+            电子邮件:</label>
+        <input name="Email" />
+        <label>
+            邮　　编:</label>
+        <input name="PostCode" maxlength="6" />
+    </div>
+    <div class="fitem">
+        <label>
+            地　　址:</label>
+        <textarea name="Address" style="width: 360px;" maxlength="200" rows="7"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-B230210">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="closeDlg()">关闭</a>
+</div>
+
+
+<script type="text/javascript">
+    var currentRows;
+    $(function () {
+        autosize('top-location-panel');
+
+        autosize('dg-B230210');
+        $('#dg-B230210').datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: true,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListForEasyUIgridPage',
+            method: 'POST',
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                instance: {
+                    Status: 1,
+                    AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),
+                    StationType: '00003'
+                }
+            },
+            onClickRow: function (idx, row) {
+                locationMerchant();
+            },
+            columns: [[
+                { field: 'StationId', title: '服务站编号', width: 150, hidden: true },
+                { field: 'StationName', title: '机构名称', width: 250 },
+                { field: 'LinkManMobile', title: '手机号码', width: 100 }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条',
+            onSelectPage: function (pageNumber, pageSize) {
+                transMorePoints($('#dg-B230210').datagrid('getRows'));
+            }
+        });
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" },
+        { type: "js", url: "../../script/map/transgps.js" }
+        ], function () {
+
+
+            //初始化地图
+            autosize("location-panel");
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            initMap("location-panel", longitude, latitude, function () {
+
+                transMorePoints($('#dg-B230210').datagrid('getRows'));
+            });
+        });
+    });
+
+    function locationMerchant(rows) {
+        if (!map) {
+            alertInfo('地图初始化未加载成功，请稍后再试...');
+            return;
+        }
+        if (!rows) {
+            rows = $('#dg-B230210').datagrid('getSelections');
+        }
+        if (rows) {
+            transMorePoints(rows)
+        }
+        else {
+            alertInfo('请选中要定位的商家！');
+        }
+    }
+
+    function transMorePoints(rows) {
+        map.clearOverlays();
+        currentRows = rows;
+
+        if (rows && rows.length > 0) {
+            var gpsPoints = _.map(rows, function (o) {
+                return new BMap.Point(o.LongitudeS, o.LatitudeS);
+            });
+            BMap.Convertor.transMore(gpsPoints, 0, callback);
+        }
+    }
+
+    function callback(xyResults) {
+        _.each(xyResults, function (o, i) {
+            if (o.error == 0) {
+                var point = new BMap.Point(o.x, o.y);
+
+                var marker = retPointMarker(point);
+
+                createPointLabel(marker, point, "商家名称: " + currentRows[i].StationName, false);
+                createPointInfoWindow(marker, point, addinfoWindowContent(currentRows[i]));
+            }
+
+        });
+    }
+
+    function addinfoWindowContent(item) {
+        var htm = [];
+        htm.push("<p style='font-size:16;color:red;'>商家信息:</p>")
+        htm.push("<p style='line-height:12px'>名称：" + item.StationName + "</p>");
+        htm.push("<p style='line-height:12px'>联系手机：" + item.LinkManMobile + "</p>");
+        htm.push("<p style='line-height:12px;word-wrap:break-word; word-break:normal;' >商家地址：" + item.Address + "</p>");
+        htm.push("<p style='line-height:12px;float:right;' ><a href='javascript:void(0)' onclick='openServiceStationInfo(\"" + item.StationId + "\")' >详细...</a></p>");
+        return htm.join("");
+    }
+
+    function openServiceStationInfo(strStationId) {
+        $('#fm-B230210').form('clear');
+
+        if (currentRows && currentRows.length > 0) {
+            var rows = _.filter(currentRows, function (o) {
+                return o.StationId == strStationId;
+            });
+
+            if (rows && rows.length > 0) {
+                $('#fm-B230210').form('load', rows[0]);
+                $('#dlg-B230210').dialog(_.extend({
+                    onClose: function () {
+                    },
+                    modal: true
+                }, null)).dialog('open').dialog('setTitle', '查看-商家信息');
+            }
+        }
+    }
+
+
+    function closeDlg() {
+        $('#dlg-B230210').dialog('close');
+    }
+</script>

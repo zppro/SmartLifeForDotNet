@@ -1,0 +1,137 @@
+﻿<div id="dgc-Groups" class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',border:false" style="width: 450px; padding: 0 2px 0 2px;">
+        <div id="toolbar-Groups">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+        onclick="add()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-edit" plain="true" onclick="edit()">编辑</a><a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="nullify()">
+                作废</a>
+        </div>
+        <table id="dg-Groups">
+        </table>
+        <div id="dlg-Groups" class="easyui-dialog" style="width: 360px; height: 200px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-Groups"  >
+    <div class="ftitle"></div>
+    <form id="fm-Groups" method="post" novalidate>
+    <input type="hidden" name="GroupId" id="groupid-Groups" />
+    <div class="fitem">
+        <label>
+            角色编码:</label>
+        <input name="GroupCode" class="easyui-validatebox" required="true" missingMessage="角色编码不能为空"> 
+    </div>
+    <div class="fitem">
+        <label>
+            角色名称:</label>
+        <input name="GroupName" class="easyui-validatebox" required="true" missingMessage="角色名称不能为空">
+    </div>
+    <div class="fitem">
+        <label>
+            　　描述:</label>
+        <textarea name="Description" style="width: 240px;"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-Groups">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div> 
+    </div>
+    <div data-options="region:'center',border:false">
+        <div class="easyui-panel" title="功能权限树" style="background: #fafafa;padding:5px 0 0 5px;" data-options="fit:true">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false" style="height: 30px;"> 
+                    <a id="savePermission" href="javascript:void(0)" class="easyui-linkbutton"  iconcls="icon-save">保存</a>
+                </div>
+                <div data-options="region:'center',border:false">
+                    <ul id="tree-Permission" >
+                    </ul>
+                </div>
+            </div> 
+        </div> 
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var areaId = currentMenuId.split('--')[1];
+        var areaCode = currentMenuCode.split('--')[1];
+        var connectId = 'SmartLife' + areaCode;
+        models[currentMenuCode] = {
+            gridId: 'dg-Groups',
+            toolbarId: 'toolbar-Groups',
+            dialogId: 'dlg-Groups',
+            formId: 'fm-Groups',
+            buttonId: 'btn-Groups',
+            pkId: 'groupid-Groups',
+            pk: 'GroupId',
+            getPKValueWhenAdd: function () {
+                return window.contants.guidAutoGenerate;
+            },
+            actionDone: function () {
+                var parentIdColumn = $('#' + models[currentMenuCode].gridId).datagrid('getColumnOption', 'ParentId');
+                if (parentIdColumn) {
+                    parentIdColumn.vals = null;
+                }
+                refreshTree('easyUITree', models[currentMenuCode].treeId, '00$00$01', "OrderNo asc");
+            },
+            headers: { ConnectId: connectId, AreaId: areaId },
+            uiMode: 'list',
+            entityName: '角色',
+            baseModelUrl: baseCMSInvokeUrl + '/Auth/GroupService/',
+            defaultModel: { SystemFlag: 0, GroupType: '00002', Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId, -40);
+
+        postTo(baseCMSInvokeUrl + '/Sys/DatabaseConnectService/TestDatabaseConnection/' + connectId).done(function (result) {
+            if (result.Success) {
+                $('#dg-Groups').datagrid(easyuigrid_settings({
+                    title: "",
+                    fit: true,
+                    pagination: true,
+                    rownumbers: true,
+                    singleSelect: true,
+                    url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid/' + connectId,
+                    method: 'POST',
+                    toolbar: '#' + models[currentMenuCode].toolbarId,
+                    queryParams: {
+                        sort: 'GroupCode',
+                        order: 'asc',
+                        instance: {
+                            Status: models[currentMenuCode].defaultModel.Status
+                        }
+                    },
+                    onDblClickRow: function (rowIndex, rowData) {
+                        initTree('easyUITree', 'tree-Permission', {
+                            checkbox: true,
+                            width: 152,
+                            panelWidth: 200,
+                            panelHeight: 260
+                        }, function (d) {
+                            getTreeData('00$02$01', null, $.toJSON({ GroupId: rowData.GroupId }), d, { ConnectId: connectId });
+                        }, null, function (treeObj) {
+                            $('#savePermission').unbind('click').bind('click', function () {
+                                var groupId = $('#dg-Groups').datagrid('getSelected').GroupId;
+                                var checked_nodes = _.map(treeObj.tree('getChecked'), function (o) { return o.id });
+                                var indeterminate_nodes = _.map(treeObj.tree('getChecked', 'indeterminate'), function (o) { return o.id });
+                                var postData = $.toJSON(_.union(checked_nodes, indeterminate_nodes));
+                                postTo(ajaxData_InvokeUrl + '/GroupPermission/' + groupId, postData, function (ret) {
+                                    alertInfo('授权成功！');
+                                }, null, { ConnectId: connectId });
+                            });
+                        });
+                    },
+                    columns: [[
+        { field: 'GroupId', title: '角色编号', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'GroupName', title: '角色名称', width: 200 }
+    ]],
+                    loader: easyuiLoader
+                }));
+            }
+            else {
+                setTimeout(function () { closeTab(currentMenuTitle) }, 2000);
+            }
+        });
+
+    }); 
+</script> 

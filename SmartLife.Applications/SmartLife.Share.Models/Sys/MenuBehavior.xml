@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="MenuBehavior" type="SmartLife.Share.Models.Sys.MenuBehavior, SmartLife.Share.Models" />
+    <typeAlias alias="MenuBehaviorPK" type="SmartLife.Share.Models.Sys.MenuBehaviorPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="MenuBehavior_Create" parameterClass="StringObjectDictionary" >
+      insert into Sys_MenuBehavior(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MenuId" >MenuId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BehaviorCode" >BehaviorCode</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="MenuId" >#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BehaviorCode" >#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="MenuBehavior_Update" parameterClass="StringObjectDictionary" >
+      update Sys_MenuBehavior
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+      </dynamic>
+      where MenuId=#MenuId# and BehaviorCode=#BehaviorCode#
+    </update>
+    <delete id="MenuBehavior_Delete" parameterClass="StringObjectDictionary" >
+      delete Sys_MenuBehavior
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BehaviorCode" >BehaviorCode=#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="MenuBehavior_Load" parameterClass="MenuBehaviorPK" resultClass="MenuBehavior" >
+      select MenuId,BehaviorCode,Id from Sys_MenuBehavior
+      where MenuId=#MenuId# and BehaviorCode=#BehaviorCode#
+    </select>
+    <select id="MenuBehavior_List" parameterClass="StringObjectDictionary" resultClass="MenuBehavior" >
+      select MenuId,BehaviorCode,Id from Sys_MenuBehavior
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="MenuId" >MenuId=#MenuId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BehaviorCode" >BehaviorCode=#BehaviorCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+  </statements>
+</sqlMap>

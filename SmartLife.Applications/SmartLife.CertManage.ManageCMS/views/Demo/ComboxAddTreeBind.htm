@@ -1,0 +1,123 @@
+﻿<table id="dg-B11070101">
+    <tr>
+        <td valign="top">
+            <table >
+              <label>
+            上级菜单:</label>
+        <input id="MenuParentId" name="ParentId" class="easyui-validatebox" missingmessage="上级菜单不能为空" />
+            </table>
+        </td>
+    </tr>
+</table>
+//实现代码如下
+<pre class="prettyprint  linenums" style=" height:395px; overflow:scroll; padding: 2px; border: 1px solid #000">
+<xmp>
+<table id="dg-B11070101"><!--此处ID不能重复每个页面都有单独的ID-->
+    <tr>
+        <td valign="top">
+            <table >
+              <label>
+            上级菜单:</label>
+        <input id="MenuParentId" name="ParentId" class="easyui-validatebox" missingmessage="上级菜单不能为空" /><!--missingmessage用户没有选择或填写时的提示-->
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            onAfterDialogOpen: function (editrow) {
+
+            },
+            actionDone: function () {
+                var parentIdColumn = $('#' + models[currentMenuCode].gridId).datagrid('getColumnOption', 'ParentId');
+                if (parentIdColumn) {
+                    parentIdColumn.vals = null;
+                }
+                refreshTree('easyUITree', models[currentMenuCode].treeId, '00$00$01', "OrderNo asc");
+            },
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    fuzzyFields: [{ key: 'MenuCode', value: left(treeNode.attributes.Code, 3 + parseInt(treeNode.attributes.Levels) * 2)}]
+                });
+            }
+        },
+        function (d) {
+            getTreeData('00$00$01', "OrderNo asc", null, d);
+        },
+        null,
+        function (treeObj) {
+            initTree('easyUIComboTree', 'MenuParentId', {
+                width: 152,
+                panelWidth: 200,
+                panelHeight: 260,
+                required: true,
+                editable: false,
+                required: true,
+                needRoot: true//自定义属性
+            }, function (d) {
+                getTreeData('00$00$01', "OrderNo asc", null, d);
+            });
+        }); 
+    });
+
+    function openBehavior() {
+        getTo(window.ajaxData_InvokeUrl + '/Behavior').done(function (behaviors) {
+            var htmls = _.map(behaviors, function (o) {
+                return "<input type=\"checkbox\" id=\"menu-behaviors-" + o.BehaviorCode + "\" name=\"menu-behaviors\" value=\"" + o.BehaviorCode + "\"   /><label style=\"margin-right:10px;\" for=\"menu-behaviors-" + o.BehaviorCode + "\">" + o.BehaviorName + "</label>";
+            });
+        });
+    }
+</script>
+</xmp>
+</pre>
+<script type="text/javascript">
+    $(function () {
+        models[currentMenuCode] = {
+            onAfterDialogOpen: function (editrow) {
+
+            },
+            actionDone: function () {
+                var parentIdColumn = $('#' + models[currentMenuCode].gridId).datagrid('getColumnOption', 'ParentId');
+                if (parentIdColumn) {
+                    parentIdColumn.vals = null;
+                }
+                refreshTree('easyUITree', models[currentMenuCode].treeId, '00$00$01', "OrderNo asc");
+            },
+        };
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                $('#' + models[currentMenuCode].gridId).datagrid('load', {
+                    fuzzyFields: [{ key: 'MenuCode', value: left(treeNode.attributes.Code, 3 + parseInt(treeNode.attributes.Levels) * 2)}]
+                });
+            }
+        },
+        function (d) {
+            getTreeData('00$00$01', "OrderNo asc", null, d);
+        },
+        null,
+        function (treeObj) {
+            initTree('easyUIComboTree', 'MenuParentId', {
+                width: 152,
+                panelWidth: 200,
+                panelHeight: 260,
+                required: true,
+                editable: false,
+                required: true,
+                needRoot: true//自定义属性
+            }, function (d) {
+                getTreeData('00$00$01', "OrderNo asc", null, d);
+            });
+        }); 
+    });
+
+    function openBehavior() {
+        getTo(window.ajaxData_InvokeUrl + '/Behavior').done(function (behaviors) {
+            var htmls = _.map(behaviors, function (o) {
+                return "<input type=\"checkbox\" id=\"menu-behaviors-" + o.BehaviorCode + "\" name=\"menu-behaviors\" value=\"" + o.BehaviorCode + "\"   /><label style=\"margin-right:10px;\" for=\"menu-behaviors-" + o.BehaviorCode + "\">" + o.BehaviorName + "</label>";
+            });
+        });
+    }
+</script>

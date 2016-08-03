@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements> 
+    <update id="OldManMappingServeMan_Remove" parameterClass="StringObjectDictionary" >
+      update Pam_OldManMappingServeMan
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="OldManIdNew" >OldManId=#OldManIdNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="UserIdNew" >UserId=#UserIdNew#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BeginTime" >BeginTime=#BeginTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="EndTime" >EndTime=#EndTime#</isPropertyAvailable>
+      </dynamic>
+      where EndTime>=GETDATE()
+      <isPropertyAvailable prepend=" And " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="UserId" >UserId=#UserId#</isPropertyAvailable> 
+    </update> 
+  </statements>
+</sqlMap>

@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="ServiceVoiceAddress" type="SmartLife.Share.Models.Oca.ServiceVoiceAddress, SmartLife.Share.Models" />
+    </alias>
+    <parameterMaps>
+        <parameterMap id="SP_Oca_GetResultForMatchServiceStationParam" class="StringObjectDictionary">
+            <parameter  property="OldManId" column="OldManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="ServiceItemA" column="ServiceItemA" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServiceItemB" column="ServiceItemB" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServiceMode" column="ServiceMode" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServiceRadius" column="ServiceRadius" direction="Input" type="int" dbType="int" />
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+        <parameterMap id="SP_Oca_GenServiceWorkOrderParam" class="StringObjectDictionary">
+            <parameter  property="WorkOrderContent" column="WorkOrderContent" direction="Input" type="string" dbType="nvarchar" />
+            <parameter  property="ServeItemA" column="ServeItemA" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServeItemB" column="ServeItemB" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServeMode" column="ServeMode" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServeRadius" column="ServeRadius" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServeKeyword" column="ServeKeyword" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="ServeType" column="ServeType" direction="Input" type="string" dbType="char" />
+            <parameter  property="ServiceTimeRequired" column="ServiceTimeRequired" direction="Input" type="string" dbType="datetime" />
+            <parameter  property="RemarkRequired" column="RemarkRequired" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="SuperviseTime" column="SuperviseTime" direction="Input" type="string" dbType="datetime" />
+            <parameter  property="SpecialFlag" column="SpecialFlag" direction="Input" type="byte" dbType="tinyint" />
+            <parameter  property="ServeManName" column="ServeManName" direction="Input" type="string" dbType="nvarchar" />
+            <parameter  property="CallServiceId" column="CallServiceId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="DispatchedStationIds" column="DispatchedStationIds" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="DataSource" column="DataSource" direction="Input" type="string" dbType="char" />
+            <parameter  property="OnlyOneStationFlag" column="OnlyOneStationFlag" direction="Output" type="byte" dbType="tinyint" />
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+        <parameterMap id="SP_Oca_AbandonByCallerParam" class="StringObjectDictionary">
+            <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="ServiceType" column="ServiceType" direction="Input" type="string" dbType="char" />
+            <parameter  property="CallNo" column="CallNo" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+        <parameterMap id="SP_Oca_DialBack_eCommParam" class="StringObjectDictionary">
+          <parameter  property="CallServiceId" column="CallServiceId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+          <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+          <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+          <parameter  property="ServiceExtNo" column="ServiceExtNo" direction="Input" type="string" dbType="varchar" />
+          <parameter  property="BatchCallServiceIds" column="BatchCallServiceIds" direction="Input" type="string" dbType="varchar" />
+          <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+          <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+        <parameterMap id="SP_Oca_TakeOverCallServiceOfCallBackParam" class="StringObjectDictionary">
+            <parameter  property="CallServiceId" column="CallServiceId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+            <parameter  property="ServiceExtNo" column="ServiceExtNo" direction="Input" type="string" dbType="varchar" />
+            <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+            <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+        </parameterMap>
+    </parameterMaps>
+    <statements>
+        <procedure id="SP_Oca_GetResultForMatchServiceStation" parameterMap="SP_Oca_GetResultForMatchServiceStationParam" resultClass="StringObjectDictionary">
+            SP_Oca_GetResultForMatchServiceStation
+        </procedure>
+        <procedure id="SP_Oca_GenServiceWorkOrder" parameterMap="SP_Oca_GenServiceWorkOrderParam" resultClass="StringObjectDictionary">
+            SP_Oca_GenServiceWorkOrder
+        </procedure>
+        <procedure id="SP_Oca_AbandonByCaller" parameterMap="SP_Oca_AbandonByCallerParam" resultClass="StringObjectDictionary">
+            SP_Oca_AbandonByCaller
+        </procedure>
+        <procedure id="SP_Oca_DialBack_eComm" parameterMap="SP_Oca_DialBack_eCommParam" resultClass="StringObjectDictionary">
+          SP_Oca_DialBack_eComm
+        </procedure>
+        <procedure id="SP_Oca_TakeOverCallServiceOfCallBack" parameterMap="SP_Oca_TakeOverCallServiceOfCallBackParam" resultClass="StringObjectDictionary">
+            SP_Oca_TakeOverCallServiceOfCallBack
+        </procedure>
+        <select id="GetServiceWorkOrderInProcess" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.WorkOrderId,a.WorkOrderNo,a.DoStatus
+            from Oca_ServiceWorkOrder a
+            Where a.Status=1 and a.CallServiceId=#CallServiceId#
+            Order by  a.CheckInTime asc
+        </select>
+        <select id="GetServiceWorkOrderInIndex" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select b.ServiceCatalog,b.Content,a.WorkOrderId,a.CheckInTime,a.WorkOrderNo,a.OperatedOn,a.CallServiceId,a.DoStatus
+            from Oca_ServiceWorkOrder a inner join Oca_CallService b on a.CallServiceId=b.CallServiceId inner join Pub_Group c on b.ServiceQueueId = c.GroupId
+            Where a.Status=1 and b.Status =1 and c.Status=1 and b.DoStatus = 2 and a.DoStatus in ($WorkorderStatuses$)
+            and c.GroupType = #GroupType#
+            <dynamic prepend=" And ">
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="GetServiceVoice" parameterClass="StringObjectDictionary" resultClass="ServiceVoiceAddress" >
+            select  a.VoiceType,
+            case when d.DeviceType = 1 then b.IPProxy else b.IP end IP,
+            case when d.DeviceType = 1 then b.PortProxy else b.Port end Port,
+            case when d.DeviceType = 1 then b.IPProxy else b.IPInner end IPInner,
+            case when d.DeviceType = 1 then b.PortProxy else b.PortInner end PortInner,
+            a.Address
+            from Oca_ServiceVoice a inner join Oca_CallCenter b on 1=1
+            inner join Oca_CallService c on a.CallServiceId=c.CallServiceId
+            inner join Oca_CC_Group d on c.ServiceQueueId=d.GroupId
+            where a.Status=1 and a.CallServiceId=#CallServiceId#
+            Order By a.CheckInTime asc
+        </select>
+        <select id="GetCallServiceForScroll" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.CallServiceId,a.Id,a.CheckInTime,isnull(c.OldManName,'') as OldManName,a.DoStatus as ServiceDoStatus,b.WorkOrderId,b.WorkOrderNo,b.DoStatus as WorkOrderDoStatus
+            ,ServiceQueueNo,case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '娱乐资讯'  when 3 then case when b.ServeItemB is null then '生活服务' when b.ServeItemB='00000' then '政府购买服务' else  dbo.FUNC_Tol_GetDictionaryItemName('11013',b.ServeItemB) end else '' end as ServiceDescription
+            ,case  a.DoStatus when 0 then '未受理' when 1 then '受理中' else
+            case when substring(ServiceQueueNo,6,1) = 3 then
+            case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+            else '处理中' end end as StatusDescription,
+            case when a.DoStatus = 2 and substring(ServiceQueueNo,6,1) = 3  then
+            isnull(b.ServeStationName,isnull((select '坐席：'+UserCode from Pub_User where UserId=a.OperatedBy),''))
+            else ''
+            end as ServerDescription
+            from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+            left join Oca_OldManBaseInfo c on a.OldManId=c.OldManId
+            Where a.Status=1 and isnull(b.Status,1) =1 and a.DoStatus &lt;3
+            and a.ServiceCatalog=#ServiceCatalog# and Datediff(d,a.CheckInTime,#ScrollDate#) = 0 and a.Id>#Id#
+            Order by a.CheckInTime asc
+        </select>
+        <select id="StatCallServiceForScroll" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select
+            case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '公共服务'  when 3 then case when b.ServeItemB is null then '生活服务' when b.ServeItemB='00000' then '政府购买服务' else  dbo.FUNC_Tol_GetDictionaryItemName('11013',b.ServeItemB) end else '' end as ServiceDescription
+            ,case  a.DoStatus when 0 then '未受理' when 1 then '受理中' else
+            case when substring(ServiceQueueNo,6,1) = 3 then
+            case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+            else '处理中' end
+            end as StatusDescription, count(1) as Num from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+            Where a.Status=1 and isnull(b.Status,1) =1 and a.DoStatus &lt;3
+            <isNotEqual property="ServiceCatalog" compareValue="00000">
+                and a.ServiceCatalog=#ServiceCatalog#
+            </isNotEqual>
+            and Datediff(d,a.CheckInTime,#ScrollDate#) = 0
+            group by a.DoStatus, substring(a.ServiceQueueNo,6,1),isnull(b.DoStatus,99),b.ServeItemB
+        </select>
+        <select id="GetCallServiceForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select a.Id,
+          case when a.ServiceCatalog = '00001' then
+          case substring(ServiceQueueNo,6,1) when 0 then
+          (case substring(ServiceArchive,1,2) when '08' then right(Content,10) else '紧急救助' end)
+          when 1 then '亲人通话' when 2 then '公共服务'  else '生活服务' end
+          else '政府购买服务'
+          end as ServiceCatalog
+          ,case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' else   dbo.FUNC_Tol_GetDictionaryItemName('11013',isnull(b.ServeItemB,a.ServiceArchive)) end as ServiceContent
+          ,isnull(c.OldManName,'') as OldManName
+          ,isnull((select AreaName from Pub_Area where AreaId= a.AreaId2),'') as AreaName2
+          ,isnull((select AreaName from Pub_Area where AreaId= a.AreaId3),'') as AreaName3
+          ,a.CheckInTime
+          ,isnull((select UserCode from Pub_User where UserId=a.OperatedBy),'') as SeatNo
+          ,case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+          case when substring(ServiceQueueNo,6,1) = 3 then
+          case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+          else '处理中' end end as StatusDescription
+          from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+            left join Oca_OldManBaseInfo c on a.OldManId=c.OldManId
+            Where a.Status=1 and isnull(b.Status,1) =1
+            <isNotEqual property="ServiceCatalog" compareValue="00000">
+                and a.ServiceCatalog=#ServiceCatalog#
+            </isNotEqual>
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            and Datediff(d,a.CheckInTime,#ScrollDate#) = 0
+          <isPropertyAvailable prepend=" AND " property="ABC">and (a.DoStatus &lt; 3 or (a.DoStatus=3 and abs(Datediff(MI,isnull(b.ServeManLeaveTime,ServeEndTime),getdate())) &lt;= #TimeSpanOfMinute#))</isPropertyAvailable>
+            and (a.DoStatus &lt; 3 or (a.DoStatus=3 and abs(Datediff(MI,a.checkintime,getdate())) &lt;= #TimeSpanOfMinute#))
+            and a.Id>#Id#
+            Order by a.CheckInTime asc
+        </select>
+        <select id="StatCallServiceForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select
+            case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+            case when substring(ServiceQueueNo,6,1) = 2 or substring(ServiceQueueNo,6,1) = 3 then
+            case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+            else '处理中' end
+            end as StatusDescription, count(1) as Num from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+            Where a.Status=1 and isnull(b.Status,1) =1
+            <isNotEqual property="ServiceCatalog" compareValue="00000">
+                and a.ServiceCatalog=#ServiceCatalog#
+            </isNotEqual>
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            and Datediff(d,a.CheckInTime,#ScrollDate#) = 0
+            group by case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+            case when substring(ServiceQueueNo,6,1) = 2 or substring(ServiceQueueNo,6,1) = 3 then
+            case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+            else '处理中' end
+            end,a.DoStatus
+            order by a.DoStatus
+        </select>
+        <select id="GetCallServiceOfVouchForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select a.Id,a.DoStatus,
+          case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' else   dbo.FUNC_Tol_GetDictionaryItemName('11013',isnull( case b.ServeItemB when '00000' then null else b.ServeItemB end ,a.ServiceArchive)) end as ServiceContent
+          ,b.ServeStationName as ServiceEntity
+          ,isnull(c.OldManName,'') as OldManName
+          ,isnull((select AreaName from Pub_Area where AreaId= a.AreaId2),'') as AreaName2
+          ,isnull((select AreaName from Pub_Area where AreaId= a.AreaId3),'') as AreaName3
+          ,isnull(b.ServeManArriveTime,b.ServeBeginTime) as BeginTime
+          ,isnull(b.ServeManLeaveTime,b.ServeEndTime) as EndTime
+          ,case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+          case when substring(ServiceQueueNo,6,1) = 3 then
+          case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+          else '处理中' end end as StatusDescription
+          from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+            left join Oca_OldManBaseInfo c on a.OldManId=c.OldManId
+            Where a.Status=1 and isnull(b.Status,1) =1
+            and a.ServiceCatalog='00002'
+            and Datediff(d,a.CheckInTime,#ScrollDate#) = 0
+            <isPropertyAvailable prepend=" AND " property="ABC">
+            and (a.DoStatus &lt; 3 or (a.DoStatus=3 and abs(Datediff(MI,isnull(b.ServeManLeaveTime,ServeEndTime),getdate())) &lt;= #TimeSpanOfMinute#))
+            </isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            and (a.DoStatus &lt; 3 or (a.DoStatus=3 and abs(Datediff(MI,a.checkintime,getdate())) &lt;= #TimeSpanOfMinute#))
+            and a.Id>#Id#
+            Order by a.CheckInTime asc
+        </select>
+      <select id="StatCallServiceOfVouchForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select
+        case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+        case when substring(ServiceQueueNo,6,1) = 2 or substring(ServiceQueueNo,6,1) = 3 then
+        case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+        else '处理中' end
+        end as StatusDescription, count(1) as Num from Oca_CallService a left join Oca_ServiceWorkOrder b on a.CallServiceId = b.CallServiceId and isnull(b.DoStatus,0) &lt;>9
+        Where a.Status=1 and isnull(b.Status,1) =1
+        and a.ServiceCatalog='00002'
+        <isNotEqual property="ServiceCatalog" compareValue="00000">
+          and a.ServiceCatalog=#ServiceCatalog#
+        </isNotEqual>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        and Datediff(d,a.CheckInTime,#ScrollDate#) = 0
+        group by case  a.DoStatus when 0 then '未受理' when 1 then '受理中' when 3 then '处理完成' else
+        case when substring(ServiceQueueNo,6,1) = 2 or substring(ServiceQueueNo,6,1) = 3 then
+        case  isnull(b.DoStatus,99)  when 0 then '派单中' when 1 then '处置中' when 2 then '督办中' when 3 then '回访中' when 4  then '回访完成' else '处理中' end
+        else '处理中' end
+        end,a.DoStatus
+        order by a.DoStatus
+      </select>
+        <select id="GetStatDataOfAllCountForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select AreaName,[紧急救助] as S1,[即时生活服务] as S2,[核定生活服务] as S3,[公共服务] as S4,[亲人通话] as S5
+          from(
+          select x.AreaName,x.OrderNo,y.ServiceCatalog,isnull(z.ServiceCatalogNum,0) as ServiceCatalogNum from Pub_Area x   join
+          (
+          select '紧急救助' as ServiceCatalog,1 as ServiceCatalogOrderNo
+          union
+          select '即时生活服务',2 as ServiceCatalogOrderNo
+          union
+          select '核定生活服务',3 as ServiceCatalogOrderNo
+          union
+          select '公共服务' ,4 as ServiceCatalogOrderNo
+          union
+          select '亲人通话',5 as ServiceCatalogOrderNo
+          )y on x.Levels=4
+          left join
+          (select AreaId2,case when a.ServiceCatalog = '00001' then
+          case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '公共服务'  else '即时生活服务' end
+          else '核定生活服务'
+          end as ServiceCatalog,COUNT(1) as ServiceCatalogNum  from Oca_CallService a
+          where  Datediff(d,a.CheckInTime,CONVERT(datetime,'$StatDate$',120)) = 0
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            group by AreaId2, case when a.ServiceCatalog = '00001' then
+            case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '公共服务'  else '即时生活服务' end
+            else '核定生活服务'
+            end )z on x.AreaId=z.AreaId2 and x.Levels=4 and y.ServiceCatalog = z.ServiceCatalog
+            ) m PIVOT(
+            sum(ServiceCatalogNum) for ServiceCatalog in([紧急救助],[即时生活服务],[核定生活服务],[公共服务],[亲人通话])
+            )TBL
+            order by OrderNo
+        </select>
+      <select id="GetStatDataOfAllCountForBigScreenStreet" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select isnull(AreaName,'未知社区') as AreaName,isnull([紧急救助],0) as S1,isnull([即时生活服务],0) as S2,isnull([核定生活服务],0) as S3,isnull([公共服务],0) as S4,isnull([亲人通话],0) as S5
+        from(
+        select x.AreaName,x.OrderNo,y.ServiceCatalog,isnull(z.ServiceCatalogNum,0) as ServiceCatalogNum from Pub_Area x   join
+        (
+        select '紧急救助' as ServiceCatalog,1 as ServiceCatalogOrderNo
+        union
+        select '即时生活服务',2 as ServiceCatalogOrderNo
+        union
+        select '核定生活服务',3 as ServiceCatalogOrderNo
+        union
+        select '公共服务' ,4 as ServiceCatalogOrderNo
+        union
+        select '亲人通话',5 as ServiceCatalogOrderNo
+        )y on x.Levels=5
+        right join
+        (select AreaId3,case when a.ServiceCatalog = '00001' then
+        case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '公共服务'  else '即时生活服务' end
+        else '核定生活服务'
+        end as ServiceCatalog,COUNT(1) as ServiceCatalogNum  from Oca_CallService a
+        where  Datediff(d,a.CheckInTime,CONVERT(datetime,'$StatDate$',120)) = 0
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        group by AreaId3, case when a.ServiceCatalog = '00001' then
+        case substring(ServiceQueueNo,6,1) when 0 then '紧急救助' when 1 then '亲人通话' when 2 then '公共服务'  else '即时生活服务' end
+        else '核定生活服务'
+        end )z on x.AreaId=z.AreaId3 and x.Levels=5 and y.ServiceCatalog = z.ServiceCatalog
+        ) m PIVOT(
+        sum(ServiceCatalogNum) for ServiceCatalog in([紧急救助],[即时生活服务],[核定生活服务],[公共服务],[亲人通话])
+        )TBL
+        order by OrderNo
+      </select>
+      <select id="GetStatDataOfVouchDurationForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.AreaName,
+        isnull(
+        (select sum(dbo.FUNC_Oca_CeilingHour(isnull(ServeManArriveTime,ServeBeginTime),isnull(ServeManLeaveTime,ServeEndTime)))  from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01001'
+        and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ),0) as S1,
+        (
+        select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01002'
+        and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ) as S2,
+        (
+        select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01003'
+        and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ) as S3,
+        isnull(
+        (
+        select sum(isnull(dbo.FUNC_Oca_CeilingHour(isnull(ServeManArriveTime,ServeBeginTime),isnull(ServeManLeaveTime,ServeEndTime)),0)) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01001'
+        and Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ),0) as S4,
+        (
+        select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01002'
+        and  Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ) as S5,
+        (
+        select count(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+        where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01003'
+        and  Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId2 = x.AreaId
+        ) as S6
+        from Pub_Area x where x.Levels=4
+        order by x.OrderNo
+      </select>
+        <select id="GetStatDataOfVouchDurationForBigScreenStreet" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select x.AreaName,
+          isnull(
+          (select sum(dbo.FUNC_Oca_CeilingHour(isnull(ServeManArriveTime,ServeBeginTime),isnull(ServeManLeaveTime,ServeEndTime)))  from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01001'
+          and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ),0) as S1,
+          (
+          select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01002'
+          and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ) as S2,
+          (
+          select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01003'
+          and Datediff(m,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ) as S3,
+          isnull(
+          (
+          select sum(isnull(dbo.FUNC_Oca_CeilingHour(isnull(ServeManArriveTime,ServeBeginTime),isnull(ServeManLeaveTime,ServeEndTime)),0)) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01001'
+          and Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ),0) as S4,
+          (
+          select COUNT(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01002'
+          and  Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ) as S5,
+          (
+          select count(1) from Oca_CallService a inner join Oca_ServiceWorkOrder b on a.CallServiceId=b.CallServiceId and a.ServiceCatalog='00002'
+          where a.Status=1 and a.DoStatus=3 and b.Status=1 and b.DoStatus=4 and b.ServeItemB='01003'
+          and  Datediff(d,a.CheckInTime,CONVERT(datetime,GETDATE(),120))=0 and b.AreaId3 = x.AreaId
+          ) as S6
+          from Pub_Area x right join (
+          select a.AreaId3 from Oca_CallService a
+          where a.Status=1 and  AreaId3 is not null and AreaId3 &lt;>''
+          group by a.AreaId3
+          ) z on x.AreaId=z.AreaId3 where x.Levels=5
+          <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+          order by x.OrderNo
+        </select>
+        <select id="GetCallForDialBackAtToday" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.CallServiceId,a.Id,a.CheckInTime,isnull(c.OldManName,'') as OldManName,a.OldManId,a.AbandonFlag,
+            a.Caller as CallNo from Oca_CallService a left join Oca_OldManBaseInfo c on a.OldManId=c.OldManId
+            Where a.Status=1 and a.DoStatus =0 and substring(ServiceQueueNo,6,1) in ('$ServiceType$') and a.AbandonFlag = 1 and ISNULL(a.PopFlag,0)&lt;>1 and Datediff(d,a.AbandonOn,GetDate()) = 0 and a.Id>#Id#
+            Order by substring(ServiceQueueNo,6,1) asc, a.CheckInTime asc 
+        </select>
+        <select id="GetRemindersForScroll" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.CallServiceId,a.Content,a.Id,a.CheckInTime,a.OldManId,a.AbandonFlag, a.Caller as CallNo,a.ServiceQueueNo,
+            isnull(b.OldManName,'') as OldManName,dbo.FUNC_Tol_GetRealAge(b.IDNo) Age,
+            (case b.Gender when 'F' then '女' when 'M' then '男' else '未知' end) Sex ,b.Address
+            from Oca_CallService a left join Oca_OldManBaseInfo b on a.OldManId=b.OldManId
+            Where a.Status=1 and a.DoStatus =0 and  a.AbandonFlag = 1 and ISNULL(a.PopFlag,0)&lt;>1 
+            and Datediff(d,a.AbandonOn,GetDate()) = 0 and a.Id>#Id#
+            Order by substring(ServiceQueueNo,6,1) asc,a.OldManId , a.CheckInTime asc
+        </select>
+        <select id="GetRemindersForScroll_Old" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.CallServiceId,a.Id,a.CheckInTime,isnull(c.OldManName,'') as OldManName,a.OldManId,a.AbandonFlag,
+            (select CallNo from Oca_OldManConfigInfo where OldManId=a.OldManId) as CallNo
+            from Oca_CallService a
+            left join Oca_OldManBaseInfo c on a.OldManId=c.OldManId
+            Where a.Status=1 and a.DoStatus =0
+            and substring(ServiceQueueNo,6,1)=#ServiceType# and Datediff(d,a.CheckInTime,#ScrollDate#) = 0 and a.Id>#Id#
+            Order by a.CheckInTime asc
+        </select>
+        <select id="CallServiceList_By_CallRecord" parameterClass="StringObjectDictionary" resultClass="CallService" >
+            select top 1 CallServiceId,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,AreaId,AreaId2,AreaId3,Content,
+            LongitudeS,LatitudeS,CallSeconds,DoStatus,DoResults,OldManId,ServiceQueueId,ServiceQueueNo,
+            ServiceExtId,ServiceExtNo,ServiceCatalog,AbandonFlag,DialBackCount,AbandonOn,LastDialBackOn,
+            ServiceQueueIdOld,ServiceQueueNoOld from Oca_CallService
+            <dynamic prepend=" Where ">
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="GetOldManPhoneNos" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+          select a.CallNo,a.CallNo2,a.CallNo3,b.Mobile,b.Tel from  Oca_OldManConfigInfo a inner join Oca_OldManBaseInfo b  on a.OldManId=b.OldManId
+          where a.OldManId=(select OldManId from Oca_CallService where CallServiceId=#CallServiceId#)
+        </select>
+        <select id="GetOldManFamliyCallsTime" parameterClass="StringObjectDictionary" resultClass="int" >
+            select (SUM(CallSeconds)/60+1) as CallMi from Oca_CallService where OldManId=#OldManId#
+            and SUBSTRING(ServiceQueueNo,6,1)=1 and CallSeconds>0 and DATEDIFF(M,CheckInTime,GETDATE())=0
+        </select>
+        <select id="GetCallServiceArchive" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select top 3 a.*,b.GroupName,c.ItemName From Oca_CallService a left join Pub_Group b on a.ServiceQueueId=b.GroupId
+            left join Sys_DictionaryItem c on a.ServiceArchive=c.ItemId
+            <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Content" >Content=#Content#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="CallSeconds" >CallSeconds=#CallSeconds#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DoStatus" >DoStatus=#DoStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DoResults" >DoResults=#DoResults#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceQueueId" >ServiceQueueId=#ServiceQueueId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceQueueNo" >ServiceQueueNo=#ServiceQueueNo#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceExtId" >ServiceExtId=#ServiceExtId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceExtNo" >ServiceExtNo=#ServiceExtNo#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceCatalog" >ServiceCatalog=#ServiceCatalog#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AbandonFlag" >AbandonFlag=#AbandonFlag#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DialBackCount" >DialBackCount=#DialBackCount#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceQueueIdOld" >ServiceQueueIdOld=#ServiceQueueIdOld#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceQueueNoOld" >ServiceQueueNoOld=#ServiceQueueNoOld#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="UuidOfIPCC" >UuidOfIPCC=#UuidOfIPCC#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="ServiceArchive" >ServiceArchive=#ServiceArchive#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="PopFlag" >PopFlag=#PopFlag#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DictionaryId" >c.DictionaryId=#DictionaryId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+        <dynamic prepend=" ORDER BY ">
+            <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+        </dynamic>
+        </select>
+      <select id="GetCallTypeMinute" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select
+        datename(HH,dateadd(MI,-5*item,'$dateStr$'))+':'+cast(5*item as nvarchar(32))+'-'+datename(HH,dateadd(MI,-5*item,'$dateStr$'))+':'+cast(5*item+5 as nvarchar(32))
+        xAlias,
+        yAlias
+        from
+        (
+        select b.id item,isnull(a.yAlias,0) yAlias
+        from (
+        select datename(mi,checkintime)/5 item,COUNT(*) yAlias
+        from   dbo.Oca_CallService
+        where
+        checkintime between dateadd(HH,-1,'$dateStr$') and '$dateStr$'
+        <isPropertyAvailable prepend="  " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        group by datename(mi,checkintime)/5
+        ) a right join
+        (
+        select  top 12 ROW_NUMBER() OVER(ORDER BY id aSC)-1 AS id
+        from   dbo.Oca_CallService
+        ) b on  a.item=b.id
+        )  aa
+        where item between DATENAME(mi,'$dateStr$')/5+1 and 11
+        union
+        select
+        datename(HH,dateadd(MI,-5*item,'$dateStr$'))+':'+case item when 1 then '05' else cast(5*item as nvarchar(32)) end +
+        '-'
+        +datename(HH,dateadd(MI,-5*item,'$dateStr$'))+':'+cast(5*item+5 as nvarchar(32))
+        xAlias,
+        yAlias
+        from
+        (
+        select b.id item,isnull(a.yAlias,0) yAlias
+        from (
+        select datename(mi,checkintime)/5 item,COUNT(*) yAlias
+        from dbo.Oca_CallService
+        where
+        checkintime between dateadd(HH,-1,'$dateStr$') and '$dateStr$'
+        <isPropertyAvailable prepend="  " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        group by datename(mi,checkintime)/5
+        ) a right join
+        (select  top 12 ROW_NUMBER() OVER(ORDER BY id aSC)-1 AS id
+        from   dbo.Oca_CallService
+        ) b on  a.item=b.id
+        )  bb
+        where item between 0 and DATENAME(mi,getdate())/5
+      </select>
+      <select id="GetAgencyCallServicesForScroll" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select t1.*,t2.RoomNo,t2.FloorNo From (
+        select MAX(t.Id) Id,MAX(t.CheckInTime) CheckInTime,t.RoomId,dbo.JoinStr(t.Caller) Callers,dbo.JoinStr(t.Callee) Callees,
+        dbo.JoinStr(t.OldManName) OldManNames,dbo.JoinStr(t.SickBedNo) SickBedNos From (
+        select x.Id,x.OldManId,x.RoomId,y.CheckInTime,y.Caller,y.Callee,m.SickBedNo,n.OldManName From (
+        select MAX(a.Id) Id,a.OldManId,c.RoomId From Oca_CallService a inner join Oca_OldManBaseInfo b
+        on a.OldManId=b.OldManId and ISNULL(b.StationId,'')&lt;>'' and b.Status=3 and b.ResidentStatus=7
+        inner join Pam_RoomOldMan c on b.OldManId=c.OldManId and EndDate>GETDATE()
+        where a.Id>#Id# and DATEDIFF(MINUTE,a.CheckInTime,GETDATE())&lt;=#timeSpanOfMinute#
+        group by a.OldManId,c.RoomId ) x
+        left join Oca_CallService y on x.Id=y.Id
+        left join Pam_RoomOldMan m on m.RoomId=x.RoomId and m.OldManId=x.OldManId
+        left join Oca_OldManBaseInfo n on x.OldManId=n.OldManId
+        ) t group by t.RoomId ) t1 inner join Pam_Room t2 on t1.RoomId=t2.RoomId and t2.Status=1
+      </select>
+    </statements>
+</sqlMap>

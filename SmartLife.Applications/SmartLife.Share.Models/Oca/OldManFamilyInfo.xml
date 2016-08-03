@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="OldManFamilyInfo" type="SmartLife.Share.Models.Oca.OldManFamilyInfo, SmartLife.Share.Models" />
+    <typeAlias alias="OldManFamilyInfoPK" type="SmartLife.Share.Models.Oca.OldManFamilyInfoPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="OldManFamilyInfo_Create" parameterClass="StringObjectDictionary" >
+      insert into Oca_OldManFamilyInfo(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FamilyMemberId" >FamilyMemberId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfOldMan" >RelationIdOfOldMan</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfFamily" >RelationIdOfFamily</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FamilyMemberId" >#FamilyMemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfOldMan" >#RelationIdOfOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfFamily" >#RelationIdOfFamily#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="OldManFamilyInfo_Update" parameterClass="StringObjectDictionary" >
+      update Oca_OldManFamilyInfo
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FamilyMemberId" >FamilyMemberId=#FamilyMemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfOldMan" >RelationIdOfOldMan=#RelationIdOfOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="RelationIdOfFamily" >RelationIdOfFamily=#RelationIdOfFamily#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="OldManFamilyInfo_Delete" parameterClass="StringObjectDictionary" >
+      delete Oca_OldManFamilyInfo
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FamilyMemberId" >FamilyMemberId=#FamilyMemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RelationIdOfOldMan" >RelationIdOfOldMan=#RelationIdOfOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RelationIdOfFamily" >RelationIdOfFamily=#RelationIdOfFamily#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="OldManFamilyInfo_Load" parameterClass="OldManFamilyInfoPK" resultClass="OldManFamilyInfo" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,FamilyMemberId,RelationIdOfOldMan,RelationIdOfFamily from Oca_OldManFamilyInfo
+      where Id=#Id#
+    </select>
+    <select id="OldManFamilyInfo_List" parameterClass="StringObjectDictionary" resultClass="OldManFamilyInfo" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,FamilyMemberId,RelationIdOfOldMan,RelationIdOfFamily from Oca_OldManFamilyInfo
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FamilyMemberId" >FamilyMemberId=#FamilyMemberId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RelationIdOfOldMan" >RelationIdOfOldMan=#RelationIdOfOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RelationIdOfFamily" >RelationIdOfFamily=#RelationIdOfFamily#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="OldManFamilyInfo_ListByPage" parameterClass="StringObjectDictionary" resultClass="OldManFamilyInfo" >
+        select x.* from (
+        select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,OldManId,FamilyMemberId,RelationIdOfOldMan,RelationIdOfFamily from Oca_OldManFamilyInfo
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="FamilyMemberId" >FamilyMemberId=#FamilyMemberId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RelationIdOfOldMan" >RelationIdOfOldMan=#RelationIdOfOldMan#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RelationIdOfFamily" >RelationIdOfFamily=#RelationIdOfFamily#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+        )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

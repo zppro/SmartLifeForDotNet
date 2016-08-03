@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="CallRecord" type="SmartLife.Share.Models.Oca.CallRecord, SmartLife.Share.Models" />
+        <typeAlias alias="CallRecordPK" type="SmartLife.Share.Models.Oca.CallRecordPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="CallRecord_Create" parameterClass="StringObjectDictionary" >
+            insert into Oca_CallRecord(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Caller" >Caller</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Callee" >Callee</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >IP</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Caller" >#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Callee" >#Callee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >#CallServiceId#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="CallRecord_Update" parameterClass="StringObjectDictionary" >
+            update Oca_CallRecord
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="CallRecord_Delete" parameterClass="StringObjectDictionary" >
+            delete Oca_CallRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="CallRecord_Load" parameterClass="CallRecordPK" resultClass="CallRecord" >
+            select Id,CheckInTime,Caller,Callee,IP,CallServiceId from Oca_CallRecord
+            where Id=#Id#
+        </select>
+        <select id="CallRecord_List" parameterClass="StringObjectDictionary" resultClass="CallRecord" >
+            select Id,CheckInTime,Caller,Callee,IP,CallServiceId from Oca_CallRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="CallRecord_ListByPage" parameterClass="StringObjectDictionary" resultClass="CallRecord" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Caller,Callee,IP,CallServiceId from Oca_CallRecord
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Caller" >Caller=#Caller#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Callee" >Callee=#Callee#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="IP" >IP=#IP#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

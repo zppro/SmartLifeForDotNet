@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Location" type="SmartLife.Share.Models.Pub.Location, SmartLife.Share.Models" />
+        <typeAlias alias="LocationPK" type="SmartLife.Share.Models.Pub.LocationPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="Location_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_Location(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >SourceId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >LocateTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Longitude" >Longitude</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Latitude" >Latitude</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateType" >LocateType</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >#LocateTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Longitude" >#Longitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Latitude" >#Latitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateType" >#LocateType#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="Location_Update" parameterClass="StringObjectDictionary" >
+            update Pub_Location
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateTime" >LocateTime=#LocateTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Longitude" >Longitude=#Longitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Latitude" >Latitude=#Latitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="LocateType" >LocateType=#LocateType#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="Location_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_Location
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Longitude" >Longitude=#Longitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Latitude" >Latitude=#Latitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateType" >LocateType=#LocateType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="Location_Load" parameterClass="LocationPK" resultClass="Location" >
+            select Id,CheckInTime,SourceTable,SourceId,LocateTime,Longitude,Latitude,LocateType from Pub_Location
+            where Id=#Id#
+        </select>
+        <select id="Location_List" parameterClass="StringObjectDictionary" resultClass="Location" >
+            select Id,CheckInTime,SourceTable,SourceId,LocateTime,Longitude,Latitude,LocateType from Pub_Location
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Longitude" >Longitude=#Longitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Latitude" >Latitude=#Latitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateType" >LocateType=#LocateType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="Location_ListByPage" parameterClass="StringObjectDictionary" resultClass="Location" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,SourceTable,SourceId,LocateTime,Longitude,Latitude,LocateType from Pub_Location
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_Start" >LocateTime>=to_date(#LocateTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateTime_End" >LocateTime&lt;=to_date(#LocateTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Longitude" >Longitude=#Longitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Latitude" >Latitude=#Latitude#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="LocateType" >LocateType=#LocateType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

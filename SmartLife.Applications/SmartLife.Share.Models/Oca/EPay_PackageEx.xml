@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <select id="EPay_Package_SelfList" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select a.CheckInTime,a.Status,a.OperatedBy,a.OperatedOn,a.DataSource,a.PackageId,a.AssessLevel,a.AssessLevelName,a.PackageBeginDate,a.PackageEndDate
+            ,b.PackageName,b.PackageComment,b.PackageCharges,b.Remark,b.PackageType,b.PeriodType
+            from Oca_EPay_AssessPackage a,Oca_EPay_Package b
+            where a.PackageId=b.PackageId and a.Status=1 and b.Status=1 and
+            b.PackageType='00002'and CONVERT(varchar(6), GETDATE(), 112) between a.PackageBeginDate and a.PackageEndDate
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+    </statements>
+</sqlMap>

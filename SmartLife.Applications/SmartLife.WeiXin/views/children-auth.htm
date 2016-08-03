@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> <!-- 不能放大 -->
+    <meta http-equiv="pragma" content="no-cache" />
+    <title></title>
+
+    <!-- CSS -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' />
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Oleo+Script:400,700' />
+    <!--jqm-->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <link rel="Stylesheet" href="../css/custom-swatches.css" />
+    <link rel="Stylesheet" href="../css/mobiscroll/mobiscroll.custom-2.5.2.min.css" />
+
+    <script type="text/javascript" src="../script/jquery/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript" src="../script/jquery/jquery.json-2.2.min.js"></script>
+
+    <!--jqm-->
+    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    <script src="../script/jquery/mobiscroll/mobiscroll.custom-2.5.2.min.js"></script>
+
+    <script src="../script/weixintools.js?t=20140504145870"></script>
+
+    <script type="text/javascript" src="../script/site.js"></script>
+    <script type="text/javascript" src="../script/globalVar.js?t=20140504145849"></script>
+
+    <script type="text/javascript">
+
+        function jsonstr() {
+            var Request = new Object();
+            Request = GetRequest();
+            var code = Request['code'];
+            var state = Request['state'];
+            var params = new Object();
+            params.code = code;
+            params.state = state;
+            params.openid = $("#openid").val();
+            params.IDNo = $("#identity").val();
+            params.Mobile = $("#phoneNo").val();
+            var json = JSON.stringify(params);
+            return json;
+        }
+
+        function check() {//获取手机验证码
+
+        }
+
+        function headup() { //提交认证数据
+            if (!IdentityCodeValid($("#identity").val()) || !check_telephone($("#phoneNo").val())) {//验证身份证号
+                return;
+            }
+            textProgress('c', '绑定数据中...');
+            var json = jsonstr();
+            getTo(baseUrl + '/Api/BoundAcconutService/GetToken', { params: json }, function (ret) {
+                closeProgress();//关闭进度条
+
+                if (ret == "true") {
+                    //$.mobile.changePage("oldman-bind.htm?OpenId=" + $("#openid").val(), { transition: "slideup", chageHash: true });
+                    alert("验证成功");
+                    $("#flag").html("<span>通过认证</span>");
+                } else {
+                    alert("身份验证错误");
+                    $("#flag").html("<span>认证失败</span>");
+                }
+            });
+        }
+
+        function search() {//查询方法
+            getTo(baseUrl + '/Api/BoundAcconutService/', null, function (ret) {
+                alert($.toJSON(ret));
+                if (ret) {
+
+                }
+            });
+            alert("提交");
+            //$.mobile.changePage("oldman-bind.htm", { transition: "slideup", chageHash: true });
+        
+        }
+
+        $("#auth").live("pagebeforecreate", function () {
+            var json = jsonstr();
+            getTo(baseUrl + '/Api/BoundAcconutService/isAuth', { params: json }, function (result) {
+                $("#openid").val(result.ErrorMessage);
+                if (result.rows[0].IDNo.trim().length == 18 && result.rows[0].Mobile.trim().length == 11) {
+                    $("#identity").val(result.rows[0].IDNo);
+                    $("#phoneNo").val(result.rows[0].Mobile);
+                    $("#flag").html("<span>已通过认证</span>");
+                }
+
+            });
+        });
+
+       
+
+
+    
+    </script>
+</head>
+<body>
+
+    <div data-role="page" id="auth" >
+        <div data-role="header" data-theme="f">
+            <h1>验证用户</h1>
+        </div>
+
+        <div data-role="content" data-theme="f">
+            <label for="identity">身份证号：</label>
+             <input type="text" id="identity" name="identity" placeholder="不能为空" />
+             <label for="phoneNo">手机号码：</label>
+             <input type="text" id="phoneNo" name="phoneNo" placeholder="不能为空" />
+
+             <input type="image" id="Image1" name="check" src="../images/check.png" onclick="check();" />
+             <label for="checkNo">验证码：</label>
+             <input type="text" id="checkNo" name="checkNo" />
+             <input type="image" id="Image2" name="check" src="../images/ensure.png" onclick="headup();" />
+             <div id="flag"></div>
+
+             <a href="mobil-test.htm" data-role="button" data-transition="flip">测试mobile</a>
+             <a href="search-cost.htm" data-role="button" data-transition="flip">查询主页</a>
+             <a href="oldman-bind.htm" data-role="button" data-transition="slidefade">绑定老人</a>
+             <input type="hidden" id="openid" />
+        </div>
+    </div>
+
+</body>
+</html>

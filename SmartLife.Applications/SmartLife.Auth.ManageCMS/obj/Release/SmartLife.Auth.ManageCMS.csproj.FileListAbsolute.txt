@@ -1,0 +1,5 @@
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Auth.ManageCMS\bin\SmartLife.Auth.ManageCMS.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Auth.ManageCMS\bin\SmartLife.Auth.ManageCMS.pdb
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Auth.ManageCMS\obj\Release\ResolveAssemblyReference.cache
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Auth.ManageCMS\obj\Release\SmartLife.Auth.ManageCMS.dll
+D:\workspace\dotnet\www.leblue.com.cn\智慧生活\SmartLife\@branch\@dev\SmartLife.Applications\SmartLife.Auth.ManageCMS\obj\Release\SmartLife.Auth.ManageCMS.pdb

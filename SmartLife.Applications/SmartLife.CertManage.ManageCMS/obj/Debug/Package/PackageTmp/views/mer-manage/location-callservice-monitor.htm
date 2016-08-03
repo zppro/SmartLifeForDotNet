@@ -1,0 +1,278 @@
+﻿<div id="callservice-monitor">
+    <div style=" width:18%; float:left;">
+        <table width="100%" style=" height:100%;">
+            <tr>
+                <td id="Merchant-t" style="text-align: left; width: 190px; height:64px;">
+                    <div id="Merchant-d" style="display: inline-block;"><input id="CC-Merchant" /></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="service_DoStatus_0" name="service_DoStatus_0" type="checkbox" value="预约中" checked="checked"/>
+                    <label for="service_DoStatus_0">预约中</label>
+                    <input id="service_DoStatus_1" name="service_DoStatus_1" type="checkbox" value="服务中" checked="checked"/>
+                    <label for="service_DoStatus_1">服务中</label>
+                    <input id="service_DoStatus_2" name="service_DoStatus_2" type="checkbox" value="服务结束" checked="checked"/>
+                    <label for="service_DoStatus_2">服务结束</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; height:64px; ">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok"  style="margin-right:30px;"
+                        onclick="locationWorkOrder()">定位</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="location-panel" style=" width:81%; float:right;" >地图载入中...</div>
+</div>
+<div id="dlg-callservice-monitor" class="easyui-dialog" style="width: 680px; height: 360px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-callservice-monitor">
+    <form id="fm-callservice-monitor" method="post">
+    <div class="fitem">
+        <label>老人姓名:</label>
+        <input name="OldManName" />
+        <label>服务项目:</label>
+        <input name="ServeItemB" />
+        <label> 要求服务时长:</label>
+        <input name="ServeDuration" style=" width:80px;"/>
+    </div>
+    <div class="fitem">
+        <label>
+            预约时间:</label>
+        <input name="ReserveDate" id="ReserveDate"/>&nbsp;&nbsp;从&nbsp;
+        <input id="ReserveFrom" name="ReserveFrom" class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                    style="width: 60px;" />&nbsp;&nbsp;到&nbsp;
+        <input id="ReserveTo" name="ReserveTo" class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                        style="width: 60px;" />
+    </div>
+    <div class="fitem">
+        <label>
+            服务商家:</label>
+        <input name="ServeStationName" class="easyui-validatebox" />
+        <label>
+            服务人员:</label>
+        <input name="ServeManName" class="easyui-validatebox" />
+    </div>
+    <div class="fitem">
+        <label>
+            备 注:</label>
+        <textarea name="Description" style="width: 580px;" maxlength="400" rows="8"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-callservice-monitor">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="closeDlg()">关闭</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        autosize("callservice-monitor");
+
+        var allMappingMerchants = [{ "StationCode": "qbsj0000", "StationId": window.contants.guidAutoGenerate, "StationName": "全部商家"}];
+        var params = { Status: 1,
+            AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id),
+            StationType: '00003',
+            OrderByClause: ' OperatedOn desc'
+        }
+        getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/Query?parms=' + $.toJSON(params), null, function (ret) {
+            if (ret.Success && ret.rows.length > 0) {
+                allMappingMerchants = _.union(allMappingMerchants, _.map(ret.rows, function (o) {
+                    return { "StationCode": o.StationCode, "StationId": o.StationId, "StationName": o.StationName };
+                }));
+            }
+        }, { async: false });
+
+        //加载商家
+        $('#CC-Merchant').combobox({
+            width: 180,
+            panelWidth: 220,
+            data: allMappingMerchants,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: false
+        });
+
+        if (top.gUserInfo.MappingMerchants) {
+            if (top.gUserInfo.MappingMerchants.length > 0) {
+                var stationId = top.gUserInfo.MappingMerchants.length == 1 ? top.gUserInfo.MappingMerchants[0].StationId : window.contants.guidAutoGenerate;
+                $('#CC-Merchant').combobox('setValue', stationId);
+
+                if (top.gUserInfo.MappingMerchants.length == 1) {
+                    $('#Merchant-d').hide();
+                    $('#Merchant-t').height(10);
+                }
+            }
+            else {
+                alertInfo('当前帐号没有绑定任何商家');
+            }
+        }
+        else {
+            $('#CC-Merchant').combobox('setValue', window.contants.guidAutoGenerate);
+        }
+
+        loadfiles([
+        { type: "css", url: "http://api.map.baidu.com/res/15/bmap.css" },
+        { type: "css", url: "../../css/old-care/aid.css" },
+        { type: "js", url: "http://api.map.baidu.com/getscript?v=1.5&ak=19c6972bfee08c11cdc76cd41628b69b&services=&t=20130509122407" },
+        { type: "js", url: "../../script/old-care/aid.js" },
+        { type: "js", url: "../../script/map/transgps.js" }
+        ], function () {
+            //初始化地图
+            autosize("location-panel");
+            var longitude = '120.219375';
+            var latitude = '30.259244';
+            initMap("location-panel", longitude, latitude, locationWorkOrder);
+        });
+
+    });
+
+    function locationWorkOrder() {
+        if (!map) {
+            alertInfo('地图初始化未加载成功，请稍后再试...');
+            return;
+        }
+
+        var stationId = $('#CC-Merchant').combobox('getValue');
+        var params = { "StationId": stationId, "DoStatus": "" };
+
+        var DoStatuArrs = _.map(_.filter($("#callservice-monitor [type='checkbox']"), function (o) {
+            return $(o).attr("checked");
+        }), function (i) {
+            return $(i).val();
+        });
+        
+        if (DoStatuArrs && DoStatuArrs.length > 0) {
+            params.DoStatus = DoStatuArrs.join(",");
+        }
+        else {
+            delete params.DoStatus;
+        }
+
+        if (stationId && stationId == window.contants.guidAutoGenerate) {
+            delete params.StationId;
+        }
+
+        getLocateInfo(params);
+    }
+
+    //获取经纬度
+    var currentTimeOutId;
+    var listRows = [];
+    function getLocateInfo(params) {
+        if (currentTimeOutId) {
+            clearTimeout(currentTimeOutId);
+        }
+        map.clearOverlays();
+
+        currentTimeOutId = setTimeout(function () {
+            postTo(baseCMSInvokeUrl + '/Oca/WorkOrderService/QueryTodayService', $.toJSON(params), function (ret) {
+                if (ret.Success && ret.rows.length > 0) {
+                    var points = [];
+                    _.each(ret.rows, function (o, i) {
+                        var gpsPoint = new BMap.Point(o.LongitudeS, o.LatitudeS);
+                        var bview = i == ret.rows.length - 1;
+
+                        BMap.Convertor.translate(gpsPoint, 0, function (point) {
+                            points.push(point); //strStationId, strWorkOrderId, strServiceReserveId
+                            var row = {};
+                            _.extend(row, o, { Point: point });
+                            listRows.push(row);
+                            //var row = { OldManName: o.OldManName, ServeManName: o.ServeManName, ServeCountTime: o.ServeCountTime, ServeItemB: o.ServeItemB, DoStatus: o.DoStatus, Point: point };
+                            marketLatLng(row, points, bview);
+                        });
+                    });
+                }
+            });
+            currentTimeOutId = setTimeout(arguments.callee, 60000);
+        }, 0);
+    }
+
+    function marketLatLng(o, points,bViewPort) {
+        var mak = retCustomMarker2(o.Point, o.DoStatus);
+        var strServeManName = "";
+        if (o.ServeManName) {
+            strServeManName = o.ServeManName;
+        }
+
+        var strColor = (o.DoStatus == "预约中" ? "#999" : (o.DoStatus == "服务结束" ? "#5CACEE" : "#008B45"));
+        createPointLabel2(mak, o.Point, { offsetWidth: -75, offsetHeight: -20, labelStyle: { color: "#fff", backgroundColor: strColor, border: 0} }, o.OldManName + ":" + o.ServeItemB + ", " + o.DoStatus + "<" + strServeManName + ">");
+
+        createPointInfoWindow(mak, o.Point, addinfoWindowContent(o));
+
+        if (bViewPort && points && points.length > 0) {
+            //设置缩放
+            setViewport(points);
+        }
+    }
+
+    function retCustomMarker2(point,DoStatus) {
+        var imgurl = "../../images/map/location-" + (DoStatus == "预约中" ? "gray" : (DoStatus == "服务结束" ? "blue" : "green")) + ".png";
+        var icon = new BMap.Icon(imgurl, new BMap.Size(26, 25),  //图片大小
+                {  //绘制标注点
+                anchor: new BMap.Size(12, 25),  // 指定定位位置
+                imageOffset: new BMap.Size(0, 0), // 设置图片偏移
+                imageSize: new BMap.Size(26, 25)    //图片显示的尺寸
+            });
+
+        var marker = new BMap.Marker(point, { icon: icon });
+        map.addOverlay(marker);
+        return marker;
+    }
+
+    function addinfoWindowContent(item) {
+        var htm = [];
+        var tmpValue = "";
+        htm.push("<p style='font-size:16;color:red;'>服务信息:</p>")
+        htm.push("<p style='line-height:12px'>服务对象：" + item.OldManName + "</p>");
+        if (item.ServeManName) {
+            tmpValue = item.ServeManName.toString();
+        }
+        htm.push("<p style='line-height:12px'>服务人员：" + tmpValue + "</p>");
+        tmpValue = "0";
+        if (item.ServeCountTime) {
+            tmpValue = item.ServeCountTime.toString();
+        }
+        htm.push("<p style='line-height:12px'>服务时长：" + tmpValue + "</p>");
+        htm.push("<p style='line-height:12px;word-wrap:break-word; word-break:normal;' >服务项目：" + item.ServeItemB + "</p>");
+        htm.push("<p style='line-height:12px;float:right;' ><a href='javascript:void(0)' onclick='openWorkOrderInfo(\"" + item.DoStatus + "\",\"" + item.StationId + "\",\"" + item.WorkOrderId + "\",\"" + item.ServiceReserveId + "\")' >详细...</a></p>");
+        return htm.join("");
+    }
+
+    function openWorkOrderInfo(strDoStatus, strStationId, strWorkOrderId, strServiceReserveId) {
+        if (strWorkOrderId && strDoStatus != "预约中") {
+            openDialog('get-workorderinfo-form', top.dialogUrlPrefix + 'views/mer-manage/mer-manage-get-workorderinfo-form.htm', null, { dialogData: { WorkOrderId: strWorkOrderId, StationId: strStationId },
+                title: '查看工单', width: 820, height: 510, padding: 5, buttons: [{
+                    text: '关闭',
+                    iconCls: 'icon-cancel',
+                    handler: function () { top.closeDialogFrom(); }
+                }]
+            });
+        }
+        else {
+            if (strWorkOrderId) {
+                $('#fm-callservice-monitor').form('clear');
+                var instance = _.filter(listRows, function (o) {
+                    return o.ServiceReserveId == strServiceReserveId;
+                });
+
+                $('#fm-callservice-monitor').form('load', instance[0]);
+                $('#dlg-callservice-monitor').dialog(_.extend({
+                    onOpen: function () {
+                        var reserveDate = $('#ReserveDate').val();
+                        if (reserveDate) {
+                            $('#ReserveDate').val(ndateFormatter(reserveDate, 'yyyy年MM月dd日'))
+                        }
+                    },
+                    onClose: function () {
+                    },
+                    modal: true
+                }, null)).dialog('open').dialog('setTitle', '查看预约信息');
+            }
+        }
+    }
+
+    function closeDlg() {
+        $('#dlg-callservice-monitor').dialog('close')
+    }
+</script>

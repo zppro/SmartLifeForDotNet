@@ -1,0 +1,101 @@
+﻿<div class="ftitle"></div>
+<form id="fm-edit-serve-info-item" method="post" novalidate>
+<div class="fitem">
+    <label>服务人员:</label>  
+        <input id="ServeManOfEdit"  />
+</div> 
+<div class="fitem">
+    <label>　预约从:</label> 
+    <input id="ReserveFromOfEdit" class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                    style="width: 60px;" />
+    到:
+    <input id="ReserveToOfEdit" name="ReserveTo"  class="easyui-timespinner" data-options="min:'06:00',max:'24:00'"
+                        style="width: 60px;" />
+</div>  
+<div class="fitem">
+    <label>服务项目:</label> 
+    <input id="ServeItemBOfEdit" />
+</div>
+<div class="fitem">
+    <label>服务时长:</label> 
+    <input id="ServeDurationOfEdit" />
+</div> 
+<div class="fitem">
+    <label>预约备注:</label> 
+    <textarea id="DescriptionOfEdit" rows="3" style="width: 140px;" ></textarea>
+</div> 
+<div id='div_tip' class="fitem"  style=" text-align:center;" > 
+    <span id="addHtml"></span>  
+</div> 
+</form>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) { 
+        $('#ServeManOfEdit').combobox({
+            width: 140, 
+            data: dialogData.ServeMan,
+            valueField: 'UserId',
+            textField: 'UserName',
+            editable: false
+        }).combobox('setValue', dialogData.currentServeMan);
+         
+        $('#ReserveFromOfEdit').timespinner('setValue', dialogData.currentReserveFrom);
+        $('#ReserveToOfEdit').timespinner('setValue', dialogData.currentReserveTo);
+
+        $('#ServeItemBOfEdit').combobox({
+            width: 140,
+            panelWidth: 200,
+            data: dialogData.serveItemBs,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        }).combobox('setValue', dialogData.currentServeItemB); 
+
+        $('#ServeDurationOfEdit').combobox({
+            width: 70,
+            data: dialogData.serveDurationRange,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false
+        }).combobox('setValue', dialogData.currentServeDuration);
+
+        $('#DescriptionOfEdit').val(dialogData.currentDescription);
+
+
+        $('#tip').text(); 
+        if (dialogData.tip == '') {
+            $('#div_tip').hide();
+            $('#ReserveFromOfEdit').timespinner("enable");
+            $('#ReserveToOfEdit').timespinner("enable");
+            $('#ServeManOfEdit').combobox("enable");
+            $('#ServeItemBOfEdit').combobox("enable");
+            $('#ServeDurationOfEdit').combobox("enable");
+            $('#DescriptionOfEdit').removeAttr('readonly'); 
+        }
+        else {
+            $('#div_tip').show();
+            $('#addHtml').html('<span style="  font-weight:bolder;">' + dialogData.doneStr + '</span><br /><br />'
+            +'<span id="tip" style=" color:Red; font-weight:bolder;">'+dialogData.tip+'</span> ');
+            $('#ReserveFromOfEdit').timespinner("disable");
+            $('#ReserveToOfEdit').timespinner("disable");
+            $('#ServeManOfEdit').combobox("disable");
+            $('#ServeItemBOfEdit').combobox("disable");
+            $('#ServeDurationOfEdit').combobox("disable");
+            $('#DescriptionOfEdit').attr('readonly', 'readonly'); 
+             }
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) { 
+        return { ServeManId: $('#ServeManOfEdit').combobox('getValue'), ServeManName: $('#ServeManOfEdit').combobox('getText'),
+            ReserveFrom: $('#ReserveFromOfEdit').timespinner('getValue'), ReserveTo: $('#ReserveToOfEdit').timespinner('getValue'),
+            ServeItemBId: $('#ServeItemBOfEdit').combobox('getValue'), ServeItemBName: $('#ServeItemBOfEdit').combobox('getText'),
+            ServeDuration: $('#ServeDurationOfEdit').combobox('getValue'), Description: $('#DescriptionOfEdit').val()
+        };
+    }
+
+
+</script>

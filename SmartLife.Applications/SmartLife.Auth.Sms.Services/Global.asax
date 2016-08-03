@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="SmartLife.Auth.Sms.Services.Global" Language="C#" %>

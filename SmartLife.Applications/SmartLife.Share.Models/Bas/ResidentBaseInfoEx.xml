@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Bas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_DBA_Aync_Oca_OldManBaseInfoParam" class="StringObjectDictionary">
+      <parameter  property="Phase" column="Phase" direction="Input" type="int" dbType="int" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ResidentMigrateParam" class="StringObjectDictionary">
+      <parameter  property="ResidentIds" column="ResidentIds" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="AreaIdFrom" column="AreaIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="AreaId2From" column="AreaId2From" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaId3From" column="AreaId3From" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaIdTo" column="AreaIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="AreaId2To" column="AreaId2To" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaId3To" column="AreaId3To" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ResidentMigrateBackParam" class="StringObjectDictionary">
+      <parameter  property="ResidentIds" column="ResidentIds" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="AreaIdFrom" column="AreaIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="AreaId2From" column="AreaId2From" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaId3From" column="AreaId3From" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaIdTo" column="AreaIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="AreaId2To" column="AreaId2To" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="AreaId3To" column="AreaId3To" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="Remark" column="Remark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ResidentMigrateConfirmParam" class="StringObjectDictionary">
+      <parameter  property="ResidentIds" column="ResidentIds" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaIdFrom" column="AreaIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="AreaIdTo" column="AreaIdTo" direction="Input" type="string" dbType="char" />
+      <parameter  property="Remark" column="Remark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ResidentDestroyParam" class="StringObjectDictionary">
+      <parameter  property="ResidentId" column="ResidentId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="AreaId" column="AreaId" direction="Input" type="string" dbType="char" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_Aync_Pam_PensionAgencyObjectBaseInfoParam" class="StringObjectDictionary">
+      <parameter  property="ResidentIds" column="ResidentIds" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="Delimeter" column="Delimeter" direction="Input" type="string" dbType="char" />
+      <parameter  property="Atype" column="Atype" direction="Input" type="int" dbType="int" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_Aync_Org_OldManBaseInfoParam" class="StringObjectDictionary">
+      <parameter  property="ResidentIds" column="ResidentIds" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="Delimeter" column="Delimeter" direction="Input" type="string" dbType="char" />
+      <parameter  property="Atype" column="Atype" direction="Input" type="int" dbType="int" />
+      <parameter  property="RStatus" column="RStatus" direction="Input" type="int" dbType="int" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ImportResidentBaseInfo3Param" class="StringObjectDictionary">
+      <parameter  property="bckTableName" column="bckTableName" direction="Input" type="string" dbType="varchar" />
+    </parameterMap>
+    <parameterMap id="SP_DBA_ImportResidentExtInfo2Param" class="StringObjectDictionary">
+      <parameter  property="iType" column="iType" direction="Input" type="int" dbType="int" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_DBA_Aync_Oca_OldManBaseInfo" parameterMap="SP_DBA_Aync_Oca_OldManBaseInfoParam" resultClass="StringObjectDictionary">
+      SP_DBA_Aync_Oca_OldManBaseInfo
+    </procedure>
+    <procedure id="SP_DBA_ResidentMigrate" parameterMap="SP_DBA_ResidentMigrateParam" resultClass="StringObjectDictionary">
+      SP_DBA_ResidentMigrate
+    </procedure>
+    <procedure id="SP_DBA_ResidentMigrateBack" parameterMap="SP_DBA_ResidentMigrateBackParam" resultClass="StringObjectDictionary">
+      SP_DBA_ResidentMigrateBack
+    </procedure>
+    <procedure id="SP_DBA_ResidentMigrateConfirm" parameterMap="SP_DBA_ResidentMigrateConfirmParam" resultClass="StringObjectDictionary">
+      SP_DBA_ResidentMigrateConfirm
+    </procedure>
+    <procedure id="SP_DBA_ResidentDestroy" parameterMap="SP_DBA_ResidentDestroyParam" resultClass="StringObjectDictionary">
+      SP_DBA_ResidentDestroy
+    </procedure>
+    <procedure id="SP_DBA_Aync_Pam_PensionAgencyObjectBaseInfo" parameterMap="SP_DBA_Aync_Pam_PensionAgencyObjectBaseInfoParam" resultClass="StringObjectDictionary">
+      SP_DBA_Aync_Pam_PensionAgencyObjectBaseInfo
+    </procedure>
+    <procedure id="SP_DBA_Aync_Org_OldManBaseInfo" parameterMap="SP_DBA_Aync_Org_OldManBaseInfoParam" resultClass="StringObjectDictionary">
+      SP_DBA_Aync_Org_OldManBaseInfo
+    </procedure>
+    <procedure id="SP_DBA_ImportResidentBaseInfo3" parameterMap="SP_DBA_ImportResidentBaseInfo3Param" resultClass="StringObjectDictionary">
+      SP_DBA_ImportResidentBaseInfo3
+    </procedure>
+    <procedure id="SP_DBA_ImportResidentExtInfo2" parameterMap="SP_DBA_ImportResidentExtInfo2Param" resultClass="StringObjectDictionary">
+      SP_DBA_ImportResidentExtInfo2
+    </procedure>
+    <select id="Count_ResidentBaseInfoAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      (select top 1 FlowFrom from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowFrom,
+      (select top 1 FlowTo from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowTo,
+      dbo.FUNC_Pub_GetFlowDefineActionName2(ResidentId,'ResidentBaseInfo',AreaId,AreaId2,AreaId3) ActionName
+      from Bas_ResidentBaseInfo bas
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NonFlowFrom" >FlowFrom!=#NonFlowFrom#  or FlowFrom is null</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ResidentBaseInfoAndDictionaryItem_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      (select top 1 FlowFrom from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowFrom,
+      (select top 1 FlowTo from pub_flow where bas.ResidentId=BIZ_ID order by CheckInTime desc ) FlowTo,
+      dbo.FUNC_Pub_GetFlowDefineActionName2(ResidentId,'ResidentBaseInfo',AreaId,AreaId2,AreaId3) ActionName
+      from Bas_ResidentBaseInfo bas
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="FlowFrom" >FlowFrom=#FlowFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FlowTo" >FlowTo=#FlowTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NonFlowFrom" >FlowFrom!=#NonFlowFrom#  or FlowFrom is null</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause2">$WhereClause2$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="Count_ResidentBaseInfoAndDictionaryItemMigrated_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select bas.ResidentId,bas.CheckInTime,Status,bas.OperatedBy,bas.OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,bas.Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,bas.EventTime,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName ,
+
+      l.ResidentDynamicMoveId,l.CheckInTime  ResidentDynamicMoveCheckInTime,
+      l.EventTime  ResidentDynamicMoveEventTime,l.ResidentId ResidentDynamicMoveResidentId,l.AreaIdFrom,l.AreaId2From,
+      l.AreaId3From,l.AreaIdTo,l.AreaId2To,l.AreaId3To,l.OperatedBy  ResidentDynamicMoveOperatedBy,l.OperatedOn  ResidentDynamicMoveOperatedOn,
+      l.Remark ResidentDynamicMoveRemark,l.MigrateResultFlag
+      from Bas_ResidentBaseInfo bas right join Bas_ResidentMigrateLog l on bas.ResidentId=l.ResidentId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >bas.ResidentId=#ResidentId#</isPropertyAvailable>  
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >bas.OperatedBy=#OperatedBy#</isPropertyAvailable> 
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveId" >ResidentDynamicMoveId=#ResidentDynamicMoveId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveCheckInTime" >l.CheckInTime=#ResidentDynamicMoveCheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveEventTime" >l.EventTime=#ResidentDynamicMoveEventTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable> 
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n 
+    </select>
+    <select id="ResidentBaseInfoAndDictionaryItemMigrated_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from( 
+      select bas.ResidentId,bas.CheckInTime,Status,bas.OperatedBy,bas.OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,bas.Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,bas.EventTime,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName ,
+      l.ResidentDynamicMoveId,l.CheckInTime  ResidentDynamicMoveCheckInTime,
+      l.EventTime  ResidentDynamicMoveEventTime,l.ResidentId ResidentDynamicMoveResidentId,l.AreaIdFrom,l.AreaId2From,
+      l.AreaId3From,l.AreaIdTo,l.AreaId2To,l.AreaId3To,l.OperatedBy  ResidentDynamicMoveOperatedBy,l.OperatedOn  ResidentDynamicMoveOperatedOn,
+      l.Remark ResidentDynamicMoveRemark,l.MigrateResultFlag
+      from Bas_ResidentBaseInfo bas right join Bas_ResidentMigrateLog l on bas.ResidentId=l.ResidentId
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="ResidentId" >bas.ResidentId=#ResidentId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedBy" >bas.OperatedBy=#OperatedBy#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveId" >ResidentDynamicMoveId=#ResidentDynamicMoveId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveCheckInTime" >l.CheckInTime=#ResidentDynamicMoveCheckInTime#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentDynamicMoveEventTime" >l.EventTime=#ResidentDynamicMoveEventTime#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaIdFrom" >AreaIdFrom=#AreaIdFrom#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2From" >AreaId2From=#AreaId2From#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3From" >AreaId3From=#AreaId3From#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaIdTo" >AreaIdTo=#AreaIdTo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2To" >AreaId2To=#AreaId2To#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3To" >AreaId3To=#AreaId3To#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </dynamic>
+      ) n 
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="Count_AgencyResidentBaseInfo_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse from Bas_ResidentBaseInfo 
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="AgencyResidentBaseInfo_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+      ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',ResidentBizId) ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(NativePlace) NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(HouseholdRegister) HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(ResidentialOfHometown) ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',AccountType) AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',EducationLevel) EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',Marriage) MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',LivingStatus) LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',HousingStatus) HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',IncomeStatus) IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',Nation) NationName,
+      StationId
+      from Bas_ResidentBaseInfo
+      <dynamic prepend=" WHERE ">
+      <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="Count_ResidentBaseInfoForActivityLog_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from (
+      select ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      case when act.ResidentIdLog is null then 0 else 1 end as ActivityLog
+      from Bas_ResidentBaseInfo bas left join
+      (select distinct ResidentId as ResidentIdLog from Bas_ResidentActivityLog) act on bas.ResidentId=act.ResidentIdLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable> 
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+    </select>
+    <select id="ResidentBaseInfoForActivityLog_ListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,n.*
+      from(
+      select ResidentId,Id,CheckInTime,Status,OperatedBy,OperatedOn,
+      DataSource,ResidentName,ResidentStatus,ResidentBizId,IDNo,Gender,
+      NativePlace,HouseholdRegister,EducationLevel,Marriage,LivingStatus,
+      HousingStatus,IncomeStatus,AreaId,AreaId2,AreaId3,ResidentialAddress,
+      PlaceOfHouseholdRegister,PostCode,Tel,Mobile,Remark,InputCode1,InputCode2,
+      ResidentialOfHometown,Nation,AccountType ,
+      dbo.FUNC_Tol_GetDictionaryItemName('01005',bas.ResidentBizId)ResidentBizIdName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.NativePlace)NativePlaceName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.HouseholdRegister)HouseholdRegisterName,
+      dbo.FUNC_Tol_GetAreaFullNameByAreaId(bas.ResidentialOfHometown)ResidentialOfHometownName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00016',bas.AccountType)AccountTypeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00017',bas.EducationLevel)EducationLevelName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00018',bas.Marriage)MarriageName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00019',bas.LivingStatus)LivingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00020',bas.HousingStatus)HousingStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00021',bas.IncomeStatus)IncomeStatusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('00022',bas.Nation)NationName,
+      case when act.ResidentIdLog is null then 0 else 1 end as ActivityLog
+      from Bas_ResidentBaseInfo bas left join
+      (select distinct ResidentId as ResidentIdLog from Bas_ResidentActivityLog) act on bas.ResidentId=act.ResidentIdLog
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="ResidentId" >ResidentId=#ResidentId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentName" >ResidentName=#ResidentName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentStatus" >ResidentStatus=#ResidentStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentBizId" >ResidentBizId=#ResidentBizId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IDNo" >IDNo=#IDNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Gender" >Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="NativePlace" >NativePlace=#NativePlace#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HouseholdRegister" >HouseholdRegister=#HouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="EducationLevel" >EducationLevel=#EducationLevel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Marriage" >Marriage=#Marriage#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="LivingStatus" >LivingStatus=#LivingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="HousingStatus" >HousingStatus=#HousingStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="IncomeStatus" >IncomeStatus=#IncomeStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId2" >AreaId2=#AreaId2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId3" >AreaId3=#AreaId3#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialAddress" >ResidentialAddress=#ResidentialAddress#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PlaceOfHouseholdRegister" >PlaceOfHouseholdRegister=#PlaceOfHouseholdRegister#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="PostCode" >PostCode=#PostCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Tel" >Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode1" >InputCode1=#InputCode1#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="InputCode2" >InputCode2=#InputCode2#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ResidentialOfHometown" >ResidentialOfHometown=#ResidentialOfHometown#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Nation" >Nation=#Nation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AccountType" >AccountType=#AccountType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      ) n
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select> 
+  </statements>
+</sqlMap>

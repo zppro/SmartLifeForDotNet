@@ -1,0 +1,102 @@
+﻿<style type="text/css">
+.table{ width:99%;border:0; background-color:#000000; }
+.table tr{ text-align:center; }
+.table th{ height:60px; font-size:22px; font-weight:bolder;text-align:center; vertical-align:middle;background-color:#FFFFFF;  }
+.table td {  height:60px; background-color:#FFFFFF; vertical-align:middle; }
+.title_1 { font-size:16px; font-weight:bold; word-spacing:10px; letter-spacing:10px; }
+.txt_bg_01 {width: 90%;height: 30px;line-height: 30px;border: none;border-bottom: 1px solid #000;text-align:center; font-size: 16px; margin-left:5px;}
+.box { display:block; width:90%; text-align:center; line-height:30px;border: none; border-bottom:1px solid #000; font-size:16px; margin-left:5px;}
+</style>
+<div class="easyui-layout" data-options="fit:true">
+    <div id="needs-assessment-form" data-options="region:'center',border:false">
+        <form id="fm-set-needs-assessment" method="post" novalidate>
+        <input  type="hidden" name="RequisitionId"/>
+        <input type="hidden" name="AreaId" />
+        <input type="hidden" name="AreaId2" />
+        <input type="hidden" name="AreaId3" />
+        <table  class="table">
+            <tr>
+                <th colspan="2" >养老服务需求评估表</th>
+            </tr>
+            <tr>
+                <td  class="title_1">申请人姓名：</td>
+                <td  ><input name="EvaluatedName" type="text" class="txt_bg_01" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td class="title_1" >身份证号码：</td>
+                <td ><input name="IDNo" type="text" class="txt_bg_01" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td class="title_1">街道（镇）：</td>
+                <td ><input id="AreaId2" type="text" class="txt_bg_01 areaName" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td class="title_1">社区（村）：</td>
+                <td ><input id="AreaId3" type="text" class="txt_bg_01 areaName" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td   align="right" class="title_1" >评估类别：</td>
+                <td >
+                    <span class="box">
+                        1、首次评估<input name="AssessType" type="radio" value="00001" checked="checked"/><br/>
+                        2、复检评估<input name="AssessType" type="radio" value="00002" /><br/>
+                        3、变更评估<input name="AssessType" type="radio" value="00003" />
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td  class="title_1" >评估次数：</td>
+                <td ><input name="AssessCount" readonly="readonly" type="text" class="txt_bg_01" /></td>
+            </tr>
+            <tr>
+                <td  class="title_1" >本次评估日期：</td>
+                <td >
+                    <input name="currentTime" type="text" readonly="readonly" class="txt_bg_01"  />
+                 </td>
+            </tr>
+            <tr>
+                <td  class="title_1" >评估员姓名：</td>
+                <td ><input name="Assessor" type="text" class="txt_bg_01" /></td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var areas;
+        getTo(ajaxData_InvokeUrl + '/GetArea', null, function (result) {
+            areas = result;
+        }, { async: false });
+
+        if (dialogData) {
+            $("#fm-set-needs-assessment").form("load", dialogData);
+            $("input[name='EvaluatedName']").val(dialogData["ResidentName"]);
+            $("input[name='currentTime']").val((new Date()).toLocaleDateString());
+
+            _.each($(".areaName"), function (o) {
+                var key = $("input[type='hidden'][name='" + $(o).attr("id") + "']").val();
+                var areaName;
+                _.each(areas, function (i) {
+                    if (i.AreaId === key.toLowerCase()) areaName = i.AreaName;
+                });
+                $(o).val(areaName);
+            }); 
+            getTo(top.baseCMSInvokeUrl + '/Eva/EvaluatedReportService/Query?parms=' + $.toJSON({ RequisitionId: dialogData.RequisitionId }), null, function (ret) {
+                if (ret.Success) {
+                    $("input[name='AssessCount']").val("第" + (ret.rows.length + 1) + "次");
+                }
+            }, { async: false }, { ConnectId: dialogData.ConnectId });
+        }
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = $("#fm-set-needs-assessment").serializeObject();
+        return formData;
+    }
+</script>

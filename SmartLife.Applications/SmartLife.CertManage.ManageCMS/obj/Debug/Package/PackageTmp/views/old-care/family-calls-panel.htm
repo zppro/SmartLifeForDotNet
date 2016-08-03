@@ -1,0 +1,100 @@
+﻿<table  align="center" style="width: 100%;">
+    <colgroup>
+        <col align="center" />
+    </colgroup>
+    <tr>
+        <td>
+            <div class="tel-title">亲人电话</div>
+            <div id="family-tel">
+            </div>
+            <div id="family-tel-block"></div>
+        </td> 
+    </tr>
+    <tr>
+        <td>
+            <div class="tel-title">其他电话</div>
+            <div class="other-tel">
+                <input id="txtOtherTelNo" type="text" class='txttel' />
+                <a href="javascript:void(0)" class="button-blue-othercall" style=" float:right" onclick="TakeOtherTel('txtOtherTelNo')">呼叫</a>
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        if (pageData) {
+            //绑定亲人电话
+            getTo(baseCMSInvokeUrl + '/Oca/OldManFamilyInfoService/ListByOldMan2/' + pageData.OldManId, null, function (result) {
+                var iDoStatus = pageData.DoStatus;
+                var iCallBackFlag = pageData.CallBackFlag;
+
+                var htmls = [];
+                var iCount = 0;
+                _.each(result.rows, function (row) {
+                    var arrVals = row.Value.split('|');
+                    var html = [];
+                    html.push('<div class="bg-family-callinfo">');
+                    var strClick = (iDoStatus == 3 && iCallBackFlag != 1) ? '' : ' onclick="openTel(2,\'' + arrVals[1] + '\',\'' + row.Text + '\')"';
+                    html.push('<a href="javascript:void(0)" class="family-callinfo" title="亲人姓名：' + arrVals[0] + ',联系电话：' + arrVals[1] + '"' + strClick + '>' + row.Text + ' : ' + arrVals[0] + ' (' + arrVals[1] + ') ' + '</a>');
+                    html.push('<a title="编辑" style="float:right; margin-top:8px; margin-right:12px; cursor:pointer;" class="nicon-blue nicon-R7C8" onclick="editFamilyMember(\'' + pageData.OldManId + '\',\'' + pageData.AreaId + '\',\'' + iDoStatus + '\',\'' + iCallBackFlag + '\',\'' + arrVals[2] + '\')"></a>');
+                    html.push('</div>');
+
+                    htmls.push(html.join(""));
+                    iCount++;
+                });
+                for (var i = 0; i < 3 - iCount; i++) {
+                    htmls.push('<div class="bg-family-callinfo"><a title="编辑" style="float:right; margin-top:8px; margin-right:12px; cursor:pointer;" class="nicon-blue nicon-R7C8" onclick="editFamilyMember(\'' + pageData.OldManId + '\',\'' + pageData.AreaId + '\',\'' + iDoStatus + '\',\'' + iCallBackFlag + '\')"></a></div>');
+                }
+                $('#family-tel').html(htmls.join("</br>"));
+            });
+        }
+    });
+
+    //编辑老人亲人电话
+    function editFamilyMember(oldManId, areaId, iDoStatus, iCallBackFlag,familyMemberId) {
+        if (iDoStatus == 3 && iCallBackFlag != 1) {
+            return;
+        }
+
+        getHtml(baseUrl + '/views/dialogs/set-oldman-family-member.htm', function (str) {
+
+            $("#family-tel-block").html(str);
+            $.parser.parse('#fm-oldman-familymember,#btn-oldman-familymember');
+            $("#dlg-oldman-familymember").dialog({
+                inline: false,
+                onClose: function () {
+                    reloadFamilyTel(oldManId, areaId, iDoStatus, iCallBackFlag);
+                    $(this).dialog('destroy');
+                },
+                onBeforeOpen: function () {
+                    loadOldManFamilyMember(oldManId, areaId, familyMemberId);
+                },
+                modal: true
+            }).dialog('open').dialog('setTitle', '完善-老人亲人资料');
+        });
+    }
+
+    function reloadFamilyTel(oldManId, areaId, iDoStatus, iCallBackFlag) {
+        //绑定亲人电话
+        getTo(baseCMSInvokeUrl + '/Oca/OldManFamilyInfoService/ListByOldMan2/' + oldManId, null, function (result) {
+            var htmls = [];
+            var iCount = 0;
+            _.each(result.rows, function (row) {
+                var arrVals = row.Value.split('|');
+                var html = [];
+                html.push('<div class="bg-family-callinfo">');
+                var strClick = (iDoStatus == 3 && iCallBackFlag != 1) ? '' : ' onclick="openTel(2,\'' + arrVals[1] + '\',\'' + row.Text + '\')"';
+                html.push('<a href="javascript:void(0)" class="family-callinfo" title="亲人姓名：' + arrVals[0] + ',联系电话：' + arrVals[1] + '"' + strClick + '>' + row.Text + ' : ' + arrVals[0] + ' (' + arrVals[1] + ') ' + '</a>');
+                html.push('<a title="编辑" style="float:right; margin-top:8px; margin-right:12px; cursor:pointer;" class="nicon-blue nicon-R7C8" onclick="editFamilyMember(\'' + oldManId + '\',\'' + areaId + '\',\'' + arrVals[2] + '\')"></a>');
+                html.push('</div>');
+
+                htmls.push(html.join(""));
+                iCount++;
+            });
+            for (var i = 0; i < 3 - iCount; i++) {
+                htmls.push('<div class="bg-family-callinfo"><a title="编辑" style="float:right; margin-top:8px; margin-right:12px; cursor:pointer;" class="nicon-blue nicon-R7C8" onclick="editFamilyMember(\'' + oldManId + '\',\'' + areaId + '\')"></a></div>');
+            }
+            $('#family-tel').html(htmls.join("</br>"));
+        });
+    }
+</script>

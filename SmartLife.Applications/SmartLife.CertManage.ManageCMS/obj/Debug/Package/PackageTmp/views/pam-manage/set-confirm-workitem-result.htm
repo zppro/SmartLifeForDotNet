@@ -1,0 +1,300 @@
+﻿<style type="text/css">
+.body{width:100%; height:100%; overflow:auto;}
+#creatInfo{ margin:0 auto; margin-top:10px; border-left:solid 1px #888; border-top:solid 1px #888;}
+.head_CheckFlag{  border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_WorkItem{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 150px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_WorkSchedule{border-bottom:solid 1px #888; border-right:solid 1px #888;width: 70px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_Workload{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_RemindFlag{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_RemindRepeats{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_PlayRepeats{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+.head_CheckDescription{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 200px; text-align:center; font-size:13px; height:40px; font-weight:bolder; background-color:#ddd;}
+
+.cont_CheckFlag{  border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center;  height:40px; }
+.cont_WorkItem{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 150px; text-align:center; height:40px; }
+.cont_WorkSchedule{border-bottom:solid 1px #888; border-right:solid 1px #888;width: 70px; text-align:center; height:40px; }
+.cont_Workload{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center; height:40px;  }
+.cont_RemindFlag{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center;  height:40px;  }
+.cont_RemindRepeats{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center;  height:40px; }
+.cont_PlayRepeats{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center;height:40px;  }
+.cont_CheckDescription{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 200px; text-align:center; height:40px;  }
+
+.cont_WorkItem input{ margin:0 auto; width:130px; text-align:center;  border-bottom:none; border-top:none;border-left:none;border-right:none;}
+.cont_WorkSchedule input{ margin:0 auto; width:40px; text-align:center;  border-bottom:solid 1px #ddd; border-top:none;border-left:none;border-right:none;}
+.cont_Workload input{  margin:0 auto; width:30px; text-align:center;  border-bottom:solid 1px #ddd; border-top:none;border-left:none;border-right:none;}
+.cont_RemindRepeats input{ margin:0 auto; width:20px; text-align:center;  border-bottom:solid 1px #ddd; border-top:none;border-left:none;border-right:none;}
+.cont_PlayRepeats input{  margin:0 auto; width:20px; text-align:center;  border-bottom:solid 1px #ddd; border-top:none;border-left:none;border-right:none;}
+.cont_CheckDescription input{ margin:0 auto; width:150px; text-align:left;  border-bottom:solid 1px #ddd; border-top:none;border-left:none;border-right:none;} 
+
+.bottom_CheckFlag{  border-bottom:solid 1px #888; border-right:solid 1px #888;width: 60px; text-align:center;  height:40px; }
+.bottom_text{border-bottom:solid 1px #888; border-right:solid 1px #888;width: 70px; text-align:center; height:40px; }
+.bottom_null{border-bottom:solid 1px #888; border-right:solid 1px #888;  height:40px; }
+.bottom_button{ border-bottom:solid 1px #888; border-right:solid 1px #888;width: 200px; text-align:center; height:40px;  }
+</style>
+<div  class="body"> 
+    <table id="creatInfo"> 
+    </table>  
+</div>
+<script type="text/javascript">
+    var stationId = '';
+    var oldManId = '';
+    function dialogOpen(dialogId, dialogData) {
+        stationId = dialogData.StationId;
+        oldManId = dialogData.OldManId;
+        loadPageEx();
+        //        alert($.toJSON(dialogData));
+    }
+
+    function loadPageEx() {
+        var param = {
+            sort: 'WorkSchedule',
+            order: 'asc',
+            rows: 100,
+            page: 1,
+            fuzzyFieldOP: ' or ',
+            filterFields: [{ key: 'Status', value: 1 },
+                               { key: 'OldManId', value: oldManId }
+                               ]
+        };
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (workItems) {
+            postTo(baseCMSInvokeUrl + '/Pam/AssessmentResultService/ListForEasyUIgridByPage', $.toJSON(param), function (ret) {
+                if (ret.Success) {
+                    craetTable(ret.rows, workItems);
+                }
+            });
+        });
+     }
+
+    function craetTable(rows, workItems) {
+        var _head = '<tr>  <td class="head_CheckFlag">勾选标识</td> <td class="head_WorkSchedule">工作时间</td> <td class="head_WorkItem">工作项</td>' +
+            '<td class="head_Workload">工作量</td> <td class="head_RemindFlag">提醒标识</td> <td class="head_RemindRepeats">提醒次数</td>' +
+            '<td  class="head_PlayRepeats">播放次数</td> <td class="head_CheckDescription">说明</td> </tr> ';
+
+
+        var _bottom = '<tr><td class="bottom_CheckFlag"><input type="checkbox"  id="allCheckFlag"   /></td> ' +
+            '<td class="bottom_text">全选</td><td  class="bottom_null" colspan=5></td> ' +
+            '<td class="bottom_button"><input type="button" value="&nbsp;重&nbsp;&nbsp;设&nbsp;" onclick="reloadEx()" width="60" /></td> </tr> ';
+        
+        $('#creatInfo').html(_head + _.map(rows, function (o) {
+            var ischecked = o.CheckFlag == 1 ? "checked" : "";
+            return '<tr changeFalg="0"  PKId="' + o.Id + '" CheckFlag="' + o.CheckFlag + '"  WorkSchedule="' + o.WorkSchedule + '"  Workload="' + o.Workload + '"  RemindFlag="' + o.RemindFlag + '" RemindRepeats="' + o.RemindRepeats + '"  PlayRepeats="' + o.PlayRepeats + '"  CheckDescription="' + o.CheckDescription + '" >' +
+            '<td class="cont_CheckFlag"><input type="checkbox" ' + ischecked + ' name="CheckFlag" value="' + o.CheckFlag + '" /><input type="hidden" name="Id"  value="' + o.Id + '"/></td>' +
+            '<td class="cont_WorkSchedule"><input  name="WorkSchedule" value="' + o.WorkSchedule + '" onchange="checkWorkSchedule(this)" /><input type="hidden" name="isPass"  passedWorkSchedule="1"/></td>' +
+            '<td class="cont_WorkItem"><input name="WorkItem" value="' + GetItemName(workItems, o.WorkItem) + '"  readonly="readonly"/></td>' +
+            '<td class="cont_Workload"><input name="Workload" value="' + o.Workload + '"  onkeyup="checkNumber(this)" /><input type="hidden" name="isPass" passedWorkload="1"/></td>' +
+            '<td class="cont_RemindFlag"><select  class="easyui-combobox" name="RemindFlag" style="width:40px;" onchange="onSelect(this)"> <option value="1" ' + (o.RemindFlag == 1 ? "selected='selected'" : "") + '>是</option> <option value="0" ' + (o.RemindFlag == 0 ? "selected='selected'" : "") + ' >否</option> </select></td>' +
+            '<td class="cont_RemindRepeats"><input  name="RemindRepeats" value="' + o.RemindRepeats + '" onkeyup="checkNumber(this)" maxlength="2" /><input type="hidden" name="isPass" passedRemindRepeats="1"/></td>' +
+            '<td  class="cont_PlayRepeats"><input name="PlayRepeats" value="' + o.PlayRepeats + '" onkeyup="checkNumber(this)" maxlength="2" /><input type="hidden" name="isPass" passedPlayRepeats="1"/></td>' +
+            '<td class="cont_CheckDescription"><input  name="CheckDescription" value="' + o.CheckDescription + '" onchange="checkDescription(this)"/></td> </tr> '; 
+        }).join("") + _bottom);
+         checkboxChange();
+     }
+
+     function onSelect(obj) {
+         var selectItem = $(obj).find("option:selected").val();
+         _.each($(obj).closest("tr").find("input"), function (li) {
+             if ($(li).attr("name") == "RemindRepeats") {
+                 if (selectItem == 1) {
+                     $(obj).closest("tr").attr("RemindRepeats", 3);
+                     $(li).attr("value", 3);
+                     $(li).removeAttr("readonly");
+                     $(li).css({ "color": "#000" });
+                 }
+                 else {
+                     $(li).attr("value", 0);
+                     $(obj).closest("tr").attr("RemindRepeats", 0);
+                     $(li).attr("readonly", "readonly");
+                     $(li).css({ "color": "#888" });
+                 }
+                 $(obj).closest("tr").attr("RemindFlag", selectItem);
+             }
+             else if ($(li).attr("name") == "PlayRepeats") {
+                 if (selectItem == 1) {
+                     $(obj).closest("tr").attr("PlayRepeats", 2);
+                     $(li).attr("value", 2);
+                     $(li).removeAttr("readonly");
+                     $(li).css({ "color": "#000" });
+                 }
+                 else {
+                     $(obj).closest("tr").attr("PlayRepeats", 0);
+                     $(li).attr("value", 0);
+                     $(li).attr("readonly", "readonly");
+                     $(li).css({ "color": "#888" });
+                 }
+                 $(obj).closest("tr").attr("RemindFlag", selectItem);
+             } 
+             stampChange_Check(obj);
+         });
+         $(obj).closest("tr").attr('changeFalg', 1);
+     }
+
+    function checkNumber(obj) {
+        var strName = $(obj).attr("name");
+        var strText = $(obj).val();
+        _.each($(obj).closest("tr").find("input"), function (li) {
+            if ($(li).attr("name") == "isPass" && $(li).attr("passed" + strName)) {
+                if (isNaN(obj.value)) {
+                    $(li).attr("passed" + strName, 0);
+                    alert("请输入数字");
+                }
+                else {
+                    $(li).attr("passed" + strName, 1);
+                }
+                stampChange_Check(obj);
+            }
+            $(obj).closest("tr").attr(strName, strText);
+        });
+        $(obj).closest("tr").attr('changeFalg', 1);
+    }
+
+    function checkWorkSchedule(obj) {
+        var strName = $(obj).attr("name");
+        var strText = $(obj).val();
+        var r = /^(0\d{1}|1\d{1}|2[0-3]):([0-5]\d{1})$/;
+        _.each($(obj).closest("tr").find("input"), function (li) {
+            if ($(li).attr("name") == "isPass" && $(li).attr("passed" + strName)) {
+                if (r.test(obj.value)) {
+                    $(li).attr("passed" + strName, 1);  
+                }
+                else {
+                    $(li).attr("passed" + strName, 0); 
+                    alert('工作时间不正确，例：08:05');
+                }
+                stampChange_Check(obj);
+            }
+            $(obj).closest("tr").attr(strName, strText);
+        });
+        $(obj).closest("tr").attr('changeFalg', 1);
+    }
+
+    function checkDescription(obj) {
+        var strText = $(obj).val(); 
+        $(obj).closest("tr").attr('CheckDescription', strText);
+        stampChange_Check(obj);
+    }
+
+    function stampChange_Check(obj) {
+        var strName = $(obj).attr("name");
+        var i = 0;
+        $listInput = $(obj).closest("tr").find("input");
+        _.each($listInput, function (li) {
+            if ($(li).attr("name") == "isPass") { 
+                if ($(li).attr("passed" + strName) == 0) { i++; } 
+            }
+        });
+        if (i > 0) {
+            stampChange_Red(obj);
+        }
+        else {
+            stampChange_Yellow(obj);
+        }
+        $(obj).closest("tr").attr('changeFalg', 1);
+    }
+
+    function stampChange_Yellow(obj) {
+        $(obj).closest("tr").css("background-color", "#ffffcc");
+        $(obj).closest("tr").find("input").css("background-color", "#ffffcc");
+        $(obj).closest("tr").find("select").css("background-color", "#ffffcc");
+    }
+
+    function stampChange_Red(obj) {
+        $(obj).closest("tr").css("background-color", "#ff3366");
+        $(obj).closest("tr").find("input").css("background-color", "#ff3366");
+        $(obj).closest("tr").find("select").css("background-color", "#ff3366");
+    }
+
+    function checkboxChange() {
+        var totolrows = $("input[name='CheckFlag']").length; //总记录数 
+        var checkrows = $("input[name='CheckFlag']:checked").length; //选中的记录数 
+        if (checkrows == totolrows) {
+            $("#allCheckFlag").attr("checked", 'checked');
+        }
+        else {
+            $("#allCheckFlag").removeAttr("checked");
+        }
+        $("input[name='CheckFlag']").click(function () {
+            var totolrows = $("input[name='CheckFlag']").length; //全选                    
+            var checkrows = $("input[name='CheckFlag']:checked").length; //选中的记录数
+
+            if (checkrows == totolrows) {
+                $("#allCheckFlag").attr("checked", 'checked');
+            }
+            else {
+                $("#allCheckFlag").removeAttr("checked");
+            }
+            if ($(this).attr('checked') == 'checked') {
+                $(this).closest("tr").attr('CheckFlag', 1);
+            }
+            else {
+                $(this).closest("tr").attr('CheckFlag', 0);             
+             }
+            $(this).closest("tr").attr('changeFalg', 1);
+        });
+        $("#allCheckFlag").click(function () {
+            if ($(this).attr('checked') == 'checked') {
+                $("input[name='CheckFlag']").attr("checked", 'checked');
+                $('#creatInfo').find('tr').attr('CheckFlag', 1);
+            } else {
+                $("input[name='CheckFlag']").removeAttr("checked");
+                $('#creatInfo').find('tr').attr('CheckFlag', 0);
+            }
+            $('#creatInfo').find('tr').attr('changeFalg', 1);
+        });
+    }
+
+    function reloadEx() {
+        var i = 0;
+        _.each($('#creatInfo tr'), function (tr) { 
+            if ($(tr).css("background-color") == "rgb(255, 255, 204)") {
+                i++;
+            }
+        });
+        if (i > 0) {
+            alertConfirm('当前还有未保存的信息，确定要继续吗？', function (r) {
+                if (r) {
+                    loadPageEx();
+                }
+            });
+        }
+        else {
+            loadPageEx();
+        }
+    }
+    function GetItemName(param, value) {
+        return _.find(param, function (o) { return o.ItemId == value; }).ItemName;
+    }
+
+    function dialogBeforeSubmit() {
+        var result = true;
+        _.each($('#creatInfo tr'), function (tr) {
+            if ($(tr).css("background-color") == "rgb(255, 51, 102)") {
+                result = false;
+            }
+        });
+        if (!result) {
+            alert('存在不合法数据，请核对后再保存');
+        }
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        var listAssessmentResult = [];
+        var $listCheck = $('#creatInfo tr');
+        _.each($listCheck, function (tr) {
+            if ($(tr).attr('changeFalg') == 1 && $(tr).attr('PKId')) { 
+                var assessmentResult = {
+                    Id: $(tr).attr('PKId'),
+                    WorkSchedule: $(tr).attr('WorkSchedule'),
+                    Workload: $(tr).attr('Workload'),
+                    RemindFlag: $(tr).attr('RemindFlag'),
+                    RemindRepeats: $(tr).attr('RemindRepeats'),
+                    PlayRepeats: $(tr).attr('PlayRepeats'),
+                    CheckFlag: $(tr).attr('CheckFlag'),
+                    CheckDescription: $(tr).attr('CheckDescription')
+                }
+                listAssessmentResult.push(assessmentResult);
+            }
+        });
+        return listAssessmentResult;
+    }
+    </script>

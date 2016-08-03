@@ -1,0 +1,177 @@
+﻿
+<input id="StationId" type="hidden"/>
+<input id="PlanId" type="hidden"/> 
+    <input id="dateNow" type="hidden" />
+<table style=" margin:auto auto auto auto;"> 
+    <tr style=" height:30px;">
+        <td><label> 服务人员：</label><label id="ServiceName" style=" color:Blue;"></label><input id='UserId' type="hidden" /></td>
+        <td><label> 工作项目：</label><input id="WorkItemS" style=" width:100px"/> </td>
+        <td><label> 用时(分)：</label><input id="Workload" style=" width:60px" onkeyup="value=value.replace(/[^\d]/g,'')"/> </td>
+           </tr>
+    <tr style=" height:30px;">
+        <td><label> 被服务人：</label><label id="OldName" style=" color:Blue;"></label><input id="OldManId" type="hidden"/> </td>  
+        <td><label> 生效日期：</label><input id="ServerBeginTime"  class="Wdate" style=" width:100px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'dateNow\')}'})"/> </td>
+        <td><label> 计划时间：</label><input id="PlanSchedule"class="easyui-timespinner" style=" width:60px; " /> </td>
+           </tr>
+    <tr style=" height:30px;">
+        <td><label> 计划周期：</label><input id="PlanPeriodS"  style=" width:60px"/> </td>
+         <td><label> 注意事项：</label><input id="Remark" style=" width:100px"/> </td>
+        <td><label> 提醒标识：</label><input id="RemindFlagS" style=" width:50px"/> </td>
+    </tr>
+    <tr style=" height:30px;">
+        <td><label> 播报次数：</label><input id="PlayRepeats" style=" width:60px" /> </td>
+        <td><label> 提醒次数：</label><input id="RemindRepeats" style=" width:50px" onkeyup="value=value.replace(/[^\d]/g,'')"/> </td>
+        <td></td>
+</tr>
+</table> 
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {  
+        resetPlan();
+        $('#ServiceName').text(dialogData.row.UserName);
+        $('#OldName').text(dialogData.row.OldManName);
+        $('#StationId').val(dialogData.StationId);
+        $('#PlanId').val(dialogData.row.PlanId);
+        $('#UserId').val(dialogData.row.UserId);
+        $('#OldManId').val(dialogData.row.OldManId);
+                WorkItem: $('#WorkItemS').combobox('setValue',dialogData.row.WorkItem);
+                RemindFlag: $('#RemindFlagS').combobox('setValue',dialogData.row.RemindFlag);
+                PlanPeriod:$('#PlanPeriodS').combobox('setValue', dialogData.row.PlanPeriod);
+                $('#Workload').val(dialogData.row.Workload);
+                $('#PlanSchedule').val(dialogData.row.PlanSchedule);
+                $('#Remark').val(dialogData.row.RemarkWP);
+                var serverBeginTime = dialogData.row.ServerBeginTime.substring(0, 9).replace(/\//g, '-');
+                $('#ServerBeginTime').val(serverBeginTime);
+
+                if (dialogData.row.RemindFlag == '0') {
+                    $('#RemindRepeats').attr('disabled', 'disabled');
+                    $('#PlayRepeats').combobox({ disabled: true });
+                }
+                else if (dialogData.row.RemindFlag == '1') {
+                    $('#RemindRepeats').removeAttr('disabled', 'disabled');
+                    $('#RemindRepeats').val(3);
+                    $('#PlayRepeats').combobox({ disabled: false });
+                }
+    }
+     
+    function resetPlan() {
+        $('#Workload').val(null);
+        $('#RemindRepeats').val(3);
+        $('#Remark').val(null);
+        var d = new Date();
+        $('#dateNow').val(d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate());
+        $('#ServerBeginTime').val(null);
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (workItem_d) {
+            var v1 = workItem_d.length > 0 ? workItem_d[0].ItemId : '';
+            setCombobox("WorkItemS", workItem_d, 102, 100, v1);
+            var d = new Date();
+            $('#PlanSchedule').timespinner('setValue', d.getHours() + ':00');
+        }, { async: false });
+        getTo(ajaxData_InvokeUrl + '/GetDictionaryItem/13002', null, function (planPeriod_d) {
+            var v2 = planPeriod_d.length > 0 ? planPeriod_d[0].ItemId : '';
+            setCombobox("PlanPeriodS", planPeriod_d, 62, 82, v2);
+        }, { async: false });
+
+        setCombobox("PlayRepeats", [{ ItemId: "1", ItemName: "1" }, { ItemId: "2", ItemName: "2" }, { ItemId: "3", ItemName: "3"}], 62, 62, 2);
+        $('#RemindFlagS').combobox({
+            width: 52,
+            panelHeight: 42,
+            onSelect: function (record) {
+                if (record.ItemId == '0') {
+                    $('#RemindRepeats').attr('disabled', 'disabled');
+                    $('#PlayRepeats').combobox({ disabled: true });
+                }
+                else if (record.ItemId == '1') {
+                    $('#RemindRepeats').removeAttr('disabled', 'disabled');
+                    $('#RemindRepeats').val(3);
+                    $('#PlayRepeats').combobox({ disabled: false });
+                }
+            },
+            method: 'get',
+            data: [{ ItemId: "0", ItemName: "否" }, { ItemId: "1", ItemName: "是"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: 1
+        });
+    }
+
+    function isPass(userId, oldManId, workload) {
+        var result = 'flase';
+        if (oldManId && oldManId != '') {
+            if (userId && userId != '') {
+                if (workload && workload != '') {
+                    result = 'true';
+                }
+                else {
+                    result = '服务用时为空，请填写服务用时';
+                }
+            }
+            else {
+                result = '服务人员为空，请选择';
+            }
+        }
+        else {
+            result = '老人为空，请重新选择';
+        }
+        return result;
+    }
+    function setCombobox(controlsId, data, w, h, v) {
+        $('#' + controlsId + '').combobox({
+            width: w,
+            panelHeight: h,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false,
+            value: v
+        });
+    }
+
+     
+    function dialogBeforeSubmit() {
+        var result = false;
+        var userId = $('#UserId').val();
+        var oldManId = $('#OldManId').val();
+        var workload = $('#Workload').val();
+        if (isPass(userId, oldManId, workload) == "true") {
+            result = true;
+        }
+        else {
+            alert(isPass(userId, oldManId, workload));
+            result = false;
+        }
+        return result;
+    }
+    function dialogClose() {
+        var userId = $('#UserId').val();
+        var oldManId = $('#OldManId').val();
+        var workload = $('#Workload').val();
+            var param = {
+                PlanId: $('#PlanId').val(),
+                UserId: userId,
+                OldManId: oldManId,
+                Workload: workload,
+                WorkItem: $('#WorkItemS').combobox('getValue'),
+                RemindFlag: $('#RemindFlagS').combobox('getValue'),
+                PlanPeriod: $('#PlanPeriodS').combobox('getValue'),
+                PlanSchedule: $('#PlanSchedule').val(),
+                Remark: $('#Remark').val()
+            };
+            var serverBeginTime = $('#ServerBeginTime').val();
+            if (serverBeginTime && serverBeginTime != '') {
+                serverBeginTime = new Date((serverBeginTime + ' 00:00:00').replace(/-/g, '/'));
+                param["ServerBeginTime"] = toJsonDate(serverBeginTime);
+            }
+            var remindFlag = $('#RemindFlagS').combobox('getValue');
+            if (remindFlag == '1') {
+                param["RemindRepeats"] = $('#RemindRepeats').val();
+                param["PlayRepeats"] = $('#PlayRepeats').combobox('getValue');
+            }
+            else {
+                param["RemindRepeats"] =0;
+                param["PlayRepeats"] = 0;
+            } 
+            return param;
+    }
+</script>

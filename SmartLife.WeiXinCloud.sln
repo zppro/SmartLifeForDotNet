@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.WeiXin", "SmartLife.Applications\SmartLife.WeiXin\SmartLife.WeiXin.csproj", "{B7C28CF5-1642-4B68-8711-B8802FECDD83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.WeiXinCloud.OldCare", "SmartLife.Applications\SmartLife.WeiXinCloud.OldCare\SmartLife.WeiXinCloud.OldCare.csproj", "{98B0E41D-A462-4E56-BB3E-C821F39A80F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.Share.Models", "SmartLife.Applications\SmartLife.Share.Models\SmartLife.Share.Models.csproj", "{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLife.WeiXinCloud2.PFA.Services", "SmartLife.Applications\SmartLife.WeiXinCloud2.PFA.Services\SmartLife.WeiXinCloud2.PFA.Services.csproj", "{09B4E75F-D342-47AA-ADF7-CCA6CF9E0B46}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://42.120.6.22:8080/tfs/%e6%99%ba%e6%85%a7%e7%94%9f%e6%b4%bb
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SmartLife.Applications\\SmartLife.WeiXin\\SmartLife.WeiXin.csproj
+		SccProjectName1 = SmartLife.Applications/SmartLife.WeiXin
+		SccLocalPath1 = SmartLife.Applications\\SmartLife.WeiXin
+		SccProjectUniqueName2 = SmartLife.Applications\\SmartLife.WeiXinCloud.OldCare\\SmartLife.WeiXinCloud.OldCare.csproj
+		SccProjectName2 = SmartLife.Applications/SmartLife.WeiXinCloud.OldCare
+		SccLocalPath2 = SmartLife.Applications\\SmartLife.WeiXinCloud.OldCare
+		SccProjectUniqueName3 = SmartLife.Applications\\SmartLife.Share.Models\\SmartLife.Share.Models.csproj
+		SccProjectName3 = SmartLife.Applications/SmartLife.Share.Models
+		SccLocalPath3 = SmartLife.Applications\\SmartLife.Share.Models
+		SccProjectUniqueName4 = SmartLife.Applications\\SmartLife.WeiXinCloud2.PFA.Services\\SmartLife.WeiXinCloud2.PFA.Services.csproj
+		SccProjectName4 = SmartLife.Applications/SmartLife.WeiXinCloud2.PFA.Services
+		SccLocalPath4 = SmartLife.Applications\\SmartLife.WeiXinCloud2.PFA.Services
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7C28CF5-1642-4B68-8711-B8802FECDD83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C28CF5-1642-4B68-8711-B8802FECDD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C28CF5-1642-4B68-8711-B8802FECDD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C28CF5-1642-4B68-8711-B8802FECDD83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98B0E41D-A462-4E56-BB3E-C821F39A80F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B0E41D-A462-4E56-BB3E-C821F39A80F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B0E41D-A462-4E56-BB3E-C821F39A80F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B0E41D-A462-4E56-BB3E-C821F39A80F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2EE1BE-7F97-4137-96E2-1FF5E378E956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B4E75F-D342-47AA-ADF7-CCA6CF9E0B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B4E75F-D342-47AA-ADF7-CCA6CF9E0B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B4E75F-D342-47AA-ADF7-CCA6CF9E0B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B4E75F-D342-47AA-ADF7-CCA6CF9E0B46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

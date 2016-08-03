@@ -1,0 +1,536 @@
+﻿
+<script type="text/javascript">
+    var info;
+    streets = [];
+    times = [];
+
+    $(function () {
+        loadfiles([
+        { type: "css", url: "../../css/report.css" }
+        ], function () { });
+    });
+
+    //显示控制器
+    function statistics() {
+        $("#dataTable").hide();
+        $("#caption").hide();
+        $("#alltable").hide();
+        $("#container").show();
+        lodcontainer();
+    }
+    function tabletu() {
+        $("#dataTable").show();
+        $("#caption").show();
+        $("#alltable").show();
+        $("#container").hide();
+    }
+
+
+
+    //改变查询日期条件 日期清空
+    function methodChange() {
+        var selMethod = $("#reqMethod").val();
+        startdate();
+        
+    }
+
+    //全部条件的json格式
+    function sqlstr() {
+        var selMethod = $("#reqMethod").val();
+        var CheckInTimeF = $("#CheckInTimeF").val();
+        var CheckInTimeT = $("#CheckInTimeT").val();
+        var area = $("#Area").val();
+        var typeSelect = $('#typeSelect').val();
+
+        var params = new Object();
+        params.selMethod = selMethod;
+        params.CheckInTimeF = CheckInTimeF;
+        params.CheckInTimeT = CheckInTimeT;
+        params.typeSelect = typeSelect;
+        params.area = area;
+        var json = JSON.stringify(params);
+
+        return json;
+    }
+
+
+    function reset() {
+        $("#Area").val(streetID);
+        $('#AreaSelect').combotree('setValue', "");
+        $("#reqMethod ").get(0).selectedIndex = 0;
+        startdate();
+    }
+
+    //查询方法   查询条件放入隐藏域 
+    function query() {
+
+        var CheckInTimeFrom = $("#CheckInTimeFrom").val();
+
+        $("#CheckInTimeF").val(CheckInTimeFrom);
+
+        var CheckInTimeTo = $("#CheckInTimeTo").val();
+        $("#CheckInTimeT").val(CheckInTimeTo);
+
+        var area = $('#AreaSelect').combotree('getValue');
+        if (area != "") {
+            $("#Area").val(area);
+        }
+
+
+
+
+        var sql = sqlstr(); //获取条件
+
+        //加载报表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/CallLength', { parms: sql }, function (ret) {
+            var info = ret;
+            if (info) {
+                createTable(info);
+            }
+
+        }, { async: false });
+        lodcontainer();
+    }
+
+
+    //得到两个日期的间隔天数
+    function getDays(strDateStart, strDateEnd) {
+        var strSeparator = "-"; //日期分隔符
+        var oDate1;
+        var oDate2;
+        var iDays;
+        oDate1 = strDateStart.split(strSeparator);
+        oDate2 = strDateEnd.split(strSeparator);
+        var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+        var strDateE = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+        iDays = parseInt(Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24)//把相差的毫秒数转换为天数 
+        return iDays;
+    }
+    //得到间隔月数
+    function getMonths(strDateStart, strDateEnd) {
+        var yF = strDateStart.getFullYear();
+        var yT = parseInt(strDateEnd.getFullYear());
+        var mF = parseInt(strDateStart.getMonth() + 1);
+        var mT = parseInt(strDateEnd.getMonth() + 1);
+        var iMonth = (yT - yF) * 12 + mT - mF;
+        return iMonth;
+    }
+    //得到month拼接日期
+    function getMonth(year, month, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        else if (m <= 0) {
+            y--;
+            m = 12 + m;
+        
+        }
+
+        if (m <= 9) m = "0" + m;
+        var cdate = y + "-" + m;
+        return cdate;
+    }
+
+
+    //得到day拼接日期
+    function getDate(year, month, day, time) {
+        var y = time.getFullYear() + year;
+        var m = time.getMonth() + month + 1;
+        var d = time.getDate() + day;
+
+        var monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if ((y % 400 == 0) || (y % 4 == 0) && (y % 100 != 0)) {
+            monthday[2] = 29;
+        }
+
+        if (d > monthday[m - 1]) {
+            m++;
+            d = 1;
+        } else if (d - day <= 0) {
+            m--;
+            if (m <= 0) {
+                y--;
+                m = 12;
+            }
+            d = monthday[m - 1];
+        }
+        if (m > 12) {
+            y++;
+            m = 1;
+        }
+        if (m <= 9) m = "0" + m;
+        if (d <= 9) d = "0" + d;
+        var cdate = y + "-" + m + "-" + d;
+        return cdate;
+    }
+
+    //-----------------------------------------------------------------创建表格
+    function createTable(data) {
+
+        var sql = sqlstr(); //获取条件
+
+
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/Getstreet', { parms: sql }, function (ret) {
+            var info = eval(ret);
+            streets = new Array();
+            if (info) {
+                for (var i = 0; i < info.length; i++) {
+                    streets.push(info[i].AreaName);
+                }
+            }
+        }, { async: false });
+
+
+
+        //y轴元数据初始化
+        var street = "<table class='t1'><tr><td width='40'></td><td width='238'></td><tr>"
+        for (var i = 0; i < streets.length; i++) {
+            street = street + "<tr><td width='40'>" + (i + 1) + "</td><td width='238'>" + streets[i] + "</td></tr>"
+        }
+        $("#street").html(street);
+
+
+        // x轴的元数据初始化
+        var tableWidth = 278;
+        var tabStr = "<table id='table' class='t1'><tr><th width='40' height='30'></th><th width='238' height='30'></th>";
+
+
+        var timeF = $("#CheckInTimeF").val();
+        var timeT = $('#CheckInTimeT').val();
+        //var days = timeT - timeF;
+
+        if ($("#reqMethod").val() == "day" || $("#reqMethod").val() == "week") {
+
+            days = getDays(timeF, timeT)
+            time = new Date(timeF);
+            times = new Array();
+            for (var i = 0; i < days + 1; i++) {
+                times.push(getDate(0, 0, 0, time));
+                time = new Date(getDate(0, 0, 1, time));
+                tabStr = tabStr + "<th width='119'>" + times[i] + "</th>";
+                tableWidth = tableWidth + 119;
+            }
+        }
+        else if ($("#reqMethod").val() == "month" || $("#reqMethod").val() == "year") {
+
+            months = getMonths(new Date(timeF), new Date(timeT))
+            time = new Date(timeF);
+
+
+
+            times = [];
+            for (var i = 0; i < months + 1; i++) {
+                times.push(getMonth(0, 0, time));
+                time = new Date(getMonth(0, 1, time));
+                tabStr = tabStr + "<th width='119'>" + times[i] + "</th>";
+                tableWidth = tableWidth + 119;
+            }
+           
+        }
+
+
+        rest = new Array();
+        var dataArray = eval(data);
+        var len = dataArray.length;
+
+        for (var j = 0; j < streets.length; j++) {
+
+            reset[j] = new Array();
+            for (var i = 0; i < len; i++) {
+
+                var getTime = dataArray[i].time;
+                var getArea = dataArray[i].AreaName;
+                var getsums = dataArray[i].sums;
+                for (var k = 0; k < times.length; k++) {
+
+                    if (streets[j] == getArea && times[k] == getTime) {
+                        reset[j][k] = getsums;
+                        // alert(reset[j][k] + "  j " + j + "          k " + k);
+                    }
+
+                }
+            }
+
+
+        }
+
+        for (var i = 0; i < streets.length; i++) {
+
+            tabStr = tabStr + "</tr><tr><td width='40'></td><td width='238'></td>";
+            for (var j = 0; j < times.length; j++) {
+                if (undefined == reset[i][j]) {
+                    reset[i][j] = 0;
+                }
+                tabStr = tabStr + "<td width='119' height='30'>" + reset[i][j] + "</td>";
+            }
+        }
+
+
+        tabStr += "</tr></table>";
+        $("#dataTable").html(tabStr);
+
+
+        $("#table").width(tableWidth);
+
+        lodcontainer();
+
+    }
+
+
+
+    function startdate() {
+
+
+        var today = new Date();
+
+      
+        if ($("#reqMethod").val() == "day") {
+            cdateT = getDate(0, 0, 0, today);
+            cdateF = getDate(0, 0, 0, today);
+        } else if ($("#reqMethod").val() == "month") {
+
+            cdateT = getMonth(0, 0, today);
+            cdateF = getMonth(0, 0, today);
+        } else if ($("#reqMethod").val() == "week") {
+            cdateT = getDate(0, 0, 0, today);
+            cdateF = getDate(0, 0, -7, today);
+        } else {
+
+            cdateT = getMonth(0, 0, today);
+            cdateF = getMonth(0, -12, today);
+
+        }
+
+       
+        $('#CheckInTimeFrom').val(cdateF);
+        $("#CheckInTimeF").val(cdateF);
+     
+        $('#CheckInTimeTo').val(cdateT);
+        $("#CheckInTimeT").val(cdateT);
+       
+    }
+
+
+    //---------------------------------------------------初始化
+    $(function () {
+
+        var winWidth = $(window).width();
+        var winHeight = $(window).height();
+
+        $("#alltable").height(winHeight - 170 - 40);
+        $("#dataTable").height(winHeight - 170 - 40);
+        $("#street").height(winHeight - 170 - 17 -40);
+        $("#container").height(winHeight - 160);
+
+
+        startdate();
+
+
+        var id = top.appDeployArea.code;
+        //加载地域下拉列表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/AreaQuery', { parms: $.toJSON({ 'AreaId': id }) }, function (ret) {
+
+            var data = eval(ret);
+            streetID = data[0].AreaId;
+            $("#Area").val(streetID);
+         
+            $('#AreaSelect').combotree({
+                data: data,
+                loadFilter: function (rows) {
+                    return convert(rows);
+                }
+            });
+
+        }, { async: false });
+
+
+        var sql = sqlstr(); //获取条件
+        //加载报表
+        getTo(baseCMSInvokeUrl + '/Pub/ReportService/CallLength', { parms: sql }, function (ret) {
+            var info = ret;
+            if (info) {
+                createTable(info);
+            }
+
+        }, { async: false });
+        $("#container").hide();
+    });
+
+
+    //---------------------------------------------------加载树
+    function convert(rows) {
+        function exists(rows, ParentId) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].AreaId == ParentId) return true;
+            }
+            return false;
+        }
+
+        var nodes = [];
+        // 得到顶层节点  
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (!exists(rows, row.ParentId)) {
+                nodes.push({
+                    id: row.AreaId,
+                    text: row.AreaName
+                });
+            }
+        }
+
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+        while (toDo.length) {
+            var node = toDo.shift();    // 父节点   
+            // 得到子节点   
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.ParentId == node.id) {
+                    var child = { id: row.AreaId, text: row.AreaName };
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                    toDo.push(child);
+                }
+            }
+        }
+        return nodes;
+    }
+
+
+
+    //---------------------------------------------------------------------统计图
+    function lodcontainer() {
+
+
+      
+
+
+        //动态取值
+        var Name = "通话次数统计";
+        
+        var das = new Array();
+        for (var i = 0; i < streets.length; i++) {
+            var data = new Array();
+            for (var j = 0; j < times.length; j++) {
+                data[j] = reset[i][j];
+
+            }
+
+            var da = { 'name': streets[i], 'data': data };
+            das[i] = da;
+
+        }
+        $('#container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: Name
+            },
+            xAxis: {//横轴  街道
+                categories: times,
+                labels: {
+                    rotation: -50
+                }
+
+            }, series: das
+           
+
+        });
+    }
+
+    //控制myDate97显示格式
+    function getFormat() {
+        if ($("#reqMethod").val() == "month" || $("#reqMethod").val() == "year") {
+            return 'yyyy-MM';
+        } else {
+            return 'yyyy-MM-dd';
+        }
+    }
+
+
+   
+</script>
+<div>
+    <div>
+    <table style="width: 600px;margin-left:20px;padding-top:20px">
+        <tbody>
+               <tr>
+                 <td width="60"> 查询方式:</td><td width="100"><select id="reqMethod" style="width:90px" onchange="methodChange();" >
+                 <option value="day">按天查询</option>
+                 <option value="week">按周查询</option>
+                 <option value="month">按月查询</option>
+                 <option value="year">按年查询</option>
+                 </select>
+                 </td>
+
+                 <td width="60">
+                    通信时间：
+                </td>
+                <td width="110">
+                   <!-- <input class="Wdate" id="CheckInTimeFrom" style="width:180px" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>-->
+                    <input class="Wdate"  id="CheckInTimeFrom" style="width:100px" onFocus="var CheckInTimeTo=$dp.$('CheckInTimeTo');WdatePicker({onpicked:function(){CheckInTimeTo.focus();},dateFmt:getFormat(),maxDate:'#F{$dp.$D(\'CheckInTimeTo\')}'})"/>
+                </td>
+                <td width="150">
+                    到：<!--<input class="easyui-datebox" id="CheckInTimeTo" style="width:180px;" />-->
+                    <input class="Wdate"  id="CheckInTimeTo" style="width:100px" onFocus="WdatePicker({dateFmt:getFormat(),minDate:'#F{$dp.$D(\'CheckInTimeFrom\')}'})"/>
+                </td>
+                 <td width="70"><button  onclick="reset();">重置</button></td>
+            </tr>
+            <tr height="30">
+                <td width="60"> 服务类型:</td><td width="100"><select id="typeSelect" style="width:90px">
+                 <option value="" >全部</option>
+                 <option value="紧急救助">紧急救助</option>
+                 <option value="亲人通话">亲人通话</option>
+                 <option value="娱乐资讯">娱乐资讯</option>
+                 <option value="生活服务">生活服务</option>
+                 </select>
+                 </td>
+
+                
+                <td width="60">区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域：</td><td colspan="2" width="280"><input id="AreaSelect" class="easyui-combotree" style="width:270px;"/></td>
+                 
+                
+                <td width="70">
+                <button  onclick="query();">查询</button>
+                </td>
+           </tr>
+           
+        </tbody>
+        
+    </table>
+    <div class="datagrid-tools" style="height: 30px;background-color:#fafafa">
+        <span><img style="margin-left: 30px" src="../../images/report-form/export.jpg" /><a href="javascript:void(0)">导出</a></span>
+        <span><img style="margin-left: 30px" src="../../images/report-form/print.jpg" /><a href="javascript:void(0)">打印</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/statistics.jpg"/><a href="javascript:void(0)" onclick="statistics()">统计</a></span> 
+        <span><img style="margin-left: 30px" src="../../images/report-form/table.jpg"/><a href="javascript:void(0)" onclick="tabletu()">表格</a></span>
+    </div>
+    </div>
+
+    <div  id="caption" style="width:99%;text-align: center;line-height:51px" >亲人通话时长统计报表</div>
+    <!--<div id="thead" style="border:1px solid;width:1020px;margin-right:auto;margin-left:auto;border-bottom:none"></div>-->
+    <div id="alltable" style="width:99%;margin-right:20px; position :relative;" >
+    
+    <div id="dataTable" style="float:left;width:100%; overflow-x:auto;overflow-y:auto;white-space : nowrap; border:1px solid;position:absolute;" onscroll="document.getElementById('street').scrollTop = this.scrollTop;"></div>
+    <div id="street"  style="float:left;width:278px;overflow-y:hidden;background:#ffffff;border:1px solid;border-bottom:none;border-right:none;position:absolute;"></div>
+    </div>
+</div>
+<div id="container" style="min-width: 310px; height: 400px; width: 1000; margin: 0">
+</div>
+<lable style="margin-top:20px;margin-left:20px">单位：分钟</lable>
+
+
+ <input type="hidden" id="CheckInTimeF" />
+ <input type="hidden" id="CheckInTimeT" />
+ <input type="hidden" id="OperatedOnF" />
+ <input type="hidden" id="OperatedOnT" />
+ <input type="hidden" id="Area" /> 

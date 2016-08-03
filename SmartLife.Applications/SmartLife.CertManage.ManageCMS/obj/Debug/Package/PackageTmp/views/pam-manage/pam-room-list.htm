@@ -1,0 +1,173 @@
+﻿<style type="text/css"> 
+    .bedInfo_emp{width:100px; height:80px;border-radius:5px;border:1px solid; margin-left:10px; margin-top:5px; margin-bottom:5px; float:left;}
+    .bedInfo_unemp{width:100px; height:80px;border-radius:5px;border:1px solid; margin-left:10px; margin-top:5px; margin-bottom:5px; float:left;background-color:#66ff33;}
+    .bedInfo_roomno{ width:95px; height:20px; margin-left:auto; margin-right:auto; text-align:center; padding-top:5px;font-weight:bolder;}
+    .bedInfo_oldman{width:95px; height:30px; margin-left:auto; margin-right:auto;   text-align:center;  padding-top:5px; font-size:16px; font-weight:bolder;}
+    .bedInfo_bedno{width:95px; height:16px; margin-left:auto; margin-right:auto;  text-align:center;  font-size:14px; font-weight:bolder;}
+    .bedInfo_space{width:20px; height:80px; margin-left:10px; margin-top:10px; float:left;}
+    .bedInfo_building{padding-bottom:10px; padding-top:10px; clear:left; background-color:#00CDCD; text-align:center; font-size:16px; font-weight:bolder; }
+    .bedInfo_floor{padding-bottom:5px; padding-top:5px; clear:left; background-color:#87CEEB; width:400px; text-align:center;font-size:14px;}
+</style>
+<div id="roominfo-block">
+    <div id="search-sample-B130111" style="padding: 5px;">
+        <div id="CurrentAgency-c" style="display: inline-block;"><input id="CurrentAgency" /></div>
+    </div> 
+    <div id="roominfo-panel" style="width:99%; margin: 0 auto; border:1px solid #00CDCD;  overflow-y: auto; -moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px; ">
+        <div  class="bedInfo_emp">
+            <div class="bedInfo_roomno">1-102 (1-1)</div>
+            <div class="bedInfo_oldman">(空)</div>
+            <div class="bedInfo_bedno">1 床</div>
+        </div>
+        <div class="bedInfo_unemp">
+            <div class="bedInfo_roomno">1-104 (1-1)</div>
+            <div class="bedInfo_oldman">钟平(男)</div>
+            <div class="bedInfo_bedno">2 床</div>
+        </div>
+        <div class="bedInfo_line"></div>
+        <!--<div class="bedInfo_space"> 
+        </div>-->
+        <div class="bedInfo_unemp">
+            <div class="bedInfo_roomno">1-202 (1-2)</div>
+            <div class="bedInfo_oldman">陈禄健(男)</div>
+            <div class="bedInfo_bedno">4 床</div>
+        </div>
+        <div class="bedInfo_emp">
+            <div class="bedInfo_roomno">2-102 (2-1)</div>
+            <div class="bedInfo_oldman">(空)</div>
+            <div class="bedInfo_bedno">1 床</div>
+        </div>
+    </div>
+</div>  
+<script type="text/javascript">
+    var isCS = false; 
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+        isCS = true;
+    } 
+    var repeatTime = 10000; //5秒
+    var stationId; 
+    $(function () {
+        //加载机构 
+        $('#CurrentAgency').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgency').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgency-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                }
+            },
+            onSelect: function (record) {
+                loadPageEx();
+            }
+        });
+        loadPageEx();
+
+    });
+
+    function loadPageEx() {
+        autosize('roominfo-block');
+        if ($('#CurrentAgency-c').is(":hidden")) {
+            autosize('roominfo-panel', -22);
+        }
+        else {
+            autosize('roominfo-panel', -52);
+        }
+        stationId = $('#CurrentAgency').combobox('getValue');
+        var rooms;
+        getTo(baseCMSInvokeUrl + "/Pam/RoomService/Query?parms=" + $.toJSON({ StationId: stationId, Status: 1, OrderByClause: 'FloorNo,RoomNo asc' }), null, function (ret) {
+            if (ret.Success && ret.rows) {
+                rooms = _.map(ret.rows, function (o) {
+                    return { RoomId: o.RoomId, RoomNo: o.RoomNo, FloorNo: o.FloorNo, ExtNo: o.ExtNo, BedNo: o.BedNo, OccupancyNumber: o.OccupancyNumber }
+                });
+            }
+        }, { async: false });
+        
+        //获取当前时间下服务监控信息
+        setTimeout(function () {
+            getRoomInfo(stationId, rooms);
+            setTimeout(arguments.callee, repeatTime);
+        }, 0);
+
+    }
+
+    function getRoomInfo(stationId, rooms) {
+        getTo(baseCMSInvokeUrl + "/Pam/RoomService/GetRoomInfoWithOldManForStation/" + stationId, null, function (result) {
+            if (result.Success && result.rows) {
+                var oldmaninroom = _.map(result.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+
+                $("#roominfo-panel").html(creatHtml(rooms, oldmaninroom));
+            }
+            else {
+                $("#roominfo-panel").html("");
+            }
+        });
+    }
+
+    function creatHtml(roominfo, oldmaninfo) {
+        var strHtml = '';
+        var oldmaninfo_roomid = _.map(oldmaninfo, function (o) {
+            return o.RoomId.toUpperCase();
+        });
+        var building = '';
+        var floor = '';
+        _.each(roominfo, function (o) {
+            var isContains = _.filter(oldmaninfo, function (info) {
+                return info.RoomId.toUpperCase() == o.RoomId.toUpperCase();
+            });
+            var index = o.FloorNo.indexOf('-');
+            var len = o.FloorNo.length;
+            var sub_building = o.FloorNo.substring(0, index);
+            if (sub_building != building) {
+                strHtml += '<div class="bedInfo_building">' + sub_building + '号楼</div>';
+                building = sub_building;
+                floor = '';
+            }
+            var sub_floor = o.FloorNo.substring(index + 1, len);
+            if (sub_floor != floor) {
+                strHtml += '<div class="bedInfo_floor">' + sub_floor + '层</div>';
+                floor = sub_floor;
+            }
+            //            alert($.toJSON(isContains.length));
+            for (var i = 1; i <= o.BedNo; i++) {
+                if (isContains.length > 0) {
+                    var isInBed = _.filter(isContains, function (info) {
+                        return info.SickBedNo == i;
+                    });
+                    if (isInBed.length > 0) {
+                        var strOld = isInBed[0].OldManName + '(' + isInBed[0].GenderName + ')';
+                        strHtml += creatString('bedInfo_unemp', o.RoomNo,   strOld, i);
+                    }
+                    else {
+                        strHtml += creatString('bedInfo_emp', o.RoomNo,   '(空)', i);
+                    }
+                }
+                else {
+                    strHtml += creatString('bedInfo_emp', o.RoomNo,   '(空)', i);
+                }
+            }
+//                        strHtml += '<div class="bedInfo_space"></div>';
+        });
+        return strHtml;
+    }
+
+    function creatString(strClass, strRoomNo, strOldMan, strBedNo) {
+        var ind = strRoomNo.indexOf('-');
+        var len = strRoomNo.length;
+        var strRoomNo = strRoomNo.substring(ind + 1, len);
+        return '<div class="' + strClass + '"><div class="bedInfo_roomno">' + strRoomNo + '</div><div class="bedInfo_oldman">' + strOldMan + '</div><div class="bedInfo_bedno">' + strBedNo + '&nbsp; 床</div></div>';
+    }
+
+</script>

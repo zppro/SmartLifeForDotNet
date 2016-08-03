@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="BookMeal" type="SmartLife.Share.Models.Pam.BookMeal, SmartLife.Share.Models" />
+    <typeAlias alias="BookMealPK" type="SmartLife.Share.Models.Pam.BookMealPK, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+    <insert id="BookMeal_Create" parameterClass="StringObjectDictionary" >
+      insert into Pam_BookMeal(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MealType" >MealType</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SetMealId" >SetMealId</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BookDate" >BookDate</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchFlag" >FetchFlag</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchOperateBy" >FetchOperateBy</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchTime" >FetchTime</isPropertyAvailable>
+      </dynamic>
+      )
+      values(
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MealType" >#MealType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SetMealId" >#SetMealId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BookDate" >#BookDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchFlag" >#FetchFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchOperateBy" >#FetchOperateBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchTime" >#FetchTime#</isPropertyAvailable>
+      </dynamic>
+      )
+    </insert>
+    <update id="BookMeal_Update" parameterClass="StringObjectDictionary" >
+      update Pam_BookMeal
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OperatedOn" >OperatedOn=#OperatedOn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="MealType" >MealType=#MealType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="SetMealId" >SetMealId=#SetMealId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="BookDate" >BookDate=#BookDate#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchFlag" >FetchFlag=#FetchFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchOperateBy" >FetchOperateBy=#FetchOperateBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="FetchTime" >FetchTime=#FetchTime#</isPropertyAvailable>
+      </dynamic>
+      where Id=#Id#
+    </update>
+    <delete id="BookMeal_Delete" parameterClass="StringObjectDictionary" >
+      delete Pam_BookMeal
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MealType" >MealType=#MealType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SetMealId" >SetMealId=#SetMealId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_Start" >BookDate>=to_date(#BookDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_End" >BookDate&lt;=to_date(#BookDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchFlag" >FetchFlag=#FetchFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchOperateBy" >FetchOperateBy=#FetchOperateBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_Start" >FetchTime>=to_date(#FetchTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_End" >FetchTime&lt;=to_date(#FetchTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </delete>
+    <select id="BookMeal_Load" parameterClass="BookMealPK" resultClass="BookMeal" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,StationId,OldManId,MealType,SetMealId,BookDate,FetchFlag,Remark,FetchOperateBy,FetchTime from Pam_BookMeal
+      where Id=#Id#
+    </select>
+    <select id="BookMeal_List" parameterClass="StringObjectDictionary" resultClass="BookMeal" >
+      select Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,StationId,OldManId,MealType,SetMealId,BookDate,FetchFlag,Remark,FetchOperateBy,FetchTime from Pam_BookMeal
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MealType" >MealType=#MealType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SetMealId" >SetMealId=#SetMealId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_Start" >BookDate>=to_date(#BookDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_End" >BookDate&lt;=to_date(#BookDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchFlag" >FetchFlag=#FetchFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchOperateBy" >FetchOperateBy=#FetchOperateBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_Start" >FetchTime>=to_date(#FetchTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_End" >FetchTime&lt;=to_date(#FetchTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="BookMeal_ListByPage" parameterClass="StringObjectDictionary" resultClass="BookMeal" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,Status,OperatedBy,OperatedOn,DataSource,StationId,OldManId,MealType,SetMealId,BookDate,FetchFlag,Remark,FetchOperateBy,FetchTime from Pam_BookMeal
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedBy" >OperatedBy=#OperatedBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_Start" >OperatedOn>=to_date(#OperatedOn_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OperatedOn_End" >OperatedOn&lt;=to_date(#OperatedOn_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="DataSource" >DataSource=#DataSource#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="StationId" >StationId=#StationId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManId" >OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="MealType" >MealType=#MealType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SetMealId" >SetMealId=#SetMealId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_Start" >BookDate>=to_date(#BookDate_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="BookDate_End" >BookDate&lt;=to_date(#BookDate_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchFlag" >FetchFlag=#FetchFlag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="Remark" >Remark=#Remark#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchOperateBy" >FetchOperateBy=#FetchOperateBy#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_Start" >FetchTime>=to_date(#FetchTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="FetchTime_End" >FetchTime&lt;=to_date(#FetchTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

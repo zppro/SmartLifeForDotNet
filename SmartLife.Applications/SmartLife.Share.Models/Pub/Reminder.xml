@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Reminder" type="SmartLife.Share.Models.Pub.Reminder, SmartLife.Share.Models" />
+        <typeAlias alias="ReminderPK" type="SmartLife.Share.Models.Pub.ReminderPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="Reminder_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_Reminder(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceColumn" >SourceColumn</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceKey" >SourceKey</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceType" >SourceType</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >RemindTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindContent" >RemindContent</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceColumn" >#SourceColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceKey" >#SourceKey#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceType" >#SourceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >#RemindTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindContent" >#RemindContent#</isPropertyAvailable>
+            </dynamic>
+          )
+          <selectKey resultClass="int" type="post" property="Id" >
+            SELECT @@IDENTITY AS Id
+          </selectKey>
+        </insert>
+        <update id="Reminder_Update" parameterClass="StringObjectDictionary" >
+            update Pub_Reminder
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceColumn" >SourceColumn=#SourceColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceKey" >SourceKey=#SourceKey#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceType" >SourceType=#SourceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindTime" >RemindTime=#RemindTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="RemindContent" >RemindContent=#RemindContent#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="Reminder_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_Reminder
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceColumn" >SourceColumn=#SourceColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceKey" >SourceKey=#SourceKey#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceType" >SourceType=#SourceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindContent" >RemindContent=#RemindContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="Reminder_Load" parameterClass="ReminderPK" resultClass="Reminder" >
+            select Id,CheckInTime,SourceTable,SourceColumn,SourceKey,SourceType,RemindTime,RemindContent from Pub_Reminder
+            where Id=#Id#
+        </select>
+        <select id="Reminder_List" parameterClass="StringObjectDictionary" resultClass="Reminder" >
+            select Id,CheckInTime,SourceTable,SourceColumn,SourceKey,SourceType,RemindTime,RemindContent from Pub_Reminder
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceColumn" >SourceColumn=#SourceColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceKey" >SourceKey=#SourceKey#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceType" >SourceType=#SourceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindContent" >RemindContent=#RemindContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="Reminder_ListByPage" parameterClass="StringObjectDictionary" resultClass="Reminder" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,CheckInTime,SourceTable,SourceColumn,SourceKey,SourceType,RemindTime,RemindContent from Pub_Reminder
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceColumn" >SourceColumn=#SourceColumn#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceKey" >SourceKey=#SourceKey#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceType" >SourceType=#SourceType#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindTime_End" >RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="RemindContent" >RemindContent=#RemindContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

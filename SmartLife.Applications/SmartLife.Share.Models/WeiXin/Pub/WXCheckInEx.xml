@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.WeiXin.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="GetMerchantUserCheckInInfo" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+
+      select x.UserId,x.OpenId,x.UserName,x.NickName,$PivotColumnsForSelect$  from (
+
+      select a.UserId,c.OpenId,a.UserName,isnull(e.NickName,isnull(c.OpenId ,'未绑定微信号')) as NickName from Pub_User a inner join Pub_groupMember b
+      on a.UserId=b.UserId left join Pub_UserMappingWeiXin c  on a.UserId=c.UserId
+      left join (
+      select OpenId,StationId from Pub_WXStationAuthRequest
+      where DoStatus=1
+      Group By OpenId,StationId
+      )d on c.OpenId = d.OpenId left join Meb_NormalAccount e on d.OpenId = e.OpenId
+      left join Pub_MerchantUser f on d.StationId = f.StationId and a.UserId = f.UserId
+      Where  a.UserType='00003' and a.Status=1 and b.GroupId in ('00001000-0002-0000-0000-000000000002','00001000-0002-0000-0000-000000000003')
+      and f.StationId='$StationId$'
+
+      ) x left join (
+      select OpenId,$PivotColumns$
+      from(select OpenId,Convert(char(8),CheckInTime,112) as CheckInDate, Max(Convert(char(8),CheckInTime,108))+ '签到' as CheckInfo from Pub_WXCheckIn group By OpenId,Convert(char(8),CheckInTime,112)) a
+      pivot(max(CheckInfo) for CheckInDate in($PivotColumns$))b
+      ) y on x.OpenId =y.OpenId
+    </select>
+  </statements>
+</sqlMap>

@@ -1,0 +1,5 @@
+﻿/**********easyui datagrid 还原样式 **********/
+.datagrid-row{height: 25px;}
+.datagrid-row-selected{background:#0052A3;color:#fff;}
+.datagrid-row-over{background: #e2e2e2;color: #000000;cursor: default;}
+.datagrid-view2 .datagrid-btable .datagrid-cell{ position:inherit;height: 18px;}

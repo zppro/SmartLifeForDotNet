@@ -1,0 +1,374 @@
+﻿<style type="text/css">
+    .iconDo{text-decoration:underline; cursor:pointer; color:#99CC00;}
+</style>
+<div id="cc-B130405">
+    <div style=" float:left; width:16%;">
+        <div style="line-height: 30px; width: 99%; text-align: center; border-top:1px solid #ddd; border-left:1px solid #ddd;border-right:1px solid #ddd;background-color: #fafafa;">
+            楼层房间
+        </div>
+        <div id="left_tree" style="border: solid 1px #ddd; width: 99%; height:100%; float: left; overflow: auto;">
+            <ul id="tree-B130405"></ul>
+        </div>
+    </div>
+    <div style=" float:left;width:84%;">
+        <div id="search-sample-B130405" title="查询" style=" height:33px; ">
+            <form id="fm-search-rough-B130405" method="post">
+            <table width="100%">
+                <tr>
+                    <td style="text-align:right;width:80px;">
+                        关键字：
+                    </td>
+                    <td style="text-align:left; width:150px;">
+                        <input name="KeyWord" class="easyui-validatebox"   placeholder="姓名、身份证、电话、手机"/> 
+                    </td>
+                    <td style="text-align:right;width:100px;">
+                         提醒时间：
+                    </td>
+                    <td style=" text-align:left;width:150px;">
+                       <input id="RemindTime_Start" name="RemindTime_Start" class="Wdate"  onFocus="WdatePicker()" onchange="DateTimeChange()"/>
+                    </td>
+                    <td style="text-align:right;width:100px;">
+                         服务状态：
+                    </td>
+                    <td style="text-align:left;width:150px;">
+                        <input id="WorkItemStatus_Start" name="WorkItemStatus_Start" class="combobox" />
+                    </td>
+                    <!--<td style="text-align:center;width:210px;">
+                        服务事项：<input id="CC-WorkItems" name="WorkItem_Start" class="combobox" />
+                    </td>-->
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                            查询</a>
+                    </td>
+                    <td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm2(true)">
+                            清空</a>
+                    </td>
+                    <td > 
+                    &nbsp;
+                    </td>
+                    <!--<td style="width: 90px;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                            onclick="query()">高级查询</a>
+                    </td>-->
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div id="toolbar-B130405">
+            <div id="CurrentAgencys-c" style="display: inline-block;"><input id="CurrentAgencys" /></div>
+            <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-tip" plain="true" onclick="arrive()">到达</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-tip" plain="true" onclick="leave()">离开</a>-->
+        </div>
+        <table id="dg-B130405" >
+        </table>
+    </div>
+</div>
+<!--<div id="dlg-search-B130405" class="easyui-dialog" style="width: 520px; height: 250px; padding: 10px;"
+ closed="true" cache="false" buttons="#btn-search-B130405"  >
+    <div class="ftitle"></div>
+    <form id="fm-search-B130405" method="post" novalidate>
+    <div class="fitem">
+        <label>老人姓名:</label>
+        <input name="OldManName">
+        <label>身&nbsp;&nbsp;份&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;号:</label>
+        <input name="IDNo">
+    </div>
+    <div class="fitem">
+        <label>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Tel" />&nbsp;
+        <label>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机:</label>
+        <input name="Mobile"  />
+    </div>
+    <div class="fitem">
+        <label>服务人员:</label>
+        <input name="UserName" />&nbsp;
+        <label>服务人员号码:</label>
+        <input name="CallNo"  />
+    </div>
+    <div class="fitem">
+        <label>详细地址:</label>
+        <input name="Address" >
+    </div>
+    </form>
+</div>
+<div id="btn-search-B130405">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()"> 查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm(false)">清空</a>
+</div>-->
+
+<script type="text/javascript">
+    if (window.execMode == 'ForPam') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    $(function () {
+        validateUI();
+
+        //占位符初始化
+        placeholder();
+
+        autosize("cc-" + currentMenuCode, -3);
+
+        //加载机构 
+        $('#CurrentAgencys').combobox({
+            width: 180,
+            panelWidth: 300,
+            data: top.gUserInfo.MappingAgencys,
+            valueField: 'StationId',
+            textField: 'StationName',
+            editable: true,
+            onLoadSuccess: function () {  
+                if (top.gUserInfo.MappingAgencys.length > 0) {
+                    $('#CurrentAgencys').combobox('setValue', top.gUserInfo.MappingAgencys[0].StationId);
+                    if (top.gUserInfo.MappingAgencys.length == 1) {
+                        $('#CurrentAgencys-c').hide();
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何机构');
+                }
+            },
+            onSelect: function (record) {
+                _loading();
+            }
+        });
+
+        models[currentMenuCode] = {
+            treeId: 'tree-' + currentMenuCode,
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dlgSearchId: 'dlg-search-' + currentMenuCode,
+            fmSearchId: 'fm-search-' + currentMenuCode,
+            fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+            btnSearchId: 'btn-search-' + currentMenuCode,
+            changeSearchFormDataBeforeSubmit: function (formData) {
+                //KeyWord模糊查询专用
+                formData['OldManName'] = formData['KeyWord'];
+                formData['IDNo'] = formData['KeyWord'];
+                formData['Tel'] = formData['KeyWord'];
+                formData['Mobile'] = formData['KeyWord'];
+                formData['InputCode1'] = formData['KeyWord'];
+                formData['InputCode2'] = formData['KeyWord'];
+                formData['UserName'] = formData['KeyWord'];
+                formData['CallNo'] = formData['KeyWord'];
+                formData['KeyWord'] = undefined;
+            },
+            uiMode: 'list',
+            entityName: '每日工作计划',
+            baseModelUrl: baseCMSInvokeUrl + '/Pam/WorkExecuteService/',
+            defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+        };
+
+        relativeAutoSize('left_tree', "cc-" + currentMenuCode, -32);
+        relativeAutoSize(models[currentMenuCode].gridId, "cc-" + currentMenuCode, -32);
+
+        //设置时间
+        $('#RemindTime_Start').val(Date.today().toString('yyyy-MM-dd'));
+        initTree('easyUITree', models[currentMenuCode].treeId, {
+            onClick: function (treeNode) {
+                var stationId = $('#CurrentAgencys').combobox('getValue');
+                var tmpFilterFields = [];
+                if (treeNode.attributes.PId != "_") {
+                    if (treeNode.attributes.PId == stationId.toUpperCase()) {
+                        tmpFilterFields.push({ key: 'FloorNo', value: treeNode.id });
+                    }
+                    else {
+                        tmpFilterFields.push({ key: 'RoomId', value: treeNode.id });
+                    }
+                }
+
+                var queryParams = $('#dg-B130405').datagrid('options').queryParams;
+                _.each(queryParams.filterFields, function (i) {
+                    if (i.key != "FloorNo" && i.key != "RoomId") {
+                        tmpFilterFields.push(i);
+                    }
+                });
+
+                queryParams.filterFields = tmpFilterFields;
+                queryParams.fuzzyFields = null;
+                _loading(queryParams);
+            },
+            onLoadSuccess: function () {
+                //左边的树，默认展开一级
+                var node = $('#' + models[currentMenuCode].treeId).tree('getRoot');
+                $('#' + models[currentMenuCode].treeId).tree("collapseAll");
+                $('#' + models[currentMenuCode].treeId).tree('expand', node.target);
+            }
+        },
+            function (d) {
+                getTreeData('01$01$10', "OrderNo asc", '{"StationId":"' + $('#CurrentAgencys').combobox('getValue').toUpperCase() + '"}', d);
+            },
+            null,
+            function (treeObj) {
+                var stationId = $('#CurrentAgencys').combobox('getValue');
+                var tmpRemindTime_Start = $('#RemindTime_Start').val();
+
+                loadfiles([{ type: "js", url: "../../script/old-care/aid.js"}], function () {
+
+                    $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                        title: "",
+                        pagination: true,
+                        rownumbers: true,
+                        singleSelect: true,
+                        url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridByPage',
+                        method: 'POST',
+                        toolbar: '#' + models[currentMenuCode].toolbarId,
+                        queryParams: {
+                            sort: 'RemindTime',
+                            order: 'desc',
+                            filterFields: [{ key: 'StationId', value: stationId },
+                                           { key: 'RemindTime_Start', value: tmpRemindTime_Start }
+                                          ]
+                        },
+                        onLoadSuccess: function (data) {
+                            $('.iconDo').unbind('click').bind('click', function () {
+                                var workId = $(this).attr('WorkExcuteItemId');
+                                var tmpAction = $(this).attr('WorkAction');
+                                var bclick = $(this).attr('CanClick');
+                                HandledWorkExcuteItem(workId, tmpAction, bclick);
+                            });
+                        },
+                        columns: [[
+                        { field: 'Id', title: '工作项编号', width: 150, hidden: true },
+                        { field: 'CK', title: '', checkbox: true },
+                        { field: 'CL', title: '处理', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                            var tmpReminded = [];
+                            if (!row.ServeManArriveTime && row.Reminded) {
+                                tmpReminded.push('<a class="iconDo" WorkExcuteItemId ="' + row.Id + '" WorkAction="Arrive">到达</a>');
+                                tmpReminded.push('<a class="iconDo" WorkExcuteItemId ="' + row.Id + '" WorkAction="Leave" CanClick="bCanClick">离开</a>');
+                            }
+                            else if (row.ServeManArriveTime && row.ServeManLeaveTime) { }
+                            else if (row.ServeManArriveTime && (!row.ServeManLeaveTime || !row.Reminded)) {
+                                tmpReminded.push('<a class="iconDo" WorkExcuteItemId ="' + row.Id + '" WorkAction="Leave">离开</a>');
+                            }
+                            return tmpReminded.join(" | ");
+                        }
+                        },
+                        { field: 'RoomNo', title: '房号', width: 60, align: 'center' },
+                        { field: 'SickBedNo', title: '床号', width: 50, align: 'center' },
+                        { field: 'ItemName', title: '工作事项', width: 120, align: 'center' },
+                        { field: 'ZT', title: '状态', width: 80, align: 'center', formatter: easyuigrid_linkFormatter, fn: function (row) {
+                            var strReminde = '';
+                            if (!row.ServeManArriveTime && row.Reminded == row.RemindMax) {
+                                strReminde = '<label style=" color:#DA70D6;">未服务</label>';
+                            }
+                            else if (row.ServeManArriveTime && !row.ServeManLeaveTime) {
+                                strReminde = '<label style=" color:#2E8B57;">服务中</label>';
+                            }
+                            else if (row.ServeManArriveTime && row.ServeManLeaveTime) {
+                                strReminde = '<label style=" color:#0033FF;">服务完成</label>';
+                            }
+                            else {
+                                strReminde = '<label style=" color:#FFCC00;">待服务</label>';
+                            }
+                            return strReminde;
+                        }
+                        },
+                        { field: 'RemindTime', title: '提醒时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                        { field: 'UserName', title: '服务人员', width: 80, align: 'center' },
+                        { field: 'CallNo', title: '服务人员号码', width: 80, align: 'center' },
+                        { field: 'ServeManArriveTime', title: '服务人员到达时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                        { field: 'ServeManLeaveTime', title: '服务人员离开时间', width: 130, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+                        { field: 'Remark', title: '注意事项', width: 100, align: 'left' },
+                        //{ field: 'ExtNo', title: '房间呼叫器', width: 80, align: 'center' },
+                        {field: 'OldManName', title: '老人姓名', width: 80, align: 'center' },
+                        { field: 'IDNo', title: '身份证', width: 150, align: 'center', formatter: easyuigrid_IDNo },
+                        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+                        { field: 'Age', title: '年龄', width: 60, align: 'center', formatter: easyuigrid_ageFormatter3 },
+                        { field: 'Tel', title: '座机', width: 100 },
+                        { field: 'Mobile', title: '手机', width: 100 },
+                        { field: 'Address', title: '家庭地址', width: 300 }
+
+                ]],
+                        loader: easyuiLoaderForStringObjectDictionary
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                });
+            }); //end loadTree
+
+        $('#WorkItemStatus_Start').combobox({
+            width: 90,
+            panelHeight: 105,
+            multiple: false,
+            data: [{ ItemId: 'SS001', ItemName: "全部服务" },
+                { ItemId: 'SS002', ItemName: "待服务" },
+                { ItemId: 'SS003', ItemName: "未服务" },
+                { ItemId: 'SS004', ItemName: "服务中" },
+                { ItemId: 'SS005', ItemName: "服务完成"}],
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            value: 'SS001'
+        });
+
+        //        var WorkItemsData = [{ "ItemCode": "00000", "ItemId": "00000", "ItemName": "全部服务"}];
+        //        getTo(top.ajaxData_InvokeUrl + '/GetDictionaryItem/13001', null, function (ret) {
+        //            if (ret) {
+        //                WorkItemsData = _.union(WorkItemsData, ret);
+        //                $('#CC-WorkItems').combobox({
+        //                    width: 140,
+        //                    panelHeight: 300,
+        //                    data: WorkItemsData,
+        //                    valueField: 'ItemId',
+        //                    textField: 'ItemName',
+        //                    value: "00000"
+        //                });
+        //            }
+        //        });
+
+    });
+
+
+    function _loading(qParams) {
+        var tmpStationId = $('#CurrentAgencys').combobox('getValue');
+        //变更机构,重新初始化datagrid 形参
+        if (!qParams) {
+            qParams = { sort: 'RemindTime', order: 'desc',
+                filterFields: [{ key: 'StationId', value: tmpStationId }, { key: 'RemindTime_Start', value: $('#RemindTime_Start').val()}]
+            };
+            //刷新树
+            refreshTree('easyUITree', models[currentMenuCode].treeId, '01$01$10', "OrderNo asc", '{"StationId":"' + tmpStationId.toUpperCase() + '"}');
+        }
+
+        $('#' + models[currentMenuCode].gridId).datagrid('reload', qParams);
+    }
+
+
+    function HandledWorkExcuteItem(workId, strAction, bclick) {
+        if (bclick) {
+            alertInfo("请先完成到达键处理");
+        } else {
+            if (workId && strAction) {
+                $('.iconDo').unbind('click');
+                var formData = { Id: workId };
+                if (strAction == 'Arrive') {
+                    formData = _.extend(formData, { ServeManArriveTime: toJsonDate(new Date()) });
+                }
+                else if (strAction == 'Leave') {
+                    formData = _.extend(formData, { ServeManLeaveTime: toJsonDate(new Date()) });
+                }
+                putTo(models[currentMenuCode].baseModelUrl + workId, $.toJSON(formData), function (ret) {
+                    $('#' + models[currentMenuCode].gridId).datagrid('reload');
+                });
+            }
+        }
+    }
+
+     function DateTimeChange() {
+         var tmpDate = $('#RemindTime_Start').val();
+         if (!isDate(tmpDate)) {
+             $('#RemindTime_Start').val(Date.today().toString('yyyy-MM-dd'));
+         }
+     }
+
+
+     function resetfm2(isRough) {
+         resetfm(isRough);
+         $('#RemindTime_Start').val(Date.today().toString('yyyy-MM-dd'));
+         $('#WorkItemStatus_Start').combobox('setValue', 'SS001');
+     }
+
+    //相对高度
+    function relativeAutoSize(id, parentId, delta) {
+        $("#" + id).height($("#" + parentId).height() + (delta || 0));
+    }
+</script>

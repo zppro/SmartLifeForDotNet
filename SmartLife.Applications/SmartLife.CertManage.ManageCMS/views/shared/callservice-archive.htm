@@ -1,0 +1,67 @@
+﻿<div class="easyui-layout" data-options="fit:true">
+    <div id="set-callservice-archive" data-options="region:'center',border:false">
+        <form id="fm-callservice-archive" method="post" novalidate> 
+              <input type="hidden" id="OldManId" name="OldManId"/>
+              <input type="hidden" id="CallServiceId" name="CallServiceId"/>
+              <input type="hidden" id="ArchiveId" name="ArchiveId" />
+              <input type="hidden" id="ArchiveName"  name="ArchiveName" />
+              <input type="hidden" id="CallBackFlag"  name="CallBackFlag" />
+              <div class="fitem"><span style="font-weight:bolder; color:Red;">评价老人:</span></div>
+              <div class="fitem">
+                   <span><input type="radio" name="EvaluateToOldMan"  id="ETO_00001" value="00001" /><label for="ETO_00001">满意</label></span>
+                   <span><input type="radio" name="EvaluateToOldMan"  id="ETO_00002" value="00002" /><label for="ETO_00002">较满意</label></span>
+                   <span><input type="radio" name="EvaluateToOldMan"  id="ETO_00003" value="00003" /><label for="ETO_00003">一般</label></span>
+                   <span><input type="radio" name="EvaluateToOldMan"  id="ETO_00004" value="00004" /><label for="ETO_00004">较不满意</label></span>
+                   <span><input type="radio" name="EvaluateToOldMan"  id="ETO_00005" value="00005" /><label for="ETO_00005">不满意</label></span>
+              </div>
+        </form>
+        <div class="fitem"><span style=" font-weight:bolder;color:Red;">服务归档:</span></div>
+        <ul id="tree-callservice-archive">
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) {
+            $("#fm-callservice-archive").form("load", dialogData);
+            initTree('easyUITree', 'tree-callservice-archive', {
+                onSelect: function (treeNode) {
+                    $('#ArchiveId').val(treeNode.id);
+                    $('#ArchiveName').val(treeNode.attributes.name);
+                    $('#CallBackFlag').val(treeNode.attributes.callbackflag);
+                }
+            }, function (d) {
+                getTreeData('11$01$01', "code asc", '{"ServiceQueueNo":"' + dialogData.ServiceQueueNo + '"}', d);
+            }, null, function (treeObj) {
+
+            });
+        }
+    }
+
+    function dialogBeforeSubmit() {
+        var success = true;
+        if ($('#ArchiveId').val() == '') {
+            alertError('必选选择一个归档项目');
+            success = false;
+        }
+        else {
+            var formData = $("#fm-callservice-archive").serializeObject();
+            if (formData && formData.CallBackFlag==1) {
+                _.extend(formData, { CallBackId: window.contants.guidAutoGenerate });
+                postTo(baseCMSInvokeUrl + '/Oca/ServiceCallBackService/CreateByNoOperator', $.toJSON(formData), function (ret) {
+                    if (!ret.Success) {
+                        success = false;
+                    }
+                }, { async: false });
+            }
+        }
+        return success;
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = $("#fm-callservice-archive").serializeObject();
+        return formData;
+    }
+
+</script>

@@ -1,0 +1,23 @@
+﻿.main-area{ width:99%; overflow-x:auto;overflow-y:hidden; padding:relative;} 
+.selectedCell{ background-color:#ffee00 !important;color:Green;}
+.restday{background-color:#FFF0F0;}
+.cantchangeday{background-color:#E2E2E2;}
+.serveInfo{width:270px;height:110px; position:relative; text-align:left; padding:4px; overflow-y:auto; } 
+ul.formal li{margin:4px auto;}
+.serve-info-item-save{color:Black}
+.serve-info-item-unsave{color:Red} 
+
+.addServeInfo{ position:absolute; right:1px; bottom:1px; z-index:201; cursor:pointer;}
+.actionServeInfoItem{ cursor:pointer;} 
+.saveServeInfo{position:absolute; right:1px; top:1px; z-index:201; cursor:pointer; display:none;}
+.nullifyWorkPlan{position:absolute; right:1px; top:1px; z-index:201; cursor:pointer; } 
+/**********easyui datagrid 覆盖样式 **********/
+.datagrid-row{height: 120px;}
+.datagrid-row-selected{background:none;color:Green;}
+.datagrid-row-over{background:none;color:Green;}
+.datagrid-view2 .datagrid-btable .datagrid-cell{ position:relative;height:118px;}
+
+#dlg-B130401 .datagrid-row{height: 25px;}
+#dlg-B130401 .datagrid-row-selected{background: #0052A3;  color: #fff;}
+#dlg-B130401 .datagrid-row-over{background: #e2e2e2;color: #000000;}
+#dlg-B130401 .datagrid-view2 .datagrid-btable .datagrid-cell{ position:inherit;height: 18px;}

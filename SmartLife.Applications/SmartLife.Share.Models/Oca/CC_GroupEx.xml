@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="CC_Group_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.Callee
+      from Pub_Group a left join Oca_CC_Group b
+      on a.GroupId = b.GroupId
+      where a.GroupType in ('10000','10001','10002','10003','10009')
+      <dynamic prepend=" And "> 
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic> 
+    </select>
+  </statements>
+</sqlMap>

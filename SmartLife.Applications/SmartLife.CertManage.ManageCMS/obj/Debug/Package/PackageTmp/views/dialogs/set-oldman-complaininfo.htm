@@ -1,0 +1,65 @@
+﻿ <div>
+   <input name="OldManId" id="OldManId"  type="hidden"/>
+   <label class=" titl">投诉内容</label>
+   <textarea id="ComplainContent" class="complaincontent" ></textarea>
+   <label class=" titl">投诉历史</label>
+   <div  id="ComplainHistory"  class='complainhistory'>
+   <table> 
+      <thead><tr  class="thead"><th class="th_man">操作人</th><th class="th_time">记录时间</th><th class="th_content">投诉类容</th></tr></thead>
+       </table> 
+        <div class='div_tb'>
+            <table>
+                <tbody id='history'>
+                </tbody>
+            </table>
+        </div>
+   </div> 
+
+</div> 
+
+<script type="text/javascript">
+
+    function dialogOpen(dialogId, dialogData) {
+        $('#OldManId').val(dialogData.OldManId);
+        loadfiles([
+            { type: "css", url: "css/old-care/oldman-complaininfo.css" }
+            ], function () {
+                getTo(baseCMSInvokeUrl + '/Oca/OldManComplainInfoService/Query?parms=' + $.toJSON({ 'OldManId': dialogData.OldManId, 'OrderByClause': ' CheckInTime desc ' }), null, function (ret) {
+                    if (ret.Success) { 
+                        getTo(baseCMSInvokeUrl + '/Pub/UserService/', null, function (result) {
+                            if (result.Success) {
+                                var html_str = '';
+                                var cl_sp_content = '';
+                                ret.rows.length > 7 ? cl_sp_content = 'sp_content' : cl_sp_content = 'sp_content1';
+                                html_str = _.map(ret.rows, function (o) {
+                                    return '<tr style=" height:25px; "><td class="sp_man">' + getUserName(result.rows, o.OperatedBy) + '</td><td class="sp_time">' + ndateFormatter(o.CheckInTime, 'yyyy-MM-dd') + '</td><td class="' + cl_sp_content + '">' + o.ComplainContent + '</td></tr>';
+                                });
+                                $('#history').html(html_str);
+                            }
+                        }); 
+                    }
+                });
+            });
+
+    }
+
+    function getUserName(users, userid) {
+        return _.find(users, function (o) { return o.UserId == userid }).UserName; 
+    }
+
+    function dialogBeforeSubmit() {
+        var complainContent = $('#ComplainContent').val();
+        var result = false;
+        if (complainContent && complainContent != '') {
+            result = true;
+        }
+        else {
+            alert('请输入投诉内容');
+        }
+        return result;
+    }
+
+    function dialogClose(dialogId) {
+        return { 'OldManId': $('#OldManId').val(), 'ComplainContent': $('#ComplainContent').val() };
+    }
+</script>

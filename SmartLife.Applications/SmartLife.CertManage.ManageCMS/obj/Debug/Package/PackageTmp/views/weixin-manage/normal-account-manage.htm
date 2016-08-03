@@ -1,0 +1,86 @@
+﻿<div id="toolbar-B11040702">
+    <table width="100%;">
+        <tr>
+            <td id="CurrentMerchant-cc" style="text-align: left; width: 370px;">
+                <input id="CurrentServiceAccount" />
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="dg-B11040702">
+</table>
+<script type="text/javascript">
+
+    $(function () {
+        models[currentMenuCode] = {
+            gridId: 'dg-' + currentMenuCode,
+            toolbarId: 'toolbar-' + currentMenuCode,
+            dialogId: 'dlg-' + currentMenuCode,
+            formId: 'fm-' + currentMenuCode,
+            buttonId: 'btn-' + currentMenuCode,
+            uiMode: 'list',
+            entityName: '公众号',
+            baseModelUrl: baseCMSInvokeUrl + '/WeiXin/Meb/NormalAccountService/',
+            defaultModel: { Status: 1 }
+        };
+        autosize(models[currentMenuCode].gridId);
+        getAll([baseCMSInvokeUrl + '/WeiXin/Meb/ServiceAccountService/Query?parms=' + $.toJSON({ Status: models[currentMenuCode].defaultModel.Status })], function (ret) {
+            $('#CurrentServiceAccount').combobox({
+                width: 180,
+                panelWidth: 300,
+                data: ret.rows,
+                valueField: 'AccountCode',
+                textField: 'Name',
+                editable: false,
+                onSelect: function (record) {
+                    createGrid();
+                }
+            });
+            if (ret.rows.length > 0) {
+                $('#CurrentServiceAccount').combobox('setValue', ret.rows[0].AccountCode);
+            }
+            createGrid();
+        });
+
+
+    });
+
+    function createGrid() {
+        $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgrid',
+            method: 'POST',
+            toolbar: '#' + models[currentMenuCode].toolbarId,
+            queryParams: {
+                sort: 'SubscribeTime',
+                order: 'desc',
+                instance: {
+                    Status: models[currentMenuCode].defaultModel.Status,
+                    AccountCode: $('#CurrentServiceAccount').combobox('getValue')
+                }
+            },
+            columns: [[
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'Id', title: 'Id', width: 150, hidden: true },
+        { field: 'OpenId', title: 'OpenId', width: 200 },
+        { field: 'AccountCode', title: '公众号编号', width: 150 },
+        { field: 'FollowStatus', title: '关注状态', width: 100, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '取消关注:0~t关注中:1' },
+        { field: 'SubscribeTime', title: '关注时间', width: 135, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd HH:mm:ss" },
+        { field: 'Mobile', title: '手机', width: 100, align: 'center' },
+        { field: 'NickName', title: '昵称', width: 100 },
+        { field: 'Gender', title: '性别', width: 100, align: 'center', formatter: easyuigrid_bool2Formatter, vals: '男:M~t女:F~t未知:N' },
+        { field: 'Language', title: '语言', width: 100 },
+        { field: 'Country', title: '国家', width: 100 },
+        { field: 'Province', title: '省', width: 100 },
+        { field: 'City', title: '市', width: 100 },
+        { field: 'Area', title: '区', width: 100 },
+        { field: 'HeadImgUrl', title: '头像地址', width: 400 }
+    ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+    }
+    
+</script>

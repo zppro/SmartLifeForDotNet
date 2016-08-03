@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="SmsSend" type="SmartLife.Share.Models.Pub.SmsSend, SmartLife.Share.Models" />
+        <typeAlias alias="SmsSendPK" type="SmartLife.Share.Models.Pub.SmsSendPK, SmartLife.Share.Models" />
+    </alias>
+    <statements>
+        <insert id="SmsSend_Create" parameterClass="StringObjectDictionary" >
+            insert into Pub_SmsSend(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >Id</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >Status</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ScheduleTime" >ScheduleTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >Mobile</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BatchNum" >BatchNum</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendContent" >SendContent</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendTime" >SendTime</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendResult" >SendResult</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceCatalog" >SourceCatalog</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >SourceId</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendCatalog" >SendCatalog</isPropertyAvailable>
+            </dynamic>
+            )
+            values(
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Id" >#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Status" >#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ScheduleTime" >#ScheduleTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BatchNum" >#BatchNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendContent" >#SendContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendTime" >#SendTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendResult" >#SendResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceCatalog" >#SourceCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendCatalog" >#SendCatalog#</isPropertyAvailable>
+            </dynamic>
+            )
+        </insert>
+        <update id="SmsSend_Update" parameterClass="StringObjectDictionary" >
+            update Pub_SmsSend
+            set
+            <dynamic prepend=" ">
+                <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="ScheduleTime" >ScheduleTime=#ScheduleTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="BatchNum" >BatchNum=#BatchNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendContent" >SendContent=#SendContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendTime" >SendTime=#SendTime#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendResult" >SendResult=#SendResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceCatalog" >SourceCatalog=#SourceCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" , " property="SendCatalog" >SendCatalog=#SendCatalog#</isPropertyAvailable>
+            </dynamic>
+            where Id=#Id#
+        </update>
+        <delete id="SmsSend_Delete" parameterClass="StringObjectDictionary" >
+            delete Pub_SmsSend
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_Start" >ScheduleTime>=to_date(#ScheduleTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_End" >ScheduleTime&lt;=to_date(#ScheduleTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BatchNum" >BatchNum=#BatchNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendContent" >SendContent=#SendContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_Start" >SendTime>=to_date(#SendTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_End" >SendTime&lt;=to_date(#SendTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendResult" >SendResult=#SendResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceCatalog" >SourceCatalog=#SourceCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendCatalog" >SendCatalog=#SendCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </delete>
+        <select id="SmsSend_Load" parameterClass="SmsSendPK" resultClass="SmsSend" >
+            select Id,Status,CheckInTime,ScheduleTime,Mobile,BatchNum,SendContent,SendTime,SendResult,SourceCatalog,SourceTable,SourceId,SendCatalog from Pub_SmsSend
+            where Id=#Id#
+        </select>
+        <select id="SmsSend_List" parameterClass="StringObjectDictionary" resultClass="SmsSend" >
+            select Id,Status,CheckInTime,ScheduleTime,Mobile,BatchNum,SendContent,SendTime,SendResult,SourceCatalog,SourceTable,SourceId,SendCatalog from Pub_SmsSend
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_Start" >ScheduleTime>=to_date(#ScheduleTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_End" >ScheduleTime&lt;=to_date(#ScheduleTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BatchNum" >BatchNum=#BatchNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendContent" >SendContent=#SendContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_Start" >SendTime>=to_date(#SendTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_End" >SendTime&lt;=to_date(#SendTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendResult" >SendResult=#SendResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceCatalog" >SourceCatalog=#SourceCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendCatalog" >SendCatalog=#SendCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            <dynamic prepend=" ORDER BY ">
+                <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="SmsSend_ListByPage" parameterClass="StringObjectDictionary" resultClass="SmsSend" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,Id,Status,CheckInTime,ScheduleTime,Mobile,BatchNum,SendContent,SendTime,SendResult,SourceCatalog,SourceTable,SourceId,SendCatalog from Pub_SmsSend
+            <dynamic prepend=" WHERE ">
+                <isPropertyAvailable prepend=" AND " property="Id" >Id=#Id#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Status" >Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >CheckInTime>=to_date(#CheckInTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >CheckInTime&lt;=to_date(#CheckInTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_Start" >ScheduleTime>=to_date(#ScheduleTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="ScheduleTime_End" >ScheduleTime&lt;=to_date(#ScheduleTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="Mobile" >Mobile=#Mobile#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="BatchNum" >BatchNum=#BatchNum#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendContent" >SendContent=#SendContent#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_Start" >SendTime>=to_date(#SendTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendTime_End" >SendTime&lt;=to_date(#SendTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendResult" >SendResult=#SendResult#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceCatalog" >SourceCatalog=#SourceCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="SendCatalog" >SendCatalog=#SendCatalog#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

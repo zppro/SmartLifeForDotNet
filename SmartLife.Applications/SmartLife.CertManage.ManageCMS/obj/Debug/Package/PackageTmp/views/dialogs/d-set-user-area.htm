@@ -1,0 +1,59 @@
+﻿<style type="text/css">
+.street-zone{clear:left;}
+.street-name{margin:0px 0px 0px 0px;}
+.street-name label{font-size:16px; font-weight:bold; cursor:pointer;}
+.community-zone{ clear:left; margin-bottom:25px; }
+.community-name{margin:2px 5px 10px 5px;font-size:12px; float:left;}
+.community-name label{ color:#666; cursor:pointer;}
+</style>
+<div class="easyui-layout" data-options="fit:true"> 
+    <form id="fm-LisenceUser" method="post" novalidate>
+        <div id="UserArea-LisenceUser" style="width: 99%; height:460px;margin: 0 auto; overflow-y: auto;">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        var userId = dialogData.UserId;
+        var areaId = (top.objectId == '*' ? '00000' : top.appDeployArea.id);
+        getTo(ajaxData_InvokeUrl + '/GetStreetAndCommunityInArea/' + areaId, null, function (streetAndCommunities) {
+            var htmls = [];
+            var streets = _.filter(streetAndCommunities, function (o) { return o.ParentId == areaId });
+            _.each(streets, function (o1, index) {
+                htmls.push('<ul class="street-zone">');
+                htmls.push('<li class="street-name"><label for="' + o1.ItemId + '">' + o1.ItemName + '</label><input  id="' + o1.ItemId + '" pid="' + areaId + '" name="UserArea" type="checkbox" value="' + o1.ItemId + '" /></li>');
+
+                htmls.push('<li class="community-zone"><ul>');
+                _.each(_.filter(streetAndCommunities, function (o) { return o.ParentId == o1.ItemId }), function (o3) {
+                    htmls.push('<li class="community-name"><label for="' + o3.ItemId + '">' + o3.ItemName + '</label><input id="' + o3.ItemId + '" pid="' + o1.ItemId + '" name="UserArea" type="checkbox" value="' + o3.ItemId + '" /></li>');
+                });
+                htmls.push('</ul></li>');
+
+                htmls.push('</ul>')
+            });
+            $('#UserArea-LisenceUser').html(htmls.join(""));
+
+            $('input:checkbox[name="UserArea"][pid="' + areaId + '"]').on('click', function () {
+                var itemId = $(this).attr('id');
+                $('input:checkbox[name="UserArea"][pid="' + itemId + '"]').prop('checked', $(this).prop('checked')).prop('disabled', $(this).prop('checked'));
+            });
+            getTo(ajaxData_InvokeUrl + '/GetUserArea/' + userId, null, function (areasByUser) { 
+                _.each(areasByUser, function (o) {
+                    $('#' + o.toUpperCase()).prop('checked', true);
+                });
+            });
+        });
+    }
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+
+    function dialogClose(dialogId) {
+        var formData = getJQO('#fm-LisenceUser').serializeObject();
+        formData["UserArea"] = "00099|" + formData.UserArea;
+        return formData;
+    }
+     
+</script>

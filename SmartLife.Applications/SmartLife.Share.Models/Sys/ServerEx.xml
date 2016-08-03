@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Sys" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <update id="Server_Update2" parameterClass="StringObjectDictionary" >
+      update Sys_Server
+      set
+      <dynamic prepend=" ">
+        <isPropertyAvailable prepend=" , " property="ServerId" >ServerId=#ServerId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Id" >Id=#Id#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="Status" >Status=#Status#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="CheckInTime" >CheckInTime=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerCode" >ServerCode=#ServerCode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="ServerName" >ServerName=#ServerName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" , " property="IpAddress" >IpAddress=#IpAddress#</isPropertyAvailable>
+      </dynamic>
+      where ServerId=#OldServerId#
+    </update>
+  </statements>
+</sqlMap>

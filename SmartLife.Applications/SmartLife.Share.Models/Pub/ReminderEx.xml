@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="Reminder_List2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.CallNo,c.OldManName,c.IDNo,c.Address,c.Gender,c.Birthday from
+      (select * from Pub_Reminder where Id in( select MAX(Id) from Pub_Reminder group by SourceKey ))
+      a left join Oca_OldManConfigInfo b on a.SourceKey=b.OldManId
+      left join Oca_OldManBaseInfo c on b.OldManId = c.OldManId
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="OldManStatus" >c.Status=#OldManStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AreaId" >c.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >a.RemindTime>=to_date(#RemindTime_Start#||' 00:00:00','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="RemindTime_End" >a.RemindTime&lt;=to_date(#RemindTime_End#||' 23:59:59','yyyy-mm-dd HH24:mi:ss')</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="Reminder_By_CallNo_List" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select top 1 b.*,a.CallNo,a.OldManId from Oca_OldManConfigInfo a left join (select * From Pub_Reminder WHERE
+      SourceTable='Oca_OldManConfigInfo' and SourceColumn='OldManId'
+      <isPropertyAvailable prepend=" AND " property="SourceType" >SourceType=#SourceType#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RemindTime" >RemindTime>=#RemindTime#</isPropertyAvailable>
+      ) b on
+      a.OldManId=b.SourceKey
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="CallNo" >a.CallNo=#CallNo#</isPropertyAvailable>
+      </dynamic>
+      <dynamic prepend=" ORDER BY ">
+        <isPropertyAvailable prepend="" property="OrderByClause">$OrderByClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ReminderStat_Group_By_SourceType" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary">
+        select b.SourceType, count(SourceKey) as ReminderNum
+        from Pub_ReminderObject a inner join Pub_reminder b
+        on a.ReminderId=b.Id 
+        where a.ResponseFlag=0 and  a.ObjectType=#ObjectType# and ObjectKey=#ObjectKey#
+        <isNotEqual property="SourceTable" compareValue="AllSourceTable">
+        and b.SourceTable=#SourceTable#
+        </isNotEqual>
+        <isNotEqual property="SourceColumn" compareValue="AllSourceColumn">
+        and b.SourceColumn=#SourceColumn#
+        </isNotEqual>
+        and Datediff(d,b.RemindTime,getdate()) = 0
+        Group by b.SourceType
+        order by b.SourceType
+    </select>
+    <select id="ReminderList_By_Merchant" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary">
+        select a.ReminderId,b.SourceType,b.SourceKey,b.RemindContent
+        from Pub_ReminderObject a inner join Pub_reminder b
+        on a.ReminderId=b.Id
+        where a.ResponseFlag=0 and  a.ObjectType=#ObjectType# and ObjectKey=#ObjectKey#
+        <isNotEqual property="SourceTable" compareValue="AllSourceTable">
+        and b.SourceTable=#SourceTable#
+        </isNotEqual>
+        <isNotEqual property="SourceColumn" compareValue="AllSourceColumn">
+        and b.SourceColumn=#SourceColumn#
+        </isNotEqual>
+        and Datediff(d,b.RemindTime,getdate()) = 0
+        order by b.CheckInTime
+    </select>
+    <update id="ReponseReminder" parameterClass="StringObjectDictionary" >
+        update Pub_ReminderObject
+        set ResponseFlag=1,ResponseAppType=#ResponseAppType#
+        Where ResponseFlag=0 And ObjectType=#ObjectType# And ObjectKey=#ObjectKey#
+        And ReminderId in ( select Id from Pub_Reminder Where SourceType=#SourceType# and Datediff(d,RemindTime,getdate()) = 0
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceColumn" >SourceColumn=#SourceColumn#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceKey" >SourceKey=#SourceKey#</isPropertyAvailable>
+      )  
+    </update>
+    <select id="Count_Reminder_ListByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select 1 as NoUse from
+        (select * from Pub_Reminder where Id in( select MAX(Id) from Pub_Reminder group by SourceKey ))
+        a left join Oca_OldManConfigInfo b on a.SourceKey=b.OldManId
+        left join Oca_OldManBaseInfo c on b.OldManId = c.OldManId
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OldManStatus" >c.Status=#OldManStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AreaId" >c.AreaId=#AreaId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >a.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RemindTime_End" >a.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+    </select>
+    <select id="Reminder_ListByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+        select x.* from (
+        select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.*,b.CallNo,c.OldManName,c.IDNo,c.Address,c.Gender,c.Birthday from
+        (select * from Pub_Reminder where Id in( select MAX(Id) from Pub_Reminder group by SourceKey ))
+        a left join Oca_OldManConfigInfo b on a.SourceKey=b.OldManId
+        left join Oca_OldManBaseInfo c on b.OldManId = c.OldManId
+        <dynamic prepend=" WHERE ">
+            <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="OldManStatus" >c.Status=#OldManStatus#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="AreaId" >c.AreaId=#AreaId#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RemindTime_Start" >a.RemindTime>=#RemindTime_Start#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="RemindTime_End" >a.RemindTime&lt;=#RemindTime_End#</isPropertyAvailable>
+            <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+        </dynamic>
+        )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+  </statements>
+</sqlMap>

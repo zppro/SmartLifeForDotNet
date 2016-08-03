@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Cty" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Auth_MerchantParam" class="StringObjectDictionary">
+      <parameter  property="StationCode" column="StationCode" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="PasswordHash" column="PasswordHash" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdFrom" column="ApplicationIdFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ApplicationIdTo" column="ApplicationIdTo" direction="Input" type="string" dbType="char" /> 
+      <parameter  property="StationName" column="StationName" direction="Output" type="string" dbType="nvachar" />
+      <parameter  property="NodeInfos" column="NodeInfos" direction="Output" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Auth_Merchant" parameterMap="SP_Auth_MerchantParam" resultClass="StringObjectDictionary">
+      SP_Auth_Merchant
+    </procedure>
+  </statements>
+</sqlMap>

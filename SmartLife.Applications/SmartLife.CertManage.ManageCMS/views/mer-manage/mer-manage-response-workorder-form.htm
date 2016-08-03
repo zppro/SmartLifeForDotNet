@@ -1,0 +1,100 @@
+﻿<style type="text/css">
+.bottom_table td{ line-height:33px; text-align:center; border-width: 1px; border-color: #C0C0C0;  border-bottom-style: solid; border-right-style: solid;}
+.top_td{border:0; text-align:left; font-size:16px;}
+table input{ border:0; margin-left:5px;}
+</style>
+<div id="response-workorder-form" title="响应工单" style="overflow: auto; padding: 3px;">
+    <form id="fm-response-workorder" method="post" novalidate>
+    <div class="fitem">
+       <table style=" width:100%;">
+       <tr><td colspan="3" id="serveStationName" style=" text-align:center; border:0; font-size:25px; line-height:40px; "></td></tr>
+       <tr><td class="top_td"><label>工单编号：</label><input name="WorkOrderNo" style=" width:200px;" /></td><td  class="top_td"><label>坐席：</label><input name="OperatedByName" /></td><td  class="top_td"><label>工单状态：</label><input name="DoStatus" /></td></tr></table>
+        <table class="bottom_table" style=" border-width: 1px; border-color: #C0C0C0; width:100%; border-top-style: solid; border-left-style: solid;">
+        <tr><td>工单内容</td><td colspan="5"><input name="WorkOrderContent" style=" width:600px;"/></td></tr>
+        <tr><td>工单归属</td><td colspan="3"><input name="" /></td><td>服务类别</td><td><input name="ServeTypeName" /></td></tr>
+        <tr><td>服务大类</td><td><input name="ServeItemAName" /></td><td>服务小类</td><td><input name="ServeItemBName" /></td><td>服务方式</td><td><input name="ServeModeName" /></td></tr>
+        <tr><td>要求上门时间</td><td><input name="ServiceTimeRequired" /></td><td>要求备注</td><td colspan="3"><input name="RemarkRequired" /></td></tr>
+        <tr><td>服务费用（元）</td><td><input name="ServeFee" /></td><td>政府承担（元）</td><td><input name="ServeFeeByGov" /></td><td>自费（元）</td><td><input name="ServeFeeBySelf" /></td></tr>
+        <tr><td>督办时间</td><td><input name="SuperviseTime" /></td><td>督办人员</td><td colspan="3"><input name="SupervisedByName" /></td></tr>
+        <tr><td>老人姓名</td><td><input name="OldManName" /></td><td>老人性别</td><td><input name="Gender" /></td><td>老人座机</td><td><input name="Tel" /></td></tr>
+        <tr><td>老人手机</td><td><input name="Mobile" /></td><td>家庭地址</td><td colspan="3"><input name="Address" /></td></tr>
+        </table>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+        var url = baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service/';
+        var workOrderId;
+        var stationId;
+        function dialogOpen(dialogId, dialogData) {
+            workOrderId = dialogData.WorkOrderId;
+            stationId = dialogData.StationId;
+            $('#serveStationName').text(dialogData.ServeStationName);
+            getTo(url + 'GetWorkOrderInfo/' + workOrderId, null, function (ret) {
+                if (ret.Success) {
+                    var result = xml2json.parser(ret.ret, 'StringObjectDictionary');
+                    $('#fm-response-workorder').form('clear');
+                    $('#fm-response-workorder').form('load', result);
+                    $('input[name="Gender"]').val(gender(result.Gender));
+                    $("input[name='DoStatus']").val(doStatus(result.DoStatus));
+                }
+            }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+    }
+
+
+    function dialogBeforeSubmit() {
+        var result;
+        getTo(url + 'CheckCanResponse/' + workOrderId, null, function (ret) {
+            if (ret.Success) {
+                getTo(url + 'CheckWorkOrderResponsed/' + workOrderId, null, function (re) {
+                    if (re.Success) {
+                        result = true;
+                    }
+                    else {
+                        result = false;
+                    }
+                }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+            }
+            else {
+                alertInfo("此工单不能响应");
+                result = false;
+            }
+        }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+
+        return result;
+    }
+    function doStatus(ds) {
+        var ret;
+        switch (ds){
+            case 0: ret = "未响应";
+                break;
+            case 1: ret = "已响应";
+                break;
+            case 2: ret = "已响应";
+                break;
+            case 3: ret = "已完成";
+                break;
+            case 4: ret = "已回访";
+                break;
+        }
+        return ret;
+    }
+
+    function gender(g) {
+        if (g == "M" || g == "F") {
+            return g == "M" ? "男" : "女";
+        }
+        else {
+            return "未知";
+        }
+    }
+    function closeDialogFrom() {
+        $('#response-workorder-form').dialog('close');
+    }
+    function dialogClose(dialogId) {
+        return $.toJSON({ WorkOrderId: workOrderId, OperatedBy: top.gUserId });
+    }
+
+
+</script>

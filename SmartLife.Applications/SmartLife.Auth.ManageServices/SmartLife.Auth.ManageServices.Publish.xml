@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://115.236.175.109/wwwroot/SmartAuthFarm/Published.ManageServices/" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="配置文件1" publishMethod="FTP" replaceMatchingFiles="False" userName="ftp_admin" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAOu8hWWoRaUeimM84CluLyAAAAAACAAAAAAAQZgAAAAEAACAAAACeHF0jl+wY4YFG18U9m8OyinPS/WnQ+3fzprcxs59A+gAAAAAOgAAAAAIAACAAAAAnfJrSw2/wFlly2TLBSTA1lQuy9PEYDCGDG2ClcU640yAAAACyz2fxLJir3Golm9M9G3xE54XcpmGrw01nOgRkbHBzf0AAAADbVBlhqwqxa5MkpFI6uBrbXVtHCilsnndF1cvrm2LRF4oD4Sx9b0DYZUV1VvMCVYjiZln0zeRCJ3x5qkYVKMR5" SelectedForPublish="True">
+    <file relUrl="Web.config" publishTime="07/08/2015 15:25:15" />
+    <file relUrl="bin/IBatisNet.DataAccess.2005.dll" publishTime="03/21/2014 20:22:55" />
+    <file relUrl="bin/IBatisNet.Common.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="bin/NPOI.dll" publishTime="10/31/2013 16:23:20" />
+    <file relUrl="bin/SmartLife.Auth.ManageServices.dll" publishTime="07/08/2015 15:24:52" />
+    <file relUrl="bin/IBatisNet.DataMapper.pdb" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/Castle.DynamicProxy.dll" publishTime="02/06/2012 10:24:00" />
+    <file relUrl="bin/IBatisNet.DataMapper.dll" publishTime="04/08/2015 17:15:30" />
+    <file relUrl="bin/Ionic.Zip.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="bin/log4net.dll" publishTime="02/06/2012 10:04:16" />
+    <file relUrl="bin/SmartLife.Share.Models.dll" publishTime="06/12/2015 06:51:46" />
+    <file relUrl="Pub/_ServiceStationUploadify.ashx" publishTime="04/30/2015 10:18:18" />
+    <file relUrl="dao.config" publishTime="04/30/2015 10:18:18" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="10/31/2013 16:23:19" />
+    <file relUrl="bin/web.core.share.models.dll" publishTime="10/22/2014 11:10:48" />
+    <file relUrl="bin/web.core.dll" publishTime="04/09/2015 10:34:50" />
+    <file relUrl="bin/web.core.share.models.pdb" publishTime="10/22/2014 11:10:48" />
+    <file relUrl="Global.asax" publishTime="04/30/2015 10:18:18" />
+    <file relUrl="Pub/_AreaBaseDataUploadify.ashx" publishTime="04/30/2015 10:18:18" />
+    <file relUrl="AppShare/uploadify.ashx" publishTime="04/30/2015 10:18:18" />
+    <file relUrl="bin/SmartLife.Share.Behaviors.dll" publishTime="05/14/2015 10:47:31" />
+    <file relUrl="bin/web.core.pdb" publishTime="04/09/2015 10:34:50" />
+    <file relUrl="bin/SmartLife.Auth.ManageServices.pdb" publishTime="07/08/2015 15:24:52" />
+  </publishProfile>
+</publishData>

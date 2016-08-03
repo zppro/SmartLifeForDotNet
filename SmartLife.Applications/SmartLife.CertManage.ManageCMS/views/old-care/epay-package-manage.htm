@@ -1,0 +1,450 @@
+﻿<div id="search-sample-B180711" title="查询" style="overflow: auto; padding: 3px;">
+    <form id="fm-search-rough-B180711" method="post">
+    <table width="100%">
+        <table width="100%">
+        <tr>
+            <td style="text-align: left">
+                关键字： <input name="KeyWord" class="easyui-validatebox"   />
+            </td>
+            <td style="text-align: left">
+                操作开始时间：
+                <input name="OperatedOn_Start" class="Wdate" onfocus="WdatePicker()"  />
+                操作结束时间：
+                <input name="OperatedOn_End" class="Wdate" onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="exec(true)">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetfm(true)">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+                <a behaviorcode="10" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+                    plain="true" onclick="query()">高级查询</a>
+            </td>
+        </tr>
+    </table>
+    </table>
+    </form>
+</div>
+<div id="toolbar-B180711">
+<a href="javascript:void(0)" class="easyui-linkbutton"
+            iconcls="icon-add" plain="true" onclick="add()">新增</a> <a href="javascript:void(0)"
+                class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit()">编辑</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true"
+        onclick="nullify()">删除</a>
+</div>
+<table id="dg-B180711">
+</table>
+<div id="dlg-B180711" class="easyui-dialog" style="width: 720px; height: 550px; padding: 5px;"
+    closed="true" cache="false" buttons="#btn-B180711">
+    <form id="fm-B180711" method="post" novalidate>
+    <input type="hidden" name="PackageId" id="packageid-B180711" />
+    <div class="fitem">
+        <label>
+            套餐名称:</label>
+        <input name="PackageName" class="easyui-validatebox" required="true" />
+        <label>
+            套餐资费:</label>
+        <input name="PackageCharges" class="easyui-validatebox easyui-numberbox" data-options="precision:2"
+            required="true">
+        <label>
+            充值频率:</label>
+        <input id="PeriodType" name="PeriodType" />
+    </div>
+    <div class="fitem">
+        <label>套餐类型:</label>
+        <input name="PackageType" id="PackageType" class="easyui-validatebox" />
+        <label style=" margin-left:9px;">
+            有效期起:</label>
+        <input id="PackageBeginDate" name="PackageBeginDate" class="Wdate easyui-validatebox"
+            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" required="true" />
+        <label>
+            有效期至:</label>
+        <input id="PackageEndDate" name="PackageEndDate" class="Wdate easyui-validatebox"
+            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            套餐内容:</label>
+        <textarea id="PackageComment" name="PackageComment" style="width: 577px;" maxlength="400"></textarea>
+    </div>
+    <div class="fitem">
+        <label>
+            套餐备注:</label>
+        <textarea name="Remark" style="width: 577px;" maxlength="400"></textarea>
+    </div>
+    <div class="fitem">
+        <table id="dg-PackageItems">
+        </table>
+        <div id="toolbar-PackageItems">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                onclick="clientAppend()">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                    iconcls="icon-remove" plain="true" onclick="clientRemove()">删除</a> <a href="javascript:void(0)"
+                        class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="clientAccept()">
+                        接受更改</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-undo"
+                            plain="true" onclick="clientReject()">放弃</a>
+        </div>
+    </div>
+    </form>
+</div>
+<div id="btn-B180711">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+        确定</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="cancel()">取消</a>
+</div>
+<div id="dlg-search-B180711" class="easyui-dialog" style="width: 420px; height: 200px;
+    padding: 10px;" closed="true" cache="false" buttons="#btn-search-B180711">
+    <div class="ftitle">
+    </div>
+    <form id="fm-search-B180711" method="post" novalidate>
+    <div class="fitem">
+        <label>
+            套餐名称:</label>
+        <input name="PackageName">
+    </div>
+    </form>
+</div>
+<div id="btn-search-B180711">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-search" onclick="exec()">
+        查询</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetfm()">清空</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="quit()">关闭</a>-->
+</div>
+<script type="text/javascript">
+    var editIndex = undefined;
+    var defServeItemB;
+
+    $(function () {
+        validateUI();
+
+        getAll([top.ajaxData_InvokeUrl + '/GetDictionaryItem/00014', top.ajaxData_InvokeUrl + '/GetDictionaryItem/11013', top.ajaxData_InvokeUrl + '/GetDictionaryItem/11026', top.ajaxData_InvokeUrl + '/GetDictionaryItem/11022'], function (periodTypes, serveItemBs, packageType, feeTypes) {
+
+            models[currentMenuCode] = {
+                gridId: 'dg-' + currentMenuCode,
+                toolbarId: 'toolbar-' + currentMenuCode,
+                dialogId: 'dlg-' + currentMenuCode,
+                //            dialogOption: {
+                //                onBeforeOpen: function () {
+                //                    
+                //                }
+                //            },
+                dlgSearchId: 'dlg-search-' + currentMenuCode,
+                fmSearchId: 'fm-search-' + currentMenuCode,
+                btnSearchId: 'btn-search-' + currentMenuCode,
+                fmSearchRoughId: 'fm-search-rough-' + currentMenuCode,
+                formId: 'fm-' + currentMenuCode,
+                buttonId: 'btn-' + currentMenuCode,
+                pkId: 'packageid-' + currentMenuCode,
+                pk: 'PackageId',
+                getPKValueWhenAdd: function () {
+                    return window.contants.guidAutoGenerate;
+                },
+                changeSearchFormDataBeforeSubmit: function (formData) {
+                    //KeyWord模糊查询专用
+                    formData['PackageName'] = formData['KeyWord'];
+                    formData['PackageCharges'] = formData['KeyWord'];
+                    formData['OperatedOn'] = formData['KeyWord'];
+                    formData['KeyWord'] = undefined;
+                },
+                changeFormDataBeforeSubmit: function (formData) {
+                    var strPackageBeginDate = '\/Date(' + Date.parse(formData["PackageBeginDate"]).getTime() + '+0800)\/';
+                    formData["PackageBeginDate"] = strPackageBeginDate;
+                    var strPackageEndDate = '\/Date(' + Date.parse(formData["PackageEndDate"]).getTime() + '+0800)\/';
+                    formData["PackageEndDate"] = strPackageEndDate;
+
+                },
+                actionDone: function (action, pks) {
+                    if (action != 'nullify' && pks.PackageId) {
+                        endEditing();
+                        var rows = $('#dg-PackageItems').datagrid('getRows');
+                        if (rows.length > 0) {
+                            var params = $.toJSON(rows);
+                            postTo(baseCMSInvokeUrl + '/Oca/EPay_PackageService/BatchCreateServeItem/' + pks.PackageId, params, function (ret) {
+                            });
+                        }
+                    }
+                },
+                onAfterDialogOpen: function (editrow) {
+
+                    var packageId = window.contants.guidAutoGenerate;
+                    if ($('#packageid-B180711').val()) {
+                        packageId = $('#packageid-B180711').val();
+                    }
+                    else {
+                        packageId = window.contants.guidAutoGenerate;
+                    }
+
+                    $('#PackageBeginDate').val(ndateFormatter($('#PackageBeginDate').val(), 'yyyy-MM-dd'));
+                    $('#PackageEndDate').val(ndateFormatter($('#PackageEndDate').val(), 'yyyy-MM-dd'));
+
+                    var getPackageType = $("#PackageType").combobox('getValue');
+                    if (getPackageType == "00001") {
+                        $("#PackageType").combobox("disable");
+                        defServeItemB = _.filter(serveItemBs, function (o) {
+                            return o.ItemId.startsWith('01');
+                        });
+                    }
+                    else {
+                        $("#PackageType").combobox("enable");
+                        defServeItemB = _.filter(serveItemBs, function (o) {
+                            return !o.ItemId.startsWith('01');
+                        });
+                    }
+
+                    editIndex = undefined;  //修正直接关闭对话框未清空editIndex
+                    $('#dg-PackageItems').datagrid(easyuigrid_settings({
+                        title: "套餐项目",
+                        pagination: true,
+                        rownumbers: true,
+                        height: 290,
+                        singleSelect: false,
+                        url: baseCMSInvokeUrl + '/Oca/EPay_PackageItemService/ListForEasyUIgridPage',
+                        method: 'POST',
+                        toolbar: '#toolbar-PackageItems',
+                        queryParams: {
+                            sort: 'OperatedOn',
+                            order: 'desc',
+                            instance: {
+                                PackageId: packageId
+                            }
+                        },
+                        pageSize: 3,
+                        pageList: [3],
+                        onClickRow: onClickRow,
+                        columns: [[
+                { field: 'ServeItemB', title: '服务项目', width: 200, align: 'left', formatter: function (value, row) {
+                    var serveItemBName;
+                    var item = _.find(serveItemBs, function (o) {
+                        if (o.ItemId == value) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (item) {
+                        serveItemBName = item.ItemName;
+                    }
+                    return serveItemBName;
+                },
+                    editor: {
+                        type: 'combobox',
+                        options: {
+                            valueField: 'ItemId',
+                            textField: 'ItemName',
+                            data: defServeItemB,
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                { field: 'FeeType', title: '计费类型', width: 100, align: 'center', formatter: function (value, row) {
+                    var feeTypeName;
+                    var item = _.find(feeTypes, function (o) {
+                        if (o.ItemId == value) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (item) {
+                        feeTypeName = item.ItemName;
+                    }
+                    return feeTypeName;
+                },
+                    editor: {
+                        type: 'combobox',
+                        options: {
+                            valueField: 'ItemId',
+                            textField: 'ItemName',
+                            data: feeTypes,
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                { field: 'ChargeNum', title: '计费数', width: 150, align: 'right', editor: { type: 'numberbox', options: { required: true, precision: 2}} },
+                { field: 'ServeItemBName', title: '服务项目名称', hidden: true }
+        ]],
+                        loader: easyuiLoader
+                    })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+                },
+                uiMode: 'list',
+                entityName: '套餐',
+                baseModelUrl: baseCMSInvokeUrl + '/Oca/EPay_PackageService/',
+                defaultModel: { Status: 1 }
+                //defaultModelWhenAdd: { Birthday: (new Date()).pattern("yyyy-MM-dd") }
+            };
+            autosize(models[currentMenuCode].gridId);
+            $('#' + models[currentMenuCode].gridId).datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: false,
+                url: models[currentMenuCode].baseModelUrl + 'ListForEasyUIgridPage',
+                method: 'POST',
+                toolbar: '#' + models[currentMenuCode].toolbarId,
+                queryParams: {
+                    sort: 'OperatedOn',
+                    order: 'desc',
+                    instance: {
+                        Status: models[currentMenuCode].defaultModel.Status
+                    }
+                },
+                onDblClickRow: function (idx, row) {
+                    edit(row);
+                },
+                columns: [[
+                { field: 'PackageId', title: '套餐编号', width: 150, hidden: true },
+                { field: 'CK', title: '', checkbox: true },
+                { field: 'PackageName', title: '套餐名称', width: 200 },
+                { field: 'PackageCharges', title: '套餐资费', width: 80, align: 'right' },
+                { field: 'OperatedOn', title: '操作日期', width: 100, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'PeriodType', title: '充值频率', width: 80, align: 'center', formatter: easyuigrid_ajaxFormatter, url: function () {
+                    var url = window.ajaxData_InvokeUrl + '/GetDictionaryItem/00014';
+                    var results = null;
+                    getTo(url, null, function (result) {
+                        results = result;
+                    }, { async: false });
+                    return results;
+                }
+                },
+                { field: 'PackageBeginDate', title: '有效期起', width: 100, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'PackageEndDate', title: '有效期至', width: 100, align: 'center', formatter: easyuigrid_dateFormatter, datefmt: "yyyy-MM-dd" },
+                { field: 'PackageComment', title: '套餐说明', width: 400 }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+
+            $('#PeriodType').combobox({
+                width: 152,
+                required: true,
+                method: 'get',
+                data: periodTypes,
+                valueField: 'ItemId',
+                textField: 'ItemName'
+            });
+
+            $('#PackageType').combobox({
+                width: 152,
+                panelHeight: 40,
+                required: true,
+                method: 'get',
+                data: packageType,
+                valueField: 'ItemId',
+                textField: 'ItemName',
+                editable: false,
+                onSelect: function (record) {
+                    if (record.ItemId == "00001") {
+                        defServeItemB = _.filter(serveItemBs, function (o) {
+                            return o.ItemId.startsWith('01');
+                        });
+                    }
+                    else {
+                        defServeItemB = _.filter(serveItemBs, function (o) {
+                            return !o.ItemId.startsWith('01');
+                        });
+                    }
+                    editIndex = undefined;
+                    $('#dg-PackageItems').datagrid("reload");
+                    $('#PackageComment').text("");
+                }
+            });
+        });
+    });
+
+    function generatePackageComment() {
+        var rows = $('#dg-PackageItems').datagrid('getRows');
+        var periodType = $('#PeriodType').combobox('getValue');
+        var periodName = '';
+        if (periodType == '00001') {
+            periodName = '年';
+        }
+        else if (periodType == '00002') {
+            periodName = '半年';
+        }
+        else if (periodType == '00003') {
+            periodName = '季';
+        }
+        else if (periodType == '00004') {
+            periodName = '月';
+        }
+
+        $('#PackageComment').text(_.map(rows, function (o) {
+            var unit = '';
+            if (o.FeeType == '00001') {
+                unit = '次';
+            }
+            else if (o.FeeType == '00002') {
+                unit = '小时';
+            }
+            return o.ServeItemBName + '(' + o.ChargeNum + unit + '/' + periodName + ')';
+        }).join(";"));
+    }
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        if ($('#dg-PackageItems').datagrid('validateRow', editIndex)) {
+            var rows = $('#dg-PackageItems').datagrid('getRows');
+
+            var ed1 = $('#dg-PackageItems').datagrid('getEditor', { index: editIndex, field: 'ServeItemB' });
+            var serveItemB = $(ed1.target).combobox('getValue');
+            var serveItemBName = $(ed1.target).combobox('getText');
+            rows[editIndex]['ServeItemB'] = serveItemB;
+            rows[editIndex]['ServeItemBName'] = serveItemBName;
+
+            var ed2 = $('#dg-PackageItems').datagrid('getEditor', { index: editIndex, field: 'FeeType' });
+            var feeType = $(ed2.target).combobox('getValue');
+            rows[editIndex]['FeeType'] = feeType;
+
+            $('#dg-PackageItems').datagrid('endEdit', editIndex);
+
+            editIndex = undefined;
+
+            //生成套餐说明
+            generatePackageComment();
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function onClickRow(index) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#dg-PackageItems').datagrid('selectRow', index)
+                            .datagrid('beginEdit', index);
+                editIndex = index;
+            } else {
+                $('#dg-PackageItems').datagrid('selectRow', editIndex);
+            }
+        }
+    }
+    function clientAppend() {
+        if (endEditing()) {
+            $('#dg-PackageItems').datagrid('appendRow', {});
+            editIndex = $('#dg-PackageItems').datagrid('getRows').length - 1;
+            $('#dg-PackageItems').datagrid('selectRow', editIndex)
+                        .datagrid('beginEdit', editIndex);
+
+            var ed = $('#dg-PackageItems').datagrid('getEditor', { index: editIndex, field: 'ServeItemB' });
+            if(ed) $(ed.target).combobox('loadData', defServeItemB);
+        }
+    }
+    function clientRemove() {
+        if (editIndex == undefined) { return }
+        $('#dg-PackageItems').datagrid('cancelEdit', editIndex)
+                    .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+    function clientAccept() {
+        if (endEditing()) {
+            //$('#dg-PackageItems').datagrid('acceptChanges');
+        }
+    }
+    function clientReject() {
+        $('#dg-PackageItems').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+
+</script>

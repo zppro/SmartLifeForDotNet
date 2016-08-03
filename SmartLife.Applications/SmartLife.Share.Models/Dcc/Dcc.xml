@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Dcc_AIOCheckInParam" class="StringObjectDictionary">
+      <parameter  property="AIONo" column="AIONo" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="DCCNo" column="DCCNo" direction="Input" type="string" dbType="varchar" /> 
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Dcc_DayCareObjectRegisterParam" class="StringObjectDictionary">
+      <parameter  property="DCCNo" column="DCCNo" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="IDNo" column="IDNo" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Dcc_DayCareObjectCheckInParam" class="StringObjectDictionary">
+      <parameter  property="IDNo" column="IDNo" direction="Input" type="string" dbType="char" />
+      <parameter  property="DBP" column="DBP" direction="Input" type="int" dbType="int" />
+      <parameter  property="SBP" column="SBP" direction="Input" type="int" dbType="int" />
+      <parameter  property="MBP" column="MBP" direction="Input" type="int" dbType="int" />
+      <parameter  property="HR" column="HR" direction="Input" type="int" dbType="int" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Dcc_DeviceAlarmParam" class="StringObjectDictionary">
+      <parameter  property="DeviceNo" column="DeviceNo" direction="Input" type="string" dbType="varchar" /> 
+      <parameter  property="IDNo" column="IDNo" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Dcc_AIOCheckIn" parameterMap="SP_Dcc_AIOCheckInParam" resultClass="StringObjectDictionary">
+      SP_Dcc_AIOCheckIn
+    </procedure>
+    <procedure id="SP_Dcc_DayCareObjectRegister" parameterMap="SP_Dcc_DayCareObjectRegisterParam" resultClass="StringObjectDictionary">
+      SP_Dcc_DayCareObjectRegister
+    </procedure>
+    <procedure id="SP_Dcc_DayCareObjectCheckIn" parameterMap="SP_Dcc_DayCareObjectCheckInParam" resultClass="StringObjectDictionary">
+      SP_Dcc_DayCareObjectCheckIn
+    </procedure>
+    <procedure id="SP_Dcc_DeviceAlarm" parameterMap="SP_Dcc_DeviceAlarmParam" resultClass="StringObjectDictionary">
+      SP_Dcc_DeviceAlarm
+    </procedure>
+  </statements>
+</sqlMap>

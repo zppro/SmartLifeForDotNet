@@ -1,0 +1,181 @@
+﻿<table id="cc-searchweixin" style="width: 100%; height: 100%;">
+    <tr>
+        <td style="width: 165px; border: solid 1px #ddd;" valign="top">
+        <input id="userId" type="hidden"/>
+        <input id="stationId" type="hidden"/>
+            <div id="toolbar-weixin" style="line-height: 35px; text-align: center; background-color: #fafafa;">
+                已绑定的微信号
+            </div>
+            <div id="binded-weixin" style="overflow: auto;">
+            </div>
+        </td>
+        <td valign="top">
+            <div id="search-sample-searchweixin" title="查询" style="overflow: auto; padding: 3px;">
+                <form id="fm-search-rough-searchweixin" method="post">
+                <table width="100%" >
+                    <tr>
+                        <td style="text-align: right">
+                            昵称：
+                        </td>
+                        <td style="text-align: left;">
+                            <input id="nickName" class="easyui-validatebox" />
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" name="query_btn" class="easyui-linkbutton" iconcls="icon-ok"
+                                onclick="searchWeixin()">查询</a>
+                        </td>
+                        <td style="width: 90px;">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="clearNickName()">
+                                清空</a>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <table id="dg-searchweixin">
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    function dialogOpen(dialogId, dialogData) {
+        if (dialogData) {
+            $('#userId').val(dialogData.UserId);
+            $('#stationId').val(dialogData.StationId);
+            var currentMenuCode = 'searchweixin';
+            models[currentMenuCode] = {
+                gridId: 'dg-' + currentMenuCode,
+                pkId: 'userid-' + currentMenuCode,
+                pk: 'UserId',
+                getPKValueWhenAdd: function () {
+                    return window.contants.guidAutoGenerate;
+                },
+                uiMode: 'list',
+                entityName: '服务人员设置微信号',
+                baseModelUrl: baseCMSInvokeUrl + '/WeiXin/Meb/NormalAccountService/',
+                defaultModel: { AreaId: (top.objectId == '*' ? '00000' : top.appDeployArea.id), Status: 1 }
+            };
+            autosize('dg-searchweixin', -30);
+
+            $('#dg-searchweixin').datagrid(easyuigrid_settings({
+                title: "",
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                width: 435,
+                height:330,
+                url: baseCMSInvokeUrl + '/WeiXin/Meb/NormalAccountService/ListForEasyUIgridForWeixinQuery',
+                method: 'POST',
+                queryParams: {
+                    sort: 'NickName',
+                    order: 'asc',
+                    instance: {
+                        Status: 1
+                    },
+                    fuzzyFields: [{ key: 'NickName', value: null },
+                                  { key: 'StationId', value: dialogData.StationId }
+                                  ]
+                },
+                columns: [[
+        { field: 'OpenId', title: 'OpenId', width: 150, hidden: true },
+        { field: 'CK', title: '', checkbox: true },
+        { field: 'NickName', title: '昵称', width: 170 },
+        { field: 'Gender', title: '性别', width: 50, align: 'center', formatter: easyuigrid_genderFormatter },
+//        { field: 'Country', title: '国家', width: 50, align: 'center' },
+        { field: 'Province', title: '省', width: 50, align: 'center' },
+        { field: 'City', title: '市', width: 50, align: 'center' },
+        { field: 'Area', title: '区', width: 50, align: 'center' }
+        ]],
+                loader: easyuiLoader
+            })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' });
+            bindedWeixin(dialogData.UserId);//获得已经绑定的微信号
+        }
+        else {
+            alertInfo("服务人员为空");
+        }
+    }
+    //按昵称查找微信号
+    function searchWeixin() {
+        var nickName = $('#nickName').val();
+        var stationId = $('#stationId').val();
+//        if ($.trim(nickName) == '') {
+//            nickName = ' ';
+//        }
+        $('#dg-searchweixin').datagrid('load', {
+            sort: 'NickName',
+            order: 'asc',
+            instance: {
+                Status: 1
+            },
+            fuzzyFields: [{ key: 'NickName', value: nickName },
+                          { key: 'StationId', value: stationId }
+                          ]
+        });
+    }
+    //清空查询
+    function clearNickName() {
+        $('#nickName').val(null);
+    }
+    //已经绑定的微信号
+    function bindedWeixin(userId) {
+        $('#binded-weixin').html(null);
+        getTo(baseCMSInvokeUrl + '/Pub/UserService/BindedWeixin/' + userId, null, function (ret) {
+            if (ret.rows.length > 0) {
+                var rows = _.map(ret.rows, function (o) {
+                    return xml2json.parser(o, 'StringObjectDictionary');
+                });
+                var str = '<ul>';
+                str = _.map(rows, function (o) {
+                    var openId = o.OpenId;
+                    return '<li  style="margin-left:5px; margin-top:5px;">' + o.NickName + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#63B8FF;cursor:pointer;"  onclick=removeBinded("' + o.OpenId + '","' + userId + '")>解绑</span></li>';
+                }).join("");
+
+                str = str + '</ul>';
+                $('#binded-weixin').html(str);
+                count = ret.rows.length;
+            }
+        }, { async: false });
+    }
+    //解除绑定
+    function removeBinded(openId, userId) {
+        putTo(baseCMSInvokeUrl + '/Pub/UserService/RemoveBindedWeixin/' + userId + ',' + openId, null, function (ret) {
+            if (ret.Success) {
+                alertInfo("解除成功");
+                bindedWeixin(userId);
+            }
+        });
+    }
+    function dialogBeforeSubmit() {
+        var userId = $('#userId').val();
+        var result = false;
+        var rows = $('#dg-searchweixin').datagrid('getSelections');
+        if (rows.length>0) {
+            getTo(baseCMSInvokeUrl + '/Pub/UserService/BindedWeixin/' + userId, null, function (ret) {
+                if (ret.rows.length > 0) {
+                    alertInfo("已绑定微信号，不允许再次绑定");
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+            }, { async: false });
+        }
+        else {
+            alert("请选择一个微信账号");
+            result = false;
+        }
+
+        return result;
+    }
+
+    function dialogClose() {
+        var openIds = '';
+        var rows = $('#dg-searchweixin').datagrid('getSelections');
+        _.each(rows,function (o) {
+            openIds += o.OpenId + "|";
+        });
+        return openIds.substring(0, openIds.lastIndexOf('|'));
+    }
+
+    
+</script>

@@ -1,0 +1,68 @@
+﻿<div id="dlg-calls-transfer" class="easyui-dialog" style="width: 420px; height: 220px; padding:2px;"
+ closed="true" cache="false" buttons="#btn-calls-transfer"  >
+    <form id="fm-calls-transfer" method="post" novalidate>
+    <input type="hidden" name="CallServiceId" id="CallServiceId" /> 
+    <div class="fitem">
+        <label>转接原因:</label>
+        <textarea name="Remark" style="width: 300px;" rows="6"></textarea>
+    </div>
+    </form>
+</div>
+<div id="btn-calls-transfer">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="doTransferCalls()">确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="doCancelCallsTransfer()" >取消</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+    });
+
+    function onLoadCallsTransfer(pageData) {
+        $('#CallServiceId').val(pageData.CallServiceId);
+    }
+
+    function doTransferCalls() {
+        var formData = $('#fm-calls-transfer').serializeObject();
+        if (formData.CallServiceId) {
+            if ($.trim(formData.Remark) == "") {
+                alertError('请输入转接原因!');
+                return;
+            }
+            else {
+                formData.Remark = "呼叫转移原因：" + formData.Remark;
+            }
+
+            if (window.execMode == "CS") {
+                if ($('#btnHoldRetreive').text() == "呼叫保持") {
+                    alertError('请转入呼叫保持!');
+                    return;
+                }
+            }
+
+            if (recordLog(formData.CallServiceId, 1, formData.Remark)) {
+                if (window.execMode == "ForSeat") {
+                    doCancelCallsTransfer();
+                    window.external.SetCallTransfer();
+                }
+                else if (window.execMode == "CS") {
+                    getTo(ajaxData_InvokeUrl + '/GetGroup?GroupType=10009', null, function (result) {
+                        if (result) {
+                            var groupCode = _.map(result, function (o) {
+                                return o.GroupCode;
+                            });
+                            //电话转接
+
+                            window.external.SetFastTransfer(groupCode);
+                            //调用CS关闭窗口
+                            window.external.CloseWin(true);
+                        }
+                    }, { async: false });
+                } 
+            }
+            
+        }
+    }
+    
+    function doCancelCallsTransfer() {
+        $('#dlg-calls-transfer').dialog('close');
+    }
+</script>

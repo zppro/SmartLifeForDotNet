@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="Infrastructure" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <statement id="ExecuteSqlScalar" parameterClass="string"   remapResults="true" resultClass="System.Object" >
+            <![CDATA[$sql$]]>
+        </statement>
+        <statement id="ExecuteSqlForQuery" parameterClass="string"   remapResults="true" resultClass="StringObjectDictionary" >
+            <![CDATA[$sql$]]>
+        </statement>
+        <statement id="ExecuteSqlNoneQuery" parameterClass="string"   remapResults="true" >
+            <![CDATA[$sql$]]>
+        </statement>
+    </statements>
+</sqlMap>

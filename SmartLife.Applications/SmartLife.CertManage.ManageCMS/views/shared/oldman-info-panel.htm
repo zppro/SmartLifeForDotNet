@@ -1,0 +1,256 @@
+﻿<div id="oldman-info">
+    <table class="oldman-base-info">
+        <colgroup>
+            <col width="85px" nowrap align="left" />
+            <col width="95px" />
+        </colgroup>
+        <tr>
+            <td colspan="2" class="oldman-info-portrait">
+                <div id="oldman-portrait">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                <div id="oldman-GovTurnkeyFlag" style="padding-right: 15px;">
+                </div>
+            </td>
+            <td class="oldman-info-value">
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：
+            </td>
+            <td class="oldman-info-value" fieldname="OldManName">
+                李琴
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
+            </td>
+            <td class="oldman-info-value" fieldname="Gender" fieldvalueformatter="easyuigrid_genderFormatter">
+                女
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                出生年月：
+            </td>
+            <td class="oldman-info-value" fieldname="Birthday" fieldvalueformatter="easyuigrid_dateFormatter">
+                1935/9/1
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                身份证号：
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="oldman-info-value" id="oldman-info-idno" fieldname="IDNo"
+                style="padding-left: 20px;">
+                3305
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                家庭地址：
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="oldman-info-value" class="oldman-info-value" fieldname="Address"
+                style="padding-left: 20px;">
+                --
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                固定电话：
+            </td>
+            <td class="oldman-info-value" fieldname="Tel">
+                88976666
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                移动电话：
+            </td>
+            <td class="oldman-info-value" fieldname="Mobile">
+                18905716038
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                有无医保：
+            </td>
+            <td class="oldman-info-value" fieldname="HealthInsuranceFlag" fieldvalueformatter="easyuigrid_bool2Formatter"
+                vals="无:0~t有:1">
+                有
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                有无社保：
+            </td>
+            <td class="oldman-info-value" fieldname="SocialInsuranceFlag" fieldvalueformatter="easyuigrid_bool2Formatter"
+                vals="无:0~t有:1">
+                有
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                身份情况：
+            </td>
+            <td class="oldman-info-value" fieldname="OldManIdentity">
+                普通
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                居住情况：
+            </td>
+            <td class="oldman-info-value" fieldname="LivingState">
+                独居
+            </td>
+        </tr>
+        <tr>
+            <td class="oldman-info-key">
+                备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：
+            </td>
+            <td class="oldman-info-value" fieldname="Remark">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="space">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 5px;" class="oldman-info-btn">
+                <table>
+                    <colgroup>
+                        <col width="50%" />
+                        <col />
+                    </colgroup>
+                    <tr>
+                        <td style="text-align: center; height: 36px;">
+                            <!--<a href="javascript:void(0)" class="button-blue-0" onclick="openOldManHealthInfo()">健康资料</a>-->
+                        </td>
+                        <td style="text-align: center;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; height: 36px;">
+                            <a id="PerfectOldMan" href="javascript:void(0)" class="button-blue-0">完善资料</a>
+                        </td>
+                        <td style="text-align: center;">
+                            <a id="ShowOldManHistory" href="javascript:void(0)" class="button-blue-0">服务历史</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="perfectoldman-block">
+</div>
+<div id="oldmanhistory-block">
+</div>
+<script type="text/javascript">
+    $(function () {
+        if (window.pageData) {
+            var oldManInfo;
+            var OldManId = window.pageData.OldManId;
+            //调用laor接口
+            getTo(baseCMSInvokeUrl + '/Oca/OldManBaseInfoService/' + OldManId, null, function (result) {
+
+                if (result.instance) {
+                    oldManInfo = result.instance;
+
+                    //填充头像
+                    if (oldManInfo.Gender != "N") {
+                        $("#oldman-portrait").html('<img width="128px" height="128px" src="../../images/public/portrait-' + (oldManInfo.Gender == "F" ? "f" : "m") + '.png">');
+                    }
+
+                    _.each($('.oldman-base-info td[fieldName]'), function (o) {
+                        var val = result.instance[$(o).attr("fieldName")];
+                        if (val) {
+                            var formatter = $(o).attr("fieldValueFormatter");
+                            if (formatter) {
+                                var self = formatter == "easyuigrid_bool2Formatter" ? "{vals:'" + $(o).attr("vals") + "'}" : "this";
+                                var js = formatter + '.apply(' + self + ',["' + val + '"]);';
+                                $(o).text(eval(js));
+                            }
+                            else {
+                                if ($(o).attr("fieldName") == "OldManIdentity") {
+                                    var identity = val == "00002" ? "老干部" : "普通";
+                                    val = identity;
+                                }
+                                if ($(o).attr("fieldName") == "LivingState") {
+                                    var livingstate = (val == "00002" ? "独居" : (val == "00003" ? "孤寡" : (val == "00004" ? "空巢" : "未知")));
+                                    val = livingstate;
+                                }
+                                $(o).text(val);
+                            }
+                        }
+                        else {
+                            if ($(o).attr("fieldName") == "OldManBaseInfo") {
+                                val = result.instance["OldManName"] + "&nbsp&nbsp" + easyuigrid_genderFormatter(result.instance["Gender"]) + "&nbsp&nbsp" + easyuigrid_dateFormatter(result.instance["Birthday"]);
+                            }
+                            $(o).text(val);
+                        }
+                    });
+                }
+            });
+            getTo(baseCMSInvokeUrl + '/Oca/OldManConfigInfoService/' + OldManId, null, function (ret) {
+                if (ret.instance) {
+                    var str = ret.instance.GovTurnkeyFlag == "0" ? "" : "<font style=\"color:red\">政府统保</font>";
+                    $('#oldman-GovTurnkeyFlag').html(str);
+                }
+            });
+            $("#PerfectOldMan").unbind('click').bind('click', function () {
+                getHtml(baseUrl + '/views/dialogs/data-perfect-unknown-oldman.htm', function (str) {
+
+                    $("#perfectoldman-block").html(str);
+                    $.parser.parse('#fm-unknown-oldman-perfect,#btn-unknown-oldman-perfect');
+                    $("#unknown-oldman-perfect").dialog({
+                        inline: false,
+                        onClose: function () {
+                            $(this).dialog('destroy');
+                        },
+                        onBeforeOpen: function () {
+                            loadUnknownOldManContent(oldManInfo);
+                        },
+                        modal: true
+                    }).dialog('open').dialog('setTitle', '完善老人信息');
+                });
+            });
+
+            $("#ShowOldManHistory").unbind('click').bind('click', function () {
+                getHtml(baseUrl + '/views/dialogs/history-of-callservice-for-oldman.htm', function (str) {
+                    $("#oldmanhistory-block").html(str);
+                    $.parser.parse('#btn-history');
+                    $("#the-history").dialog({
+                        inline: false,
+                        onClose: function () {
+                            $(this).dialog('destroy');
+                        },
+                        onBeforeOpen: function () {
+                            dialogOpen(null, pageData);
+                        },
+                        modal: true
+                    }).dialog('open').dialog('setTitle', '查看-服务历史');
+                });
+            });
+        }
+    });
+
+    function openOldManHealthInfo() {
+
+    }
+</script>

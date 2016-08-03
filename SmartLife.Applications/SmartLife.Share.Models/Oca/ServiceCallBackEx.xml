@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <select id="Count_ServiceCallBack_ListByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select 1 as NoUse
+            from Oca_ServiceCallBack a left join Oca_CallService b on a.CallServiceId=b.CallServiceId
+            <dynamic prepend=" Where ">
+                <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EvaluatedLevel" >a.EvaluatedLevel=#EvaluatedLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >a.CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FromFlag" >a.FromFlag=#FromFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >b.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >b.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >b.AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+        </select>
+        <select id="ServiceCallBack_ListByPage2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+            select x.* from (
+            select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.CallBackId,
+            a.OperatedBy,a.OperatedOn,a.DoStatus,a.EvaluatedLevel,a.CallServiceId,a.OldManId,a.FromFlag,
+            b.Callee,b.Caller,b.Content,b.CheckInTime,b.CallSeconds,b.ServiceExtNo
+            from Oca_ServiceCallBack a left join Oca_CallService b on a.CallServiceId=b.CallServiceId
+            <dynamic prepend=" Where ">
+                <isPropertyAvailable prepend=" AND " property="Status" >a.Status=#Status#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OperatedBy" >a.OperatedBy=#OperatedBy#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="EvaluatedLevel" >a.EvaluatedLevel=#EvaluatedLevel#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CallServiceId" >a.CallServiceId=#CallServiceId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="OldManId" >a.OldManId=#OldManId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="FromFlag" >a.FromFlag=#FromFlag#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_Start" >b.CheckInTime>=#CheckInTime_Start#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="CheckInTime_End" >b.CheckInTime&lt;=#CheckInTime_End#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="AreaId" >b.AreaId=#AreaId#</isPropertyAvailable>
+                <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+            </dynamic>
+            )x where x.SN > ($PageNo$-1)*$PageSize$
+        </select>
+    </statements>
+</sqlMap>

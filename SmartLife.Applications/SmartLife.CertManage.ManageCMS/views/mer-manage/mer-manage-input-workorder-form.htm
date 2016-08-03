@@ -1,0 +1,190 @@
+﻿<style type="text/css">
+.bottom_table td{ line-height:33px; text-align:center;  border-width: 1px; border-color: #C0C0C0;  border-bottom-style: solid; border-right-style: solid;}
+.bottom_table td label{text-align:center; vertical-align:middle;}
+.top_td{border:0; text-align:left; font-size:16px;}
+table input{ border:0; margin-left:5px;}
+.inputborder{border: 1px solid; border-color: #CCC #EEE #EEE #CCC; height:25px;}
+</style>
+<div id="input-workorder-form" style="  padding: 3px;">
+    <form id="fm-input-workorder" method="post" novalidate>
+    <div class="fitem" style=" border-bottom-style:solid; border-bottom-color:#ddd; border-bottom-width:1px;">
+       <table style=" width:100%;">
+       <tr><td colspan="3" id="serveStationName" style=" text-align:center; border:0; font-size:25px; line-height:40px; "></td></tr>
+       <tr><td class="top_td"><label>工单编号：</label><input name="WorkOrderNo" style=" width:200px;" /></td><td  class="top_td"><label>坐席：</label><input name="OperatedByName" /></td><td  class="top_td"><label>工单状态：</label><input name="DoStatus" /></td></tr>
+       </table>
+    </div>
+    <div class="fitem" style=" overflow:auto; height:310px;">
+        <table class="bottom_table" style=" border-width: 1px; border-color: #C0C0C0; width:97%; border-top-style: solid; border-left-style: solid;">
+        <tr><td>工单内容</td><td colspan="5"><input name="WorkOrderContent" style=" width:600px;"/></td></tr>
+        <tr><td>工单归属</td><td colspan="3"><input name="" /></td><td>服务类别</td><td><input name="ServeTypeName" /></td></tr>
+        <tr><td>服务大类</td><td><input name="ServeItemAName" /></td><td>服务小类</td><td><input name="ServeItemBName" /></td><td>服务方式</td><td><input name="ServeModeName" /></td></tr>
+        <tr><td>要求上门时间</td><td><input name="ServiceTimeRequired" /></td><td>要求备注</td><td colspan="3"><input name="RemarkRequired" /></td></tr>
+        <tr><td>服务费用(元)</td><td><input name="ServeFee" /></td><td>政府承担(元)</td><td><input name="ServeFeeByGov" /></td><td>自费(元)</td><td><input name="ServeFeeBySelf" /></td></tr>
+        <tr><td>其他收费项</td><td colspan="3" ><input class="inputborder" name="OtherCharges" style=" width:350px;"/></td><td>其他收费(元)</td><td><input  class="inputborder" name="OtherChargesFee" id="OtherChargesFee"/></td></tr>
+        <tr><td>呼入时间</td><td><input name="CheckInTime" /></td><td>督办时间</td><td><input name="SuperviseTime" /></td><td>督办人员</td><td ><input name="SupervisedByName" /></td></tr>
+        <tr><td>老人姓名</td><td><input name="OldManName" /></td><td>老人性别</td><td><input name="Gender" /></td><td>老人座机</td><td><input name="Tel" /></td></tr>
+        <tr><td>老人手机</td><td><input name="Mobile" /></td><td>家庭地址</td><td colspan="3"><input name="Address" /></td></tr>
+        <tr><td rowspan="2">服务人员</td><td rowspan="2"><input name="ServeManName" /></td><td style=" width:100px;">预约上门时间</td><td><input id="ReserveStartTime" /></td><td style=" width:100px;">服务时长</td><td><input id="ServeCountTime"/></td></tr>
+        <tr><td>开始服务</td><td><input name="ServeManArriveTime" /></td><td>服务结束</td><td><input name="ServeManLeaveTime" /></td></tr>
+        <tr><td>服务结果</td><td colspan="5"><label><input checked="checked"  type="radio" name="ServeResult_radio" value="00001"  />正常结束</label><label><input type="radio" name="ServeResult_radio" value="00002" />未服务</label><label><input type="radio" name="ServeResult_radio" value="00003" />中途离开</label><label><input type="radio" name="ServeResult_radio" value="00004" />其他</label></td></tr>
+        <tr><td>结果备注</td><td colspan="5"><input class="inputborder"  name="ServeResultRemark" style=" width:600px;"/></td></tr>
+        <tr id="FeedResult"></tr>
+        <!--<tr><td>老人签字</td><td colspan="2"><input name="" /></td><td>服务人员签字</td><td colspan="2"><input name="" /></td></tr>
+        <tr><td>服务结果</td><td><input name="ServeResultName" /></td><td>结果备注</td><td colspan="3"><input name="ServeResultRemark" style=" width:350px;"/></td></tr>
+        <tr><td>评价老人</td><td ><input  name="FeedbackToOldManName" /></td><td>评价备注</td><td colspan="3"><input name="FeedbackRemarkToOldMan" style=" width:350px;"/></td></tr>
+        <tr><td>评价商家</td><td ><input  name="FeedbackToServiceStation" /></td><td>评价备注</td><td colspan="3"><input name="FeedbackRemarkToServiceStation" style=" width:350px;"/></td></tr>-->
+        </table>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    var url = baseMerchantInvokeUrl + '/Oca/WorkOrderV2Service/';
+    var workOrderId;
+    var stationId;
+    function dialogOpen(dialogId, dialogData) {
+        workOrderId = dialogData.WorkOrderId;
+        stationId = dialogData.StationId;
+        //        alert($.toJSON(dialogData));
+        getTo(url + 'GetWorkOrderInfo/' + workOrderId, null, function (ret) {
+            if (ret.Success) {
+                var result = xml2json.parser(ret.ret, 'StringObjectDictionary');
+                var htmls = [];
+                //                if (result.ServeResultName && result.ServeResultName != '') {
+                //                    htmls.push('<tr><td>服务结果</td><td><input name="ServeResultName" /></td><td>结果备注</td><td colspan="3"><input class="inputborder"  name="ServeResultRemark" style=" width:350px;"/></td></tr>');
+                //                }
+                //                else {
+                //                    htmls.push('');
+                //                }
+                if (result.FeedbackToOldManName && result.FeedbackToOldManName != '') {
+                    htmls.push('<tr><td>评价老人</td><td ><input  name="FeedbackToOldManName"/><input  type="hidden" name="FeedbackToOldMan" id="FeedbackToOldMan" /></td><td>评价备注</td><td colspan="3"><input class="inputborder"  name="FeedbackRemarkToOldMan" style=" width:350px;"/></td></tr>');
+                    htmls.push('<tr><td>评价商家</td><td ><input  name="FeedbackToServiceStationName" /></td><td>评价备注</td><td colspan="3"><input   name="FeedbackRemarkToServiceStation" style=" width:350px;"/></td>');
+                }
+                else {
+                    htmls.push('<tr><td>评价老人</td><td colspan="5"><label><input checked="checked" type="radio" name="FeedbackToOldMan_radio"  value="00001" />满意</label><label><input type="radio" name="FeedbackToOldMan_radio"  value="00002"/>较满意</label><label><input type="radio" name="FeedbackToOldMan_radio"  value="00003"/>一般</label><label><input type="radio" name="FeedbackToOldMan_radio"  value="00004"/>较不满意</label><label><input type="radio" name="FeedbackToOldMan_radio"  value="00005"/>不满意</label></td></tr><tr><td>评价备注</td><td colspan="5"><input class="inputborder"  name="FeedbackRemarkToOldMan" style=" width:600px;"/></td></tr>');
+                }
+                $(htmls.join("")).insertBefore('#FeedResult');
+                //                $('#fm-input-workorder').form('clear');
+                $('#fm-input-workorder').form('load', result);
+                $('input[name="Gender"]').val(gender(result.Gender));
+                $('#serveStationName').text(result.ServeStationName);
+                $("input[name='DoStatus']").val(doStatus(result.DoStatus));
+                getCountTime(result.ServeManArriveTime, result.ServeManLeaveTime);
+                getReserveStartTime(result.ReserveFrom, result.ServiceTimeRequired);
+            }
+        }, { async: false }, { ApplicationId: gApplicationId, StationId: stationId });
+    }
+    function dialogBeforeSubmit() {
+        var otherChargesFee = $('#OtherChargesFee').val();
+        var result;
+        var re = /^\d+(\.\d+)?$/i;   //判断字符串是否为数字 
+        if (re.test(otherChargesFee) || IsNull(otherChargesFee, '') == '') {
+            result = true;
+        }
+        else {
+            alert("货币格式不正确");
+            result = false;
+        }
+        return result;
+    }
+
+    function getReserveStartTime(reserveFrom, serviceTimeRequired) {
+        var reserveStartTime;
+        if (isnull(reserveFrom, '') != '') {
+            reserveStartTime = reserveFrom.replace(/-/gm,'/');
+        }
+        else if (isnull(serviceTimeRequired, '') != '') {
+            reserveStartTime = serviceTimeRequired;
+        }
+        else {
+            reserveStartTime = '未要求上门时间';
+        }
+        $('#ReserveStartTime').val(reserveStartTime);
+    }
+
+
+    function getCountTime(arrive, leave) {
+        var countTime;
+        if (isnull(arrive, '') != '' && isnull(leave, '') != '') {
+            var ss = DateDiff('s', new Date(arrive), new Date(leave));
+            var h = parseInt(ss / 3600);
+            var m = Math.ceil(ss % 3600 / 60);
+            if (m == 60) {
+                h = h + 1;
+                m = 0;
+            }
+            if (h > 0) {
+                countTime = h + '时' + m + '分';
+            }
+            else {
+                countTime = m + '分';
+            }
+        }
+        else if (isnull(arrive, '') != '' && isnull(leave, '') == '') {
+            countTime = '服务中';
+        }
+        else {
+            countTime = '未开始';
+        }
+        $('#ServeCountTime').val(countTime);
+    }
+
+    function gender(g) {
+        if (g == "M" || g == "F") {
+            return g == "M" ? "男" : "女";
+        }
+        else {
+            return "未知";
+        }
+    }
+
+    function doStatus(ds) {
+        var ret;
+        switch (ds) {
+            case 0: ret = "未响应";
+                break;
+            case 1: ret = "已响应";
+                break;
+            case 2: ret = "已响应";
+                break;
+            case 3: ret = "已完成";
+                break;
+            case 4: ret = "已回访";
+                break;
+        }
+        return ret;
+    }
+
+    function dialogClose(dialogId) {
+        var serveResult = $("input[name='ServeResult_radio']:checked").val();
+        var feedbackToOldMan = $("input[name='FeedbackToOldMan_radio']:checked").val();
+        var otherCharges = $("input[name='OtherCharges']").val();
+        var otherChargesFee = $("input[name='OtherChargesFee']").val();
+        var queryParams = {
+            WorkOrderId: workOrderId,
+//            OperatedBy: top.window.gUserId,
+            OtherCharges: IsNull(otherCharges,'') == '' ? null : otherCharges,
+            OtherChargesFee: IsNull(otherChargesFee,'') == '' ? null : otherChargesFee,
+            //                ServeBeginTime: $("input[name='ServeBeginTime']").val().replace('/', '-').replace('/', '-'),
+            //                ServeEndTime: $("input[name='ServeEndTime']").val().replace('/', '-').replace('/', '-'),
+//            ServeResult: IsNull(serveResult, '') == '' ? null : serveResult,
+            ServeResultRemark: $("input[name='ServeResultRemark']").val(),
+//            FeedbackToOldMan: IsNull(feedbackToOldMan, '') == '' ? null : feedbackToOldMan,
+            FeedbackRemarkToOldMan: $("input[name='FeedbackRemarkToOldMan']").val()
+        };
+        if (serveResult && IsNull(serveResult, '') != '') {
+            queryParams["ServeResult"] = serveResult;
+        }
+        if (feedbackToOldMan && IsNull(feedbackToOldMan, '') != '') {
+            queryParams["FeedbackToOldMan"] = feedbackToOldMan;
+        }
+        else {
+            queryParams["FeedbackToOldMan"] = $('#FeedbackToOldMan').val();
+        }
+//        alert(top.window.gUserId);
+  //   alert($.toJSON(queryParams));
+           return $.toJSON(queryParams);
+    }
+
+
+</script>

@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="SmartLife.Share.Models.Oca" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parameterMaps>
+    <parameterMap id="SP_Oca_ResponseServiceWorkOrderParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ReceiveType" column="ReceiveType" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_WorkOrderAssignTheFinalStationParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_WorkOrderDispatchServeManParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManId" column="ServeManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManName" column="ServeManName" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ResponseFrom" column="ResponseFrom" direction="Input" type="string" dbType="char" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_InputWorkOrderByMerchantParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManId" column="ServeManId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManName" column="ServeManName" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="OtherCharges" column="OtherCharges" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="OtherChargesFee" column="OtherChargesFee" direction="Input" type="decimal" dbType="decimal" />
+      <parameter  property="ServeBeginTime" column="ServeBeginTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeEndTime" column="ServeEndTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeManArriveTime" column="ServeManArriveTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeManLeaveTime" column="ServeManLeaveTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeResult" column="ServeResult" direction="Input" type="string" dbType="char" />
+      <parameter  property="ServeResultRemark" column="ServeResultRemark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="FeedbackToOldMan" column="FeedbackToOldMan" direction="Input" type="string" dbType="char" />
+      <parameter  property="FeedbackRemarkToOldMan" column="FeedbackRemarkToOldMan" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="FastOverFlag" column="FastOverFlag" direction="Input" type="int" dbType="int" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_WorkOrderUpToSuperviseParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_CloseWorkOrderParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManArriveTime" column="ServeManArriveTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeManLeaveTime" column="ServeManLeaveTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="FeedbackToServiceStation" column="FeedbackToServiceStation" direction="Input" type="string" dbType="char" />
+      <parameter  property="FeedbackRemarkToServiceStation" column="FeedbackRemarkToServiceStation" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ServeFinalResult" column="ServeFinalResult" direction="Input" type="string" dbType="char" />
+      <parameter  property="ServeFinalResultRemark" column="ServeFinalResultRemark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_SuperviseWorkOrderOfVouchBySeatParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ServeManName" column="ServeManName" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="ServeEndTime" column="ServeEndTime" direction="Input" type="string" dbType="datetime" />
+      <parameter  property="ServeItemB" column="ServeItemB" direction="Input" type="string" dbType="char" />
+      <parameter  property="ServeFinalResult" column="ServeFinalResult" direction="Input" type="string" dbType="char" />
+      <parameter  property="ServeFinalResultRemark" column="ServeFinalResultRemark" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="StationId" column="StationId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Oca_WorkOrderResponseByDispatchManParam" class="StringObjectDictionary">
+      <parameter  property="WorkOrderId" column="WorkOrderId" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ButtonTag" column="ButtonTag" direction="Input" type="string" dbType="varchar" />
+      <parameter  property="FeedbackToOldMan" column="FeedbackToOldMan" direction="Input" type="string" dbType="char" />
+      <parameter  property="OperatedBy" column="OperatedBy" direction="Input" type="Guid" dbType="uniqueidentifier" />
+      <parameter  property="ErrorCode" column="ErrorCode" direction="Output" type="int" dbType="int" />
+      <parameter  property="ErrorMessage" column="ErrorMessage" direction="Output" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Stc_ServiceForHourParam" class="StringObjectDictionary">
+      <parameter  property="BeginTime" column="BeginTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="EndTime" column="EndTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param3" column="Param3" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param4" column="Param4" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="type" column="type" direction="Input" type="int" dbType="int" />
+    </parameterMap>
+    <parameterMap id="SP_Stc_ServiceForHour_ServeManParam" class="StringObjectDictionary">
+      <parameter  property="BeginTime" column="BeginTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="EndTime" column="EndTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param3" column="Param3" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param4" column="Param4" direction="Input" type="string" dbType="nvarchar" />
+    </parameterMap>
+    <parameterMap id="SP_Stc_ServiceForHour_ServeMan_TotalParam" class="StringObjectDictionary">
+      <parameter  property="BeginTime" column="BeginTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="EndTime" column="EndTime" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param3" column="Param3" direction="Input" type="string" dbType="nvarchar" />
+      <parameter  property="Param4" column="Param4" direction="Input" type="string" dbType="nvarchar" />
+    </parameterMap>
+  </parameterMaps>
+  <statements>
+    <procedure id="SP_Oca_ResponseServiceWorkOrder" parameterMap="SP_Oca_ResponseServiceWorkOrderParam" resultClass="StringObjectDictionary">
+      SP_Oca_ResponseServiceWorkOrder
+    </procedure>
+    <procedure id="SP_Oca_WorkOrderAssignTheFinalStation" parameterMap="SP_Oca_WorkOrderAssignTheFinalStationParam" resultClass="StringObjectDictionary">
+      SP_Oca_WorkOrderAssignTheFinalStation
+    </procedure>
+    <procedure id="SP_Oca_WorkOrderDispatchServeMan" parameterMap="SP_Oca_WorkOrderDispatchServeManParam" resultClass="StringObjectDictionary">
+      SP_Oca_WorkOrderDispatchServeMan
+    </procedure>
+    <procedure id="SP_Oca_InputWorkOrderByMerchant" parameterMap="SP_Oca_InputWorkOrderByMerchantParam" resultClass="StringObjectDictionary">
+      SP_Oca_InputWorkOrderByMerchant
+    </procedure>
+    <procedure id="SP_Oca_WorkOrderUpToSupervise" parameterMap="SP_Oca_WorkOrderUpToSuperviseParam" resultClass="StringObjectDictionary">
+      SP_Oca_WorkOrderUpToSupervise
+    </procedure>
+    <procedure id="SP_Oca_CloseWorkOrder" parameterMap="SP_Oca_CloseWorkOrderParam" resultClass="StringObjectDictionary">
+      SP_Oca_CloseWorkOrder
+    </procedure>
+    <procedure id="SP_Oca_SuperviseWorkOrderOfVouchBySeat" parameterMap="SP_Oca_SuperviseWorkOrderOfVouchBySeatParam" resultClass="StringObjectDictionary">
+      SP_Oca_SuperviseWorkOrderOfVouchBySeat
+    </procedure>
+    <procedure id="SP_Oca_WorkOrderResponseByDispatchMan" parameterMap="SP_Oca_WorkOrderResponseByDispatchManParam" resultClass="StringObjectDictionary">
+      SP_Oca_WorkOrderResponseByDispatchMan
+    </procedure>
+    <procedure id="SP_Stc_ServiceForHour" parameterMap="SP_Stc_ServiceForHourParam" resultClass="StringObjectDictionary">
+      SP_Stc_ServiceForHour
+    </procedure>
+    <procedure id="SP_Stc_ServiceForHour_ServeMan" parameterMap="SP_Stc_ServiceForHour_ServeManParam" resultClass="StringObjectDictionary">
+      SP_Stc_ServiceForHour_ServeMan
+    </procedure>
+    <procedure id="SP_Stc_ServiceForHour_ServeMan_Total" parameterMap="SP_Stc_ServiceForHour_ServeMan_TotalParam" resultClass="StringObjectDictionary">
+      SP_Stc_ServiceForHour_ServeMan_Total
+    </procedure>
+    <select id="GetDispatchedServiceReceive" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select ServiceReceiveId,a.CheckInTime,ReceiveStatus,dbo.FUNC_Tol_GetDictionaryItemName('11019',a.DispatchType) as DispatchName,a.StationId,b.StationName from Oca_ServiceReceive a
+      inner join Pub_ServiceStation b on a.StationId  = b.StationId
+      where a.WorkOrderId = #WorkOrderId#
+    </select>
+    <select id="GetWorkOrderInfo" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+    select a.CallServiceId,a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+    (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+    dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+    dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+    dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+    dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+    dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+    a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+    (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+    a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+    a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManId,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,
+    a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+    (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+    a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+    a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+    a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+    a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+    a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+    a.SpecialFlag,
+    (select SUBSTRING(CONVERT(CHAR(23), ReserveDate, 121),0,12)+ReserveFrom from Oca_MerchantServiceReserve where WorkOrderId=a.WorkOrderId) as ReserveFrom,
+    (select SUBSTRING(CONVERT(CHAR(23), ReserveDate, 121),0,12)+ReserveTo from Oca_MerchantServiceReserve where WorkOrderId=a.WorkOrderId) as ReserveTo
+    from Oca_ServiceWorkOrder a
+    where a.WorkOrderId=#WorkOrderId#
+    order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderToResponse" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag,b.ReceiveStatus
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus=0 and b.ReceiveStatus = 0
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderProcessing" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')='' and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderProcess" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag,b.ReceiveStatus
+      from Oca_ServiceWorkOrder a,Oca_ServiceReceive b
+      where ((a.ServeStationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')=''  and b.ReceiveStatus=3) or (b.ReceiveStatus in (1,2) and b.StationId=#StationId# and b.CheckInTime&gt;=#CheckInTime#)) and b.WorkOrderId= a.WorkOrderId
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderProcessed" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')&lt;>''  and (a.ServeResult is null or a.FeedbackToOldMan is null) and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderProcessedServicing" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,a.InputtedTimeByServiceStation,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')&lt;>''  and ServeManLeaveTime is null and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderProcessedServiced" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,a.InputtedTimeByServiceStation,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')&lt;>''  and ServeManLeaveTime is not null and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderFinished" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,a.ServeManArriveTime,a.ServeManLeaveTime,a.InputtedTimeByServiceStation,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and (a.DoStatus =4 or (a.DoStatus in (1,2,3) and a.ServeResult is not null and a.FeedbackToOldMan is not null)) and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <select id="GetWorkOrderCallBackFinished" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select
+      a.WorkOrderId,a.CheckInTime,(select UserCode from Pub_User where UserId=a.OperatedBy) as OperatedByName,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      (select AreaName from Pub_Area_V where AreaId = a.AreaId)+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId2),'')+isnull('-'+(select AreaName from Pub_Area_V where AreaId = a.AreaId3),'') as WorkOrderArea,
+      dbo.FUNC_Tol_GetDictionaryItemName('11012',a.ServeItemA) as ServeItemAName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11014',a.ServeMode) as ServeModeName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11015',a.ServeRadius) as ServeRadiusName,
+      dbo.FUNC_Tol_GetDictionaryItemName('11018',a.ServeType) as ServeTypeName,
+      a.ServeFee,a.ServeFeeByGov,a.ServeFeeBySelf,a.OtherCharges,a.OtherChargesFee,a.ServiceTimeRequired,a.RemarkRequired,a.SuperviseTime,
+      (select UserName from Pub_User where UserId=a.SupervisedBy) as SupervisedByName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,
+      a.ServeStationId,a.ServeStationName,a.ServeManName,a.ServeManDispatchedTime,a.ServeBeginTime,a.ServeEndTime,a.ServeManArriveTime,a.ServeManLeaveTime,a.InputtedTimeByServiceStation,
+      a.ServeResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,
+      (select UserName from Pub_User where UserId=a.FeedbackBy) as FeedbackByName,
+      a.FeedbackToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackTimeToServiceStation,a.FeedbackRemarkToServiceStation,
+      a.FeedbackToOldMan,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackTimeToOldMan,a.FeedbackRemarkToOldMan,
+      a.ServeManArriveTime,a.ServeManLeaveTime,a.ServeFinalResult,dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeFinalResult) as ServeFinalResultName,a.ServeFinalResultRemark,
+      a.SpecialFlag
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b
+      on a.WorkOrderId=b.WorkOrderId
+      where b.StationId=#StationId# and a.DoStatus =4 and b.ReceiveStatus=3
+      <dynamic prepend=" And  ">
+        <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_Start" >a.ServeManArriveTime>=#ServeManArriveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManArriveTime_End" >a.ServeManArriveTime&lt;=#ServeManArriveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_Start" >a.ServeManLeaveTime>=#ServeManLeaveTime_Start#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManLeaveTime_End" >a.ServeManLeaveTime&lt;=#ServeManLeaveTime_End#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderNo" >a.WorkOrderNo=#WorkOrderNo#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemA" >a.ServeItemA=#ServeItemA#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeMode" >a.ServeMode=#ServeMode#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeRadius" >a.ServeRadius=#ServeRadius#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeType" >a.ServeType=#ServeType#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="ServeResult" >a.ServeResult=#ServeResult#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToServiceStation" >a.FeedbackToServiceStation=#FeedbackToServiceStation#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" And " property="FeedbackToOldMan" >a.FeedbackToOldMan=#FeedbackToOldMan#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      order by a.CheckInTime desc
+    </select>
+    <update id="ServiceReceive_UpdateForAssignTheFinalStation" parameterClass="StringObjectDictionary" >
+      update Oca_ServiceReceive
+      set OperatedBy=#OperatedBy#,OperatedOn=#OperatedOn#,ReceiveStatus = (case when StationId = #StationId# then 3 else 2 end)
+      where WorkOrderId=#WorkOrderId# And ReceiveStatus=1
+    </update>
+
+    <select id="Count_GetWorkOrderForReport" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b on a.WorkOrderId=b.WorkOrderId
+      <dynamic prepend=" And  ">
+      <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="DoStatus" >a.DoStatus=#DoStatus#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </dynamic>
+    </select>
+    <select id="GetWorkOrderForReport" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,a.WorkOrderId,a.CheckInTime,a.WorkOrderNo,a.DoStatus,a.WorkOrderContent,
+      dbo.FUNC_Tol_GetDictionaryItemName('11013',a.ServeItemB) as ServeItemBName,
+      a.OldManId,a.OldManName,a.Gender,a.Address,a.Tel,a.Mobile,a.ServeManName,a.ServeManArriveTime,a.ServeManLeaveTime,
+      dbo.FUNC_Tol_GetDictionaryItemName('11016',a.ServeResult) as ServeResultName,a.ServeResultRemark,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToServiceStation) as FeedbackToServiceStationName,
+      a.FeedbackRemarkToServiceStation,dbo.FUNC_Tol_GetDictionaryItemName('11017',a.FeedbackToOldMan) as FeedbackToOldManName,
+      a.FeedbackRemarkToOldMan
+      from Oca_ServiceWorkOrder a inner join Oca_ServiceReceive b on a.WorkOrderId=b.WorkOrderId
+      <isEqual property="DoStatus0" compareValue="1">
+        where b.StationId=#StationId# and a.Status=1
+      </isEqual>
+      <isEqual property="DoStatus1" compareValue="1">
+        where b.StationId=#StationId# and a.DoStatus=0 and b.ReceiveStatus = 0
+      </isEqual>
+      <isEqual property="DoStatus2" compareValue="1">
+        where ((a.ServeStationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')=''  and b.ReceiveStatus=3) or (b.ReceiveStatus in (1,2) and b.StationId=#StationId# and b.CheckInTime&gt;=#CheckInTime#)) and b.WorkOrderId= a.WorkOrderId
+      </isEqual>
+      <isEqual property="DoStatus3" compareValue="1">
+        where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')&lt;>''  and ServeManLeaveTime is null and b.ReceiveStatus=3
+      </isEqual>
+      <isEqual property="DoStatus4" compareValue="1">
+        where b.StationId=#StationId# and a.DoStatus in (1,2,3) and isnull(a.ServeManName,'')&lt;>''  and ServeManLeaveTime is not null and b.ReceiveStatus=3
+      </isEqual>
+      <isEqual property="DoStatus5" compareValue="1">
+        where b.StationId=#StationId# and a.DoStatus =4 and b.ReceiveStatus=3
+      </isEqual>
+      <dynamic prepend=" And  ">
+      <isPropertyAvailable prepend=" And " property="WorkOrderId" >a.WorkOrderId=#WorkOrderId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="OldManName" >a.OldManName=#OldManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="CheckInTime" >a.CheckInTime&gt;=#CheckInTime#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="WorkOrderContent" >a.WorkOrderContent=#WorkOrderContent#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeItemB" >a.ServeItemB=#ServeItemB#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Gender" >a.Gender=#Gender#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Address" >a.Address=#Address#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Tel" >a.Tel=#Tel#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="Mobile" >a.Mobile=#Mobile#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeStationName" >a.ServeStationName=#ServeStationName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" And " property="ServeManName" >a.ServeManName=#ServeManName#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+    </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="GetMerchantServeForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select isnull(OldManName,'') as OldManName
+      ,isnull((select ItemName from Sys_DictionaryItem where DictionaryId='11013' and ItemId=ServeItemB),'') as ServeItemB
+      ,isnull((select AreaName from Pub_Area where AreaId= AreaId2),'') as AreaName2
+      ,isnull((select AreaName from Pub_Area where AreaId= AreaId3),'') as AreaName3
+      ,ServeManArriveTime,ServeManLeaveTime,
+      ISNULL((select ItemName from Sys_DictionaryItem where DictionaryId='11017' and ItemId=FeedbackToServiceStation ),'') as FeedbackToServiceStation
+      from Oca_ServiceWorkOrder
+      where status=1 and Datediff(d,CheckInTime,#ScrollDate#) = 0
+      and abs(Datediff(hh,checkintime,getdate())) &lt;= #TimeSpanOfHour#
+      and Id>#Id# and ServeStationId=#ServeStationId#  
+      <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+       Order by CheckInTime desc
+    </select>
+    <select id="GetMerchantServeCountForBigScreen" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select '今日服务' Title,count(*) Num from Oca_ServiceWorkOrder
+      where  status=1 and  Datediff(d,CheckInTime,#ScrollDate#) = 0
+      and ServeStationId=#ServeStationId#
+      union all
+      select '今日全区服务',count(*) Num_Todays from Oca_ServiceWorkOrder
+      where  status=1 and  Datediff(d,CheckInTime,#ScrollDate#) = 0
+      union all
+      select '本月服务',count(*) Num_Month from Oca_ServiceWorkOrder
+      where  status=1 and  Datediff(MONTH,CheckInTime,#ScrollDate#) = 0
+      and ServeStationId=#ServeStationId#
+      union all
+      select '本月全区服务',count(*) Num_Months from Oca_ServiceWorkOrder
+      where  status=1 and  Datediff(MONTH,CheckInTime,#ScrollDate#) = 0
+      union all
+      select '全区商家共',count(*) ServiceStations from Pub_ServiceStation
+      where  status=1
+      and stationtype='00003'
+    </select>
+  </statements>
+</sqlMap>

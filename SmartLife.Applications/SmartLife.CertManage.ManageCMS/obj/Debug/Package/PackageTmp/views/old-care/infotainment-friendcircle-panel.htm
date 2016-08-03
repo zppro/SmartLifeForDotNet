@@ -1,0 +1,105 @@
+﻿<table align="center" style="width: 90%; height:50%; margin:0 auto; margin-top: 15px;" cellspacing="0" cellpadding="0">
+    <colgroup>
+        <col align="right" style="width: 32px; font-weight: bold;"  />
+        <col align="left" />
+    </colgroup>
+    <tr style="height: 24px;">
+        <td>
+            街道:
+        </td>
+        <td>
+            <select name="street" style="width: 100%;">
+                <option>请选择</option>
+            </select>
+        </td>
+    </tr>
+    <tr style="height: 24px;">
+        <td>
+            社区:
+        </td>
+        <td>
+            <select name="community" style="width: 100%;">
+                <option>请选择</option>
+            </select>
+        </td>
+    </tr>
+    <tr style="height: 28px;padding-top:4px;">
+        <td nowrap>关键词:</td>
+        <td> 
+        <div>
+            <input id="keyword" type="text"  style="" /><a href="javascript:void(0)" class="button-select" onclick="doSearchOldManAsFriend($('#keyword').val())">
+                </a></div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+<!--<div style="margin-top: 15px">
+    <table id="list_data" style="margin: 0px auto; border: 1px solid Gray; padding: 0px;
+        width: 90%;" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr style="height: 30px;">
+                <th field="fldAppDept" style="text-align: center; font-weight: bold;">
+                    姓名
+                </th>
+                <th field="fldAppNode" style="text-align: center; font-weight: bold;">
+                    地址
+                </th>
+                <th field="fldAppName" style="text-align: center; font-weight: bold;">
+                    添加朋友
+                </th>
+            </tr>
+        </thead>
+        <tr style="height: 30px;">
+            <td style="text-align: center; border-top: 1px solid gray;">
+                阿花
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                田园5-06-5
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                <a href="javascript:void(0)">添加</a>
+            </td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="text-align: center; border-top: 1px solid gray;">
+                阿花
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                田园5-06-5
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                <a href="javascript:void(0)">添加</a>
+            </td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="text-align: center; border-top: 1px solid gray;">
+                阿花
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                田园5-06-5
+            </td>
+            <td style="text-align: center; border-top: 1px solid gray;">
+                <a href="javascript:void(0)">添加</a>
+            </td>
+        </tr>
+    </table>
+</div>-->
+<table align="center" style="width: 100%;">
+    <colgroup>
+        <col align="center" />
+    </colgroup>
+    <tr>
+        <td>
+            <div class="tel-title">
+                朋友圈</div>
+            <div id="friendcircle-tel">
+                <a href="javascript:void(0)" class="button-blue-1" onclick="openTel('张三')">张三</a>
+                <a href="javascript:void(0)" class="button-blue-1" onclick="openTel('李四')">李四</a>
+                <a href="javascript:void(0)" class="button-blue-1" onclick="openTel('王五')">王五</a>
+                <a href="javascript:void(0)" class="button-blue-1" onclick="openTel('小二')">小二</a>
+            </div>
+        </td>
+    </tr>
+</table>

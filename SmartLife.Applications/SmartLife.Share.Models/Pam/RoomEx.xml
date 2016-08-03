@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pam" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <statements>
+    <select id="GetRoomOldManNow" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select p.OldManId,p.IDNo,p.OldManName,p.Gender,ro.SickBedNo,ro.BeginDate,ro.EndDate
+      from Oca_OldManBaseInfo p right join Pam_RoomOldMan ro on p.OldManId=ro.OldManId left join Pam_Room r
+      on ro.RoomId=r.RoomId
+      where ro.EndDate>GETDATE() and r.StationId=#StationId# and r.RoomId=#RoomId# and p.Status=3 and p.ResidentStatus=7
+      order by ro.CheckInTime desc
+    </select>
+    <select id="GetRoomEmptyBeds" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select a.*,b.SickBedNo from  Pam_Room a left join Pam_RoomOldMan b on a.RoomId=b.RoomId and b.EndDate>GETDATE()
+      where a.Status=1
+      <isPropertyAvailable prepend=" AND " property="StationId" >a.StationId=#StationId#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="FloorNo" >a.FloorNo=#FloorNo#</isPropertyAvailable>
+      <isPropertyAvailable prepend=" AND " property="RoomId" >a.RoomId=#RoomId#</isPropertyAvailable>
+      order by a.FloorNo,a.RoomNo
+    </select>
+    <select id="GetLivedRoom2" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select  a.RoomId,a.RoomNo,a.ExtNo,a.BedNo,a.OccupancyNumber,b.Id,b.OldManId,b.BeginDate,b.EndDate,b.SickBedNo
+      from Pam_Room a inner join Pam_RoomOldMan b on a.RoomId=b.RoomId
+      where a.StationId=#StationId# and b.OldManId=#OldManId#
+      order by b.CheckInTime desc
+    </select>
+    <select id="GetRoomListForStation" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select r.RoomId,r.RoomNo,r.ExtNo,r.BedNo,r.OccupancyNumber,r.FloorNo,
+      o.OldManId,o.OldManName,o.Gender,dbo.FUNC_Tol_GetGenderName(o.Gender) GenderName,dbo.FUNC_Tol_GetAge(o.IDNo)Age,o.IDNo
+      ,ro.BeginDate,ro.SickBedNo
+      from Pam_RoomOldMan ro left join Pam_Room r on ro.RoomId=r.RoomId
+      left join (select  OldManId,Status,ResidentStatus,StationId, OldManName, Gender, IDNo from Oca_OldManBaseInfo
+      where  Status=3 and ResidentStatus=7 and StationId=#StationId#) o on ro.OldManId=o.OldManId
+      where ro.EndDate>GETDATE() and r.Status=1 and r.StationId=#StationId#
+      order by ISNULL(r.FloorNo,r.RoomNo),r.RoomNo
+    </select>
+  </statements>
+</sqlMap>

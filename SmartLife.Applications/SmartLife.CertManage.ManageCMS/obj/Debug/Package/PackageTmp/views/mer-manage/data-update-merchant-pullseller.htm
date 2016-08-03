@@ -1,0 +1,99 @@
+﻿<div id="toolbar-pullseller">
+    <table width="100%">
+        <tr>
+            <td style="width: 90px;">
+            </td>
+            <td style="text-align:left">
+                关键字：<input name="KeyWord" id="KeyWord" class="easyui-validatebox" />
+            </td> 
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="execEx()">
+                    查询</a>
+            </td>
+            <td style="width: 90px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="resetEx()">
+                    清空</a>
+            </td>
+            <td style="width: 90px;">
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="dg-pullseller">
+</table> 
+<script type="text/javascript">
+    var areas; 
+    function dialogOpen(dialogId, dialogData) {
+        autosize("dg-pullseller", 0);
+
+        getTo(baseCMSInvokeUrl + '/Sys/DictionaryItemService/Query?parms=' + $.toJSON({ 'DictionaryId': '00005', 'ItemId': (top.objectId == '*' ? '00000' : top.appDeployArea.id) }), null, function (result) {
+           getTo(ajaxData_InvokeUrl + '/GetCityAndAreaInProvince/' + result.rows[0].ParentId, null, function (result) {
+               areas = result;
+            }, { async: false });
+        }, { async: false });
+       $('#dg-pullseller' ).datagrid(easyuigrid_settings({
+            title: "",
+            pagination: true,
+            rownumbers: true,
+            singleSelect: false,
+            url: baseCMSInvokeUrl + '/Pub/ServiceStationService/ListForEasyUIgridPageForPullSeller/' + baseInfoNode,
+            method: 'POST',
+            toolbar: '#toolbar-pullseller',
+            queryParams: {
+                sort: 'OperatedOn',
+                order: 'desc',
+                instance: {
+                    Status: 1,
+                    StationType: '00003'
+                }
+            },
+            onDblClickRow: function (idx, row) {
+                edit(row);
+            },
+            columns: [[
+                { field: 'StationId', title: '服务站编号', width: 50, hidden: true },
+                { field: 'CK', title: '', checkbox: true }, 
+                {field: 'StationName', title: '商家名称', width: 190 },
+                { field: 'LinkMan', title: '联系人', width: 64 },
+                { field: 'LinkManMobile', title: '手机号码', width: 80 },
+                { field: 'Tel', title: '座机', width: 80 }, 
+                {field: 'AreaId', title: '所属辖区', width: 100, formatter: easyuigrid_ajaxFormatter, vals: areas, textField: "ItemName", valueField: "ItemId" }, 
+                { field: 'Address', title: '地址', width: 200 }
+        ]],
+            loader: easyuiLoader
+        })).datagrid('getPager').pagination({ displayMsg: '显示 第 {from} 到 {to} 共 {total} 条' }); 
+    }
+
+
+    function dialogBeforeSubmit() {
+        return true;
+    }
+
+    function dialogClose(dialogId) {
+        var rows = $('#dg-pullseller').datagrid('getSelections');
+        return rows;
+    }
+
+    function execEx() {
+        var keyword = $('#KeyWord').val();
+        $('#dg-pullseller').datagrid('reload', {
+            sort: 'OperatedOn',
+            order: 'desc',
+            fuzzyFieldOP: ' or ',
+            instance: {
+                Status: 1,
+                StationType: '00003'
+            },
+            fuzzyFields: [{ key: 'StationName', value: keyword },
+                { key: 'Tel', value: keyword },
+                { key: 'LinkMan', value: keyword },
+                { key: 'LinkManMobile', value: keyword },
+                { key: 'Address', value: keyword },
+                { key: 'InputCode1', value: keyword },
+                { key: 'InputCode2', value: keyword}]
+        });
+    }
+    function resetEx() {
+        $('#KeyWord').val(null);
+    }
+</script>

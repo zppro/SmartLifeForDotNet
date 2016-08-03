@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="SmartLife.Share.Models.Pub" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Col_Article" type="SmartLife.Share.Models.Pub.Col_Article, SmartLife.Share.Models" />
+  </alias>
+  <statements>
+      <select id="Cms_Index_LoadMoreColumns"  parameterClass="StringObjectDictionary"  resultClass="ArticleColumn" >
+        SELECT a.ColumnId,a.Code,
+        a.COL_Name,a.ParentId,a.COL_Path FROM Pub_ArticleColumn a
+        WHERE  a.Status=1
+        <dynamic prepend=" AND ">
+          <isPropertyAvailable prepend=" AND " property="ShowMode" >ShowMode=#ShowMode#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+        </dynamic>
+        order by a.OrderNo
+      </select>
+      <select  id="Cms_Article_ByColumn" parameterClass="StringObjectDictionary" resultClass="Col_Article" >
+        select top (#ROWNUM#)  a.ArticleId,a.Title,a.PublishDate,a.SubTitle
+        from Pub_Article a inner join Pub_ArticleColumn_Relation b on a.ArticleId=
+        b.ArticleId inner join Pub_ArticleColumn c on b.ColumnId=c.ColumnId and c.Status=1 and a.Status=1
+        and HomeShowFlag=1
+        and ISNULL(ExpiredDate,GETDATE())>= GETDATE()
+        <dynamic prepend=" AND ">
+          <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+          <isPropertyAvailable prepend=" AND " property="ColumnId" >b.ColumnId=#ColumnId#</isPropertyAvailable>
+        </dynamic>
+        order by a.PublishDate desc
+      </select>
+    <select  id="Cms_Attachment_ByArticle" parameterClass="StringObjectDictionary" resultClass="Attachment" >
+      select top (#ROWNUM#) SourceId,AttachmentTag,SaveName,SaveThumbName from Pub_Attachment
+      WHERE Status=1
+      <dynamic prepend=" AND ">
+        <isPropertyAvailable prepend=" AND " property="SourceId" >SourceId=#SourceId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="AttachmentTag" >AttachmentTag=#AttachmentTag#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="SourceTable" >SourceTable=#SourceTable#</isPropertyAvailable>
+      </dynamic>
+      order by CheckInTime desc
+    </select>
+    <select id="Count_ArticleListByColByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from Pub_Article a inner join Pub_ArticleColumn_Relation b on a.ArticleId=
+      b.ArticleId inner join Pub_ArticleColumn c on b.ColumnId=c.ColumnId and c.Status=1 and a.Status=1
+      and ISNULL(ExpiredDate,GETDATE())>= GETDATE()
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnId" >b.ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="ArticleListByColByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+      a.ArticleId,a.Title,a.PublishDate
+      from Pub_Article a inner join Pub_ArticleColumn_Relation b on a.ArticleId=
+      b.ArticleId inner join Pub_ArticleColumn c on b.ColumnId=c.ColumnId and c.Status=1 and a.Status=1
+      and ISNULL(ExpiredDate,GETDATE())>= GETDATE()
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >a.AreaId=#AreaId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="ColumnId" >b.ColumnId=#ColumnId#</isPropertyAvailable>
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    <select id="CTE_StreetAndCommunitiy_CMSList" parameterClass="StringObjectDictionary" resultClass="DictItemEx" >
+      with CTE_StreetAndCommunitiy as (
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area a where a.Status=1 and a.ParentId = #ParentId#
+      union all
+      select cast(a.AreaId as varchar(40)) as ItemId,a.AreaCode as ItemCode,a.AreaName as ItemName,a.ParentId,a.Levels,a.OrderNo
+      from Pub_Area a inner join CTE_StreetAndCommunitiy b on a.ParentId = b.ItemId where a.Status=1
+      )
+      select m.* from CTE_StreetAndCommunitiy m  order by OrderNo
+    </select>
+    <select id="Count_VideoArticleListByPage" parameterClass="StringObjectDictionary" resultClass="StringObjectDictionary" >
+      select 1 as NoUse
+      from Pub_Article where
+      Status=1
+      and VideoFlag=1
+      <!--and ISNULL(ExpiredDate,GETDATE())>= GETDATE()-->
+      and ArticleId in(
+      select ArticleId from Pub_ArticleColumn_Relation where Status=1 and
+      ColumnId in(select ColumnId from Pub_ArticleColumn where Status=1
+      <dynamic prepend=" AND ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      </dynamic>
+      )
+      )
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+    </select>
+    <select id="VideoArticleListByPage" parameterClass="StringObjectDictionary" resultClass="Col_Article" >
+      select x.* from (
+      select top ($PageNo$*$PageSize$) row_number() over(Order By $OrderByClause$) as SN,
+      ArticleId,Title,PublishDate
+      from Pub_Article where
+      Status=1
+      and VideoFlag=1
+      <!--and ISNULL(ExpiredDate,GETDATE())>= GETDATE()-->
+      and ArticleId in(
+      select ArticleId from Pub_ArticleColumn_Relation where Status=1 and
+      ColumnId in(select ColumnId from Pub_ArticleColumn where Status=1
+      <dynamic prepend=" AND ">
+        <isPropertyAvailable prepend=" AND " property="AreaId" >AreaId=#AreaId#</isPropertyAvailable>
+      </dynamic>
+      )
+      )
+      <dynamic prepend=" WHERE ">
+        <isPropertyAvailable prepend=" AND " property="WhereClause">$WhereClause$</isPropertyAvailable>
+      </dynamic>
+      )x where x.SN > ($PageNo$-1)*$PageSize$
+    </select>
+    </statements>
+</sqlMap>

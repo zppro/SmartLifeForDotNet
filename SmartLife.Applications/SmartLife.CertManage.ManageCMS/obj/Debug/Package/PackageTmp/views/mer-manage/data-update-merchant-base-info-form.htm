@@ -1,0 +1,344 @@
+﻿<div id="CurrentMerchant-cc" style="margin-bottom: 5px;text-align: left; width: 200px;">    
+                <div id="CurrentMerchant-c" style="display: inline-block;"><input id="CurrentMerchant" /></div>
+</div>             
+<div id="cc-B230204" >    
+    <div style=" margin:auto auto; margin-top:20px;  width:680px; height:480px; position: relative;">     
+        <div style="width: 90px; position:absolute; top: 22px; left: 558px;">
+        <!--<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">
+            确定</a>-->
+            <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                 onclick="update_station()" >修改</a>
+        </div>   
+        <form id="fm-B230204" method="post" novalidate>
+        <input type="hidden" name="StationId" id="stationid-B230204" />
+        <input type="hidden" name="AreaId" id="AreaId" />
+        <input type="hidden" name="AreaId2" id="AreaId2" />
+        <input type="hidden" name="AreaId3" id="AreaId3" />
+        <input type="hidden" name="Status" id="Status" />
+        <div class="fitem">
+            <label>
+                机构编码:</label>
+            <input name="StationCode" id="StationCode" class="easyui-validatebox" required="true"
+                readonly="readonly" style=" color:#888;" missingmessage="机构编码不能为空" />
+            <label>
+                机构名称:</label>
+            <input name="StationName" id="StationName" class="easyui-validatebox" required="true"
+                readonly="readonly" missingmessage="机构名称不能为空" />        
+        </div>
+        <div class="fitem">
+            <label>
+                街道社区:</label>
+            <input name="AreaIdStreet" id="AreaIdStreet" />
+            <input name="AreaIdCommunity" id="AreaIdCommunity" />
+        </div>
+        <div class="fitem">
+            <label>
+                座　　机:</label>
+            <input name="Tel" id="Tel" />
+            <label>
+                传　　真:</label>
+            <input name="Fax" id="Fax" />
+            <label>
+                电子邮件:</label>
+            <input name="Email" id="Email" />
+        </div>
+        <div class="fitem">
+            <label>
+                服务热线:</label>
+            <input name="Hotline" maxlength="30" id="Hotline" />
+            <label>
+                联&nbsp;系&nbsp;人 :</label>
+            <input name="LinkMan" id="LinkMan" />
+            <label>
+                联系号码:</label>
+            <input name="LinkManMobile" id="LinkManMobile" />
+        </div>
+        <div class="fitem">
+            <label>
+                邮　　编:</label>
+            <input name="PostCode" maxlength="6" id="PostCode" />
+            <label>
+                经　　度:</label>
+            <input name="LongitudeS" maxlength="20" id="LongitudeS" />
+            <label>
+                纬　　度:</label>
+            <input name="LatitudeS" maxlength="20" id="LatitudeS" />
+        </div>
+        <div class="fitem">
+            <label>
+                地　　址:</label>
+            <textarea name="Address" id="Address" style="width: 580px;" maxlength="200"></textarea>
+        </div>
+        <div class="fitem">
+            <label>
+                简　　介:</label>
+            <textarea name="Intro" id="Intro" style="width: 580px;" maxlength="400"></textarea>
+        </div>
+        <div class="fitem">
+            <label>
+                备　　注:</label>
+            <textarea name="Remark" id="Remark" style="width: 580px;" maxlength="400"></textarea>
+        </div>
+        </form> 
+    </div>
+</div>
+<!--<div id="btn-B230204" class="easyui-tabs" style=" width:700px; height:360px;margin-left:20px;">
+    <div title="商家信息" style=" margin-left:10px; position:relative;">
+    </div>
+    <div title="服务网点信息" style=" margin-left:10px; position:relative;"> 
+    <div style="width: 90px; position:absolute; top: 15px; left: 600px;">
+        <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add"
+             id='add_merchant' onclick="add_merchant()">新增</a>
+        <a behaviorcode="02" href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+             id='update_merchant' onclick="update_merchant()">修改</a>
+    </div>
+        <form id="fm-info-B230204">
+        <input type="hidden" name="StationId" id="StationId" />
+        <div class="fitem">
+        <label>
+            接单方式:</label>
+        <input name="AcceptType" id="AcceptType"  required="true"/>
+        <label>
+            结算周期:</label>
+        <input name="SettlementPeriod" id="SettlementPeriod"  required="true" />
+        </div>
+        <div class="fitem">
+        <label>
+            结算方式:</label>
+        <input name="SettlementMode" id="SettlementMode" required="true" />
+        <label>
+            工作时间:</label>
+        <input name="WorkDay" id="WorkDay"  />
+        </div>
+        <div class="fitem">
+        <label>
+            服务时间开始:</label>
+        <input name="ServeTimeBeginOfDay" id="ServeTimeBeginOfDay"   />
+        <label>
+            服务时间结束:</label>
+        <input name="ServeTimeEndOfDay" id="ServeTimeEndOfDay"  />
+        </div>
+        <div class="fitem">
+        <label>
+            服务时间描述:</label>
+        <input name="ServeTimeOfDayDescription" id="ServeTimeOfDayDescription" />
+         <label>
+            服务流程标志:</label>
+        <input name="ServeFlowFlag" id="ServeFlowFlag" required="true"/>
+        </div>
+        <div class="fitem"> 
+         <label>
+            服务额外说明:</label>
+        <input name="ServeExtraComment" id="ServeExtraComment"   />
+        </div>
+        </form>
+    </div>
+</div>-->
+<script type="text/javascript">
+    if (window.execMode == 'ForMer') {
+        currentMenuCode = queryParams.currentMenuCode;
+    }
+    var areas;
+    var stationId;
+    $(function () {
+        autosize('cc-B130102', -20);
+        loadfiles([
+            { type: "js", url: "../../script/old-care/aid.js"}], function () {
+                getCombobox();
+                $('#CurrentMerchant').combobox({
+                    width: 180,
+                    panelWidth: 200,
+                    data: top.gUserInfo.MappingMerchants,
+                    valueField: 'StationId',
+                    textField: 'StationName',
+                    editable: false,
+                    onSelect: function (record) {
+                        buildPageByMerchant();
+                    }
+                });
+                if (top.gUserInfo.MappingMerchants.length > 0) {
+                    $('#CurrentMerchant').combobox('setValue', top.gUserInfo.MappingMerchants[0].StationId);
+
+                    if (top.gUserInfo.MappingMerchants.length == 1) {
+                        $('#CurrentMerchant-c').hide();
+                        $('#CurrentMerchant-cc').width(190);
+                    }
+                }
+                else {
+                    alertInfo('当前帐号没有绑定任何商家');
+                    $('#CurrentMerchant-cc').hide();
+                }
+            });
+        buildPageByMerchant();
+    });
+
+    function update_station() {
+        var station = getJQO('#fm-B230204').serializeObject(); 
+        putTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, $.toJSON(station), function (ret) {
+            if (ret.Success) {
+                postTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/SynSellerBaseInfo/' + stationId, null, function (ret) {
+                    alert('基本信息修改成功');
+                }, null, { ConnectId: baseInfoNode });
+            }
+            else {
+                alert('基本信息修改失败');
+            }
+        }, null, { ConnectId: baseInfoNode }); 
+    }
+
+    function add_merchant() {
+        var merchant = getJQO('#fm-info-B230204').serializeObject();  
+        merchant = _.extend(merchant, { 'StationId': stationId }); 
+
+        var checkNull = 'true';
+       checkNull= merchant.SettlementPeriod == '' ? '请选择结算周期' : merchant.SettlementMode == '' ? '请选择结算方式' : merchant.ServeFlowFlag == '' ? '请选择服务流程标志' : 'true';
+       
+       if (checkNull == 'true') {
+           postTo(baseCMSInvokeUrl + '/Oca/MerchantService/', $.toJSON(merchant), function (ret) {
+               if (ret.Success) {
+                   alert('服务网点信息新增成功');
+                   $('#add_merchant').hide();
+                   $('#update_merchant').show(); 
+               }
+               else {
+                   alert('服务网点信息新增失败');
+               }
+           });
+       }
+       else {
+           alert(checkNull);
+       }
+    }
+    function update_merchant() {
+        var merchant = getJQO('#fm-info-B230204').serializeObject(); 
+        merchant = _.extend(merchant, { 'StationId': stationId }); 
+        var checkNull = 'true';
+        checkNull = merchant.SettlementPeriod == '' ? '请选择结算周期' : merchant.SettlementMode == '' ? '请选择结算方式' : merchant.ServeFlowFlag == '' ? '请选择服务流程标志' : 'true';
+
+        if (checkNull == 'true') {
+            putTo(baseCMSInvokeUrl + '/Oca/MerchantService/' + stationId, $.toJSON(merchant), function (ret) {
+                if (ret.Success) {
+                    alert('服务网点信息修成功');
+                }
+                else {
+                    alert('服务网点信息修改失败');
+                }
+            });
+        }
+        else {
+            alert(checkNull);
+        }
+    }
+     
+    function buildPageByMerchant() {
+        stationId = $('#CurrentMerchant').combobox('getValue'); 
+        getTo(baseCMSInvokeUrl + '/Pub/ServiceStationService/' + stationId, null, function (result) {
+            if (result.Success) {
+                var ret = result.instance;
+                $('#fm-B230204').form('clear');
+                $('#fm-B230204').form('load', ret);
+
+                $('#AreaIdStreet').combobox('setValue', ret.AreaId2);
+                $('#AreaIdCommunity').combobox('setValue', ret.AreaId3); 
+            }
+        });
+        getTo(baseCMSInvokeUrl + '/Oca/MerchantService/Query?parms=' + $.toJSON({ 'StationId': stationId }), null, function (result) {
+            //            alert($.toJSON(result));
+            if (result.Success && result.rows.length > 0) {
+                var ret = result.rows[0];
+                $('#fm-info-B230204').form('clear');
+                $('#fm-info-B230204').form('load', ret);
+                $('#add_merchant').hide();
+                $('#update_merchant').show();
+            }
+            else { 
+                $('#fm-info-B230204').form('clear');
+                $('#add_merchant').show();
+                $('#update_merchant').hide();
+            }
+        });
+    }
+
+    function getCombobox() {
+        getAll([ajaxData_InvokeUrl + '/GetDictionaryItem/11025',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/11019',
+         ajaxData_InvokeUrl + '/GetDictionaryItem/00014' 
+        ], function (settlementMode, acceptType, settlementPeriod ) {
+            setCombobox("SettlementMode", settlementMode, 63);
+            setCombobox("AcceptType", acceptType, 63);
+            setCombobox("SettlementPeriod", settlementPeriod, 83); 
+            setCombobox("ServeFlowFlag", [{ 'ItemId': 0, 'ItemName': '关闭' }, { 'ItemId': 1, 'ItemName': '打开'}], 43);
+        });
+        //街道
+        $('#AreaIdStreet').combobox({
+            width: 153,
+            panelHeight: 150,
+            method: 'get',
+            data: GetStreetAndCommunityInArea(top.appDeployArea.id, "4"), //获取街道数据
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            filter: function (q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) == 0;
+            },
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#AreaIdStreet').combo('getText') == "") {
+                    $('#AreaIdCommunity').combobox('setValue', null);
+                    $('#AreaId2').val(null);
+                    $('#AreaId3').val(null);
+                }
+            },
+            onSelect: function (d) {
+                $('#AreaId2').val(d.ItemId);
+                var community = GetStreetAndCommunityInArea(d.ItemId, "5"); //获取社区数据
+                $('#AreaIdCommunity').combobox('loadData', community); //社区重新加载
+                //如果该街道下有社区，则自动填充
+                if (community.length > 0) {
+                    $('#AreaIdCommunity').combobox('setValue', community[0].ItemId);
+                    $('#AreaId3').val(community[0].ItemId);
+                }
+                //否则为空
+                else {
+                    $('#AreaIdCommunity').combobox('setValue', null);
+                    $('#AreaId3').val(null);
+                }
+            }
+        });
+        //社区
+        $('#AreaIdCommunity').combobox({
+            width: 153,
+            panelHeight: 150,
+            method: 'get',
+            data: GetStreetAndCommunityInArea(top.appDeployArea.id, "5"), //获取社区数据
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            filter: function (q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) == 0;
+            },
+            //姓名选择为空的时候    清除表单中的所以内容
+            onHidePanel: function () {
+                if ($('#AreaIdCommunity').combo('getText') == "") {
+                    $('#AreaId3').val(null);
+                }
+            },
+            onSelect: function (d) {
+                $('#AreaIdStreet').combobox('setValue', d.ParentId); //选择社区之后，显示该社区的街道
+                $('#AreaId2').val(d.ParentId);
+                $('#AreaId3').val(d.ItemId);
+            }
+        });
+    }
+    function setCombobox(controlsId, data,pH) {
+        $('#' + controlsId).combobox({
+            width: 153,
+            panelHeight: pH,
+            method: 'get',
+            data: data,
+            valueField: 'ItemId',
+            textField: 'ItemName',
+            editable: false 
+        }); 
+    }  
+</script>
